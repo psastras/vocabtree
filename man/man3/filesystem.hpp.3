@@ -1,0 +1,48 @@
+.TH "/Users/psastras/vocabtree/modules/utils/filesystem.hpp" 3 "Wed Nov 6 2013" "Version 0.0.1" "vocabtree" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/Users/psastras/vocabtree/modules/utils/filesystem.hpp \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <stdint\&.h>\fP
+.br
+\fC#include <opencv2/opencv\&.hpp>\fP
+.br
+
+.SS "Namespaces"
+
+.in +1c
+.ti -1c
+.RI "namespace \fBfilesystem\fP"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "bool \fBfilesystem::file_exists\fP (const std::string &name)"
+.br
+.ti -1c
+.RI "void \fBfilesystem::create_file_directory\fP (const std::string &absfilepath)"
+.br
+.ti -1c
+.RI "void \fBfilesystem::write_cvmat\fP (const std::string &fname, const cv::Mat &data)"
+.br
+.ti -1c
+.RI "bool \fBfilesystem::load_cvmat\fP (const std::string &fname, cv::Mat &data)"
+.br
+.ti -1c
+.RI "void \fBfilesystem::write_bow\fP (const std::string &fname, const std::vector< std::pair< uint32_t, float > > &data)"
+.br
+.ti -1c
+.RI "bool \fBfilesystem::load_bow\fP (const std::string &fname, std::vector< std::pair< uint32_t, float > > &data)"
+.br
+.ti -1c
+.RI "std::vector< std::string > \fBfilesystem::list_files\fP (const std::string &path, const std::string &ext='')"
+.br
+.in -1c
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for vocabtree from the source code\&.
