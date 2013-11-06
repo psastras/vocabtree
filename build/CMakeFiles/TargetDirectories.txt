@@ -1,5 +1,0 @@
-/Users/psastras/vocabtree/build/CMakeFiles/doc.dir
-/Users/psastras/vocabtree/build/modules/tests/CMakeFiles/inverted_index_simple.dir
-/Users/psastras/vocabtree/build/modules/search/CMakeFiles/search.dir
-/Users/psastras/vocabtree/build/modules/utils/CMakeFiles/utils.dir
-/Users/psastras/vocabtree/build/modules/tests/CMakeFiles/vocab_tree_simple.dir
