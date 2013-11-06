@@ -1,4 +1,5 @@
 var namespaces =
 [
-    [ "filesystem", "namespacefilesystem.html", null ]
+    [ "filesystem", "namespacefilesystem.html", null ],
+    [ "vision", "namespacevision.html", null ]
 ];

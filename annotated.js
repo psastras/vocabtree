@@ -1,6 +1,7 @@
 var annotated =
 [
     [ "filesystem", "namespacefilesystem.html", "namespacefilesystem" ],
+    [ "vision", "namespacevision.html", null ],
     [ "Image", "classImage.html", "classImage" ],
     [ "InvertedIndex", "classInvertedIndex.html", "classInvertedIndex" ],
     [ "MatchResultsBase", "structMatchResultsBase.html", "structMatchResultsBase" ],

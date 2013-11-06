@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classSearchBase.html" title="Abstract class from which all search structures and methods derive from." alt="" coords="5,31,99,57"/>
+<area shape="rect" id="node2" href="$classInvertedIndex.html" title="Implements a Bag of Words based (BoW) image search using an inverted index." alt="" coords="147,5,248,32"/>
+<area shape="rect" id="node3" href="$classVocabTree.html" title="VocabTree" alt="" coords="155,56,240,83"/>
+</map>
