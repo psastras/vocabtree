@@ -50,4 +50,5 @@ bool BagOfWords::train (const std::shared_ptr<const TrainParamsBase> &params, co
 
 std::shared_ptr<MatchResultsBase> BagOfWords::search (const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
 	assert(0);
+	return nullptr;
 }

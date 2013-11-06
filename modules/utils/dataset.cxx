@@ -22,7 +22,7 @@ SimpleDataset::SimpleDataset(const std::string &base_location, const std::string
 SimpleDataset::~SimpleDataset() { }
 
 std::shared_ptr<Image> SimpleDataset::image(uint64_t id) {
-	
+	return nullptr;
 }
 
 void SimpleDataset::construct_dataset() {
