@@ -1,0 +1,581 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<tagfile>
+  <compound kind="file">
+    <name>inverted_index.cxx</name>
+    <path>/home/psastras/vocabtree/modules/search/inverted_index/</path>
+    <filename>inverted__index_8cxx</filename>
+    <includes id="inverted__index_8hpp" name="inverted_index.hpp" local="yes" imported="no">inverted_index.hpp</includes>
+  </compound>
+  <compound kind="file">
+    <name>inverted_index.hpp</name>
+    <path>/home/psastras/vocabtree/modules/search/inverted_index/</path>
+    <filename>inverted__index_8hpp</filename>
+    <includes id="search__base_8hpp" name="search_base.hpp" local="no" imported="no">search/search_base/search_base.hpp</includes>
+    <class kind="class">InvertedIndex</class>
+    <class kind="struct">InvertedIndex::TrainParams</class>
+    <class kind="struct">InvertedIndex::SearchParams</class>
+    <class kind="struct">InvertedIndex::MatchResults</class>
+  </compound>
+  <compound kind="file">
+    <name>search_base.cxx</name>
+    <path>/home/psastras/vocabtree/modules/search/search_base/</path>
+    <filename>search__base_8cxx</filename>
+    <includes id="search__base_8hpp" name="search_base.hpp" local="yes" imported="no">search_base.hpp</includes>
+  </compound>
+  <compound kind="file">
+    <name>search_base.hpp</name>
+    <path>/home/psastras/vocabtree/modules/search/search_base/</path>
+    <filename>search__base_8hpp</filename>
+    <includes id="image_8hpp" name="image.hpp" local="no" imported="no">utils/image.hpp</includes>
+    <class kind="struct">TrainParamsBase</class>
+    <class kind="struct">SearchParamsBase</class>
+    <class kind="struct">MatchResultsBase</class>
+    <class kind="class">SearchBase</class>
+  </compound>
+  <compound kind="file">
+    <name>vocab_tree.cxx</name>
+    <path>/home/psastras/vocabtree/modules/search/vocab_tree/</path>
+    <filename>vocab__tree_8cxx</filename>
+    <includes id="vocab__tree_8hpp" name="vocab_tree.hpp" local="yes" imported="no">vocab_tree.hpp</includes>
+  </compound>
+  <compound kind="file">
+    <name>vocab_tree.hpp</name>
+    <path>/home/psastras/vocabtree/modules/search/vocab_tree/</path>
+    <filename>vocab__tree_8hpp</filename>
+    <includes id="search__base_8hpp" name="search_base.hpp" local="no" imported="no">search/search_base/search_base.hpp</includes>
+    <class kind="class">VocabTree</class>
+    <class kind="struct">VocabTree::TrainParams</class>
+    <class kind="struct">VocabTree::SearchParams</class>
+    <class kind="struct">VocabTree::MatchResults</class>
+  </compound>
+  <compound kind="file">
+    <name>inverted_index_simple.cxx</name>
+    <path>/home/psastras/vocabtree/modules/tests/</path>
+    <filename>inverted__index__simple_8cxx</filename>
+    <includes id="tests__config_8hpp" name="tests_config.hpp" local="yes" imported="no">tests_config.hpp</includes>
+    <includes id="inverted__index_8hpp" name="inverted_index.hpp" local="no" imported="no">search/inverted_index/inverted_index.hpp</includes>
+    <class kind="class">SimpleImage</class>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>inverted__index__simple_8cxx.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>tests_config.hpp</name>
+    <path>/home/psastras/vocabtree/modules/tests/</path>
+    <filename>tests__config_8hpp</filename>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_test_data_dir</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>a7f7b82e49b5a39648db26ecc33a7fc35</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>vocab_tree_simple.cxx</name>
+    <path>/home/psastras/vocabtree/modules/tests/</path>
+    <filename>vocab__tree__simple_8cxx</filename>
+    <includes id="tests__config_8hpp" name="tests_config.hpp" local="yes" imported="no">tests_config.hpp</includes>
+    <includes id="vocab__tree_8hpp" name="vocab_tree.hpp" local="no" imported="no">search/vocab_tree/vocab_tree.hpp</includes>
+    <class kind="class">SimpleImage</class>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>vocab__tree__simple_8cxx.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>filesystem.cxx</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>filesystem_8cxx</filename>
+    <includes id="filesystem_8hpp" name="filesystem.hpp" local="yes" imported="no">filesystem.hpp</includes>
+    <class kind="struct">filesystem::cvmat_header</class>
+    <namespace>filesystem</namespace>
+    <member kind="function">
+      <type>bool</type>
+      <name>file_exists</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>a1d10e228c7c784ffc2e9c3c5bfc0dd11</anchor>
+      <arglist>(const std::string &amp;name)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>create_file_directory</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>a7df468aa6576b318ff9c3f97cfa93312</anchor>
+      <arglist>(const std::string &amp;absfilepath)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>write_cvmat</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>abf2abe124148f4bbfa6304253c052928</anchor>
+      <arglist>(const std::string &amp;fname, const cv::Mat &amp;data)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>load_cvmat</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>a4302c4377292b2c6dc2813cf5bb2b225</anchor>
+      <arglist>(const std::string &amp;fname, cv::Mat &amp;data)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>write_bow</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>a981548ca1d14186a1838e8383aeb0991</anchor>
+      <arglist>(const std::string &amp;fname, const std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;data)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>load_bow</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>a6a1838f1e907bb3641be831a30c15448</anchor>
+      <arglist>(const std::string &amp;fname, std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;data)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>filesystem.hpp</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>filesystem_8hpp</filename>
+    <namespace>filesystem</namespace>
+    <member kind="function">
+      <type>std::vector&lt; std::string &gt;</type>
+      <name>list_files</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>a693bf6399bea0afceee10ab1672759a6</anchor>
+      <arglist>(const std::string &amp;path, const std::string &amp;ext=&quot;&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>image.cxx</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>image_8cxx</filename>
+    <includes id="image_8hpp" name="image.hpp" local="yes" imported="no">image.hpp</includes>
+    <includes id="filesystem_8hpp" name="filesystem.hpp" local="no" imported="no">utils/filesystem.hpp</includes>
+  </compound>
+  <compound kind="file">
+    <name>image.hpp</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>image_8hpp</filename>
+    <class kind="class">Image</class>
+  </compound>
+  <compound kind="file">
+    <name>vision.hpp</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>vision_8hpp</filename>
+    <namespace>vision</namespace>
+  </compound>
+  <compound kind="class">
+    <name>Image</name>
+    <filename>classImage.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>Image</name>
+      <anchorfile>classImage.html</anchorfile>
+      <anchor>aa0430ef96457eafaf585ff54abc8194f</anchor>
+      <arglist>(uint64_t image_id)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~Image</name>
+      <anchorfile>classImage.html</anchorfile>
+      <anchor>a0294f63700543e11c0f0da85601c7ae5</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::string</type>
+      <name>feature_path</name>
+      <anchorfile>classImage.html</anchorfile>
+      <anchor>aa4903872aaca70ea52f2a219602d6ff2</anchor>
+      <arglist>(const std::string &amp;feat_name) const =0</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>load_sift_feature</name>
+      <anchorfile>classImage.html</anchorfile>
+      <anchor>af2327d89ff13d9c3cad761723883c86e</anchor>
+      <arglist>(cv::Mat &amp;data) const </arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>load_bow_feature</name>
+      <anchorfile>classImage.html</anchorfile>
+      <anchor>a95009cbf9f7724f514d0220207a9e126</anchor>
+      <arglist>(std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;data) const </arglist>
+    </member>
+    <member kind="variable">
+      <type>uint64_t</type>
+      <name>id</name>
+      <anchorfile>classImage.html</anchorfile>
+      <anchor>a9800c46cdd3a9b037eee627a9c0a8259</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>InvertedIndex</name>
+    <filename>classInvertedIndex.html</filename>
+    <base>SearchBase</base>
+    <class kind="struct">InvertedIndex::MatchResults</class>
+    <class kind="struct">InvertedIndex::SearchParams</class>
+    <class kind="struct">InvertedIndex::TrainParams</class>
+    <member kind="function">
+      <type></type>
+      <name>InvertedIndex</name>
+      <anchorfile>classInvertedIndex.html</anchorfile>
+      <anchor>a29cb6e37c9bf93ac94c2c6985c4224a8</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>train</name>
+      <anchorfile>classInvertedIndex.html</anchorfile>
+      <anchor>ae3f81ab03c477a2813c95334473c8e95</anchor>
+      <arglist>(const std::shared_ptr&lt; const TrainParamsBase &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const Image &gt; &gt; &amp;examples)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>load</name>
+      <anchorfile>classInvertedIndex.html</anchorfile>
+      <anchor>a815b5aaa4565500df3aa2eb92f865535</anchor>
+      <arglist>(const std::string &amp;file_path)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>save</name>
+      <anchorfile>classInvertedIndex.html</anchorfile>
+      <anchor>a3864d16c75319e4d38d03145ad3dcc5f</anchor>
+      <arglist>(const std::string &amp;file_path) const </arglist>
+    </member>
+    <member kind="function">
+      <type>std::shared_ptr&lt; MatchResultsBase &gt;</type>
+      <name>search</name>
+      <anchorfile>classInvertedIndex.html</anchorfile>
+      <anchor>ae7f42b2552e9618c7fc0f5f36b365ca7</anchor>
+      <arglist>(const std::shared_ptr&lt; const SearchParamsBase &gt; &amp;params, const std::shared_ptr&lt; const Image &gt; &amp;example)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~SearchBase</name>
+      <anchorfile>classSearchBase.html</anchorfile>
+      <anchor>aa391cf064522f21c45f211da66882463</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>std::vector&lt; std::shared_ptr&lt; MatchResultsBase &gt; &gt;</type>
+      <name>search</name>
+      <anchorfile>classSearchBase.html</anchorfile>
+      <anchor>a090a073fa0e68e1b6fbd24def21f9d0c</anchor>
+      <arglist>(const std::shared_ptr&lt; SearchParamsBase &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const Image &gt; &gt; &amp;examples)</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>InvertedIndex::MatchResults</name>
+    <filename>structInvertedIndex_1_1MatchResults.html</filename>
+    <base>MatchResultsBase</base>
+    <member kind="variable">
+      <type>std::vector&lt; float &gt;</type>
+      <name>tfidf_scores</name>
+      <anchorfile>structInvertedIndex_1_1MatchResults.html</anchorfile>
+      <anchor>a8acc0fd9cd82f3c0a794f63de97a75d3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>std::vector&lt; uint64_t &gt;</type>
+      <name>matches</name>
+      <anchorfile>structMatchResultsBase.html</anchorfile>
+      <anchor>aba6a7554c61bf5f8429120c58c97606b</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>InvertedIndex::SearchParams</name>
+    <filename>structInvertedIndex_1_1SearchParams.html</filename>
+    <base>SearchParamsBase</base>
+  </compound>
+  <compound kind="struct">
+    <name>InvertedIndex::TrainParams</name>
+    <filename>structInvertedIndex_1_1TrainParams.html</filename>
+    <base>TrainParamsBase</base>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>numClusters</name>
+      <anchorfile>structInvertedIndex_1_1TrainParams.html</anchorfile>
+      <anchor>ac8680abdf1fe9c33d3c3b02e73dbf733</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>numFeatures</name>
+      <anchorfile>structInvertedIndex_1_1TrainParams.html</anchorfile>
+      <anchor>a7f7dbf8745443ece0694fc79f080966b</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>MatchResultsBase</name>
+    <filename>structMatchResultsBase.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>SearchBase</name>
+    <filename>classSearchBase.html</filename>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>train</name>
+      <anchorfile>classSearchBase.html</anchorfile>
+      <anchor>a83240f56d0981d5eb33cbe9068a79d1e</anchor>
+      <arglist>(const std::shared_ptr&lt; const TrainParamsBase &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const Image &gt; &gt; &amp;examples)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>load</name>
+      <anchorfile>classSearchBase.html</anchorfile>
+      <anchor>a8af6d745f82a66b25fcf8cc012ff6e3e</anchor>
+      <arglist>(const std::string &amp;file_path)=0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual bool</type>
+      <name>save</name>
+      <anchorfile>classSearchBase.html</anchorfile>
+      <anchor>ae221617eb05aa616397da75fa1760345</anchor>
+      <arglist>(const std::string &amp;file_path) const =0</arglist>
+    </member>
+    <member kind="function" protection="protected" virtualness="pure">
+      <type>virtual std::shared_ptr&lt; MatchResultsBase &gt;</type>
+      <name>search</name>
+      <anchorfile>classSearchBase.html</anchorfile>
+      <anchor>ad624acf4e4f788345f45c6a0e5920093</anchor>
+      <arglist>(const std::shared_ptr&lt; const SearchParamsBase &gt; &amp;params, const std::shared_ptr&lt; const Image &gt; &amp;example)=0</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>SearchParamsBase</name>
+    <filename>structSearchParamsBase.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>SimpleImage</name>
+    <filename>classSimpleImage.html</filename>
+    <base>Image</base>
+    <base>Image</base>
+    <member kind="function">
+      <type></type>
+      <name>SimpleImage</name>
+      <anchorfile>classSimpleImage.html</anchorfile>
+      <anchor>af0fb8cbec292ba975b6c3d25ed6f185e</anchor>
+      <arglist>(const std::string &amp;path, uint64_t imageid)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::string</type>
+      <name>feature_path</name>
+      <anchorfile>classSimpleImage.html</anchorfile>
+      <anchor>a0702c5366f545d3b44a7ecfb900932ac</anchor>
+      <arglist>(const std::string &amp;feat_name) const </arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>SimpleImage</name>
+      <anchorfile>classSimpleImage.html</anchorfile>
+      <anchor>af0fb8cbec292ba975b6c3d25ed6f185e</anchor>
+      <arglist>(const std::string &amp;path, uint64_t imageid)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::string</type>
+      <name>feature_path</name>
+      <anchorfile>classSimpleImage.html</anchorfile>
+      <anchor>a0702c5366f545d3b44a7ecfb900932ac</anchor>
+      <arglist>(const std::string &amp;feat_name) const </arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>std::string</type>
+      <name>image_path</name>
+      <anchorfile>classSimpleImage.html</anchorfile>
+      <anchor>aa73808181a85d6a3c1aaa2b6d2d47c8c</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>TrainParamsBase</name>
+    <filename>structTrainParamsBase.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>VocabTree</name>
+    <filename>classVocabTree.html</filename>
+    <base>SearchBase</base>
+    <class kind="struct">VocabTree::MatchResults</class>
+    <class kind="struct">VocabTree::SearchParams</class>
+    <class kind="struct">VocabTree::TrainParams</class>
+    <member kind="function">
+      <type></type>
+      <name>VocabTree</name>
+      <anchorfile>classVocabTree.html</anchorfile>
+      <anchor>af3aec1ffd6c9ce7ad5b85f477d1a163d</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>train</name>
+      <anchorfile>classVocabTree.html</anchorfile>
+      <anchor>a28fae9e130e85b6e7daa3e6f7d44105c</anchor>
+      <arglist>(const std::shared_ptr&lt; const TrainParamsBase &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const Image &gt; &gt; &amp;examples)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>load</name>
+      <anchorfile>classVocabTree.html</anchorfile>
+      <anchor>ad8645f1901ce25a989dacfba7642d328</anchor>
+      <arglist>(const std::string &amp;file_path)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>save</name>
+      <anchorfile>classVocabTree.html</anchorfile>
+      <anchor>ac0fcc2c407d6ad58d6589996ff023f3f</anchor>
+      <arglist>(const std::string &amp;file_path) const </arglist>
+    </member>
+    <member kind="function">
+      <type>std::shared_ptr&lt; MatchResultsBase &gt;</type>
+      <name>search</name>
+      <anchorfile>classVocabTree.html</anchorfile>
+      <anchor>ac7e3abd0728bcb9218f70b324b40ae22</anchor>
+      <arglist>(const std::shared_ptr&lt; const SearchParamsBase &gt; &amp;params, const std::shared_ptr&lt; const Image &gt; &amp;example)</arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>VocabTree::MatchResults</name>
+    <filename>structVocabTree_1_1MatchResults.html</filename>
+    <base>MatchResultsBase</base>
+    <member kind="variable">
+      <type>std::vector&lt; float &gt;</type>
+      <name>tfidf_scores</name>
+      <anchorfile>structVocabTree_1_1MatchResults.html</anchorfile>
+      <anchor>a00cf3256deacff07bddb455b30b7075a</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="struct">
+    <name>VocabTree::SearchParams</name>
+    <filename>structVocabTree_1_1SearchParams.html</filename>
+    <base>SearchParamsBase</base>
+  </compound>
+  <compound kind="struct">
+    <name>VocabTree::TrainParams</name>
+    <filename>structVocabTree_1_1TrainParams.html</filename>
+    <base>TrainParamsBase</base>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>depth</name>
+      <anchorfile>structVocabTree_1_1TrainParams.html</anchorfile>
+      <anchor>a19cf8b48b0421b61e6d509e23aa505e1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>split</name>
+      <anchorfile>structVocabTree_1_1TrainParams.html</anchorfile>
+      <anchor>af2eec2a04b76dd1b075cf68d259492c0</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="namespace">
+    <name>filesystem</name>
+    <filename>namespacefilesystem.html</filename>
+    <class kind="struct">filesystem::cvmat_header</class>
+  </compound>
+  <compound kind="struct">
+    <name>filesystem::cvmat_header</name>
+    <filename>structfilesystem_1_1cvmat__header.html</filename>
+    <member kind="variable">
+      <type>uint64_t</type>
+      <name>elem_size</name>
+      <anchorfile>structfilesystem_1_1cvmat__header.html</anchorfile>
+      <anchor>a0a5c08bca19d68690a6f0e3669749ad7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint64_t</type>
+      <name>elem_type</name>
+      <anchorfile>structfilesystem_1_1cvmat__header.html</anchorfile>
+      <anchor>a20ffb2051921b0b3806e6e6131ae5562</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>rows</name>
+      <anchorfile>structfilesystem_1_1cvmat__header.html</anchorfile>
+      <anchor>acdcf543a27c35af493a6e2e77e4beac9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>uint32_t</type>
+      <name>cols</name>
+      <anchorfile>structfilesystem_1_1cvmat__header.html</anchorfile>
+      <anchor>ab8ef888e91c088f0d74931b13c84ca56</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="namespace">
+    <name>vision</name>
+    <filename>namespacevision.html</filename>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules/search/inverted_index</name>
+    <path>/home/psastras/vocabtree/modules/search/inverted_index/</path>
+    <filename>dir_48955c9ce9cd0b7cfea6460adc3a27f7.html</filename>
+    <file>inverted_index.cxx</file>
+    <file>inverted_index.hpp</file>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules</name>
+    <path>/home/psastras/vocabtree/modules/</path>
+    <filename>dir_02cfe643e9719c22633e1460523b3073.html</filename>
+    <dir>/home/psastras/vocabtree/modules/search</dir>
+    <dir>/home/psastras/vocabtree/modules/tests</dir>
+    <dir>/home/psastras/vocabtree/modules/utils</dir>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules/search</name>
+    <path>/home/psastras/vocabtree/modules/search/</path>
+    <filename>dir_d633d59dda6758411dca4e419386d63e.html</filename>
+    <dir>/home/psastras/vocabtree/modules/search/inverted_index</dir>
+    <dir>/home/psastras/vocabtree/modules/search/search_base</dir>
+    <dir>/home/psastras/vocabtree/modules/search/vocab_tree</dir>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules/search/search_base</name>
+    <path>/home/psastras/vocabtree/modules/search/search_base/</path>
+    <filename>dir_aa14cec1455a7ee7699e3e70aebd0bf9.html</filename>
+    <file>search_base.cxx</file>
+    <file>search_base.hpp</file>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules/tests</name>
+    <path>/home/psastras/vocabtree/modules/tests/</path>
+    <filename>dir_55246588f55a8cc8d22cc40198d45aaa.html</filename>
+    <file>inverted_index_simple.cxx</file>
+    <file>tests_config.hpp</file>
+    <file>vocab_tree_simple.cxx</file>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules/utils</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>dir_cbf0b7a377b7347cfcfab50ef1c0cdff.html</filename>
+    <file>filesystem.cxx</file>
+    <file>filesystem.hpp</file>
+    <file>image.cxx</file>
+    <file>image.hpp</file>
+    <file>vision.hpp</file>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules/search/vocab_tree</name>
+    <path>/home/psastras/vocabtree/modules/search/vocab_tree/</path>
+    <filename>dir_ab947d5a49213cf40dc4feb1a49ca2a4.html</filename>
+    <file>vocab_tree.cxx</file>
+    <file>vocab_tree.hpp</file>
+  </compound>
+</tagfile>
