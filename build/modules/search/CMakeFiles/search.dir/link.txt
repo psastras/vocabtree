@@ -1,0 +1,2 @@
+/usr/bin/ar cr ../../lib/libsearch.a  CMakeFiles/search.dir/search_base/search_base.o CMakeFiles/search.dir/inverted_index/inverted_index.o CMakeFiles/search.dir/vocab_tree/vocab_tree.o
+/usr/bin/ranlib ../../lib/libsearch.a

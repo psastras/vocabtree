@@ -1,0 +1,60 @@
+\hypertarget{inverted__index__simple_8cxx}{\section{/\-Users/psastras/vocabtree/modules/tests/inverted\-\_\-index\-\_\-simple.cxx File Reference}
+\label{inverted__index__simple_8cxx}\index{/\-Users/psastras/vocabtree/modules/tests/inverted\-\_\-index\-\_\-simple.\-cxx@{/\-Users/psastras/vocabtree/modules/tests/inverted\-\_\-index\-\_\-simple.\-cxx}}
+}
+{\ttfamily \#include \char`\"{}tests\-\_\-config.\-hpp\char`\"{}}\\*
+{\ttfamily \#include $<$search/inverted\-\_\-index/inverted\-\_\-index.\-hpp$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classSimpleImage}{Simple\-Image}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{inverted__index__simple_8cxx_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{inverted__index__simple_8cxx_a0ddf1224851353fc92bfbff6f499fa97}{\index{inverted\-\_\-index\-\_\-simple.\-cxx@{inverted\-\_\-index\-\_\-simple.\-cxx}!main@{main}}
+\index{main@{main}!inverted_index_simple.cxx@{inverted\-\_\-index\-\_\-simple.\-cxx}}
+\subsubsection[{main}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{inverted__index__simple_8cxx_a0ddf1224851353fc92bfbff6f499fa97}
+
+
+Definition at line 22 of file inverted\-\_\-index\-\_\-simple.\-cxx.
+
+
+
+References s\-\_\-test\-\_\-data\-\_\-dir, Inverted\-Index\-::search(), and Inverted\-Index\-::train().
+
+
+\begin{DoxyCode}
+                                 \{
+
+        \hyperlink{classInvertedIndex}{InvertedIndex} ii;
+        std::shared\_ptr<InvertedIndex::TrainParams> train\_params = 
+      std::make\_shared<InvertedIndex::TrainParams>();
+        train\_params->numClusters = 100;
+        train\_params->numFeatures = 10000;
+        
+        std::vector<std::shared\_ptr<const Image> > examples(1);
+        examples[0] = std::make\_shared<const SimpleImage>(\hyperlink{tests__config_8hpp_a7f7b82e49b5a39648db26ecc33a7fc35}{s\_test\_data\_dir}
+       + \textcolor{stringliteral}{"/simple/images/0000.jpg"}, 0);
+
+        ii.\hyperlink{classInvertedIndex_ae3f81ab03c477a2813c95334473c8e95}{train}(train\_params, examples);
+
+        std::shared\_ptr<InvertedIndex::SearchParams> search\_params = 
+      std::make\_shared<InvertedIndex::SearchParams>();
+        std::shared\_ptr<InvertedIndex::MatchResults> match\_results = 
+      std::static\_pointer\_cast<\hyperlink{structInvertedIndex_1_1MatchResults}{InvertedIndex::MatchResults}>(ii.\hyperlink{classInvertedIndex_ae7f42b2552e9618c7fc0f5f36b365ca7}{search}
+      (search\_params, examples[0]));
+
+
+        \textcolor{keywordflow}{return} 0;
+\}\end{DoxyCode}

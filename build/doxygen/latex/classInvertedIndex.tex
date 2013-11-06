@@ -1,0 +1,215 @@
+\hypertarget{classInvertedIndex}{\section{Inverted\-Index Class Reference}
+\label{classInvertedIndex}\index{Inverted\-Index@{Inverted\-Index}}
+}
+
+
+{\ttfamily \#include $<$inverted\-\_\-index.\-hpp$>$}
+
+Inheritance diagram for Inverted\-Index\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classInvertedIndex}
+\end{center}
+\end{figure}
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structInvertedIndex_1_1MatchResults}{Match\-Results}
+\item 
+struct \hyperlink{structInvertedIndex_1_1SearchParams}{Search\-Params}
+\item 
+struct \hyperlink{structInvertedIndex_1_1TrainParams}{Train\-Params}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classInvertedIndex_a29cb6e37c9bf93ac94c2c6985c4224a8}{Inverted\-Index} ()
+\item 
+bool \hyperlink{classInvertedIndex_ae3f81ab03c477a2813c95334473c8e95}{train} (const std\-::shared\-\_\-ptr$<$ const \hyperlink{structTrainParamsBase}{Train\-Params\-Base} $>$ \&params, const std\-::vector$<$ std\-::shared\-\_\-ptr$<$ const \hyperlink{classImage}{Image} $>$ $>$ \&examples)
+\item 
+bool \hyperlink{classInvertedIndex_a815b5aaa4565500df3aa2eb92f865535}{load} (const std\-::string \&file\-\_\-path)
+\item 
+bool \hyperlink{classInvertedIndex_a3864d16c75319e4d38d03145ad3dcc5f}{save} (const std\-::string \&file\-\_\-path) const 
+\item 
+std\-::shared\-\_\-ptr$<$ \hyperlink{structMatchResultsBase}{Match\-Results\-Base} $>$ \hyperlink{classInvertedIndex_ae7f42b2552e9618c7fc0f5f36b365ca7}{search} (const std\-::shared\-\_\-ptr$<$ const \hyperlink{structSearchParamsBase}{Search\-Params\-Base} $>$ \&params, const std\-::shared\-\_\-ptr$<$ const \hyperlink{classImage}{Image} $>$ \&example)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 5 of file inverted\-\_\-index.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classInvertedIndex_a29cb6e37c9bf93ac94c2c6985c4224a8}{\index{Inverted\-Index@{Inverted\-Index}!Inverted\-Index@{Inverted\-Index}}
+\index{Inverted\-Index@{Inverted\-Index}!InvertedIndex@{Inverted\-Index}}
+\subsubsection[{Inverted\-Index}]{\setlength{\rightskip}{0pt plus 5cm}Inverted\-Index\-::\-Inverted\-Index (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classInvertedIndex_a29cb6e37c9bf93ac94c2c6985c4224a8}
+
+
+Definition at line 4 of file inverted\-\_\-index.\-cxx.
+
+
+\begin{DoxyCode}
+                             : \hyperlink{classSearchBase}{SearchBase}() \{
+
+
+\}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classInvertedIndex_a815b5aaa4565500df3aa2eb92f865535}{\index{Inverted\-Index@{Inverted\-Index}!load@{load}}
+\index{load@{load}!InvertedIndex@{Inverted\-Index}}
+\subsubsection[{load}]{\setlength{\rightskip}{0pt plus 5cm}bool Inverted\-Index\-::load (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{file\-\_\-path}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classInvertedIndex_a815b5aaa4565500df3aa2eb92f865535}
+
+
+Implements \hyperlink{classSearchBase_a8af6d745f82a66b25fcf8cc012ff6e3e}{Search\-Base}.
+
+
+
+Definition at line 9 of file inverted\-\_\-index.\-cxx.
+
+
+\begin{DoxyCode}
+                                                    \{
+        std::cout << \textcolor{stringliteral}{"Reading inverted index from "} << file\_path << \textcolor{stringliteral}{"..."} << 
+      std::endl;
+
+        \textcolor{comment}{// code here}
+
+        std::cout << \textcolor{stringliteral}{"Done reading inverted index."} << std::endl;
+        
+        \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+\}
+\end{DoxyCode}
+\hypertarget{classInvertedIndex_a3864d16c75319e4d38d03145ad3dcc5f}{\index{Inverted\-Index@{Inverted\-Index}!save@{save}}
+\index{save@{save}!InvertedIndex@{Inverted\-Index}}
+\subsubsection[{save}]{\setlength{\rightskip}{0pt plus 5cm}bool Inverted\-Index\-::save (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{file\-\_\-path}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classInvertedIndex_a3864d16c75319e4d38d03145ad3dcc5f}
+
+
+Implements \hyperlink{classSearchBase_ae221617eb05aa616397da75fa1760345}{Search\-Base}.
+
+
+
+Definition at line 20 of file inverted\-\_\-index.\-cxx.
+
+
+\begin{DoxyCode}
+                                                          \{
+        std::cout << \textcolor{stringliteral}{"Writing inverted index to "} << file\_path << \textcolor{stringliteral}{"..."} << 
+      std::endl;
+
+        \textcolor{comment}{// code here}
+
+        std::cout << \textcolor{stringliteral}{"Done writing inverted index."} << std::endl;
+
+        \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+\}
+\end{DoxyCode}
+\hypertarget{classInvertedIndex_ae7f42b2552e9618c7fc0f5f36b365ca7}{\index{Inverted\-Index@{Inverted\-Index}!search@{search}}
+\index{search@{search}!InvertedIndex@{Inverted\-Index}}
+\subsubsection[{search}]{\setlength{\rightskip}{0pt plus 5cm}std\-::shared\-\_\-ptr$<$ {\bf Match\-Results\-Base} $>$ Inverted\-Index\-::search (
+\begin{DoxyParamCaption}
+\item[{const std\-::shared\-\_\-ptr$<$ const {\bf Search\-Params\-Base} $>$ \&}]{params, }
+\item[{const std\-::shared\-\_\-ptr$<$ const {\bf Image} $>$ \&}]{example}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classInvertedIndex_ae7f42b2552e9618c7fc0f5f36b365ca7}
+
+
+Implements \hyperlink{classSearchBase_ad624acf4e4f788345f45c6a0e5920093}{Search\-Base}.
+
+
+
+Definition at line 50 of file inverted\-\_\-index.\-cxx.
+
+
+
+Referenced by main().
+
+
+\begin{DoxyCode}
+                                                                               
+                                                                             \{
+        std::cout << \textcolor{stringliteral}{"Searching for matching images..."} << std::endl;
+        \textcolor{keyword}{const} std::shared\_ptr<const SearchParams> &ii\_params = 
+      std::static\_pointer\_cast<\textcolor{keyword}{const} SearchParams>(params);
+        
+        std::shared\_ptr<MatchResults> match\_result = 
+      std::make\_shared<MatchResults>();
+
+        \textcolor{comment}{// returns zero as the only match with a score of zero}
+        match\_result->tfidf\_scores.push\_back(0.f);
+        match\_result->matches.push\_back(0);
+
+        \textcolor{keywordflow}{return} (std::shared\_ptr<MatchResultsBase>)match\_result;
+\}\end{DoxyCode}
+\hypertarget{classInvertedIndex_ae3f81ab03c477a2813c95334473c8e95}{\index{Inverted\-Index@{Inverted\-Index}!train@{train}}
+\index{train@{train}!InvertedIndex@{Inverted\-Index}}
+\subsubsection[{train}]{\setlength{\rightskip}{0pt plus 5cm}bool Inverted\-Index\-::train (
+\begin{DoxyParamCaption}
+\item[{const std\-::shared\-\_\-ptr$<$ const {\bf Train\-Params\-Base} $>$ \&}]{params, }
+\item[{const std\-::vector$<$ std\-::shared\-\_\-ptr$<$ const {\bf Image} $>$ $>$ \&}]{examples}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classInvertedIndex_ae3f81ab03c477a2813c95334473c8e95}
+
+
+Implements \hyperlink{classSearchBase_a83240f56d0981d5eb33cbe9068a79d1e}{Search\-Base}.
+
+
+
+Definition at line 30 of file inverted\-\_\-index.\-cxx.
+
+
+
+References Inverted\-Index\-::\-Train\-Params\-::num\-Clusters.
+
+
+
+Referenced by main().
+
+
+\begin{DoxyCode}
+                                                                               
+                                                              \{
+        \textcolor{keyword}{const} std::shared\_ptr<const TrainParams> &ii\_params = 
+      std::static\_pointer\_cast<\textcolor{keyword}{const} TrainParams>(params);
+        uint32\_t k = ii\_params->numClusters;
+        uint32\_t n = ii\_params->numFeatures;
+
+        std::cout << \textcolor{stringliteral}{"Training inverted index with "} << k << \textcolor{stringliteral}{" clusters on "} <<
+       n << \textcolor{stringliteral}{" features."} << std::endl;
+        std::cout << \textcolor{stringliteral}{"Reading features from disk..."} << std::endl;
+        \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t} i=0; i<examples.size(); i++) \{
+                \textcolor{keyword}{const} std::string sift\_feat\_path = examples[i]->feature\_path(\textcolor{stringliteral}{"
+      sift"});
+                
+                \textcolor{comment}{//load sift}
+
+                \textcolor{comment}{// push back feature}
+        \}
+        std::cout << \textcolor{stringliteral}{"Clustering..."} << std::endl;
+        \textcolor{comment}{// cluster all features}
+        std::cout << \textcolor{stringliteral}{"Done training inverted index."} << std::endl;
+        \textcolor{keywordflow}{return} \textcolor{keyword}{false};
+\}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/\-Users/psastras/vocabtree/modules/search/inverted\-\_\-index/\hyperlink{inverted__index_8hpp}{inverted\-\_\-index.\-hpp}\item 
+/\-Users/psastras/vocabtree/modules/search/inverted\-\_\-index/\hyperlink{inverted__index_8cxx}{inverted\-\_\-index.\-cxx}\end{DoxyCompactItemize}

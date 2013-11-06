@@ -1,0 +1,2510 @@
+\hypertarget{logger_8hpp}{\section{/\-Users/psastras/vocabtree/modules/utils/logger.hpp File Reference}
+\label{logger_8hpp}\index{/\-Users/psastras/vocabtree/modules/utils/logger.\-hpp@{/\-Users/psastras/vocabtree/modules/utils/logger.\-hpp}}
+}
+{\ttfamily \#include $<$ctime$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$cctype$>$}\\*
+{\ttfamily \#include $<$cwchar$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$vector$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$functional$>$}\\*
+{\ttfamily \#include $<$algorithm$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1NoCopy}{easyloggingpp\-::internal\-::\-No\-Copy}
+\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1StaticClass}{easyloggingpp\-::internal\-::\-Static\-Class}
+\item 
+struct \hyperlink{structeasyloggingpp_1_1Level}{easyloggingpp\-::\-Level}
+\item 
+struct \hyperlink{structeasyloggingpp_1_1ConfigurationType}{easyloggingpp\-::\-Configuration\-Type}
+\item 
+struct \hyperlink{structeasyloggingpp_1_1internal_1_1Aspect}{easyloggingpp\-::internal\-::\-Aspect}
+\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1Constants}{easyloggingpp\-::internal\-::\-Constants}
+\begin{DoxyCompactList}\small\item\em Used internally. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1threading_1_1Mutex}{easyloggingpp\-::internal\-::threading\-::\-Mutex}
+\begin{DoxyCompactList}\small\item\em To take care of shared resources in multi-\/threaded application. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1threading_1_1ScopedLock}{easyloggingpp\-::internal\-::threading\-::\-Scoped\-Lock}
+\begin{DoxyCompactList}\small\item\em Scoped mutex that works same as C++11 {\ttfamily std\-::lock\-\_\-guard$<$std\-::mutex$>$}. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1utilities_1_1StringUtils}{easyloggingpp\-::internal\-::utilities\-::\-String\-Utils}
+\begin{DoxyCompactList}\small\item\em String utilities class used internally. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1utilities_1_1OSUtils}{easyloggingpp\-::internal\-::utilities\-::\-O\-S\-Utils}
+\begin{DoxyCompactList}\small\item\em Operating System utilities class used internally. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1utilities_1_1LogManipulator}{easyloggingpp\-::internal\-::utilities\-::\-Log\-Manipulator}
+\begin{DoxyCompactList}\small\item\em Contains static functions related to log manipulation used internally. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1utilities_1_1DateUtils}{easyloggingpp\-::internal\-::utilities\-::\-Date\-Utils}
+\begin{DoxyCompactList}\small\item\em Contains utility functions related to date/time used internally. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1Registry}{easyloggingpp\-::internal\-::\-Registry$<$ Class, Predicate $>$}
+\begin{DoxyCompactList}\small\item\em Internal repository base to manage memory on heap. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1ScopedPointer}{easyloggingpp\-::internal\-::\-Scoped\-Pointer$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em Scoped pointer used internally. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1ScopedPointer_1_1ReferenceCounter}{easyloggingpp\-::internal\-::\-Scoped\-Pointer$<$ T $>$\-::\-Reference\-Counter}
+\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1Configuration}{easyloggingpp\-::internal\-::\-Configuration}
+\begin{DoxyCompactList}\small\item\em Class that represents single configuration. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1Configuration_1_1Predicate}{easyloggingpp\-::internal\-::\-Configuration\-::\-Predicate}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classeasyloggingpp_1_1internal_1_1Configuration_1_1Predicate}{Predicate} used to find configuration from configuration repository. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1Configurations}{easyloggingpp\-::\-Configurations}
+\begin{DoxyCompactList}\small\item\em Configuration repository that represents configuration for single logger. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1Configurations_1_1Parser}{easyloggingpp\-::\-Configurations\-::\-Parser}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classeasyloggingpp_1_1Configurations_1_1Parser}{Parser} used internally to parse configurations from file or text. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1ConfigurationMap}{easyloggingpp\-::internal\-::\-Configuration\-Map$<$ T $>$}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classeasyloggingpp_1_1internal_1_1Configuration}{Configuration} map used internally for faster access of configuration while executing. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1TypedConfigurations}{easyloggingpp\-::internal\-::\-Typed\-Configurations}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classeasyloggingpp_1_1Configurations}{Configurations} used internally that defines data type of each configuration from \hyperlink{structeasyloggingpp_1_1ConfigurationType}{easyloggingpp\-::\-Configuration\-Type}. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1Logger}{easyloggingpp\-::\-Logger}
+\begin{DoxyCompactList}\small\item\em Represents single logger used to write log. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1Logger_1_1Predicate}{easyloggingpp\-::\-Logger\-::\-Predicate}
+\begin{DoxyCompactList}\small\item\em \hyperlink{classeasyloggingpp_1_1Logger_1_1Predicate}{Predicate} used in logger repository to find logger. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1LogCounter}{easyloggingpp\-::internal\-::\-Log\-Counter}
+\begin{DoxyCompactList}\small\item\em Internal log counter used for interval logging. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1LogCounter_1_1Predicate}{easyloggingpp\-::internal\-::\-Log\-Counter\-::\-Predicate}
+\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1RegisteredCounters}{easyloggingpp\-::internal\-::\-Registered\-Counters}
+\begin{DoxyCompactList}\small\item\em Internal \hyperlink{classeasyloggingpp_1_1internal_1_1LogCounter}{Log\-Counter} repository. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1RegisteredLoggers}{easyloggingpp\-::internal\-::\-Registered\-Loggers}
+\begin{DoxyCompactList}\small\item\em Internal logger repository. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1NullWriter}{easyloggingpp\-::internal\-::\-Null\-Writer}
+\item 
+class \hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{easyloggingpp\-::internal\-::\-Writer}
+\item 
+class \hyperlink{classeasyloggingpp_1_1VersionInfo}{easyloggingpp\-::\-Version\-Info}
+\item 
+class \hyperlink{classeasyloggingpp_1_1Loggers}{easyloggingpp\-::\-Loggers}
+\begin{DoxyCompactList}\small\item\em Helper class to manage loggers and configurations. \end{DoxyCompactList}\item 
+class \hyperlink{classeasyloggingpp_1_1Loggers_1_1ConfigurationsReader}{easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader}
+\begin{DoxyCompactList}\small\item\em Static class that contains static helper functions used to read configurations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \hyperlink{namespaceeasyloggingpp}{easyloggingpp}
+\item 
+namespace \hyperlink{namespaceeasyloggingpp_1_1internal}{easyloggingpp\-::internal}
+\item 
+namespace \hyperlink{namespaceeasyloggingpp_1_1internal_1_1threading}{easyloggingpp\-::internal\-::threading}
+\item 
+namespace \hyperlink{namespaceeasyloggingpp_1_1internal_1_1utilities}{easyloggingpp\-::internal\-::utilities}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-}~\char`\"{}\char`\"{}
+\item 
+\#define \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-}~0
+\item 
+\#define \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\-\_\-\-\_\-func\-\_\-\-\_\-}~\char`\"{}\char`\"{}
+\item 
+\#define \hyperlink{logger_8hpp_a7384e6481b9845b36972cab0a0d8bb6c}{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-R\-T\-\_\-\-D\-B\-G\-\_\-\-W\-A\-R\-N\-I\-N\-G\-S}~0
+\item 
+\#define \hyperlink{logger_8hpp_a835e75460b877a6754f9387bbd7e6cd8}{\-\_\-\-E\-L\-P\-P\-\_\-\-M\-I\-N\-G\-W}~0
+\item 
+\#define \hyperlink{logger_8hpp_a268f7d08f17bb4003443889755b1462e}{\-\_\-\-E\-L\-P\-P\-\_\-\-N\-D\-K}~0
+\item 
+\#define \hyperlink{logger_8hpp_a92d04fe74201d58bc774099a3f5a52da}{S\-P\-R\-I\-N\-T\-F}~sprintf
+\item 
+\#define \hyperlink{logger_8hpp_a467ada1a12edc2402c2bd6dc266173cf}{S\-T\-R\-T\-O\-K}(a, b, c)~strtok(a,b)
+\item 
+\#define \hyperlink{logger_8hpp_ac2c16a015b80a277adb3ff94d9fa300f}{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-D\-\_\-\-T\-H\-R\-E\-A\-D\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E}~0
+\item 
+\#define \hyperlink{logger_8hpp_a8621dc859730f3e55e6027e4d5c3c5b7}{\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_a6382853a76f7712fcb94fd997e48db53}{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S}~0
+\item 
+\#define \hyperlink{logger_8hpp_aa615af8b8e5e9b12541d1a4a231c082f}{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X}~0
+\item 
+\#define \hyperlink{logger_8hpp_af5c2c5bd5374fd530dfa46fdcc226dba}{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C}~0
+\item 
+\#define \hyperlink{logger_8hpp_ae5e23590174fa8a369f8d6258f8a2725}{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-U\-N\-I\-X}~((\hyperlink{logger_8hpp_aa615af8b8e5e9b12541d1a4a231c082f}{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X} $|$$|$ \hyperlink{logger_8hpp_af5c2c5bd5374fd530dfa46fdcc226dba}{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C}) \&\& (!\hyperlink{logger_8hpp_a6382853a76f7712fcb94fd997e48db53}{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S}))
+\item 
+\#define \hyperlink{logger_8hpp_acbcbb3cf5e06dd0a62a7a8d107ad8565}{\-\_\-\-E\-L\-P\-P\-\_\-\-A\-S\-S\-E\-M\-B\-L\-Y\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D}~0
+\item 
+\#define \hyperlink{logger_8hpp_aa9c8ca0ab61c2c2eb828fb34d9f50cc2}{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-A\-S\-S\-E\-R\-T}(expr, msg)~if (!(expr)) \{ std\-::cerr $<$$<$ \char`\"{}E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G++ A\-S\-S\-E\-R\-T\-I\-O\-N F\-A\-I\-L\-E\-D (L\-I\-N\-E\-: \char`\"{} $<$$<$ \-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\- $<$$<$ \char`\"{}) \mbox{[}\char`\"{} \#expr $<$$<$ \char`\"{}\mbox{]} with message \textbackslash{}\char`\"{}\char`\"{} $<$$<$ msg $<$$<$ \char`\"{}\textbackslash{}\char`\"{}\char`\"{} $<$$<$ std\-::endl; \}
+\item 
+\#define \hyperlink{logger_8hpp_a56e83b7e2a8d9bfd09b4a6f1166789e4}{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-U\-N\-S\-E\-D}(x)~(void)x;
+\item 
+\#define \hyperlink{logger_8hpp_a5f96fa637a5c6f1deda76e9ebd36ba1a}{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-M\-U\-T\-E\-X}~1
+\item 
+\#define \hyperlink{logger_8hpp_ae2e88893b79ffdf2663feaabb310cb95}{\-\_\-\-E\-L\-P\-P\-\_\-\-D\-E\-B\-U\-G\-\_\-\-L\-O\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_a384d0709da975258a95fb471d6f4e2b5}{\-\_\-\-E\-L\-P\-P\-\_\-\-I\-N\-F\-O\-\_\-\-L\-O\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_a858b5701ca1ebf462d7a140cdd51bde2}{\-\_\-\-E\-L\-P\-P\-\_\-\-W\-A\-R\-N\-I\-N\-G\-\_\-\-L\-O\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_af08cccadffa7794892c894484458fd66}{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-O\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_a0a936827c3ac519faf6c6bed3db5b0bc}{\-\_\-\-E\-L\-P\-P\-\_\-\-F\-A\-T\-A\-L\-\_\-\-L\-O\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_ac088246b9fb56cf6622bd68fdd397a27}{\-\_\-\-E\-L\-P\-P\-\_\-\-Q\-A\-\_\-\-L\-O\-G}~0
+\item 
+\#define \hyperlink{logger_8hpp_a25fc54c16e76ed282679845ff87b323d}{\-\_\-\-E\-L\-P\-P\-\_\-\-T\-R\-A\-C\-E\-\_\-\-L\-O\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_a42fee28ec407c3de755fd4daacf7e06a}{\-\_\-\-E\-L\-P\-P\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-O\-G}~1
+\item 
+\#define \hyperlink{logger_8hpp_a6bac99e95410d505fc8adc4650ade058}{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}(variable\-Name, initial\-Value, operation, limit)
+\item 
+\#define \hyperlink{logger_8hpp_aa8330742f241ebb96cf58b72ac04c61e}{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-L\-E\-V\-E\-L}(variable\-Name, initial\-Value, operation)~\hyperlink{logger_8hpp_a6bac99e95410d505fc8adc4650ade058}{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}(variable\-Name, initial\-Value, operation, \hyperlink{structeasyloggingpp_1_1Level_a5cdef9643da00472bdd03d69b93f1539}{easyloggingpp\-::\-Level\-::k\-Max\-Valid})
+\item 
+\#define \hyperlink{logger_8hpp_a20afe71ee4ec35c8ba744742d7ace714}{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-C\-O\-N\-F\-I\-G\-U\-R\-A\-T\-I\-O\-N}(variable\-Name, initial\-Value, operation)~\hyperlink{logger_8hpp_a6bac99e95410d505fc8adc4650ade058}{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}(variable\-Name, initial\-Value, operation, \hyperlink{structeasyloggingpp_1_1ConfigurationType_a43ddc65f501ee5bae168024192a230b3}{easyloggingpp\-::\-Configuration\-Type\-::k\-Max\-Valid})
+\item 
+\#define \hyperlink{logger_8hpp_ab6cc0075c21d6b45466619fa5ec8f43b}{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-R\-E\-A\-M}(l)~($\ast$(l-\/$>$stream()))
+\item 
+\#define \hyperlink{logger_8hpp_a9ca1c13e75d1d4a9b8130ea9fe80ddcc}{S\-T\-A\-R\-T\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-L\-O\-G}~\char`\"{}Executing \mbox{[}\char`\"{} $<$$<$ \-\_\-\-\_\-func\-\_\-\-\_\- $<$$<$ \char`\"{}\mbox{]}\char`\"{}
+\item 
+\#define \hyperlink{logger_8hpp_a5d0a15b41484dbd92355c33b12e6609a}{T\-I\-M\-E\-\_\-\-O\-U\-T\-P\-U\-T}
+\item 
+\#define \hyperlink{logger_8hpp_a58ba12311c29e7facad6e17fa3a07f02}{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}~\{ timeval function\-Start\-Time, function\-End\-Time; \-\_\-\-E\-L\-P\-P\-\_\-\-G\-E\-T\-\_\-\-C\-U\-R\-R\-\_\-\-T\-I\-M\-E(\&function\-Start\-Time)
+\item 
+\#define \hyperlink{logger_8hpp_a5bb35894eafc7d5250d2148b68f2081b}{W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E}
+\item 
+\#define \hyperlink{logger_8hpp_ace740c328ebba0813b17562e3bbf203c}{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D}~\hyperlink{logger_8hpp_a5bb35894eafc7d5250d2148b68f2081b}{W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E};
+\item 
+\#define \hyperlink{logger_8hpp_a902bdb8757250c478bf361ddb8ac14e0}{S\-U\-B}(F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E, P\-A\-R\-A\-M\-S)~void F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E P\-A\-R\-A\-M\-S \hyperlink{logger_8hpp_a58ba12311c29e7facad6e17fa3a07f02}{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}
+\item 
+\#define \hyperlink{logger_8hpp_ad8e519c174dd01b5a66eb4a3df828e1b}{E\-N\-D\-\_\-\-S\-U\-B}~\hyperlink{logger_8hpp_ace740c328ebba0813b17562e3bbf203c}{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D} \}
+\item 
+\#define \hyperlink{logger_8hpp_aaa76fc86ee88f541a50b765d23c9adf5}{F\-U\-N\-C}(R\-E\-T\-U\-R\-N\-I\-N\-G\-\_\-\-T\-Y\-P\-E, F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E, P\-A\-R\-A\-M\-S)~R\-E\-T\-U\-R\-N\-I\-N\-G\-\_\-\-T\-Y\-P\-E F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E P\-A\-R\-A\-M\-S \hyperlink{logger_8hpp_a58ba12311c29e7facad6e17fa3a07f02}{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}
+\item 
+\#define \hyperlink{logger_8hpp_a2606b1c72e39ef9f02292818e4574564}{R\-E\-T\-U\-R\-N}(return\-\_\-value)~\hyperlink{logger_8hpp_ace740c328ebba0813b17562e3bbf203c}{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D} return return\-\_\-value;
+\item 
+\#define \hyperlink{logger_8hpp_a7dd4ef4149d072e7ff3d0509d4130be4}{E\-N\-D\-\_\-\-F\-U\-N\-C}(return\-\_\-value)~\hyperlink{logger_8hpp_a2606b1c72e39ef9f02292818e4574564}{R\-E\-T\-U\-R\-N}(return\-\_\-value) \}
+\item 
+\#define \hyperlink{logger_8hpp_a70608386d2e1a4606bb719af26a9541f}{M\-A\-I\-N}(argc, argv)~\hyperlink{logger_8hpp_aaa76fc86ee88f541a50b765d23c9adf5}{F\-U\-N\-C}(int, \hyperlink{vocab__tree__simple_8cxx_a0ddf1224851353fc92bfbff6f499fa97}{main}, (argc, argv))
+\item 
+\#define \hyperlink{logger_8hpp_a736803e8113ec89aa7df975f41e381c5}{E\-N\-D\-\_\-\-M\-A\-I\-N}(return\-\_\-value)~\hyperlink{logger_8hpp_ace740c328ebba0813b17562e3bbf203c}{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D}; return return\-\_\-value; \}
+\item 
+\#define \hyperlink{logger_8hpp_a7b530ebd516cbec535c30e777aa71d55}{R\-E\-T\-U\-R\-N\-\_\-\-M\-A\-I\-N}(exit\-\_\-status)~return exit\-\_\-status;
+\item 
+\#define \hyperlink{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(\-\_\-logger, \-\_\-level)
+\item 
+\#define \hyperlink{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(\-\_\-c, \-\_\-logger, \-\_\-level)
+\item 
+\#define \hyperlink{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(\-\_\-n, \-\_\-logger, \-\_\-level)
+\item 
+\#define \hyperlink{logger_8hpp_a38ad5c4c2d876138a58d941db60e6893}{V\-L\-O\-G\-\_\-\-I\-S\-\_\-\-O\-N}(verbose\-Level)~verbose\-Level $<$= \hyperlink{namespaceeasyloggingpp_1_1internal_afc6b008a66cd97d3186cd80f0d34875e}{easyloggingpp\-::internal\-::registered\-Loggers}-\/$>$constants()-\/$>$C\-U\-R\-R\-E\-N\-T\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-E\-V\-E\-L
+\item 
+\#define \hyperlink{logger_8hpp_ace64234d6b1c4c0f73cb0bdf4dc15764}{C\-I\-N\-F\-O}(logger\-Id)~\hyperlink{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bba41014820b05876903d8070228fe7f0ac}{easyloggingpp\-::\-Level\-::\-Info})
+\item 
+\#define \hyperlink{logger_8hpp_a6b91956292a694d8fbfcbf4c46aa1d6f}{C\-W\-A\-R\-N\-I\-N\-G}(logger\-Id)~\hyperlink{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bba84a6f020b5fa8158ee518c9985f158e2}{easyloggingpp\-::\-Level\-::\-Warning})
+\item 
+\#define \hyperlink{logger_8hpp_a6ec1d240c4765ac9263d97ad7f7fe423}{C\-D\-E\-B\-U\-G}(logger\-Id)~\hyperlink{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbae3d5673ff0f4f6703bceedee523a4ecc}{easyloggingpp\-::\-Level\-::\-Debug})
+\item 
+\#define \hyperlink{logger_8hpp_ac3cd9dd63d0ab57ea7c69eaedc265150}{C\-E\-R\-R\-O\-R}(logger\-Id)~\hyperlink{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbab97f8831ae06af68989b87679bd4c600}{easyloggingpp\-::\-Level\-::\-Error})
+\item 
+\#define \hyperlink{logger_8hpp_abc6f58a257de3cb0b1db87dbed65488c}{C\-F\-A\-T\-A\-L}(logger\-Id)~\hyperlink{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbaeb6829f386be648acf0acc9992bfa088}{easyloggingpp\-::\-Level\-::\-Fatal})
+\item 
+\#define \hyperlink{logger_8hpp_ae2824584d02f130950e5d1b03ed5c9fb}{C\-Q\-A}(logger\-Id)~\hyperlink{classeasyloggingpp_1_1internal_1_1NullWriter}{easyloggingpp\-::internal\-::\-Null\-Writer}()
+\item 
+\#define \hyperlink{logger_8hpp_af42fe7b630985a433e90f9f7b1525fd1}{C\-T\-R\-A\-C\-E}(logger\-Id)~\hyperlink{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbaf58e3e5055981b3e6545133aa069b949}{easyloggingpp\-::\-Level\-::\-Trace})
+\item 
+\#define \hyperlink{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{C\-V\-E\-R\-B\-O\-S\-E}(vlevel\-\_\-, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_ae314f5e3695226c2b625aac46437b3ab}{C\-I\-N\-F\-O\-\_\-\-I\-F}(condition\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bba41014820b05876903d8070228fe7f0ac}{easyloggingpp\-::\-Level\-::\-Info})
+\item 
+\#define \hyperlink{logger_8hpp_a13ecff294d96a01780165851b3857474}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bba84a6f020b5fa8158ee518c9985f158e2}{easyloggingpp\-::\-Level\-::\-Warning})
+\item 
+\#define \hyperlink{logger_8hpp_a84792ca551e0a6c6a0131666a737eab7}{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbae3d5673ff0f4f6703bceedee523a4ecc}{easyloggingpp\-::\-Level\-::\-Debug})
+\item 
+\#define \hyperlink{logger_8hpp_ad04487ba95c078ff87237e951c4cbeda}{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbab97f8831ae06af68989b87679bd4c600}{easyloggingpp\-::\-Level\-::\-Error})
+\item 
+\#define \hyperlink{logger_8hpp_a6d46b3cb5b20be94ffebe306b885f868}{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbaeb6829f386be648acf0acc9992bfa088}{easyloggingpp\-::\-Level\-::\-Fatal})
+\item 
+\#define \hyperlink{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{C\-Q\-A\-\_\-\-I\-F}(condition\-\_\-, logger\-Id)~\hyperlink{classeasyloggingpp_1_1internal_1_1NullWriter}{easyloggingpp\-::internal\-::\-Null\-Writer}()
+\item 
+\#define \hyperlink{logger_8hpp_af59adbd8481b5ad11a3eba58b247fbb5}{C\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbaf58e3e5055981b3e6545133aa069b949}{easyloggingpp\-::\-Level\-::\-Trace})
+\item 
+\#define \hyperlink{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition\-\_\-, vlevel\-\_\-, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_a2f92e45f21a23d4eece62a307bc6d29b}{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bba41014820b05876903d8070228fe7f0ac}{easyloggingpp\-::\-Level\-::\-Info})
+\item 
+\#define \hyperlink{logger_8hpp_afd2dd908a57ee449831d453eb6c6925b}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bba84a6f020b5fa8158ee518c9985f158e2}{easyloggingpp\-::\-Level\-::\-Warning})
+\item 
+\#define \hyperlink{logger_8hpp_a997db40c8d05cc803876a6cc6820cb36}{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbae3d5673ff0f4f6703bceedee523a4ecc}{easyloggingpp\-::\-Level\-::\-Debug})
+\item 
+\#define \hyperlink{logger_8hpp_a623f0bbfd451da2c41cda4d5e6f41ebd}{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbab97f8831ae06af68989b87679bd4c600}{easyloggingpp\-::\-Level\-::\-Error})
+\item 
+\#define \hyperlink{logger_8hpp_ad1d12ce0493cc18e326e23b6336a01ef}{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbaeb6829f386be648acf0acc9992bfa088}{easyloggingpp\-::\-Level\-::\-Fatal})
+\item 
+\#define \hyperlink{logger_8hpp_a8232c7ba699f07b4103b4b13c6f02bc4}{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, logger\-Id)~\hyperlink{classeasyloggingpp_1_1internal_1_1NullWriter}{easyloggingpp\-::internal\-::\-Null\-Writer}()
+\item 
+\#define \hyperlink{logger_8hpp_a76515cefe709712279242b1e4c0fdc13}{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, logger\-Id)~\hyperlink{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbaf58e3e5055981b3e6545133aa069b949}{easyloggingpp\-::\-Level\-::\-Trace})
+\item 
+\#define \hyperlink{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(interval\-\_\-, vlevel\-\_\-, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_a4e390b92f79b1abb784ecfe550afa369}{C\-L\-O\-G}(L\-E\-V\-E\-L, logger\-Id)~C\#\#L\-E\-V\-E\-L(logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_ab7329d2d90139c5041a456df7ff7c1bb}{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}(vlevel, logger\-Id)~\hyperlink{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{C\-V\-E\-R\-B\-O\-S\-E}(vlevel, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_a440fc8ab1349109559a8185e79772487}{C\-V\-L\-O\-G}(vlevel, logger\-Id)~\hyperlink{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{C\-V\-E\-R\-B\-O\-S\-E}(vlevel, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_a0f6c3a00047ccbbc138ee0c064543cbe}{C\-L\-O\-G\-\_\-\-I\-F}(condition, L\-E\-V\-E\-L, logger\-Id)~C\#\#L\-E\-V\-E\-L\#\#\-\_\-\-I\-F(condition, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_acbb635ebfea257960199fbed3129a09b}{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel, logger\-Id)~\hyperlink{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_a190188466a1dc357ec5b6fec1d74e620}{C\-V\-L\-O\-G\-\_\-\-I\-F}(condition, vlevel, logger\-Id)~\hyperlink{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_af88462ed3cab8506b6981f08e16da26b}{C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, L\-E\-V\-E\-L, logger\-Id)~C\#\#L\-E\-V\-E\-L\#\#\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(n, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_abe958c2d6ab4e5ee9fb24837ec2ef827}{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, logger\-Id)~\hyperlink{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_a5668f5d476e1e4dcc2f1f06e5b4c2135}{C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, logger\-Id)~\hyperlink{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, logger\-Id)
+\item 
+\#define \hyperlink{logger_8hpp_acecfb113caaa2f52fe8e764fe04476bc}{L\-O\-G}(L\-E\-V\-E\-L)~\hyperlink{logger_8hpp_a4e390b92f79b1abb784ecfe550afa369}{C\-L\-O\-G}(L\-E\-V\-E\-L, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aa9616fe3ee954b647bd8ef4bd9474961}{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}(vlevel)~\hyperlink{logger_8hpp_ab7329d2d90139c5041a456df7ff7c1bb}{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}(vlevel, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a750887f0bcc287a4ac8da4d52e558332}{V\-L\-O\-G}(vlevel)~\hyperlink{logger_8hpp_a440fc8ab1349109559a8185e79772487}{C\-V\-L\-O\-G}(vlevel, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a7653cdff7e16b34fd407218c487d3d71}{L\-O\-G\-\_\-\-I\-F}(condition, L\-E\-V\-E\-L)~\hyperlink{logger_8hpp_a0f6c3a00047ccbbc138ee0c064543cbe}{C\-L\-O\-G\-\_\-\-I\-F}(condition, L\-E\-V\-E\-L, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a459946c16b4fdbd24e439dd587de30b6}{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel)~\hyperlink{logger_8hpp_acbb635ebfea257960199fbed3129a09b}{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a9e0b817e339bb14ae312973bb55227c9}{V\-L\-O\-G\-\_\-\-I\-F}(condition, vlevel)~\hyperlink{logger_8hpp_a190188466a1dc357ec5b6fec1d74e620}{C\-V\-L\-O\-G\-\_\-\-I\-F}(condition, vlevel, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_af0e94c66f305df244e47ffea2bb87ddf}{L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, L\-E\-V\-E\-L)~\hyperlink{logger_8hpp_af88462ed3cab8506b6981f08e16da26b}{C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, L\-E\-V\-E\-L, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a7187e783069319391fafcef9fcbefdf4}{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel)~\hyperlink{logger_8hpp_abe958c2d6ab4e5ee9fb24837ec2ef827}{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ab0d350dc67b0f3e56afed545ca75cfa6}{V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel)~\hyperlink{logger_8hpp_a5668f5d476e1e4dcc2f1f06e5b4c2135}{C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a9ead6528f310cb6b4d6e179d68036ebe}{L\-I\-N\-F\-O}~\hyperlink{logger_8hpp_ace64234d6b1c4c0f73cb0bdf4dc15764}{C\-I\-N\-F\-O}(\char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a436414f6c92026066eb75a62ab0112f6}{L\-W\-A\-R\-N\-I\-N\-G}~\hyperlink{logger_8hpp_a6b91956292a694d8fbfcbf4c46aa1d6f}{C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a97bfef446f67b04c653a8158b8ffbb8f}{L\-D\-E\-B\-U\-G}~\hyperlink{logger_8hpp_a6ec1d240c4765ac9263d97ad7f7fe423}{C\-D\-E\-B\-U\-G}(\char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aa103969ee27b4418f3c140b1c2c2076e}{L\-E\-R\-R\-O\-R}~\hyperlink{logger_8hpp_ac3cd9dd63d0ab57ea7c69eaedc265150}{C\-E\-R\-R\-O\-R}(\char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ae4bc95027766d7ffb784a4f63dc3306d}{L\-F\-A\-T\-A\-L}~\hyperlink{logger_8hpp_abc6f58a257de3cb0b1db87dbed65488c}{C\-F\-A\-T\-A\-L}(\char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a08e1b4ba1250c184445b62ab14e90ca0}{L\-Q\-A}~\hyperlink{logger_8hpp_ae2824584d02f130950e5d1b03ed5c9fb}{C\-Q\-A}(\char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a41896b80530e7744b6ca1d92fd07a3f8}{L\-T\-R\-A\-C\-E}~\hyperlink{logger_8hpp_af42fe7b630985a433e90f9f7b1525fd1}{C\-T\-R\-A\-C\-E}(\char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a8842d9cc9c4b1b784e284f8f1d5748aa}{L\-V\-E\-R\-B\-O\-S\-E}(level)~\hyperlink{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ad7b8e6ba41e429fb607fb8859b79bc97}{L\-I\-N\-F\-O\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ae314f5e3695226c2b625aac46437b3ab}{C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a8fc694fa3ec9fc9c9bc8b606a21a10da}{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a13ecff294d96a01780165851b3857474}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aa7b2a0af865de82470a5e190e5acb48e}{L\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a84792ca551e0a6c6a0131666a737eab7}{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_afcf0edcd3898846148920a3e3633d53b}{L\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ad04487ba95c078ff87237e951c4cbeda}{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a31f1ba86d809d40f3ac43d1becbc123d}{L\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a6d46b3cb5b20be94ffebe306b885f868}{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_afb405bbda0e3effc8a05ed5044f5d035}{L\-Q\-A\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a280b61ffb84f70b2c6e6420873e6d499}{L\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_af59adbd8481b5ad11a3eba58b247fbb5}{C\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a70817f10c723d16186e324f059abcb87}{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level)~\hyperlink{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a9c4e55be291534a0674db873978d983f}{L\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a2f92e45f21a23d4eece62a307bc6d29b}{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aa1028bafff6e3d971e543eb39ad70839}{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_afd2dd908a57ee449831d453eb6c6925b}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ace3452a451df0aa1a4c0b69dac59d4a3}{L\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a997db40c8d05cc803876a6cc6820cb36}{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a5ead2d20400e854f36aa0ff1b5b9a856}{L\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a623f0bbfd451da2c41cda4d5e6f41ebd}{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a7ac36883285332f3b57e2ace3b45de05}{L\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_ad1d12ce0493cc18e326e23b6336a01ef}{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a4f5aaa07b3ca206f6adafb52b25c3fd8}{L\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a8232c7ba699f07b4103b4b13c6f02bc4}{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ae48184d7ae561c4b38ef22ca4cb777e9}{L\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a76515cefe709712279242b1e4c0fdc13}{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a591a806b9328053f692fa5338671b6f9}{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level)~\hyperlink{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}trivial\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a2cc825dc93de3648009588d7fe667432}{B\-I\-N\-F\-O}~\hyperlink{logger_8hpp_ace64234d6b1c4c0f73cb0bdf4dc15764}{C\-I\-N\-F\-O}(\char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a37f0a01522c450d5370f11dc73ed06be}{B\-W\-A\-R\-N\-I\-N\-G}~\hyperlink{logger_8hpp_a6b91956292a694d8fbfcbf4c46aa1d6f}{C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a6d4a07b8cbf7801b9745cc1e6d3ef306}{B\-D\-E\-B\-U\-G}~\hyperlink{logger_8hpp_a6ec1d240c4765ac9263d97ad7f7fe423}{C\-D\-E\-B\-U\-G}(\char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a3c096b9325773c49de3dc99bf1543394}{B\-E\-R\-R\-O\-R}~\hyperlink{logger_8hpp_ac3cd9dd63d0ab57ea7c69eaedc265150}{C\-E\-R\-R\-O\-R}(\char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aa4b908b496f4ee981731d56dd584c4c3}{B\-F\-A\-T\-A\-L}~\hyperlink{logger_8hpp_abc6f58a257de3cb0b1db87dbed65488c}{C\-F\-A\-T\-A\-L}(\char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a7802a767fb171a55457d889169c7ca10}{B\-Q\-A}~\hyperlink{logger_8hpp_ae2824584d02f130950e5d1b03ed5c9fb}{C\-Q\-A}(\char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a6d056c6971336512065d84ba86c9ddc4}{B\-T\-R\-A\-C\-E}~\hyperlink{logger_8hpp_af42fe7b630985a433e90f9f7b1525fd1}{C\-T\-R\-A\-C\-E}(\char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a13dc439be0801317bec79d281874e876}{B\-V\-E\-R\-B\-O\-S\-E}(level)~\hyperlink{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a7b152d2829d8567df5631abd68034425}{B\-I\-N\-F\-O\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ae314f5e3695226c2b625aac46437b3ab}{C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a215e1fba3bd059db26e16eb06fd7399b}{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a13ecff294d96a01780165851b3857474}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ac0b40da51edc97c59515f08efb7230c9}{B\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a84792ca551e0a6c6a0131666a737eab7}{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a6d99f9d352f72c76898251664e6a8b55}{B\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ad04487ba95c078ff87237e951c4cbeda}{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a905d965e994a314f5e17dc119fcbec81}{B\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a6d46b3cb5b20be94ffebe306b885f868}{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_adbe98124ae4397dec6b5f77aa481512a}{B\-Q\-A\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a702962024879c009dd6c4119fcbfd7c3}{B\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_af59adbd8481b5ad11a3eba58b247fbb5}{C\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a3b3da288b8c4786cca6785b1a43ff503}{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level)~\hyperlink{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aed918333fe09724b1d8a331ae0454696}{B\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a2f92e45f21a23d4eece62a307bc6d29b}{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a5c97cc193dc3ceb1d0da2dc92110313a}{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_afd2dd908a57ee449831d453eb6c6925b}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_afa691a5d157bedade0f5fdeac21297f6}{B\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a997db40c8d05cc803876a6cc6820cb36}{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_af5ceb1023ca870529c1b52e236215eed}{B\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a623f0bbfd451da2c41cda4d5e6f41ebd}{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a0457035fef03322ff5a7fac09f041044}{B\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_ad1d12ce0493cc18e326e23b6336a01ef}{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a715baf6ae2e77124a8d31272b8a2729c}{B\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a8232c7ba699f07b4103b4b13c6f02bc4}{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a6d67cfa1004aca2da4b937c956d30005}{B\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a76515cefe709712279242b1e4c0fdc13}{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a99c28855f25959a976053dcd03912f29}{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level)~\hyperlink{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}business\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a830388e56cb5129d5ce9b49c621aaef9}{S\-I\-N\-F\-O}~\hyperlink{logger_8hpp_ace64234d6b1c4c0f73cb0bdf4dc15764}{C\-I\-N\-F\-O}(\char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a7938adc7306c8013f67b8f51df9ff7ba}{S\-W\-A\-R\-N\-I\-N\-G}~\hyperlink{logger_8hpp_a6b91956292a694d8fbfcbf4c46aa1d6f}{C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a61b5419d23ae45ad5bbd7e4058bb4558}{S\-D\-E\-B\-U\-G}~\hyperlink{logger_8hpp_a6ec1d240c4765ac9263d97ad7f7fe423}{C\-D\-E\-B\-U\-G}(\char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a6cf8a249d894b2d3c81d2595bbe2078c}{S\-E\-R\-R\-O\-R}~\hyperlink{logger_8hpp_ac3cd9dd63d0ab57ea7c69eaedc265150}{C\-E\-R\-R\-O\-R}(\char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a09b6cc4b99718fc0cb94e1efaaa80b26}{S\-F\-A\-T\-A\-L}~\hyperlink{logger_8hpp_abc6f58a257de3cb0b1db87dbed65488c}{C\-F\-A\-T\-A\-L}(\char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ada66bc95b4a6c3bbfc32b61d9a197be7}{S\-Q\-A}~\hyperlink{logger_8hpp_ae2824584d02f130950e5d1b03ed5c9fb}{C\-Q\-A}(\char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a4be0a5eb55edbd1846809d7e3d1a10f7}{S\-T\-R\-A\-C\-E}~\hyperlink{logger_8hpp_af42fe7b630985a433e90f9f7b1525fd1}{C\-T\-R\-A\-C\-E}(\char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a245ece1bb42a9178681397374b0a57fa}{S\-V\-E\-R\-B\-O\-S\-E}(level)~\hyperlink{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a420aa49731ae32c6d6c4ce611947b29b}{S\-I\-N\-F\-O\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ae314f5e3695226c2b625aac46437b3ab}{C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a9530e5cee9d371a73a90b193f4ebe6d7}{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a13ecff294d96a01780165851b3857474}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a22fac677725beae0bac629f157836f24}{S\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a84792ca551e0a6c6a0131666a737eab7}{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aedafadebb80a2cb804c021958e3ef3a4}{S\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ad04487ba95c078ff87237e951c4cbeda}{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a081b61c3ccd1ff94dd424dfac2c99405}{S\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a6d46b3cb5b20be94ffebe306b885f868}{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aa48a7860c7eb04dcdb4a17bd93bfe10d}{S\-Q\-A\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a024f7091f4a3a25b1f01682592cebe48}{S\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ab60caa6b20958e5957d8862b2c7deb3c}{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level)~\hyperlink{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ac8444789d3170d7107578310863cd5db}{S\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a2f92e45f21a23d4eece62a307bc6d29b}{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ab11a5f8217746a78dbd37c53ea50c7ba}{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_afd2dd908a57ee449831d453eb6c6925b}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ab90d9857eccaa3e7c2afd37fce45debe}{S\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a997db40c8d05cc803876a6cc6820cb36}{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a6c2c301bca2ed42c10ae16cb8a4ac689}{S\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a623f0bbfd451da2c41cda4d5e6f41ebd}{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ae2a69da8ce54fb5419d224d2c0876e1a}{S\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_ad1d12ce0493cc18e326e23b6336a01ef}{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_af6b56c5eb10caab35e60514d566fbfd4}{S\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a8232c7ba699f07b4103b4b13c6f02bc4}{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_afd0f095209b44b09983acd647c4e74ee}{S\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a76515cefe709712279242b1e4c0fdc13}{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a8b5077169c048beb962b7f3ce74eb219}{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level)~\hyperlink{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}security\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aeb27d2bbc654b0d81dd1cc6bdbd105ce}{P\-I\-N\-F\-O}~\hyperlink{logger_8hpp_ace64234d6b1c4c0f73cb0bdf4dc15764}{C\-I\-N\-F\-O}(\char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a0107bfd56c63e8d18ec14b86995edc6c}{P\-W\-A\-R\-N\-I\-N\-G}~\hyperlink{logger_8hpp_a6b91956292a694d8fbfcbf4c46aa1d6f}{C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ab524bf5b133823d5d8bdbae90a7b5977}{P\-D\-E\-B\-U\-G}~\hyperlink{logger_8hpp_a6ec1d240c4765ac9263d97ad7f7fe423}{C\-D\-E\-B\-U\-G}(\char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a239826056e62049f7166f0200a00cc89}{P\-E\-R\-R\-O\-R}~\hyperlink{logger_8hpp_ac3cd9dd63d0ab57ea7c69eaedc265150}{C\-E\-R\-R\-O\-R}(\char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ab7a4a84b7c217a858b2ea5cd347d18a4}{P\-F\-A\-T\-A\-L}~\hyperlink{logger_8hpp_abc6f58a257de3cb0b1db87dbed65488c}{C\-F\-A\-T\-A\-L}(\char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_adad8399bd24f664cfcaeb98313277168}{P\-Q\-A}~\hyperlink{logger_8hpp_ae2824584d02f130950e5d1b03ed5c9fb}{C\-Q\-A}(\char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a13fb3c7d4540aee598cfd32de818cb13}{P\-T\-R\-A\-C\-E}~\hyperlink{logger_8hpp_af42fe7b630985a433e90f9f7b1525fd1}{C\-T\-R\-A\-C\-E}(\char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ac33704e9e0d0364074bc644b5532e72c}{P\-V\-E\-R\-B\-O\-S\-E}(level)~\hyperlink{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_af9f96c559b5813b0e1e221973a698934}{P\-I\-N\-F\-O\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ae314f5e3695226c2b625aac46437b3ab}{C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a37e688c5191843196c6d55320f1ef481}{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a13ecff294d96a01780165851b3857474}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a426ad79962dd8177d90462809d5c97af}{P\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a84792ca551e0a6c6a0131666a737eab7}{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a0157e57f5b9ce91a3d2e30c3482e9d2b}{P\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_ad04487ba95c078ff87237e951c4cbeda}{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ab467ca75914bcaf915a58ca96e502e7d}{P\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_a6d46b3cb5b20be94ffebe306b885f868}{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_acb21cd07a490deabe14c1294cdad004b}{P\-Q\-A\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a99491c8669ae43fe9055d27854f66d3a}{P\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition)~\hyperlink{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a2c0e6f66b2823618f48145c925cfda1c}{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level)~\hyperlink{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_aa36bb1d23162e4c367ac5fbdf4f905f2}{P\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a2f92e45f21a23d4eece62a307bc6d29b}{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_afe87b0b1f95531e4328f0332c090feae}{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_afd2dd908a57ee449831d453eb6c6925b}{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a56dd891cc4a4df5196a1b3fc8cc9bda1}{P\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a997db40c8d05cc803876a6cc6820cb36}{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a451da9c09474fddfc5d2427a9799e15d}{P\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a623f0bbfd451da2c41cda4d5e6f41ebd}{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a9f54d4847355be7a0d6e6c43c293c68d}{P\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_ad1d12ce0493cc18e326e23b6336a01ef}{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a574343df61b7551cec8d4979172b1b8a}{P\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a8232c7ba699f07b4103b4b13c6f02bc4}{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a4ad26a31af7b6809f7b30cebabd5afe2}{P\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n)~\hyperlink{logger_8hpp_a76515cefe709712279242b1e4c0fdc13}{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_ac317e61b82ab7399a7ea86f2cb702c01}{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level)~\hyperlink{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}performance\char`\"{})
+\item 
+\#define \hyperlink{logger_8hpp_a1c42a7eba0cad7c3dc8d36b61df46b79}{\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}
+\item 
+\#define \hyperlink{logger_8hpp_a6fdc9c840c7a21f0222856f7db131289}{\-\_\-\-S\-T\-A\-R\-T\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}(argc, argv)~\hyperlink{classeasyloggingpp_1_1Loggers_a467e06b41b648d1d50700eb128d1c80b}{easyloggingpp\-::\-Loggers\-::set\-Application\-Arguments}(argc, argv);
+\item 
+\#define \hyperlink{logger_8hpp_ab13bbe3a98caf9a8ba199696e6d5ad32}{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R}~\hyperlink{namespaceeasyloggingpp_1_1internal_afc6b008a66cd97d3186cd80f0d34875e}{easyloggingpp\-::internal\-::registered\-Loggers}-\/$>$counters()-\/$>$get(\hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-})
+\item 
+\#define \hyperlink{logger_8hpp_a6047313ff72ef6422d46af41f647e9ce}{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N}~(\hyperlink{logger_8hpp_ab13bbe3a98caf9a8ba199696e6d5ad32}{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R} == N\-U\-L\-L ? 0 \-: \hyperlink{logger_8hpp_ab13bbe3a98caf9a8ba199696e6d5ad32}{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R}-\/$>$position())
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \hyperlink{namespaceeasyloggingpp_1_1internal_1_1threading_ab9a02105f8d0d79d09bf27a20edb902e}{easyloggingpp\-::internal\-::threading\-::get\-Current\-Thread\-Id} (void)
+\item 
+{\footnotesize template$<$typename T $>$ }\\void \hyperlink{namespaceeasyloggingpp_1_1internal_1_1utilities_a6bb4d309ac6c1e792ea2a9cbaf6a4c3d}{easyloggingpp\-::internal\-::utilities\-::safe\-Delete} (T $\ast$\&pointer, bool check\-Nullity=true)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+internal\-::\-Scoped\-Pointer\\*
+$<$ internal\-::\-Registered\-Loggers $>$ \hyperlink{namespaceeasyloggingpp_1_1internal_afc6b008a66cd97d3186cd80f0d34875e}{easyloggingpp\-::internal\-::registered\-Loggers}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\hypertarget{logger_8hpp_aa9c8ca0ab61c2c2eb828fb34d9f50cc2}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-A\-S\-S\-E\-R\-T@{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-A\-S\-S\-E\-R\-T}}
+\index{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-A\-S\-S\-E\-R\-T@{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-A\-S\-S\-E\-R\-T}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-A\-S\-S\-E\-R\-T}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-A\-S\-S\-E\-R\-T(
+\begin{DoxyParamCaption}
+\item[{}]{expr, }
+\item[{}]{msg}
+\end{DoxyParamCaption}
+)~if (!(expr)) \{ std\-::cerr $<$$<$ \char`\"{}E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G++ A\-S\-S\-E\-R\-T\-I\-O\-N F\-A\-I\-L\-E\-D (L\-I\-N\-E\-: \char`\"{} $<$$<$ \-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\- $<$$<$ \char`\"{}) \mbox{[}\char`\"{} \#expr $<$$<$ \char`\"{}\mbox{]} with message \textbackslash{}\char`\"{}\char`\"{} $<$$<$ msg $<$$<$ \char`\"{}\textbackslash{}\char`\"{}\char`\"{} $<$$<$ std\-::endl; \}}}\label{logger_8hpp_aa9c8ca0ab61c2c2eb828fb34d9f50cc2}
+
+
+Definition at line 183 of file logger.\-hpp.
+
+
+
+Referenced by easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::enabled(), easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::filename(), easyloggingpp\-::internal\-::\-Typed\-Configurations\-::get\-U\-Long(), easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::log\-Format(), easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::log\-Roll\-Out\-Size(), easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::milliseconds\-Width(), easyloggingpp\-::\-Configurations\-::parse\-From\-File(), easyloggingpp\-::\-Configurations\-::parse\-From\-Text(), easyloggingpp\-::\-Configurations\-::\-Parser\-::parse\-Line(), easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::performance\-Tracking(), easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::to\-File(), easyloggingpp\-::\-Loggers\-::\-Configurations\-Reader\-::to\-Standard\-Output(), and easyloggingpp\-::internal\-::\-Writer\-::\-Writer().
+
+\hypertarget{logger_8hpp_a56e83b7e2a8d9bfd09b4a6f1166789e4}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-U\-N\-S\-E\-D@{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-U\-N\-S\-E\-D}}
+\index{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-U\-N\-S\-E\-D@{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-U\-N\-S\-E\-D}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-U\-N\-S\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P\-\_\-\-S\-U\-P\-P\-R\-E\-S\-S\-\_\-\-U\-N\-S\-E\-D(
+\begin{DoxyParamCaption}
+\item[{}]{x}
+\end{DoxyParamCaption}
+)~(void)x;}}\label{logger_8hpp_a56e83b7e2a8d9bfd09b4a6f1166789e4}
+
+
+Definition at line 188 of file logger.\-hpp.
+
+
+
+Referenced by easyloggingpp\-::\-Logger\-::configure(), easyloggingpp\-::internal\-::\-Registered\-Loggers\-::get(), easyloggingpp\-::internal\-::\-Typed\-Configurations\-::get\-U\-Long(), easyloggingpp\-::internal\-::\-Typed\-Configurations\-::parse(), and easyloggingpp\-::internal\-::\-Registered\-Counters\-::validate().
+
+\hypertarget{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-@{\-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-}}
+\index{\-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-@{\-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-~\char`\"{}\char`\"{}}}\label{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}
+
+
+Definition at line 44 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-\_\-func\-\_\-\-\_\-@{\-\_\-\-\_\-func\-\_\-\-\_\-}}
+\index{\-\_\-\-\_\-func\-\_\-\-\_\-@{\-\_\-\-\_\-func\-\_\-\-\_\-}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-\_\-func\-\_\-\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-\_\-func\-\_\-\-\_\-~\char`\"{}\char`\"{}}}\label{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}
+
+
+Definition at line 60 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-@{\-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-}}
+\index{\-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-@{\-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-~0}}\label{logger_8hpp_adbfa1be789063f1c21478696be51bb70}
+
+
+Definition at line 47 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_acbcbb3cf5e06dd0a62a7a8d107ad8565}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-A\-S\-S\-E\-M\-B\-L\-Y\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D@{\-\_\-\-E\-L\-P\-P\-\_\-\-A\-S\-S\-E\-M\-B\-L\-Y\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-A\-S\-S\-E\-M\-B\-L\-Y\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D@{\-\_\-\-E\-L\-P\-P\-\_\-\-A\-S\-S\-E\-M\-B\-L\-Y\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-A\-S\-S\-E\-M\-B\-L\-Y\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-A\-S\-S\-E\-M\-B\-L\-Y\-\_\-\-S\-U\-P\-P\-O\-R\-T\-E\-D~0}}\label{logger_8hpp_acbcbb3cf5e06dd0a62a7a8d107ad8565}
+
+
+Definition at line 177 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab13bbe3a98caf9a8ba199696e6d5ad32}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R@{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R@{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R~{\bf easyloggingpp\-::internal\-::registered\-Loggers}-\/$>$counters()-\/$>$get({\bf \-\_\-\-\_\-\-F\-I\-L\-E\-\_\-\-\_\-}, {\bf \-\_\-\-\_\-\-L\-I\-N\-E\-\_\-\-\_\-})}}\label{logger_8hpp_ab13bbe3a98caf9a8ba199696e6d5ad32}
+
+
+Definition at line 4000 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6047313ff72ef6422d46af41f647e9ce}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N@{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N@{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R\-\_\-\-P\-O\-S\-I\-T\-I\-O\-N~({\bf \-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R} == N\-U\-L\-L ? 0 \-: {\bf \-\_\-\-E\-L\-P\-P\-\_\-\-C\-O\-U\-N\-T\-E\-R}-\/$>$position())}}\label{logger_8hpp_a6047313ff72ef6422d46af41f647e9ce}
+
+
+Definition at line 4001 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7384e6481b9845b36972cab0a0d8bb6c}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-C\-R\-T\-\_\-\-D\-B\-G\-\_\-\-W\-A\-R\-N\-I\-N\-G\-S@{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-R\-T\-\_\-\-D\-B\-G\-\_\-\-W\-A\-R\-N\-I\-N\-G\-S}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-R\-T\-\_\-\-D\-B\-G\-\_\-\-W\-A\-R\-N\-I\-N\-G\-S@{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-R\-T\-\_\-\-D\-B\-G\-\_\-\-W\-A\-R\-N\-I\-N\-G\-S}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-C\-R\-T\-\_\-\-D\-B\-G\-\_\-\-W\-A\-R\-N\-I\-N\-G\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-C\-R\-T\-\_\-\-D\-B\-G\-\_\-\-W\-A\-R\-N\-I\-N\-G\-S~0}}\label{logger_8hpp_a7384e6481b9845b36972cab0a0d8bb6c}
+
+
+Definition at line 91 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ae2e88893b79ffdf2663feaabb310cb95}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-D\-E\-B\-U\-G\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-D\-E\-B\-U\-G\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-D\-E\-B\-U\-G\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-D\-E\-B\-U\-G\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-D\-E\-B\-U\-G\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-D\-E\-B\-U\-G\-\_\-\-L\-O\-G~1}}\label{logger_8hpp_ae2e88893b79ffdf2663feaabb310cb95}
+
+
+Definition at line 199 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a5f96fa637a5c6f1deda76e9ebd36ba1a}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-M\-U\-T\-E\-X@{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-M\-U\-T\-E\-X}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-M\-U\-T\-E\-X@{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-M\-U\-T\-E\-X}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-M\-U\-T\-E\-X}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-M\-U\-T\-E\-X~1}}\label{logger_8hpp_a5f96fa637a5c6f1deda76e9ebd36ba1a}
+
+
+Definition at line 194 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af08cccadffa7794892c894484458fd66}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-E\-R\-R\-O\-R\-\_\-\-L\-O\-G~1}}\label{logger_8hpp_af08cccadffa7794892c894484458fd66}
+
+
+Definition at line 214 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a0a936827c3ac519faf6c6bed3db5b0bc}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-F\-A\-T\-A\-L\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-F\-A\-T\-A\-L\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-F\-A\-T\-A\-L\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-F\-A\-T\-A\-L\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-F\-A\-T\-A\-L\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-F\-A\-T\-A\-L\-\_\-\-L\-O\-G~1}}\label{logger_8hpp_a0a936827c3ac519faf6c6bed3db5b0bc}
+
+
+Definition at line 219 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a384d0709da975258a95fb471d6f4e2b5}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-I\-N\-F\-O\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-I\-N\-F\-O\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-I\-N\-F\-O\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-I\-N\-F\-O\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-I\-N\-F\-O\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-I\-N\-F\-O\-\_\-\-L\-O\-G~1}}\label{logger_8hpp_a384d0709da975258a95fb471d6f4e2b5}
+
+
+Definition at line 204 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R@{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R@{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R(
+\begin{DoxyParamCaption}
+\item[{}]{\-\_\-logger, }
+\item[{}]{\-\_\-level}
+\end{DoxyParamCaption}
+)}}\label{logger_8hpp_a83dd6ae615f5348af75fd37541a85a0f}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{easyloggingpp::internal::Writer}(\(\backslash\)
+    \_logger, \hyperlink{structeasyloggingpp_1_1internal_1_1Aspect_a767a3f4b7e2740e15a6e308951da7ba5a324a3cfc2d8670c4055c596afcd6965a}{easyloggingpp::internal::Aspect::Normal}
+      , \_level, \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\_\_func\_\_}, \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_})
+\end{DoxyCode}
+
+
+Definition at line 3527 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D@{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D@{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D(
+\begin{DoxyParamCaption}
+\item[{}]{\-\_\-c, }
+\item[{}]{\-\_\-logger, }
+\item[{}]{\-\_\-level}
+\end{DoxyParamCaption}
+)}}\label{logger_8hpp_af6fece66740603e9ff2304ec2940e3a1}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} (\_c) \hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{easyloggingpp::internal::Writer}(\(\backslash\)
+    \_logger, \hyperlink{structeasyloggingpp_1_1internal_1_1Aspect_a767a3f4b7e2740e15a6e308951da7ba5a8326d0442300279eadfc0e4a2dca2d95}{easyloggingpp::internal::Aspect::Conditional}
+      , \_level, \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\_\_func\_\_}, \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_}, \_c)
+\end{DoxyCode}
+
+
+Definition at line 3529 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N@{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N@{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{\-\_\-n, }
+\item[{}]{\-\_\-logger, }
+\item[{}]{\-\_\-level}
+\end{DoxyParamCaption}
+)}}\label{logger_8hpp_a9f7f42e916897a2b43eb8797bcefeddf}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} (\hyperlink{namespaceeasyloggingpp_1_1internal_afc6b008a66cd97d3186cd80f0d34875e}{easyloggingpp::internal::registeredLoggers}
+      ->validateCounter(\(\backslash\)
+    \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_}, \_n)) \hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{easyloggingpp::internal::Writer}
+      (\_logger, \hyperlink{structeasyloggingpp_1_1internal_1_1Aspect_a767a3f4b7e2740e15a6e308951da7ba5a4c6d6bcf97c68497af1a3b6387177914}{easyloggingpp::internal::Aspect::Interval}
+      ,\(\backslash\)
+    \_level, \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\_\_func\_\_}, \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_}, \textcolor{keyword}{true}, 0, \_n)
+\end{DoxyCode}
+
+
+Definition at line 3531 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a835e75460b877a6754f9387bbd7e6cd8}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-M\-I\-N\-G\-W@{\-\_\-\-E\-L\-P\-P\-\_\-\-M\-I\-N\-G\-W}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-M\-I\-N\-G\-W@{\-\_\-\-E\-L\-P\-P\-\_\-\-M\-I\-N\-G\-W}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-M\-I\-N\-G\-W}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-M\-I\-N\-G\-W~0}}\label{logger_8hpp_a835e75460b877a6754f9387bbd7e6cd8}
+
+
+Definition at line 106 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a268f7d08f17bb4003443889755b1462e}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-N\-D\-K@{\-\_\-\-E\-L\-P\-P\-\_\-\-N\-D\-K}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-N\-D\-K@{\-\_\-\-E\-L\-P\-P\-\_\-\-N\-D\-K}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-N\-D\-K}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-N\-D\-K~0}}\label{logger_8hpp_a268f7d08f17bb4003443889755b1462e}
+
+
+Definition at line 111 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa615af8b8e5e9b12541d1a4a231c082f}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X~0}}\label{logger_8hpp_aa615af8b8e5e9b12541d1a4a231c082f}
+
+
+Definition at line 162 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af5c2c5bd5374fd530dfa46fdcc226dba}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C~0}}\label{logger_8hpp_af5c2c5bd5374fd530dfa46fdcc226dba}
+
+
+Definition at line 168 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ae5e23590174fa8a369f8d6258f8a2725}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-U\-N\-I\-X@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-U\-N\-I\-X}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-U\-N\-I\-X@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-U\-N\-I\-X}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-U\-N\-I\-X}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-U\-N\-I\-X~(({\bf \-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-L\-I\-N\-U\-X} $|$$|$ {\bf \-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-M\-A\-C}) \&\& (!{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S}))}}\label{logger_8hpp_ae5e23590174fa8a369f8d6258f8a2725}
+
+
+Definition at line 171 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6382853a76f7712fcb94fd997e48db53}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S@{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-O\-S\-\_\-\-W\-I\-N\-D\-O\-W\-S~0}}\label{logger_8hpp_a6382853a76f7712fcb94fd997e48db53}
+
+
+Definition at line 156 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ac088246b9fb56cf6622bd68fdd397a27}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-Q\-A\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-Q\-A\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-Q\-A\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-Q\-A\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-Q\-A\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-Q\-A\-\_\-\-L\-O\-G~0}}\label{logger_8hpp_ac088246b9fb56cf6622bd68fdd397a27}
+
+
+Definition at line 226 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ac2c16a015b80a277adb3ff94d9fa300f}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-D\-\_\-\-T\-H\-R\-E\-A\-D\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E@{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-D\-\_\-\-T\-H\-R\-E\-A\-D\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-D\-\_\-\-T\-H\-R\-E\-A\-D\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E@{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-D\-\_\-\-T\-H\-R\-E\-A\-D\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-D\-\_\-\-T\-H\-R\-E\-A\-D\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-D\-\_\-\-T\-H\-R\-E\-A\-D\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E~0}}\label{logger_8hpp_ac2c16a015b80a277adb3ff94d9fa300f}
+
+
+Definition at line 131 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab6cc0075c21d6b45466619fa5ec8f43b}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-R\-E\-A\-M@{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-R\-E\-A\-M}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-R\-E\-A\-M@{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-R\-E\-A\-M}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-R\-E\-A\-M}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-S\-T\-R\-E\-A\-M(
+\begin{DoxyParamCaption}
+\item[{}]{l}
+\end{DoxyParamCaption}
+)~($\ast$(l-\/$>$stream()))}}\label{logger_8hpp_ab6cc0075c21d6b45466619fa5ec8f43b}
+
+
+Definition at line 2594 of file logger.\-hpp.
+
+
+
+Referenced by easyloggingpp\-::internal\-::\-Writer\-::operator$<$$<$(), and easyloggingpp\-::internal\-::\-Writer\-::write\-Iterator().
+
+\hypertarget{logger_8hpp_a25fc54c16e76ed282679845ff87b323d}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-T\-R\-A\-C\-E\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-T\-R\-A\-C\-E\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-T\-R\-A\-C\-E\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-T\-R\-A\-C\-E\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-T\-R\-A\-C\-E\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-T\-R\-A\-C\-E\-\_\-\-L\-O\-G~1}}\label{logger_8hpp_a25fc54c16e76ed282679845ff87b323d}
+
+
+Definition at line 229 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a42fee28ec407c3de755fd4daacf7e06a}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-O\-G~1}}\label{logger_8hpp_a42fee28ec407c3de755fd4daacf7e06a}
+
+
+Definition at line 234 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a858b5701ca1ebf462d7a140cdd51bde2}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-L\-P\-P\-\_\-\-W\-A\-R\-N\-I\-N\-G\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-W\-A\-R\-N\-I\-N\-G\-\_\-\-L\-O\-G}}
+\index{\-\_\-\-E\-L\-P\-P\-\_\-\-W\-A\-R\-N\-I\-N\-G\-\_\-\-L\-O\-G@{\-\_\-\-E\-L\-P\-P\-\_\-\-W\-A\-R\-N\-I\-N\-G\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-L\-P\-P\-\_\-\-W\-A\-R\-N\-I\-N\-G\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-L\-P\-P\-\_\-\-W\-A\-R\-N\-I\-N\-G\-\_\-\-L\-O\-G~1}}\label{logger_8hpp_a858b5701ca1ebf462d7a140cdd51bde2}
+
+
+Definition at line 209 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a8621dc859730f3e55e6027e4d5c3c5b7}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G@{\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G}}
+\index{\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G@{\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-E\-N\-A\-B\-L\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G~1}}\label{logger_8hpp_a8621dc859730f3e55e6027e4d5c3c5b7}
+
+
+Definition at line 147 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a1c42a7eba0cad7c3dc8d36b61df46b79}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P@{\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}}
+\index{\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P@{\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-I\-N\-I\-T\-I\-A\-L\-I\-Z\-E\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}}\label{logger_8hpp_a1c42a7eba0cad7c3dc8d36b61df46b79}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keyword}{namespace }easyloggingpp \{                                     \(\backslash\)
+        namespace \textcolor{keyword}{internal} \{                                      \(\backslash\)
+            ScopedPointer<RegisteredLoggers> \hyperlink{namespaceeasyloggingpp_1_1internal_afc6b008a66cd97d3186cd80f0d34875e}{registeredLoggers}
+      (   \(\backslash\)
+                    \textcolor{keyword}{new} RegisteredLoggers());                     \(\backslash\)
+        \}                                                         \(\backslash\)
+    \}
+\end{DoxyCode}
+
+
+Definition at line 3992 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6fdc9c840c7a21f0222856f7db131289}{\index{logger.\-hpp@{logger.\-hpp}!\-\_\-\-S\-T\-A\-R\-T\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P@{\-\_\-\-S\-T\-A\-R\-T\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}}
+\index{\-\_\-\-S\-T\-A\-R\-T\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P@{\-\_\-\-S\-T\-A\-R\-T\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{\-\_\-\-S\-T\-A\-R\-T\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-\_\-\-S\-T\-A\-R\-T\-\_\-\-E\-A\-S\-Y\-L\-O\-G\-G\-I\-N\-G\-P\-P(
+\begin{DoxyParamCaption}
+\item[{}]{argc, }
+\item[{}]{argv}
+\end{DoxyParamCaption}
+)~{\bf easyloggingpp\-::\-Loggers\-::set\-Application\-Arguments}(argc, argv);}}\label{logger_8hpp_a6fdc9c840c7a21f0222856f7db131289}
+
+
+Definition at line 3999 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6d4a07b8cbf7801b9745cc1e6d3ef306}{\index{logger.\-hpp@{logger.\-hpp}!B\-D\-E\-B\-U\-G@{B\-D\-E\-B\-U\-G}}
+\index{B\-D\-E\-B\-U\-G@{B\-D\-E\-B\-U\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-D\-E\-B\-U\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-D\-E\-B\-U\-G~{\bf C\-D\-E\-B\-U\-G}(\char`\"{}business\char`\"{})}}\label{logger_8hpp_a6d4a07b8cbf7801b9745cc1e6d3ef306}
+
+
+Definition at line 3838 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_afa691a5d157bedade0f5fdeac21297f6}{\index{logger.\-hpp@{logger.\-hpp}!B\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})}}\label{logger_8hpp_afa691a5d157bedade0f5fdeac21297f6}
+
+
+Definition at line 3856 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ac0b40da51edc97c59515f08efb7230c9}{\index{logger.\-hpp@{logger.\-hpp}!B\-D\-E\-B\-U\-G\-\_\-\-I\-F@{B\-D\-E\-B\-U\-G\-\_\-\-I\-F}}
+\index{B\-D\-E\-B\-U\-G\-\_\-\-I\-F@{B\-D\-E\-B\-U\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-D\-E\-B\-U\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-D\-E\-B\-U\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})}}\label{logger_8hpp_ac0b40da51edc97c59515f08efb7230c9}
+
+
+Definition at line 3847 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a3c096b9325773c49de3dc99bf1543394}{\index{logger.\-hpp@{logger.\-hpp}!B\-E\-R\-R\-O\-R@{B\-E\-R\-R\-O\-R}}
+\index{B\-E\-R\-R\-O\-R@{B\-E\-R\-R\-O\-R}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-E\-R\-R\-O\-R~{\bf C\-E\-R\-R\-O\-R}(\char`\"{}business\char`\"{})}}\label{logger_8hpp_a3c096b9325773c49de3dc99bf1543394}
+
+
+Definition at line 3839 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af5ceb1023ca870529c1b52e236215eed}{\index{logger.\-hpp@{logger.\-hpp}!B\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})}}\label{logger_8hpp_af5ceb1023ca870529c1b52e236215eed}
+
+
+Definition at line 3857 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6d99f9d352f72c76898251664e6a8b55}{\index{logger.\-hpp@{logger.\-hpp}!B\-E\-R\-R\-O\-R\-\_\-\-I\-F@{B\-E\-R\-R\-O\-R\-\_\-\-I\-F}}
+\index{B\-E\-R\-R\-O\-R\-\_\-\-I\-F@{B\-E\-R\-R\-O\-R\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-E\-R\-R\-O\-R\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-E\-R\-R\-O\-R\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a6d99f9d352f72c76898251664e6a8b55}
+
+
+Definition at line 3848 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa4b908b496f4ee981731d56dd584c4c3}{\index{logger.\-hpp@{logger.\-hpp}!B\-F\-A\-T\-A\-L@{B\-F\-A\-T\-A\-L}}
+\index{B\-F\-A\-T\-A\-L@{B\-F\-A\-T\-A\-L}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-F\-A\-T\-A\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-F\-A\-T\-A\-L~{\bf C\-F\-A\-T\-A\-L}(\char`\"{}business\char`\"{})}}\label{logger_8hpp_aa4b908b496f4ee981731d56dd584c4c3}
+
+
+Definition at line 3840 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a0457035fef03322ff5a7fac09f041044}{\index{logger.\-hpp@{logger.\-hpp}!B\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a0457035fef03322ff5a7fac09f041044}
+
+
+Definition at line 3858 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a905d965e994a314f5e17dc119fcbec81}{\index{logger.\-hpp@{logger.\-hpp}!B\-F\-A\-T\-A\-L\-\_\-\-I\-F@{B\-F\-A\-T\-A\-L\-\_\-\-I\-F}}
+\index{B\-F\-A\-T\-A\-L\-\_\-\-I\-F@{B\-F\-A\-T\-A\-L\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-F\-A\-T\-A\-L\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-F\-A\-T\-A\-L\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a905d965e994a314f5e17dc119fcbec81}
+
+
+Definition at line 3849 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a2cc825dc93de3648009588d7fe667432}{\index{logger.\-hpp@{logger.\-hpp}!B\-I\-N\-F\-O@{B\-I\-N\-F\-O}}
+\index{B\-I\-N\-F\-O@{B\-I\-N\-F\-O}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-I\-N\-F\-O}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-I\-N\-F\-O~{\bf C\-I\-N\-F\-O}(\char`\"{}business\char`\"{})}}\label{logger_8hpp_a2cc825dc93de3648009588d7fe667432}
+
+
+Definition at line 3836 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aed918333fe09724b1d8a331ae0454696}{\index{logger.\-hpp@{logger.\-hpp}!B\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})}}\label{logger_8hpp_aed918333fe09724b1d8a331ae0454696}
+
+
+Definition at line 3854 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7b152d2829d8567df5631abd68034425}{\index{logger.\-hpp@{logger.\-hpp}!B\-I\-N\-F\-O\-\_\-\-I\-F@{B\-I\-N\-F\-O\-\_\-\-I\-F}}
+\index{B\-I\-N\-F\-O\-\_\-\-I\-F@{B\-I\-N\-F\-O\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-I\-N\-F\-O\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-I\-N\-F\-O\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a7b152d2829d8567df5631abd68034425}
+
+
+Definition at line 3845 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7802a767fb171a55457d889169c7ca10}{\index{logger.\-hpp@{logger.\-hpp}!B\-Q\-A@{B\-Q\-A}}
+\index{B\-Q\-A@{B\-Q\-A}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-Q\-A}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-Q\-A~{\bf C\-Q\-A}(\char`\"{}business\char`\"{})}}\label{logger_8hpp_a7802a767fb171a55457d889169c7ca10}
+
+
+Definition at line 3841 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a715baf6ae2e77124a8d31272b8a2729c}{\index{logger.\-hpp@{logger.\-hpp}!B\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a715baf6ae2e77124a8d31272b8a2729c}
+
+
+Definition at line 3859 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_adbe98124ae4397dec6b5f77aa481512a}{\index{logger.\-hpp@{logger.\-hpp}!B\-Q\-A\-\_\-\-I\-F@{B\-Q\-A\-\_\-\-I\-F}}
+\index{B\-Q\-A\-\_\-\-I\-F@{B\-Q\-A\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-Q\-A\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-Q\-A\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})}}\label{logger_8hpp_adbe98124ae4397dec6b5f77aa481512a}
+
+
+Definition at line 3850 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6d056c6971336512065d84ba86c9ddc4}{\index{logger.\-hpp@{logger.\-hpp}!B\-T\-R\-A\-C\-E@{B\-T\-R\-A\-C\-E}}
+\index{B\-T\-R\-A\-C\-E@{B\-T\-R\-A\-C\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-T\-R\-A\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-T\-R\-A\-C\-E~{\bf C\-T\-R\-A\-C\-E}(\char`\"{}business\char`\"{})}}\label{logger_8hpp_a6d056c6971336512065d84ba86c9ddc4}
+
+
+Definition at line 3842 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6d67cfa1004aca2da4b937c956d30005}{\index{logger.\-hpp@{logger.\-hpp}!B\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a6d67cfa1004aca2da4b937c956d30005}
+
+
+Definition at line 3860 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a702962024879c009dd6c4119fcbfd7c3}{\index{logger.\-hpp@{logger.\-hpp}!B\-T\-R\-A\-C\-E\-\_\-\-I\-F@{B\-T\-R\-A\-C\-E\-\_\-\-I\-F}}
+\index{B\-T\-R\-A\-C\-E\-\_\-\-I\-F@{B\-T\-R\-A\-C\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-T\-R\-A\-C\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-T\-R\-A\-C\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a702962024879c009dd6c4119fcbfd7c3}
+
+
+Definition at line 3851 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a13dc439be0801317bec79d281874e876}{\index{logger.\-hpp@{logger.\-hpp}!B\-V\-E\-R\-B\-O\-S\-E@{B\-V\-E\-R\-B\-O\-S\-E}}
+\index{B\-V\-E\-R\-B\-O\-S\-E@{B\-V\-E\-R\-B\-O\-S\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-V\-E\-R\-B\-O\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-V\-E\-R\-B\-O\-S\-E(
+\begin{DoxyParamCaption}
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a13dc439be0801317bec79d281874e876}
+
+
+Definition at line 3843 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a99c28855f25959a976053dcd03912f29}{\index{logger.\-hpp@{logger.\-hpp}!B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a99c28855f25959a976053dcd03912f29}
+
+
+Definition at line 3861 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a3b3da288b8c4786cca6785b1a43ff503}{\index{logger.\-hpp@{logger.\-hpp}!B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}}
+\index{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a3b3da288b8c4786cca6785b1a43ff503}
+
+
+Definition at line 3852 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a37f0a01522c450d5370f11dc73ed06be}{\index{logger.\-hpp@{logger.\-hpp}!B\-W\-A\-R\-N\-I\-N\-G@{B\-W\-A\-R\-N\-I\-N\-G}}
+\index{B\-W\-A\-R\-N\-I\-N\-G@{B\-W\-A\-R\-N\-I\-N\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-W\-A\-R\-N\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-W\-A\-R\-N\-I\-N\-G~{\bf C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}business\char`\"{})}}\label{logger_8hpp_a37f0a01522c450d5370f11dc73ed06be}
+
+
+Definition at line 3837 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a5c97cc193dc3ceb1d0da2dc92110313a}{\index{logger.\-hpp@{logger.\-hpp}!B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a5c97cc193dc3ceb1d0da2dc92110313a}
+
+
+Definition at line 3855 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a215e1fba3bd059db26e16eb06fd7399b}{\index{logger.\-hpp@{logger.\-hpp}!B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}}
+\index{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define B\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}business\char`\"{})}}\label{logger_8hpp_a215e1fba3bd059db26e16eb06fd7399b}
+
+
+Definition at line 3846 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6ec1d240c4765ac9263d97ad7f7fe423}{\index{logger.\-hpp@{logger.\-hpp}!C\-D\-E\-B\-U\-G@{C\-D\-E\-B\-U\-G}}
+\index{C\-D\-E\-B\-U\-G@{C\-D\-E\-B\-U\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-D\-E\-B\-U\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-D\-E\-B\-U\-G(
+\begin{DoxyParamCaption}
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Debug})}}\label{logger_8hpp_a6ec1d240c4765ac9263d97ad7f7fe423}
+
+
+Definition at line 3587 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a997db40c8d05cc803876a6cc6820cb36}{\index{logger.\-hpp@{logger.\-hpp}!C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Debug})}}\label{logger_8hpp_a997db40c8d05cc803876a6cc6820cb36}
+
+
+Definition at line 3671 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a84792ca551e0a6c6a0131666a737eab7}{\index{logger.\-hpp@{logger.\-hpp}!C\-D\-E\-B\-U\-G\-\_\-\-I\-F@{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}}
+\index{C\-D\-E\-B\-U\-G\-\_\-\-I\-F@{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-D\-E\-B\-U\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-D\-E\-B\-U\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Debug})}}\label{logger_8hpp_a84792ca551e0a6c6a0131666a737eab7}
+
+
+Definition at line 3629 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ac3cd9dd63d0ab57ea7c69eaedc265150}{\index{logger.\-hpp@{logger.\-hpp}!C\-E\-R\-R\-O\-R@{C\-E\-R\-R\-O\-R}}
+\index{C\-E\-R\-R\-O\-R@{C\-E\-R\-R\-O\-R}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-E\-R\-R\-O\-R(
+\begin{DoxyParamCaption}
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Error})}}\label{logger_8hpp_ac3cd9dd63d0ab57ea7c69eaedc265150}
+
+
+Definition at line 3592 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a623f0bbfd451da2c41cda4d5e6f41ebd}{\index{logger.\-hpp@{logger.\-hpp}!C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Error})}}\label{logger_8hpp_a623f0bbfd451da2c41cda4d5e6f41ebd}
+
+
+Definition at line 3676 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ad04487ba95c078ff87237e951c4cbeda}{\index{logger.\-hpp@{logger.\-hpp}!C\-E\-R\-R\-O\-R\-\_\-\-I\-F@{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}}
+\index{C\-E\-R\-R\-O\-R\-\_\-\-I\-F@{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-E\-R\-R\-O\-R\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-E\-R\-R\-O\-R\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Error})}}\label{logger_8hpp_ad04487ba95c078ff87237e951c4cbeda}
+
+
+Definition at line 3634 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_abc6f58a257de3cb0b1db87dbed65488c}{\index{logger.\-hpp@{logger.\-hpp}!C\-F\-A\-T\-A\-L@{C\-F\-A\-T\-A\-L}}
+\index{C\-F\-A\-T\-A\-L@{C\-F\-A\-T\-A\-L}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-F\-A\-T\-A\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-F\-A\-T\-A\-L(
+\begin{DoxyParamCaption}
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Fatal})}}\label{logger_8hpp_abc6f58a257de3cb0b1db87dbed65488c}
+
+
+Definition at line 3597 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ad1d12ce0493cc18e326e23b6336a01ef}{\index{logger.\-hpp@{logger.\-hpp}!C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Fatal})}}\label{logger_8hpp_ad1d12ce0493cc18e326e23b6336a01ef}
+
+
+Definition at line 3681 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6d46b3cb5b20be94ffebe306b885f868}{\index{logger.\-hpp@{logger.\-hpp}!C\-F\-A\-T\-A\-L\-\_\-\-I\-F@{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}}
+\index{C\-F\-A\-T\-A\-L\-\_\-\-I\-F@{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-F\-A\-T\-A\-L\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-F\-A\-T\-A\-L\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Fatal})}}\label{logger_8hpp_a6d46b3cb5b20be94ffebe306b885f868}
+
+
+Definition at line 3639 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ace64234d6b1c4c0f73cb0bdf4dc15764}{\index{logger.\-hpp@{logger.\-hpp}!C\-I\-N\-F\-O@{C\-I\-N\-F\-O}}
+\index{C\-I\-N\-F\-O@{C\-I\-N\-F\-O}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-I\-N\-F\-O}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-I\-N\-F\-O(
+\begin{DoxyParamCaption}
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Info})}}\label{logger_8hpp_ace64234d6b1c4c0f73cb0bdf4dc15764}
+
+
+Definition at line 3577 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a2f92e45f21a23d4eece62a307bc6d29b}{\index{logger.\-hpp@{logger.\-hpp}!C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Info})}}\label{logger_8hpp_a2f92e45f21a23d4eece62a307bc6d29b}
+
+
+Definition at line 3661 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ae314f5e3695226c2b625aac46437b3ab}{\index{logger.\-hpp@{logger.\-hpp}!C\-I\-N\-F\-O\-\_\-\-I\-F@{C\-I\-N\-F\-O\-\_\-\-I\-F}}
+\index{C\-I\-N\-F\-O\-\_\-\-I\-F@{C\-I\-N\-F\-O\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-I\-N\-F\-O\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-I\-N\-F\-O\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Info})}}\label{logger_8hpp_ae314f5e3695226c2b625aac46437b3ab}
+
+
+Definition at line 3619 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a4e390b92f79b1abb784ecfe550afa369}{\index{logger.\-hpp@{logger.\-hpp}!C\-L\-O\-G@{C\-L\-O\-G}}
+\index{C\-L\-O\-G@{C\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-L\-O\-G(
+\begin{DoxyParamCaption}
+\item[{}]{L\-E\-V\-E\-L, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~C\#\#L\-E\-V\-E\-L(logger\-Id)}}\label{logger_8hpp_a4e390b92f79b1abb784ecfe550afa369}
+
+
+Definition at line 3716 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af88462ed3cab8506b6981f08e16da26b}{\index{logger.\-hpp@{logger.\-hpp}!C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{L\-E\-V\-E\-L, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~C\#\#L\-E\-V\-E\-L\#\#\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(n, logger\-Id)}}\label{logger_8hpp_af88462ed3cab8506b6981f08e16da26b}
+
+
+Definition at line 3724 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a0f6c3a00047ccbbc138ee0c064543cbe}{\index{logger.\-hpp@{logger.\-hpp}!C\-L\-O\-G\-\_\-\-I\-F@{C\-L\-O\-G\-\_\-\-I\-F}}
+\index{C\-L\-O\-G\-\_\-\-I\-F@{C\-L\-O\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-L\-O\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-L\-O\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{L\-E\-V\-E\-L, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~C\#\#L\-E\-V\-E\-L\#\#\-\_\-\-I\-F(condition, logger\-Id)}}\label{logger_8hpp_a0f6c3a00047ccbbc138ee0c064543cbe}
+
+
+Definition at line 3720 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab7329d2d90139c5041a456df7ff7c1bb}{\index{logger.\-hpp@{logger.\-hpp}!C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E@{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}}
+\index{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E@{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E(
+\begin{DoxyParamCaption}
+\item[{}]{vlevel, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E}(vlevel, logger\-Id)}}\label{logger_8hpp_ab7329d2d90139c5041a456df7ff7c1bb}
+
+
+Definition at line 3717 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_abe958c2d6ab4e5ee9fb24837ec2ef827}{\index{logger.\-hpp@{logger.\-hpp}!C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{vlevel, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, logger\-Id)}}\label{logger_8hpp_abe958c2d6ab4e5ee9fb24837ec2ef827}
+
+
+Definition at line 3725 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_acbb635ebfea257960199fbed3129a09b}{\index{logger.\-hpp@{logger.\-hpp}!C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}}
+\index{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{vlevel, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel, logger\-Id)}}\label{logger_8hpp_acbb635ebfea257960199fbed3129a09b}
+
+
+Definition at line 3721 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ae2824584d02f130950e5d1b03ed5c9fb}{\index{logger.\-hpp@{logger.\-hpp}!C\-Q\-A@{C\-Q\-A}}
+\index{C\-Q\-A@{C\-Q\-A}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-Q\-A}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-Q\-A(
+\begin{DoxyParamCaption}
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf easyloggingpp\-::internal\-::\-Null\-Writer}()}}\label{logger_8hpp_ae2824584d02f130950e5d1b03ed5c9fb}
+
+
+Definition at line 3604 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a8232c7ba699f07b4103b4b13c6f02bc4}{\index{logger.\-hpp@{logger.\-hpp}!C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf easyloggingpp\-::internal\-::\-Null\-Writer}()}}\label{logger_8hpp_a8232c7ba699f07b4103b4b13c6f02bc4}
+
+
+Definition at line 3688 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}{\index{logger.\-hpp@{logger.\-hpp}!C\-Q\-A\-\_\-\-I\-F@{C\-Q\-A\-\_\-\-I\-F}}
+\index{C\-Q\-A\-\_\-\-I\-F@{C\-Q\-A\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-Q\-A\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-Q\-A\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf easyloggingpp\-::internal\-::\-Null\-Writer}()}}\label{logger_8hpp_aabab2e324e41286e3aa85c90bf17f403}
+
+
+Definition at line 3646 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af42fe7b630985a433e90f9f7b1525fd1}{\index{logger.\-hpp@{logger.\-hpp}!C\-T\-R\-A\-C\-E@{C\-T\-R\-A\-C\-E}}
+\index{C\-T\-R\-A\-C\-E@{C\-T\-R\-A\-C\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-T\-R\-A\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-T\-R\-A\-C\-E(
+\begin{DoxyParamCaption}
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Trace})}}\label{logger_8hpp_af42fe7b630985a433e90f9f7b1525fd1}
+
+
+Definition at line 3607 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a76515cefe709712279242b1e4c0fdc13}{\index{logger.\-hpp@{logger.\-hpp}!C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Trace})}}\label{logger_8hpp_a76515cefe709712279242b1e4c0fdc13}
+
+
+Definition at line 3691 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af59adbd8481b5ad11a3eba58b247fbb5}{\index{logger.\-hpp@{logger.\-hpp}!C\-T\-R\-A\-C\-E\-\_\-\-I\-F@{C\-T\-R\-A\-C\-E\-\_\-\-I\-F}}
+\index{C\-T\-R\-A\-C\-E\-\_\-\-I\-F@{C\-T\-R\-A\-C\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-T\-R\-A\-C\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-T\-R\-A\-C\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Trace})}}\label{logger_8hpp_af59adbd8481b5ad11a3eba58b247fbb5}
+
+
+Definition at line 3649 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}{\index{logger.\-hpp@{logger.\-hpp}!C\-V\-E\-R\-B\-O\-S\-E@{C\-V\-E\-R\-B\-O\-S\-E}}
+\index{C\-V\-E\-R\-B\-O\-S\-E@{C\-V\-E\-R\-B\-O\-S\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-V\-E\-R\-B\-O\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-V\-E\-R\-B\-O\-S\-E(
+\begin{DoxyParamCaption}
+\item[{}]{vlevel\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)}}\label{logger_8hpp_a6b770f13e1a01fcb793c8c014a925889}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{easyloggingpp::internal::Writer}(loggerId, 
+      \hyperlink{structeasyloggingpp_1_1internal_1_1Aspect_a767a3f4b7e2740e15a6e308951da7ba5a324a3cfc2d8670c4055c596afcd6965a}{easyloggingpp::internal::Aspect::Normal},
+             \(\backslash\)
+       \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbafc5181c7b4aee8e2ae28fb5a0437a490}{easyloggingpp::Level::Verbose}, \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\_\_func\_\_}
+      , \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_}, \textcolor{keyword}{true}, vlevel\_)
+\end{DoxyCode}
+
+
+Definition at line 3612 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}{\index{logger.\-hpp@{logger.\-hpp}!C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{vlevel\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)}}\label{logger_8hpp_a93f16afcc7f17ba775634915c4adc782}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} (\hyperlink{namespaceeasyloggingpp_1_1internal_afc6b008a66cd97d3186cd80f0d34875e}{easyloggingpp::internal::registeredLoggers}
+      ->validateCounter(\hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_}, interval\_)) \hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{\(\backslash\)}
+\hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{       easyloggingpp::internal::Writer}(
+      loggerId, \hyperlink{structeasyloggingpp_1_1internal_1_1Aspect_a767a3f4b7e2740e15a6e308951da7ba5a4c6d6bcf97c68497af1a3b6387177914}{easyloggingpp::internal::Aspect::Interval}
+      ,   \(\backslash\)
+       \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbafc5181c7b4aee8e2ae28fb5a0437a490}{easyloggingpp::Level::Verbose}, \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\_\_func\_\_}
+      , \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_}, \textcolor{keyword}{true}, vlevel\_, interval\_)
+\end{DoxyCode}
+
+
+Definition at line 3696 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}{\index{logger.\-hpp@{logger.\-hpp}!C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}}
+\index{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{vlevel\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)}}\label{logger_8hpp_a3a5970e1c34ff2faf3495e3ac43e4067}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if} (condition\_) \hyperlink{classeasyloggingpp_1_1internal_1_1Writer}{easyloggingpp::internal::Writer}(
+      loggerId, \hyperlink{structeasyloggingpp_1_1internal_1_1Aspect_a767a3f4b7e2740e15a6e308951da7ba5a8326d0442300279eadfc0e4a2dca2d95}{easyloggingpp::internal::Aspect::Conditional}
+      ,     \(\backslash\)
+       \hyperlink{structeasyloggingpp_1_1Level_a117d518356853fb294e3e456f8ef82bbafc5181c7b4aee8e2ae28fb5a0437a490}{easyloggingpp::Level::Verbose}, \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\_\_func\_\_}
+      , \hyperlink{logger_8hpp_a2f6bd616afd004b1ce994c2ba2ac9937}{\_\_FILE\_\_}, \hyperlink{logger_8hpp_adbfa1be789063f1c21478696be51bb70}{\_\_LINE\_\_}, condition\_, vlevel\_)
+\end{DoxyCode}
+
+
+Definition at line 3654 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a440fc8ab1349109559a8185e79772487}{\index{logger.\-hpp@{logger.\-hpp}!C\-V\-L\-O\-G@{C\-V\-L\-O\-G}}
+\index{C\-V\-L\-O\-G@{C\-V\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-V\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-V\-L\-O\-G(
+\begin{DoxyParamCaption}
+\item[{}]{vlevel, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E}(vlevel, logger\-Id)}}\label{logger_8hpp_a440fc8ab1349109559a8185e79772487}
+
+
+Definition at line 3718 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a5668f5d476e1e4dcc2f1f06e5b4c2135}{\index{logger.\-hpp@{logger.\-hpp}!C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{vlevel, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, logger\-Id)}}\label{logger_8hpp_a5668f5d476e1e4dcc2f1f06e5b4c2135}
+
+
+Definition at line 3726 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a190188466a1dc357ec5b6fec1d74e620}{\index{logger.\-hpp@{logger.\-hpp}!C\-V\-L\-O\-G\-\_\-\-I\-F@{C\-V\-L\-O\-G\-\_\-\-I\-F}}
+\index{C\-V\-L\-O\-G\-\_\-\-I\-F@{C\-V\-L\-O\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-V\-L\-O\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-V\-L\-O\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{vlevel, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel, logger\-Id)}}\label{logger_8hpp_a190188466a1dc357ec5b6fec1d74e620}
+
+
+Definition at line 3722 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6b91956292a694d8fbfcbf4c46aa1d6f}{\index{logger.\-hpp@{logger.\-hpp}!C\-W\-A\-R\-N\-I\-N\-G@{C\-W\-A\-R\-N\-I\-N\-G}}
+\index{C\-W\-A\-R\-N\-I\-N\-G@{C\-W\-A\-R\-N\-I\-N\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-W\-A\-R\-N\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-W\-A\-R\-N\-I\-N\-G(
+\begin{DoxyParamCaption}
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R}(logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Warning})}}\label{logger_8hpp_a6b91956292a694d8fbfcbf4c46aa1d6f}
+
+
+Definition at line 3582 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_afd2dd908a57ee449831d453eb6c6925b}{\index{logger.\-hpp@{logger.\-hpp}!C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{interval\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-N}(interval\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Warning})}}\label{logger_8hpp_afd2dd908a57ee449831d453eb6c6925b}
+
+
+Definition at line 3666 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a13ecff294d96a01780165851b3857474}{\index{logger.\-hpp@{logger.\-hpp}!C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}}
+\index{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition\-\_\-, }
+\item[{}]{logger\-Id}
+\end{DoxyParamCaption}
+)~{\bf \-\_\-\-E\-L\-P\-P\-\_\-\-L\-O\-G\-\_\-\-W\-R\-I\-T\-E\-R\-\_\-\-C\-O\-N\-D}(condition\-\_\-, logger\-Id, {\bf easyloggingpp\-::\-Level\-::\-Warning})}}\label{logger_8hpp_a13ecff294d96a01780165851b3857474}
+
+
+Definition at line 3624 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6bac99e95410d505fc8adc4650ade058}{\index{logger.\-hpp@{logger.\-hpp}!E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H@{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}}
+\index{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H@{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H(
+\begin{DoxyParamCaption}
+\item[{}]{variable\-Name, }
+\item[{}]{initial\-Value, }
+\item[{}]{operation, }
+\item[{}]{limit}
+\end{DoxyParamCaption}
+)}}\label{logger_8hpp_a6bac99e95410d505fc8adc4650ade058}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} variableName = initialValue; \(\backslash\)
+                                                                    do \{ \(\backslash\)
+                                                                       
+       operation   \(\backslash\)
+                                                                       
+       variableName = variableName << 1; \(\backslash\)
+                                                                        if (
+      variableName == 0) \{ ++variableName; \} \(\backslash\)
+                                                                    \} \textcolor{keywordflow}{while} (
+      variableName <= limit)
+\end{DoxyCode}
+
+
+Definition at line 238 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a20afe71ee4ec35c8ba744742d7ace714}{\index{logger.\-hpp@{logger.\-hpp}!E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-C\-O\-N\-F\-I\-G\-U\-R\-A\-T\-I\-O\-N@{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-C\-O\-N\-F\-I\-G\-U\-R\-A\-T\-I\-O\-N}}
+\index{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-C\-O\-N\-F\-I\-G\-U\-R\-A\-T\-I\-O\-N@{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-C\-O\-N\-F\-I\-G\-U\-R\-A\-T\-I\-O\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-C\-O\-N\-F\-I\-G\-U\-R\-A\-T\-I\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-C\-O\-N\-F\-I\-G\-U\-R\-A\-T\-I\-O\-N(
+\begin{DoxyParamCaption}
+\item[{}]{variable\-Name, }
+\item[{}]{initial\-Value, }
+\item[{}]{operation}
+\end{DoxyParamCaption}
+)~{\bf E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}(variable\-Name, initial\-Value, operation, {\bf easyloggingpp\-::\-Configuration\-Type\-::k\-Max\-Valid})}}\label{logger_8hpp_a20afe71ee4ec35c8ba744742d7ace714}
+
+
+Definition at line 246 of file logger.\-hpp.
+
+
+
+Referenced by easyloggingpp\-::\-Configurations\-::contains().
+
+\hypertarget{logger_8hpp_aa8330742f241ebb96cf58b72ac04c61e}{\index{logger.\-hpp@{logger.\-hpp}!E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-L\-E\-V\-E\-L@{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-L\-E\-V\-E\-L}}
+\index{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-L\-E\-V\-E\-L@{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-L\-E\-V\-E\-L}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-L\-E\-V\-E\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H\-\_\-\-L\-E\-V\-E\-L(
+\begin{DoxyParamCaption}
+\item[{}]{variable\-Name, }
+\item[{}]{initial\-Value, }
+\item[{}]{operation}
+\end{DoxyParamCaption}
+)~{\bf E\-L\-P\-P\-\_\-\-F\-O\-R\-\_\-\-E\-A\-C\-H}(variable\-Name, initial\-Value, operation, {\bf easyloggingpp\-::\-Level\-::k\-Max\-Valid})}}\label{logger_8hpp_aa8330742f241ebb96cf58b72ac04c61e}
+
+
+Definition at line 244 of file logger.\-hpp.
+
+
+
+Referenced by easyloggingpp\-::internal\-::\-Typed\-Configurations\-::delete\-File\-Streams(), easyloggingpp\-::internal\-::\-Typed\-Configurations\-::insert\-Filename(), and easyloggingpp\-::\-Configurations\-::set\-All().
+
+\hypertarget{logger_8hpp_a7dd4ef4149d072e7ff3d0509d4130be4}{\index{logger.\-hpp@{logger.\-hpp}!E\-N\-D\-\_\-\-F\-U\-N\-C@{E\-N\-D\-\_\-\-F\-U\-N\-C}}
+\index{E\-N\-D\-\_\-\-F\-U\-N\-C@{E\-N\-D\-\_\-\-F\-U\-N\-C}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{E\-N\-D\-\_\-\-F\-U\-N\-C}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-N\-D\-\_\-\-F\-U\-N\-C(
+\begin{DoxyParamCaption}
+\item[{}]{return\-\_\-value}
+\end{DoxyParamCaption}
+)~{\bf R\-E\-T\-U\-R\-N}(return\-\_\-value) \}}}\label{logger_8hpp_a7dd4ef4149d072e7ff3d0509d4130be4}
+
+
+Definition at line 3512 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a736803e8113ec89aa7df975f41e381c5}{\index{logger.\-hpp@{logger.\-hpp}!E\-N\-D\-\_\-\-M\-A\-I\-N@{E\-N\-D\-\_\-\-M\-A\-I\-N}}
+\index{E\-N\-D\-\_\-\-M\-A\-I\-N@{E\-N\-D\-\_\-\-M\-A\-I\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{E\-N\-D\-\_\-\-M\-A\-I\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-N\-D\-\_\-\-M\-A\-I\-N(
+\begin{DoxyParamCaption}
+\item[{}]{return\-\_\-value}
+\end{DoxyParamCaption}
+)~{\bf F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D}; return return\-\_\-value; \}}}\label{logger_8hpp_a736803e8113ec89aa7df975f41e381c5}
+
+
+Definition at line 3514 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ad8e519c174dd01b5a66eb4a3df828e1b}{\index{logger.\-hpp@{logger.\-hpp}!E\-N\-D\-\_\-\-S\-U\-B@{E\-N\-D\-\_\-\-S\-U\-B}}
+\index{E\-N\-D\-\_\-\-S\-U\-B@{E\-N\-D\-\_\-\-S\-U\-B}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{E\-N\-D\-\_\-\-S\-U\-B}]{\setlength{\rightskip}{0pt plus 5cm}\#define E\-N\-D\-\_\-\-S\-U\-B~{\bf F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D} \}}}\label{logger_8hpp_ad8e519c174dd01b5a66eb4a3df828e1b}
+
+
+Definition at line 3509 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aaa76fc86ee88f541a50b765d23c9adf5}{\index{logger.\-hpp@{logger.\-hpp}!F\-U\-N\-C@{F\-U\-N\-C}}
+\index{F\-U\-N\-C@{F\-U\-N\-C}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{F\-U\-N\-C}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-U\-N\-C(
+\begin{DoxyParamCaption}
+\item[{}]{R\-E\-T\-U\-R\-N\-I\-N\-G\-\_\-\-T\-Y\-P\-E, }
+\item[{}]{F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E, }
+\item[{}]{P\-A\-R\-A\-M\-S}
+\end{DoxyParamCaption}
+)~R\-E\-T\-U\-R\-N\-I\-N\-G\-\_\-\-T\-Y\-P\-E F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E P\-A\-R\-A\-M\-S {\bf F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}}}\label{logger_8hpp_aaa76fc86ee88f541a50b765d23c9adf5}
+
+
+Definition at line 3510 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ace740c328ebba0813b17562e3bbf203c}{\index{logger.\-hpp@{logger.\-hpp}!F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D@{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D}}
+\index{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D@{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D~{\bf W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E};}}\label{logger_8hpp_ace740c328ebba0813b17562e3bbf203c}
+
+
+Definition at line 3507 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a58ba12311c29e7facad6e17fa3a07f02}{\index{logger.\-hpp@{logger.\-hpp}!F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T@{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}}
+\index{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T@{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}]{\setlength{\rightskip}{0pt plus 5cm}\#define F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T~\{ timeval function\-Start\-Time, function\-End\-Time; \-\_\-\-E\-L\-P\-P\-\_\-\-G\-E\-T\-\_\-\-C\-U\-R\-R\-\_\-\-T\-I\-M\-E(\&function\-Start\-Time)}}\label{logger_8hpp_a58ba12311c29e7facad6e17fa3a07f02}
+
+
+Definition at line 3504 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a97bfef446f67b04c653a8158b8ffbb8f}{\index{logger.\-hpp@{logger.\-hpp}!L\-D\-E\-B\-U\-G@{L\-D\-E\-B\-U\-G}}
+\index{L\-D\-E\-B\-U\-G@{L\-D\-E\-B\-U\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-D\-E\-B\-U\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-D\-E\-B\-U\-G~{\bf C\-D\-E\-B\-U\-G}(\char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a97bfef446f67b04c653a8158b8ffbb8f}
+
+
+Definition at line 3783 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ace3452a451df0aa1a4c0b69dac59d4a3}{\index{logger.\-hpp@{logger.\-hpp}!L\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_ace3452a451df0aa1a4c0b69dac59d4a3}
+
+
+Definition at line 3801 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa7b2a0af865de82470a5e190e5acb48e}{\index{logger.\-hpp@{logger.\-hpp}!L\-D\-E\-B\-U\-G\-\_\-\-I\-F@{L\-D\-E\-B\-U\-G\-\_\-\-I\-F}}
+\index{L\-D\-E\-B\-U\-G\-\_\-\-I\-F@{L\-D\-E\-B\-U\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-D\-E\-B\-U\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-D\-E\-B\-U\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_aa7b2a0af865de82470a5e190e5acb48e}
+
+
+Definition at line 3792 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa103969ee27b4418f3c140b1c2c2076e}{\index{logger.\-hpp@{logger.\-hpp}!L\-E\-R\-R\-O\-R@{L\-E\-R\-R\-O\-R}}
+\index{L\-E\-R\-R\-O\-R@{L\-E\-R\-R\-O\-R}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-E\-R\-R\-O\-R~{\bf C\-E\-R\-R\-O\-R}(\char`\"{}trivial\char`\"{})}}\label{logger_8hpp_aa103969ee27b4418f3c140b1c2c2076e}
+
+
+Definition at line 3784 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a5ead2d20400e854f36aa0ff1b5b9a856}{\index{logger.\-hpp@{logger.\-hpp}!L\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a5ead2d20400e854f36aa0ff1b5b9a856}
+
+
+Definition at line 3802 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_afcf0edcd3898846148920a3e3633d53b}{\index{logger.\-hpp@{logger.\-hpp}!L\-E\-R\-R\-O\-R\-\_\-\-I\-F@{L\-E\-R\-R\-O\-R\-\_\-\-I\-F}}
+\index{L\-E\-R\-R\-O\-R\-\_\-\-I\-F@{L\-E\-R\-R\-O\-R\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-E\-R\-R\-O\-R\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-E\-R\-R\-O\-R\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_afcf0edcd3898846148920a3e3633d53b}
+
+
+Definition at line 3793 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ae4bc95027766d7ffb784a4f63dc3306d}{\index{logger.\-hpp@{logger.\-hpp}!L\-F\-A\-T\-A\-L@{L\-F\-A\-T\-A\-L}}
+\index{L\-F\-A\-T\-A\-L@{L\-F\-A\-T\-A\-L}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-F\-A\-T\-A\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-F\-A\-T\-A\-L~{\bf C\-F\-A\-T\-A\-L}(\char`\"{}trivial\char`\"{})}}\label{logger_8hpp_ae4bc95027766d7ffb784a4f63dc3306d}
+
+
+Definition at line 3785 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7ac36883285332f3b57e2ace3b45de05}{\index{logger.\-hpp@{logger.\-hpp}!L\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a7ac36883285332f3b57e2ace3b45de05}
+
+
+Definition at line 3803 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a31f1ba86d809d40f3ac43d1becbc123d}{\index{logger.\-hpp@{logger.\-hpp}!L\-F\-A\-T\-A\-L\-\_\-\-I\-F@{L\-F\-A\-T\-A\-L\-\_\-\-I\-F}}
+\index{L\-F\-A\-T\-A\-L\-\_\-\-I\-F@{L\-F\-A\-T\-A\-L\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-F\-A\-T\-A\-L\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-F\-A\-T\-A\-L\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a31f1ba86d809d40f3ac43d1becbc123d}
+
+
+Definition at line 3794 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a9ead6528f310cb6b4d6e179d68036ebe}{\index{logger.\-hpp@{logger.\-hpp}!L\-I\-N\-F\-O@{L\-I\-N\-F\-O}}
+\index{L\-I\-N\-F\-O@{L\-I\-N\-F\-O}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-I\-N\-F\-O}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-I\-N\-F\-O~{\bf C\-I\-N\-F\-O}(\char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a9ead6528f310cb6b4d6e179d68036ebe}
+
+
+Definition at line 3781 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a9c4e55be291534a0674db873978d983f}{\index{logger.\-hpp@{logger.\-hpp}!L\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a9c4e55be291534a0674db873978d983f}
+
+
+Definition at line 3799 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ad7b8e6ba41e429fb607fb8859b79bc97}{\index{logger.\-hpp@{logger.\-hpp}!L\-I\-N\-F\-O\-\_\-\-I\-F@{L\-I\-N\-F\-O\-\_\-\-I\-F}}
+\index{L\-I\-N\-F\-O\-\_\-\-I\-F@{L\-I\-N\-F\-O\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-I\-N\-F\-O\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-I\-N\-F\-O\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_ad7b8e6ba41e429fb607fb8859b79bc97}
+
+
+Definition at line 3790 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_acecfb113caaa2f52fe8e764fe04476bc}{\index{logger.\-hpp@{logger.\-hpp}!L\-O\-G@{L\-O\-G}}
+\index{L\-O\-G@{L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-O\-G(
+\begin{DoxyParamCaption}
+\item[{}]{L\-E\-V\-E\-L}
+\end{DoxyParamCaption}
+)~{\bf C\-L\-O\-G}(L\-E\-V\-E\-L, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_acecfb113caaa2f52fe8e764fe04476bc}
+
+
+Definition at line 3741 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af0e94c66f305df244e47ffea2bb87ddf}{\index{logger.\-hpp@{logger.\-hpp}!L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{L\-E\-V\-E\-L}
+\end{DoxyParamCaption}
+)~{\bf C\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, L\-E\-V\-E\-L, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_af0e94c66f305df244e47ffea2bb87ddf}
+
+
+Definition at line 3749 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7653cdff7e16b34fd407218c487d3d71}{\index{logger.\-hpp@{logger.\-hpp}!L\-O\-G\-\_\-\-I\-F@{L\-O\-G\-\_\-\-I\-F}}
+\index{L\-O\-G\-\_\-\-I\-F@{L\-O\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-O\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-O\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{L\-E\-V\-E\-L}
+\end{DoxyParamCaption}
+)~{\bf C\-L\-O\-G\-\_\-\-I\-F}(condition, L\-E\-V\-E\-L, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a7653cdff7e16b34fd407218c487d3d71}
+
+
+Definition at line 3745 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa9616fe3ee954b647bd8ef4bd9474961}{\index{logger.\-hpp@{logger.\-hpp}!L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E@{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}}
+\index{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E@{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E(
+\begin{DoxyParamCaption}
+\item[{}]{vlevel}
+\end{DoxyParamCaption}
+)~{\bf C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E}(vlevel, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_aa9616fe3ee954b647bd8ef4bd9474961}
+
+
+Definition at line 3742 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7187e783069319391fafcef9fcbefdf4}{\index{logger.\-hpp@{logger.\-hpp}!L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{vlevel}
+\end{DoxyParamCaption}
+)~{\bf C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a7187e783069319391fafcef9fcbefdf4}
+
+
+Definition at line 3750 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a459946c16b4fdbd24e439dd587de30b6}{\index{logger.\-hpp@{logger.\-hpp}!L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}}
+\index{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{vlevel}
+\end{DoxyParamCaption}
+)~{\bf C\-L\-O\-G\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, vlevel, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a459946c16b4fdbd24e439dd587de30b6}
+
+
+Definition at line 3746 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a08e1b4ba1250c184445b62ab14e90ca0}{\index{logger.\-hpp@{logger.\-hpp}!L\-Q\-A@{L\-Q\-A}}
+\index{L\-Q\-A@{L\-Q\-A}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-Q\-A}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-Q\-A~{\bf C\-Q\-A}(\char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a08e1b4ba1250c184445b62ab14e90ca0}
+
+
+Definition at line 3786 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a4f5aaa07b3ca206f6adafb52b25c3fd8}{\index{logger.\-hpp@{logger.\-hpp}!L\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a4f5aaa07b3ca206f6adafb52b25c3fd8}
+
+
+Definition at line 3804 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_afb405bbda0e3effc8a05ed5044f5d035}{\index{logger.\-hpp@{logger.\-hpp}!L\-Q\-A\-\_\-\-I\-F@{L\-Q\-A\-\_\-\-I\-F}}
+\index{L\-Q\-A\-\_\-\-I\-F@{L\-Q\-A\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-Q\-A\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-Q\-A\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_afb405bbda0e3effc8a05ed5044f5d035}
+
+
+Definition at line 3795 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a41896b80530e7744b6ca1d92fd07a3f8}{\index{logger.\-hpp@{logger.\-hpp}!L\-T\-R\-A\-C\-E@{L\-T\-R\-A\-C\-E}}
+\index{L\-T\-R\-A\-C\-E@{L\-T\-R\-A\-C\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-T\-R\-A\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-T\-R\-A\-C\-E~{\bf C\-T\-R\-A\-C\-E}(\char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a41896b80530e7744b6ca1d92fd07a3f8}
+
+
+Definition at line 3787 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ae48184d7ae561c4b38ef22ca4cb777e9}{\index{logger.\-hpp@{logger.\-hpp}!L\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_ae48184d7ae561c4b38ef22ca4cb777e9}
+
+
+Definition at line 3805 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a280b61ffb84f70b2c6e6420873e6d499}{\index{logger.\-hpp@{logger.\-hpp}!L\-T\-R\-A\-C\-E\-\_\-\-I\-F@{L\-T\-R\-A\-C\-E\-\_\-\-I\-F}}
+\index{L\-T\-R\-A\-C\-E\-\_\-\-I\-F@{L\-T\-R\-A\-C\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-T\-R\-A\-C\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-T\-R\-A\-C\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-T\-R\-A\-C\-E\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a280b61ffb84f70b2c6e6420873e6d499}
+
+
+Definition at line 3796 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a8842d9cc9c4b1b784e284f8f1d5748aa}{\index{logger.\-hpp@{logger.\-hpp}!L\-V\-E\-R\-B\-O\-S\-E@{L\-V\-E\-R\-B\-O\-S\-E}}
+\index{L\-V\-E\-R\-B\-O\-S\-E@{L\-V\-E\-R\-B\-O\-S\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-V\-E\-R\-B\-O\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-V\-E\-R\-B\-O\-S\-E(
+\begin{DoxyParamCaption}
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a8842d9cc9c4b1b784e284f8f1d5748aa}
+
+
+Definition at line 3788 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a591a806b9328053f692fa5338671b6f9}{\index{logger.\-hpp@{logger.\-hpp}!L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a591a806b9328053f692fa5338671b6f9}
+
+
+Definition at line 3806 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a70817f10c723d16186e324f059abcb87}{\index{logger.\-hpp@{logger.\-hpp}!L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}}
+\index{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a70817f10c723d16186e324f059abcb87}
+
+
+Definition at line 3797 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a436414f6c92026066eb75a62ab0112f6}{\index{logger.\-hpp@{logger.\-hpp}!L\-W\-A\-R\-N\-I\-N\-G@{L\-W\-A\-R\-N\-I\-N\-G}}
+\index{L\-W\-A\-R\-N\-I\-N\-G@{L\-W\-A\-R\-N\-I\-N\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-W\-A\-R\-N\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-W\-A\-R\-N\-I\-N\-G~{\bf C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a436414f6c92026066eb75a62ab0112f6}
+
+
+Definition at line 3782 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa1028bafff6e3d971e543eb39ad70839}{\index{logger.\-hpp@{logger.\-hpp}!L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_aa1028bafff6e3d971e543eb39ad70839}
+
+
+Definition at line 3800 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a8fc694fa3ec9fc9c9bc8b606a21a10da}{\index{logger.\-hpp@{logger.\-hpp}!L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}}
+\index{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define L\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a8fc694fa3ec9fc9c9bc8b606a21a10da}
+
+
+Definition at line 3791 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a70608386d2e1a4606bb719af26a9541f}{\index{logger.\-hpp@{logger.\-hpp}!M\-A\-I\-N@{M\-A\-I\-N}}
+\index{M\-A\-I\-N@{M\-A\-I\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{M\-A\-I\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define M\-A\-I\-N(
+\begin{DoxyParamCaption}
+\item[{}]{argc, }
+\item[{}]{argv}
+\end{DoxyParamCaption}
+)~{\bf F\-U\-N\-C}(int, {\bf main}, (argc, argv))}}\label{logger_8hpp_a70608386d2e1a4606bb719af26a9541f}
+
+
+Definition at line 3513 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab524bf5b133823d5d8bdbae90a7b5977}{\index{logger.\-hpp@{logger.\-hpp}!P\-D\-E\-B\-U\-G@{P\-D\-E\-B\-U\-G}}
+\index{P\-D\-E\-B\-U\-G@{P\-D\-E\-B\-U\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-D\-E\-B\-U\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-D\-E\-B\-U\-G~{\bf C\-D\-E\-B\-U\-G}(\char`\"{}performance\char`\"{})}}\label{logger_8hpp_ab524bf5b133823d5d8bdbae90a7b5977}
+
+
+Definition at line 3948 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a56dd891cc4a4df5196a1b3fc8cc9bda1}{\index{logger.\-hpp@{logger.\-hpp}!P\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a56dd891cc4a4df5196a1b3fc8cc9bda1}
+
+
+Definition at line 3966 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a426ad79962dd8177d90462809d5c97af}{\index{logger.\-hpp@{logger.\-hpp}!P\-D\-E\-B\-U\-G\-\_\-\-I\-F@{P\-D\-E\-B\-U\-G\-\_\-\-I\-F}}
+\index{P\-D\-E\-B\-U\-G\-\_\-\-I\-F@{P\-D\-E\-B\-U\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-D\-E\-B\-U\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-D\-E\-B\-U\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a426ad79962dd8177d90462809d5c97af}
+
+
+Definition at line 3957 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a239826056e62049f7166f0200a00cc89}{\index{logger.\-hpp@{logger.\-hpp}!P\-E\-R\-R\-O\-R@{P\-E\-R\-R\-O\-R}}
+\index{P\-E\-R\-R\-O\-R@{P\-E\-R\-R\-O\-R}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-R\-R\-O\-R~{\bf C\-E\-R\-R\-O\-R}(\char`\"{}performance\char`\"{})}}\label{logger_8hpp_a239826056e62049f7166f0200a00cc89}
+
+
+Definition at line 3949 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a451da9c09474fddfc5d2427a9799e15d}{\index{logger.\-hpp@{logger.\-hpp}!P\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a451da9c09474fddfc5d2427a9799e15d}
+
+
+Definition at line 3967 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a0157e57f5b9ce91a3d2e30c3482e9d2b}{\index{logger.\-hpp@{logger.\-hpp}!P\-E\-R\-R\-O\-R\-\_\-\-I\-F@{P\-E\-R\-R\-O\-R\-\_\-\-I\-F}}
+\index{P\-E\-R\-R\-O\-R\-\_\-\-I\-F@{P\-E\-R\-R\-O\-R\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-E\-R\-R\-O\-R\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-E\-R\-R\-O\-R\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a0157e57f5b9ce91a3d2e30c3482e9d2b}
+
+
+Definition at line 3958 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab7a4a84b7c217a858b2ea5cd347d18a4}{\index{logger.\-hpp@{logger.\-hpp}!P\-F\-A\-T\-A\-L@{P\-F\-A\-T\-A\-L}}
+\index{P\-F\-A\-T\-A\-L@{P\-F\-A\-T\-A\-L}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-F\-A\-T\-A\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-F\-A\-T\-A\-L~{\bf C\-F\-A\-T\-A\-L}(\char`\"{}performance\char`\"{})}}\label{logger_8hpp_ab7a4a84b7c217a858b2ea5cd347d18a4}
+
+
+Definition at line 3950 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a9f54d4847355be7a0d6e6c43c293c68d}{\index{logger.\-hpp@{logger.\-hpp}!P\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a9f54d4847355be7a0d6e6c43c293c68d}
+
+
+Definition at line 3968 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab467ca75914bcaf915a58ca96e502e7d}{\index{logger.\-hpp@{logger.\-hpp}!P\-F\-A\-T\-A\-L\-\_\-\-I\-F@{P\-F\-A\-T\-A\-L\-\_\-\-I\-F}}
+\index{P\-F\-A\-T\-A\-L\-\_\-\-I\-F@{P\-F\-A\-T\-A\-L\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-F\-A\-T\-A\-L\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-F\-A\-T\-A\-L\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_ab467ca75914bcaf915a58ca96e502e7d}
+
+
+Definition at line 3959 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aeb27d2bbc654b0d81dd1cc6bdbd105ce}{\index{logger.\-hpp@{logger.\-hpp}!P\-I\-N\-F\-O@{P\-I\-N\-F\-O}}
+\index{P\-I\-N\-F\-O@{P\-I\-N\-F\-O}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-I\-N\-F\-O}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I\-N\-F\-O~{\bf C\-I\-N\-F\-O}(\char`\"{}performance\char`\"{})}}\label{logger_8hpp_aeb27d2bbc654b0d81dd1cc6bdbd105ce}
+
+
+Definition at line 3946 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa36bb1d23162e4c367ac5fbdf4f905f2}{\index{logger.\-hpp@{logger.\-hpp}!P\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_aa36bb1d23162e4c367ac5fbdf4f905f2}
+
+
+Definition at line 3964 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af9f96c559b5813b0e1e221973a698934}{\index{logger.\-hpp@{logger.\-hpp}!P\-I\-N\-F\-O\-\_\-\-I\-F@{P\-I\-N\-F\-O\-\_\-\-I\-F}}
+\index{P\-I\-N\-F\-O\-\_\-\-I\-F@{P\-I\-N\-F\-O\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-I\-N\-F\-O\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-I\-N\-F\-O\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_af9f96c559b5813b0e1e221973a698934}
+
+
+Definition at line 3955 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_adad8399bd24f664cfcaeb98313277168}{\index{logger.\-hpp@{logger.\-hpp}!P\-Q\-A@{P\-Q\-A}}
+\index{P\-Q\-A@{P\-Q\-A}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-Q\-A}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-Q\-A~{\bf C\-Q\-A}(\char`\"{}performance\char`\"{})}}\label{logger_8hpp_adad8399bd24f664cfcaeb98313277168}
+
+
+Definition at line 3951 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a574343df61b7551cec8d4979172b1b8a}{\index{logger.\-hpp@{logger.\-hpp}!P\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a574343df61b7551cec8d4979172b1b8a}
+
+
+Definition at line 3969 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_acb21cd07a490deabe14c1294cdad004b}{\index{logger.\-hpp@{logger.\-hpp}!P\-Q\-A\-\_\-\-I\-F@{P\-Q\-A\-\_\-\-I\-F}}
+\index{P\-Q\-A\-\_\-\-I\-F@{P\-Q\-A\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-Q\-A\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-Q\-A\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_acb21cd07a490deabe14c1294cdad004b}
+
+
+Definition at line 3960 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a13fb3c7d4540aee598cfd32de818cb13}{\index{logger.\-hpp@{logger.\-hpp}!P\-T\-R\-A\-C\-E@{P\-T\-R\-A\-C\-E}}
+\index{P\-T\-R\-A\-C\-E@{P\-T\-R\-A\-C\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-T\-R\-A\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-T\-R\-A\-C\-E~{\bf C\-T\-R\-A\-C\-E}(\char`\"{}performance\char`\"{})}}\label{logger_8hpp_a13fb3c7d4540aee598cfd32de818cb13}
+
+
+Definition at line 3952 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a4ad26a31af7b6809f7b30cebabd5afe2}{\index{logger.\-hpp@{logger.\-hpp}!P\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a4ad26a31af7b6809f7b30cebabd5afe2}
+
+
+Definition at line 3970 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a99491c8669ae43fe9055d27854f66d3a}{\index{logger.\-hpp@{logger.\-hpp}!P\-T\-R\-A\-C\-E\-\_\-\-I\-F@{P\-T\-R\-A\-C\-E\-\_\-\-I\-F}}
+\index{P\-T\-R\-A\-C\-E\-\_\-\-I\-F@{P\-T\-R\-A\-C\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-T\-R\-A\-C\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-T\-R\-A\-C\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a99491c8669ae43fe9055d27854f66d3a}
+
+
+Definition at line 3961 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ac33704e9e0d0364074bc644b5532e72c}{\index{logger.\-hpp@{logger.\-hpp}!P\-V\-E\-R\-B\-O\-S\-E@{P\-V\-E\-R\-B\-O\-S\-E}}
+\index{P\-V\-E\-R\-B\-O\-S\-E@{P\-V\-E\-R\-B\-O\-S\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-V\-E\-R\-B\-O\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-V\-E\-R\-B\-O\-S\-E(
+\begin{DoxyParamCaption}
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_ac33704e9e0d0364074bc644b5532e72c}
+
+
+Definition at line 3953 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ac317e61b82ab7399a7ea86f2cb702c01}{\index{logger.\-hpp@{logger.\-hpp}!P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_ac317e61b82ab7399a7ea86f2cb702c01}
+
+
+Definition at line 3971 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a2c0e6f66b2823618f48145c925cfda1c}{\index{logger.\-hpp@{logger.\-hpp}!P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}}
+\index{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a2c0e6f66b2823618f48145c925cfda1c}
+
+
+Definition at line 3962 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a0107bfd56c63e8d18ec14b86995edc6c}{\index{logger.\-hpp@{logger.\-hpp}!P\-W\-A\-R\-N\-I\-N\-G@{P\-W\-A\-R\-N\-I\-N\-G}}
+\index{P\-W\-A\-R\-N\-I\-N\-G@{P\-W\-A\-R\-N\-I\-N\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-W\-A\-R\-N\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-W\-A\-R\-N\-I\-N\-G~{\bf C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}performance\char`\"{})}}\label{logger_8hpp_a0107bfd56c63e8d18ec14b86995edc6c}
+
+
+Definition at line 3947 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_afe87b0b1f95531e4328f0332c090feae}{\index{logger.\-hpp@{logger.\-hpp}!P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_afe87b0b1f95531e4328f0332c090feae}
+
+
+Definition at line 3965 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a37e688c5191843196c6d55320f1ef481}{\index{logger.\-hpp@{logger.\-hpp}!P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}}
+\index{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}performance\char`\"{})}}\label{logger_8hpp_a37e688c5191843196c6d55320f1ef481}
+
+
+Definition at line 3956 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a2606b1c72e39ef9f02292818e4574564}{\index{logger.\-hpp@{logger.\-hpp}!R\-E\-T\-U\-R\-N@{R\-E\-T\-U\-R\-N}}
+\index{R\-E\-T\-U\-R\-N@{R\-E\-T\-U\-R\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{R\-E\-T\-U\-R\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\-E\-T\-U\-R\-N(
+\begin{DoxyParamCaption}
+\item[{}]{return\-\_\-value}
+\end{DoxyParamCaption}
+)~{\bf F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-E\-N\-D} return return\-\_\-value;}}\label{logger_8hpp_a2606b1c72e39ef9f02292818e4574564}
+
+
+Definition at line 3511 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7b530ebd516cbec535c30e777aa71d55}{\index{logger.\-hpp@{logger.\-hpp}!R\-E\-T\-U\-R\-N\-\_\-\-M\-A\-I\-N@{R\-E\-T\-U\-R\-N\-\_\-\-M\-A\-I\-N}}
+\index{R\-E\-T\-U\-R\-N\-\_\-\-M\-A\-I\-N@{R\-E\-T\-U\-R\-N\-\_\-\-M\-A\-I\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{R\-E\-T\-U\-R\-N\-\_\-\-M\-A\-I\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define R\-E\-T\-U\-R\-N\-\_\-\-M\-A\-I\-N(
+\begin{DoxyParamCaption}
+\item[{}]{exit\-\_\-status}
+\end{DoxyParamCaption}
+)~return exit\-\_\-status;}}\label{logger_8hpp_a7b530ebd516cbec535c30e777aa71d55}
+
+
+Definition at line 3515 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a61b5419d23ae45ad5bbd7e4058bb4558}{\index{logger.\-hpp@{logger.\-hpp}!S\-D\-E\-B\-U\-G@{S\-D\-E\-B\-U\-G}}
+\index{S\-D\-E\-B\-U\-G@{S\-D\-E\-B\-U\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-D\-E\-B\-U\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-D\-E\-B\-U\-G~{\bf C\-D\-E\-B\-U\-G}(\char`\"{}security\char`\"{})}}\label{logger_8hpp_a61b5419d23ae45ad5bbd7e4058bb4558}
+
+
+Definition at line 3893 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab90d9857eccaa3e7c2afd37fce45debe}{\index{logger.\-hpp@{logger.\-hpp}!S\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})}}\label{logger_8hpp_ab90d9857eccaa3e7c2afd37fce45debe}
+
+
+Definition at line 3911 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a22fac677725beae0bac629f157836f24}{\index{logger.\-hpp@{logger.\-hpp}!S\-D\-E\-B\-U\-G\-\_\-\-I\-F@{S\-D\-E\-B\-U\-G\-\_\-\-I\-F}}
+\index{S\-D\-E\-B\-U\-G\-\_\-\-I\-F@{S\-D\-E\-B\-U\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-D\-E\-B\-U\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-D\-E\-B\-U\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-D\-E\-B\-U\-G\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a22fac677725beae0bac629f157836f24}
+
+
+Definition at line 3902 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6cf8a249d894b2d3c81d2595bbe2078c}{\index{logger.\-hpp@{logger.\-hpp}!S\-E\-R\-R\-O\-R@{S\-E\-R\-R\-O\-R}}
+\index{S\-E\-R\-R\-O\-R@{S\-E\-R\-R\-O\-R}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-E\-R\-R\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-E\-R\-R\-O\-R~{\bf C\-E\-R\-R\-O\-R}(\char`\"{}security\char`\"{})}}\label{logger_8hpp_a6cf8a249d894b2d3c81d2595bbe2078c}
+
+
+Definition at line 3894 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a6c2c301bca2ed42c10ae16cb8a4ac689}{\index{logger.\-hpp@{logger.\-hpp}!S\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a6c2c301bca2ed42c10ae16cb8a4ac689}
+
+
+Definition at line 3912 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aedafadebb80a2cb804c021958e3ef3a4}{\index{logger.\-hpp@{logger.\-hpp}!S\-E\-R\-R\-O\-R\-\_\-\-I\-F@{S\-E\-R\-R\-O\-R\-\_\-\-I\-F}}
+\index{S\-E\-R\-R\-O\-R\-\_\-\-I\-F@{S\-E\-R\-R\-O\-R\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-E\-R\-R\-O\-R\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-E\-R\-R\-O\-R\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-E\-R\-R\-O\-R\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})}}\label{logger_8hpp_aedafadebb80a2cb804c021958e3ef3a4}
+
+
+Definition at line 3903 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a09b6cc4b99718fc0cb94e1efaaa80b26}{\index{logger.\-hpp@{logger.\-hpp}!S\-F\-A\-T\-A\-L@{S\-F\-A\-T\-A\-L}}
+\index{S\-F\-A\-T\-A\-L@{S\-F\-A\-T\-A\-L}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-F\-A\-T\-A\-L}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-F\-A\-T\-A\-L~{\bf C\-F\-A\-T\-A\-L}(\char`\"{}security\char`\"{})}}\label{logger_8hpp_a09b6cc4b99718fc0cb94e1efaaa80b26}
+
+
+Definition at line 3895 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ae2a69da8ce54fb5419d224d2c0876e1a}{\index{logger.\-hpp@{logger.\-hpp}!S\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})}}\label{logger_8hpp_ae2a69da8ce54fb5419d224d2c0876e1a}
+
+
+Definition at line 3913 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a081b61c3ccd1ff94dd424dfac2c99405}{\index{logger.\-hpp@{logger.\-hpp}!S\-F\-A\-T\-A\-L\-\_\-\-I\-F@{S\-F\-A\-T\-A\-L\-\_\-\-I\-F}}
+\index{S\-F\-A\-T\-A\-L\-\_\-\-I\-F@{S\-F\-A\-T\-A\-L\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-F\-A\-T\-A\-L\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-F\-A\-T\-A\-L\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-F\-A\-T\-A\-L\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a081b61c3ccd1ff94dd424dfac2c99405}
+
+
+Definition at line 3904 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a830388e56cb5129d5ce9b49c621aaef9}{\index{logger.\-hpp@{logger.\-hpp}!S\-I\-N\-F\-O@{S\-I\-N\-F\-O}}
+\index{S\-I\-N\-F\-O@{S\-I\-N\-F\-O}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-I\-N\-F\-O}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-I\-N\-F\-O~{\bf C\-I\-N\-F\-O}(\char`\"{}security\char`\"{})}}\label{logger_8hpp_a830388e56cb5129d5ce9b49c621aaef9}
+
+
+Definition at line 3891 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ac8444789d3170d7107578310863cd5db}{\index{logger.\-hpp@{logger.\-hpp}!S\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})}}\label{logger_8hpp_ac8444789d3170d7107578310863cd5db}
+
+
+Definition at line 3909 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a420aa49731ae32c6d6c4ce611947b29b}{\index{logger.\-hpp@{logger.\-hpp}!S\-I\-N\-F\-O\-\_\-\-I\-F@{S\-I\-N\-F\-O\-\_\-\-I\-F}}
+\index{S\-I\-N\-F\-O\-\_\-\-I\-F@{S\-I\-N\-F\-O\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-I\-N\-F\-O\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-I\-N\-F\-O\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-I\-N\-F\-O\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a420aa49731ae32c6d6c4ce611947b29b}
+
+
+Definition at line 3900 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a92d04fe74201d58bc774099a3f5a52da}{\index{logger.\-hpp@{logger.\-hpp}!S\-P\-R\-I\-N\-T\-F@{S\-P\-R\-I\-N\-T\-F}}
+\index{S\-P\-R\-I\-N\-T\-F@{S\-P\-R\-I\-N\-T\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-P\-R\-I\-N\-T\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-P\-R\-I\-N\-T\-F~sprintf}}\label{logger_8hpp_a92d04fe74201d58bc774099a3f5a52da}
+
+
+Definition at line 120 of file logger.\-hpp.
+
+
+
+Referenced by easyloggingpp\-::internal\-::utilities\-::\-Date\-Utils\-::get\-Date\-Time().
+
+\hypertarget{logger_8hpp_ada66bc95b4a6c3bbfc32b61d9a197be7}{\index{logger.\-hpp@{logger.\-hpp}!S\-Q\-A@{S\-Q\-A}}
+\index{S\-Q\-A@{S\-Q\-A}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-Q\-A}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-Q\-A~{\bf C\-Q\-A}(\char`\"{}security\char`\"{})}}\label{logger_8hpp_ada66bc95b4a6c3bbfc32b61d9a197be7}
+
+
+Definition at line 3896 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_af6b56c5eb10caab35e60514d566fbfd4}{\index{logger.\-hpp@{logger.\-hpp}!S\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})}}\label{logger_8hpp_af6b56c5eb10caab35e60514d566fbfd4}
+
+
+Definition at line 3914 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_aa48a7860c7eb04dcdb4a17bd93bfe10d}{\index{logger.\-hpp@{logger.\-hpp}!S\-Q\-A\-\_\-\-I\-F@{S\-Q\-A\-\_\-\-I\-F}}
+\index{S\-Q\-A\-\_\-\-I\-F@{S\-Q\-A\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-Q\-A\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-Q\-A\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})}}\label{logger_8hpp_aa48a7860c7eb04dcdb4a17bd93bfe10d}
+
+
+Definition at line 3905 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a9ca1c13e75d1d4a9b8130ea9fe80ddcc}{\index{logger.\-hpp@{logger.\-hpp}!S\-T\-A\-R\-T\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-L\-O\-G@{S\-T\-A\-R\-T\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-L\-O\-G}}
+\index{S\-T\-A\-R\-T\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-L\-O\-G@{S\-T\-A\-R\-T\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-T\-A\-R\-T\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-T\-A\-R\-T\-\_\-\-F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-L\-O\-G~\char`\"{}Executing \mbox{[}\char`\"{} $<$$<$ \-\_\-\-\_\-func\-\_\-\-\_\- $<$$<$ \char`\"{}\mbox{]}\char`\"{}}}\label{logger_8hpp_a9ca1c13e75d1d4a9b8130ea9fe80ddcc}
+
+
+Definition at line 3500 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a4be0a5eb55edbd1846809d7e3d1a10f7}{\index{logger.\-hpp@{logger.\-hpp}!S\-T\-R\-A\-C\-E@{S\-T\-R\-A\-C\-E}}
+\index{S\-T\-R\-A\-C\-E@{S\-T\-R\-A\-C\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-T\-R\-A\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-T\-R\-A\-C\-E~{\bf C\-T\-R\-A\-C\-E}(\char`\"{}security\char`\"{})}}\label{logger_8hpp_a4be0a5eb55edbd1846809d7e3d1a10f7}
+
+
+Definition at line 3897 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_afd0f095209b44b09983acd647c4e74ee}{\index{logger.\-hpp@{logger.\-hpp}!S\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-T\-R\-A\-C\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})}}\label{logger_8hpp_afd0f095209b44b09983acd647c4e74ee}
+
+
+Definition at line 3915 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a024f7091f4a3a25b1f01682592cebe48}{\index{logger.\-hpp@{logger.\-hpp}!S\-T\-R\-A\-C\-E\-\_\-\-I\-F@{S\-T\-R\-A\-C\-E\-\_\-\-I\-F}}
+\index{S\-T\-R\-A\-C\-E\-\_\-\-I\-F@{S\-T\-R\-A\-C\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-T\-R\-A\-C\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-T\-R\-A\-C\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-Q\-A\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a024f7091f4a3a25b1f01682592cebe48}
+
+
+Definition at line 3906 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a467ada1a12edc2402c2bd6dc266173cf}{\index{logger.\-hpp@{logger.\-hpp}!S\-T\-R\-T\-O\-K@{S\-T\-R\-T\-O\-K}}
+\index{S\-T\-R\-T\-O\-K@{S\-T\-R\-T\-O\-K}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-T\-R\-T\-O\-K}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-T\-R\-T\-O\-K(
+\begin{DoxyParamCaption}
+\item[{}]{a, }
+\item[{}]{b, }
+\item[{}]{c}
+\end{DoxyParamCaption}
+)~strtok(a,b)}}\label{logger_8hpp_a467ada1a12edc2402c2bd6dc266173cf}
+
+
+Definition at line 121 of file logger.\-hpp.
+
+
+
+Referenced by easyloggingpp\-::internal\-::utilities\-::\-O\-S\-Utils\-::create\-Path().
+
+\hypertarget{logger_8hpp_a902bdb8757250c478bf361ddb8ac14e0}{\index{logger.\-hpp@{logger.\-hpp}!S\-U\-B@{S\-U\-B}}
+\index{S\-U\-B@{S\-U\-B}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-U\-B}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-U\-B(
+\begin{DoxyParamCaption}
+\item[{}]{F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E, }
+\item[{}]{P\-A\-R\-A\-M\-S}
+\end{DoxyParamCaption}
+)~void F\-U\-N\-C\-T\-I\-O\-N\-\_\-\-N\-A\-M\-E P\-A\-R\-A\-M\-S {\bf F\-U\-N\-C\-\_\-\-S\-U\-B\-\_\-\-C\-O\-M\-M\-O\-N\-\_\-\-S\-T\-A\-R\-T}}}\label{logger_8hpp_a902bdb8757250c478bf361ddb8ac14e0}
+
+
+Definition at line 3508 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a245ece1bb42a9178681397374b0a57fa}{\index{logger.\-hpp@{logger.\-hpp}!S\-V\-E\-R\-B\-O\-S\-E@{S\-V\-E\-R\-B\-O\-S\-E}}
+\index{S\-V\-E\-R\-B\-O\-S\-E@{S\-V\-E\-R\-B\-O\-S\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-V\-E\-R\-B\-O\-S\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-V\-E\-R\-B\-O\-S\-E(
+\begin{DoxyParamCaption}
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E}(level, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a245ece1bb42a9178681397374b0a57fa}
+
+
+Definition at line 3898 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a8b5077169c048beb962b7f3ce74eb219}{\index{logger.\-hpp@{logger.\-hpp}!S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, level, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a8b5077169c048beb962b7f3ce74eb219}
+
+
+Definition at line 3916 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab60caa6b20958e5957d8862b2c7deb3c}{\index{logger.\-hpp@{logger.\-hpp}!S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}}
+\index{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F@{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{level}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-E\-R\-B\-O\-S\-E\-\_\-\-I\-F}(condition, level, \char`\"{}security\char`\"{})}}\label{logger_8hpp_ab60caa6b20958e5957d8862b2c7deb3c}
+
+
+Definition at line 3907 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a7938adc7306c8013f67b8f51df9ff7ba}{\index{logger.\-hpp@{logger.\-hpp}!S\-W\-A\-R\-N\-I\-N\-G@{S\-W\-A\-R\-N\-I\-N\-G}}
+\index{S\-W\-A\-R\-N\-I\-N\-G@{S\-W\-A\-R\-N\-I\-N\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-W\-A\-R\-N\-I\-N\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-W\-A\-R\-N\-I\-N\-G~{\bf C\-W\-A\-R\-N\-I\-N\-G}(\char`\"{}security\char`\"{})}}\label{logger_8hpp_a7938adc7306c8013f67b8f51df9ff7ba}
+
+
+Definition at line 3892 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab11a5f8217746a78dbd37c53ea50c7ba}{\index{logger.\-hpp@{logger.\-hpp}!S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, \char`\"{}security\char`\"{})}}\label{logger_8hpp_ab11a5f8217746a78dbd37c53ea50c7ba}
+
+
+Definition at line 3910 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a9530e5cee9d371a73a90b193f4ebe6d7}{\index{logger.\-hpp@{logger.\-hpp}!S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}}
+\index{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F@{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define S\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition}
+\end{DoxyParamCaption}
+)~{\bf C\-W\-A\-R\-N\-I\-N\-G\-\_\-\-I\-F}(condition, \char`\"{}security\char`\"{})}}\label{logger_8hpp_a9530e5cee9d371a73a90b193f4ebe6d7}
+
+
+Definition at line 3901 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a5d0a15b41484dbd92355c33b12e6609a}{\index{logger.\-hpp@{logger.\-hpp}!T\-I\-M\-E\-\_\-\-O\-U\-T\-P\-U\-T@{T\-I\-M\-E\-\_\-\-O\-U\-T\-P\-U\-T}}
+\index{T\-I\-M\-E\-\_\-\-O\-U\-T\-P\-U\-T@{T\-I\-M\-E\-\_\-\-O\-U\-T\-P\-U\-T}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{T\-I\-M\-E\-\_\-\-O\-U\-T\-P\-U\-T}]{\setlength{\rightskip}{0pt plus 5cm}\#define T\-I\-M\-E\-\_\-\-O\-U\-T\-P\-U\-T}}\label{logger_8hpp_a5d0a15b41484dbd92355c33b12e6609a}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\textcolor{stringliteral}{"Executed ["} << \hyperlink{logger_8hpp_a7d6e1cf1a8d53f38471e9e9db3faf740}{\_\_func\_\_} << \textcolor{stringliteral}{"] in ["} <<                    \hyperlink{classeasyloggingpp_1_1internal_1_1utilities_1_1DateUtils_a631eb036b81b7d0a0451e3e1272e2252}{\(\backslash\)}
+\hyperlink{classeasyloggingpp_1_1internal_1_1utilities_1_1DateUtils_a631eb036b81b7d0a0451e3e1272e2252}{    easyloggingpp::internal::utilities::DateUtils::formatMilliSeconds}
+      (        \(\backslash\)
+    \hyperlink{classeasyloggingpp_1_1internal_1_1utilities_1_1DateUtils_ae986b5c0954b78379ba9e0ba39d4f8ae}{easyloggingpp::internal::utilities::DateUtils::getTimeDifference}
+      (functionEndTime, functionStartTime)) << \textcolor{stringliteral}{"]"}
+\end{DoxyCode}
+
+
+Definition at line 3501 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a750887f0bcc287a4ac8da4d52e558332}{\index{logger.\-hpp@{logger.\-hpp}!V\-L\-O\-G@{V\-L\-O\-G}}
+\index{V\-L\-O\-G@{V\-L\-O\-G}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{V\-L\-O\-G}]{\setlength{\rightskip}{0pt plus 5cm}\#define V\-L\-O\-G(
+\begin{DoxyParamCaption}
+\item[{}]{vlevel}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-L\-O\-G}(vlevel, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a750887f0bcc287a4ac8da4d52e558332}
+
+
+Definition at line 3743 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_ab0d350dc67b0f3e56afed545ca75cfa6}{\index{logger.\-hpp@{logger.\-hpp}!V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}}
+\index{V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N@{V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N(
+\begin{DoxyParamCaption}
+\item[{}]{n, }
+\item[{}]{vlevel}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-L\-O\-G\-\_\-\-E\-V\-E\-R\-Y\-\_\-\-N}(n, vlevel, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_ab0d350dc67b0f3e56afed545ca75cfa6}
+
+
+Definition at line 3751 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a9e0b817e339bb14ae312973bb55227c9}{\index{logger.\-hpp@{logger.\-hpp}!V\-L\-O\-G\-\_\-\-I\-F@{V\-L\-O\-G\-\_\-\-I\-F}}
+\index{V\-L\-O\-G\-\_\-\-I\-F@{V\-L\-O\-G\-\_\-\-I\-F}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{V\-L\-O\-G\-\_\-\-I\-F}]{\setlength{\rightskip}{0pt plus 5cm}\#define V\-L\-O\-G\-\_\-\-I\-F(
+\begin{DoxyParamCaption}
+\item[{}]{condition, }
+\item[{}]{vlevel}
+\end{DoxyParamCaption}
+)~{\bf C\-V\-L\-O\-G\-\_\-\-I\-F}(condition, vlevel, \char`\"{}trivial\char`\"{})}}\label{logger_8hpp_a9e0b817e339bb14ae312973bb55227c9}
+
+
+Definition at line 3747 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a38ad5c4c2d876138a58d941db60e6893}{\index{logger.\-hpp@{logger.\-hpp}!V\-L\-O\-G\-\_\-\-I\-S\-\_\-\-O\-N@{V\-L\-O\-G\-\_\-\-I\-S\-\_\-\-O\-N}}
+\index{V\-L\-O\-G\-\_\-\-I\-S\-\_\-\-O\-N@{V\-L\-O\-G\-\_\-\-I\-S\-\_\-\-O\-N}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{V\-L\-O\-G\-\_\-\-I\-S\-\_\-\-O\-N}]{\setlength{\rightskip}{0pt plus 5cm}\#define V\-L\-O\-G\-\_\-\-I\-S\-\_\-\-O\-N(
+\begin{DoxyParamCaption}
+\item[{}]{verbose\-Level}
+\end{DoxyParamCaption}
+)~verbose\-Level $<$= {\bf easyloggingpp\-::internal\-::registered\-Loggers}-\/$>$constants()-\/$>$C\-U\-R\-R\-E\-N\-T\-\_\-\-V\-E\-R\-B\-O\-S\-E\-\_\-\-L\-E\-V\-E\-L}}\label{logger_8hpp_a38ad5c4c2d876138a58d941db60e6893}
+
+
+Definition at line 3535 of file logger.\-hpp.
+
+\hypertarget{logger_8hpp_a5bb35894eafc7d5250d2148b68f2081b}{\index{logger.\-hpp@{logger.\-hpp}!W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E@{W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E}}
+\index{W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E@{W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E}!logger.hpp@{logger.\-hpp}}
+\subsubsection[{W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define W\-R\-I\-T\-E\-\_\-\-F\-U\-N\-C\-\_\-\-P\-E\-R\-F\-O\-R\-M\-A\-N\-C\-E}}\label{logger_8hpp_a5bb35894eafc7d5250d2148b68f2081b}
+{\bfseries Value\-:}
+\begin{DoxyCode}
+\_ELPP\_GET\_CURR\_TIME(&functionEndTime);            \(\backslash\)
+    if (\hyperlink{classeasyloggingpp_1_1Loggers_ab35e5274d1f838e511c44fb09742a790}{easyloggingpp::Loggers::performanceTrackingEnabled}
+      ()) \{ \hyperlink{logger_8hpp_aeb27d2bbc654b0d81dd1cc6bdbd105ce}{PINFO} << \hyperlink{logger_8hpp_a5d0a15b41484dbd92355c33b12e6609a}{TIME\_OUTPUT}; \}
+\end{DoxyCode}
+
+
+Definition at line 3505 of file logger.\-hpp.
+

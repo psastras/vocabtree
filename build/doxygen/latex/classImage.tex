@@ -1,0 +1,150 @@
+\hypertarget{classImage}{\section{Image Class Reference}
+\label{classImage}\index{Image@{Image}}
+}
+
+
+{\ttfamily \#include $<$image.\-hpp$>$}
+
+Inheritance diagram for Image\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classImage}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classImage_aa0430ef96457eafaf585ff54abc8194f}{Image} (uint64\-\_\-t image\-\_\-id)
+\item 
+virtual \hyperlink{classImage_a0294f63700543e11c0f0da85601c7ae5}{$\sim$\-Image} ()
+\item 
+virtual std\-::string \hyperlink{classImage_aa4903872aaca70ea52f2a219602d6ff2}{feature\-\_\-path} (const std\-::string \&feat\-\_\-name) const =0
+\item 
+bool \hyperlink{classImage_af2327d89ff13d9c3cad761723883c86e}{load\-\_\-sift\-\_\-feature} (cv\-::\-Mat \&data) const 
+\item 
+bool \hyperlink{classImage_a95009cbf9f7724f514d0220207a9e126}{load\-\_\-bow\-\_\-feature} (std\-::vector$<$ std\-::pair$<$ uint32\-\_\-t, float $>$ $>$ \&data) const 
+\end{DoxyCompactItemize}
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+uint64\-\_\-t \hyperlink{classImage_a9800c46cdd3a9b037eee627a9c0a8259}{id}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 9 of file image.\-hpp.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classImage_aa0430ef96457eafaf585ff54abc8194f}{\index{Image@{Image}!Image@{Image}}
+\index{Image@{Image}!Image@{Image}}
+\subsubsection[{Image}]{\setlength{\rightskip}{0pt plus 5cm}Image\-::\-Image (
+\begin{DoxyParamCaption}
+\item[{uint64\-\_\-t}]{image\-\_\-id}
+\end{DoxyParamCaption}
+)}}\label{classImage_aa0430ef96457eafaf585ff54abc8194f}
+
+
+Definition at line 5 of file image.\-cxx.
+
+
+\begin{DoxyCode}
+                             \{ 
+        \textcolor{keywordtype}{id} = imageid;
+\}
+\end{DoxyCode}
+\hypertarget{classImage_a0294f63700543e11c0f0da85601c7ae5}{\index{Image@{Image}!$\sim$\-Image@{$\sim$\-Image}}
+\index{$\sim$\-Image@{$\sim$\-Image}!Image@{Image}}
+\subsubsection[{$\sim$\-Image}]{\setlength{\rightskip}{0pt plus 5cm}Image\-::$\sim$\-Image (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classImage_a0294f63700543e11c0f0da85601c7ae5}
+
+
+Definition at line 9 of file image.\-cxx.
+
+
+\begin{DoxyCode}
+\{ \}
+\end{DoxyCode}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classImage_aa4903872aaca70ea52f2a219602d6ff2}{\index{Image@{Image}!feature\-\_\-path@{feature\-\_\-path}}
+\index{feature\-\_\-path@{feature\-\_\-path}!Image@{Image}}
+\subsubsection[{feature\-\_\-path}]{\setlength{\rightskip}{0pt plus 5cm}virtual std\-::string Image\-::feature\-\_\-path (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{feat\-\_\-name}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily [pure virtual]}}}\label{classImage_aa4903872aaca70ea52f2a219602d6ff2}
+
+
+Implemented in \hyperlink{classSimpleImage_a0702c5366f545d3b44a7ecfb900932ac}{Simple\-Image}, and \hyperlink{classSimpleImage_a0702c5366f545d3b44a7ecfb900932ac}{Simple\-Image}.
+
+
+
+Referenced by load\-\_\-bow\-\_\-feature(), and load\-\_\-sift\-\_\-feature().
+
+\hypertarget{classImage_a95009cbf9f7724f514d0220207a9e126}{\index{Image@{Image}!load\-\_\-bow\-\_\-feature@{load\-\_\-bow\-\_\-feature}}
+\index{load\-\_\-bow\-\_\-feature@{load\-\_\-bow\-\_\-feature}!Image@{Image}}
+\subsubsection[{load\-\_\-bow\-\_\-feature}]{\setlength{\rightskip}{0pt plus 5cm}bool Image\-::load\-\_\-bow\-\_\-feature (
+\begin{DoxyParamCaption}
+\item[{std\-::vector$<$ std\-::pair$<$ uint32\-\_\-t, float $>$ $>$ \&}]{data}
+\end{DoxyParamCaption}
+) const}}\label{classImage_a95009cbf9f7724f514d0220207a9e126}
+
+
+Definition at line 16 of file image.\-cxx.
+
+
+
+References feature\-\_\-path(), and filesystem\-::load\-\_\-bow().
+
+
+\begin{DoxyCode}
+                                                                              \{
+        std::string path = \hyperlink{classImage_aa4903872aaca70ea52f2a219602d6ff2}{feature\_path}(\textcolor{stringliteral}{"bow"});
+        \textcolor{keywordflow}{return} \hyperlink{namespacefilesystem_a6a1838f1e907bb3641be831a30c15448}{filesystem::load\_bow}(path, data);
+\}\end{DoxyCode}
+\hypertarget{classImage_af2327d89ff13d9c3cad761723883c86e}{\index{Image@{Image}!load\-\_\-sift\-\_\-feature@{load\-\_\-sift\-\_\-feature}}
+\index{load\-\_\-sift\-\_\-feature@{load\-\_\-sift\-\_\-feature}!Image@{Image}}
+\subsubsection[{load\-\_\-sift\-\_\-feature}]{\setlength{\rightskip}{0pt plus 5cm}bool Image\-::load\-\_\-sift\-\_\-feature (
+\begin{DoxyParamCaption}
+\item[{cv\-::\-Mat \&}]{data}
+\end{DoxyParamCaption}
+) const}}\label{classImage_af2327d89ff13d9c3cad761723883c86e}
+
+
+Definition at line 11 of file image.\-cxx.
+
+
+
+References feature\-\_\-path(), and filesystem\-::load\-\_\-cvmat().
+
+
+\begin{DoxyCode}
+                                               \{
+        std::string path = \hyperlink{classImage_aa4903872aaca70ea52f2a219602d6ff2}{feature\_path}(\textcolor{stringliteral}{"sift"});
+        \textcolor{keywordflow}{return} \hyperlink{namespacefilesystem_a4302c4377292b2c6dc2813cf5bb2b225}{filesystem::load\_cvmat}(path, data);
+\}
+\end{DoxyCode}
+
+
+\subsection{Field Documentation}
+\hypertarget{classImage_a9800c46cdd3a9b037eee627a9c0a8259}{\index{Image@{Image}!id@{id}}
+\index{id@{id}!Image@{Image}}
+\subsubsection[{id}]{\setlength{\rightskip}{0pt plus 5cm}uint64\-\_\-t Image\-::id}}\label{classImage_a9800c46cdd3a9b037eee627a9c0a8259}
+
+
+Definition at line 13 of file image.\-hpp.
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+/\-Users/psastras/vocabtree/modules/utils/\hyperlink{image_8hpp}{image.\-hpp}\item 
+/\-Users/psastras/vocabtree/modules/utils/\hyperlink{image_8cxx}{image.\-cxx}\end{DoxyCompactItemize}

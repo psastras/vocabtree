@@ -1,0 +1,1599 @@
+.TH "/Users/psastras/vocabtree/modules/utils/logger.hpp" 3 "Wed Nov 6 2013" "Version 0.0.1" "vocabtree" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+/Users/psastras/vocabtree/modules/utils/logger.hpp \- 
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <ctime>\fP
+.br
+\fC#include <cstring>\fP
+.br
+\fC#include <cstdlib>\fP
+.br
+\fC#include <cctype>\fP
+.br
+\fC#include <cwchar>\fP
+.br
+\fC#include <string>\fP
+.br
+\fC#include <vector>\fP
+.br
+\fC#include <map>\fP
+.br
+\fC#include <functional>\fP
+.br
+\fC#include <algorithm>\fP
+.br
+\fC#include <fstream>\fP
+.br
+\fC#include <iostream>\fP
+.br
+\fC#include <sstream>\fP
+.br
+
+.SS "Data Structures"
+
+.in +1c
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::NoCopy\fP"
+.br
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::StaticClass\fP"
+.br
+.ti -1c
+.RI "struct \fBeasyloggingpp::Level\fP"
+.br
+.ti -1c
+.RI "struct \fBeasyloggingpp::ConfigurationType\fP"
+.br
+.ti -1c
+.RI "struct \fBeasyloggingpp::internal::Aspect\fP"
+.br
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::Constants\fP"
+.br
+.RI "\fIUsed internally\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::threading::Mutex\fP"
+.br
+.RI "\fITo take care of shared resources in multi-threaded application\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::threading::ScopedLock\fP"
+.br
+.RI "\fIScoped mutex that works same as C++11 \fCstd::lock_guard<std::mutex>\fP\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::utilities::StringUtils\fP"
+.br
+.RI "\fIString utilities class used internally\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::utilities::OSUtils\fP"
+.br
+.RI "\fIOperating System utilities class used internally\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::utilities::LogManipulator\fP"
+.br
+.RI "\fIContains static functions related to log manipulation used internally\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::utilities::DateUtils\fP"
+.br
+.RI "\fIContains utility functions related to date/time used internally\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::Registry< Class, Predicate >\fP"
+.br
+.RI "\fIInternal repository base to manage memory on heap\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::ScopedPointer< T >\fP"
+.br
+.RI "\fIScoped pointer used internally\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::ScopedPointer< T >::ReferenceCounter\fP"
+.br
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::Configuration\fP"
+.br
+.RI "\fIClass that represents single configuration\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::Configuration::Predicate\fP"
+.br
+.RI "\fI\fBPredicate\fP used to find configuration from configuration repository\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::Configurations\fP"
+.br
+.RI "\fIConfiguration repository that represents configuration for single logger\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::Configurations::Parser\fP"
+.br
+.RI "\fI\fBParser\fP used internally to parse configurations from file or text\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::ConfigurationMap< T >\fP"
+.br
+.RI "\fI\fBConfiguration\fP map used internally for faster access of configuration while executing\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::TypedConfigurations\fP"
+.br
+.RI "\fI\fBConfigurations\fP used internally that defines data type of each configuration from \fBeasyloggingpp::ConfigurationType\fP\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::Logger\fP"
+.br
+.RI "\fIRepresents single logger used to write log\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::Logger::Predicate\fP"
+.br
+.RI "\fI\fBPredicate\fP used in logger repository to find logger\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::LogCounter\fP"
+.br
+.RI "\fIInternal log counter used for interval logging\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::LogCounter::Predicate\fP"
+.br
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::RegisteredCounters\fP"
+.br
+.RI "\fIInternal \fBLogCounter\fP repository\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::RegisteredLoggers\fP"
+.br
+.RI "\fIInternal logger repository\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::NullWriter\fP"
+.br
+.ti -1c
+.RI "class \fBeasyloggingpp::internal::Writer\fP"
+.br
+.ti -1c
+.RI "class \fBeasyloggingpp::VersionInfo\fP"
+.br
+.ti -1c
+.RI "class \fBeasyloggingpp::Loggers\fP"
+.br
+.RI "\fIHelper class to manage loggers and configurations\&. \fP"
+.ti -1c
+.RI "class \fBeasyloggingpp::Loggers::ConfigurationsReader\fP"
+.br
+.RI "\fIStatic class that contains static helper functions used to read configurations\&. \fP"
+.in -1c
+.SS "Namespaces"
+
+.in +1c
+.ti -1c
+.RI "namespace \fBeasyloggingpp\fP"
+.br
+.ti -1c
+.RI "namespace \fBeasyloggingpp::internal\fP"
+.br
+.ti -1c
+.RI "namespace \fBeasyloggingpp::internal::threading\fP"
+.br
+.ti -1c
+.RI "namespace \fBeasyloggingpp::internal::utilities\fP"
+.br
+.in -1c
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fB__FILE__\fP   ''"
+.br
+.ti -1c
+.RI "#define \fB__LINE__\fP   0"
+.br
+.ti -1c
+.RI "#define \fB__func__\fP   ''"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_CRT_DBG_WARNINGS\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_MINGW\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_NDK\fP   0"
+.br
+.ti -1c
+.RI "#define \fBSPRINTF\fP   sprintf"
+.br
+.ti -1c
+.RI "#define \fBSTRTOK\fP(a, b, c)   strtok(a,b)"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_STD_THREAD_AVAILABLE\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_ENABLE_EASYLOGGING\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_OS_WINDOWS\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_OS_LINUX\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_OS_MAC\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_OS_UNIX\fP   ((\fB_ELPP_OS_LINUX\fP || \fB_ELPP_OS_MAC\fP) && (!\fB_ELPP_OS_WINDOWS\fP))"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_ASSEMBLY_SUPPORTED\fP   0"
+.br
+.ti -1c
+.RI "#define \fB__EASYLOGGINGPP_ASSERT\fP(expr, msg)   if (!(expr)) { std::cerr << 'EASYLOGGING++ ASSERTION FAILED (LINE: ' << __LINE__ << ') [' #expr << '] with message \\'' << msg << '\\'' << std::endl; }"
+.br
+.ti -1c
+.RI "#define \fB__EASYLOGGINGPP_SUPPRESS_UNSED\fP(x)   (void)x;"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_ENABLE_MUTEX\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_DEBUG_LOG\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_INFO_LOG\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_WARNING_LOG\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_ERROR_LOG\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_FATAL_LOG\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_QA_LOG\fP   0"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_TRACE_LOG\fP   1"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_VERBOSE_LOG\fP   1"
+.br
+.ti -1c
+.RI "#define \fBELPP_FOR_EACH\fP(variableName, initialValue, operation, limit)"
+.br
+.ti -1c
+.RI "#define \fBELPP_FOR_EACH_LEVEL\fP(variableName, initialValue, operation)   \fBELPP_FOR_EACH\fP(variableName, initialValue, operation, \fBeasyloggingpp::Level::kMaxValid\fP)"
+.br
+.ti -1c
+.RI "#define \fBELPP_FOR_EACH_CONFIGURATION\fP(variableName, initialValue, operation)   \fBELPP_FOR_EACH\fP(variableName, initialValue, operation, \fBeasyloggingpp::ConfigurationType::kMaxValid\fP)"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_STREAM\fP(l)   (*(l->stream()))"
+.br
+.ti -1c
+.RI "#define \fBSTART_FUNCTION_LOG\fP   'Executing [' << __func__ << ']'"
+.br
+.ti -1c
+.RI "#define \fBTIME_OUTPUT\fP"
+.br
+.ti -1c
+.RI "#define \fBFUNC_SUB_COMMON_START\fP   { timeval functionStartTime, functionEndTime; _ELPP_GET_CURR_TIME(&functionStartTime)"
+.br
+.ti -1c
+.RI "#define \fBWRITE_FUNC_PERFORMANCE\fP"
+.br
+.ti -1c
+.RI "#define \fBFUNC_SUB_COMMON_END\fP   \fBWRITE_FUNC_PERFORMANCE\fP;"
+.br
+.ti -1c
+.RI "#define \fBSUB\fP(FUNCTION_NAME, PARAMS)   void FUNCTION_NAME PARAMS \fBFUNC_SUB_COMMON_START\fP"
+.br
+.ti -1c
+.RI "#define \fBEND_SUB\fP   \fBFUNC_SUB_COMMON_END\fP }"
+.br
+.ti -1c
+.RI "#define \fBFUNC\fP(RETURNING_TYPE, FUNCTION_NAME, PARAMS)   RETURNING_TYPE FUNCTION_NAME PARAMS \fBFUNC_SUB_COMMON_START\fP"
+.br
+.ti -1c
+.RI "#define \fBRETURN\fP(return_value)   \fBFUNC_SUB_COMMON_END\fP return return_value;"
+.br
+.ti -1c
+.RI "#define \fBEND_FUNC\fP(return_value)   \fBRETURN\fP(return_value) }"
+.br
+.ti -1c
+.RI "#define \fBMAIN\fP(argc, argv)   \fBFUNC\fP(int, \fBmain\fP, (argc, argv))"
+.br
+.ti -1c
+.RI "#define \fBEND_MAIN\fP(return_value)   \fBFUNC_SUB_COMMON_END\fP; return return_value; }"
+.br
+.ti -1c
+.RI "#define \fBRETURN_MAIN\fP(exit_status)   return exit_status;"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_LOG_WRITER\fP(_logger, _level)"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_LOG_WRITER_COND\fP(_c, _logger, _level)"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_LOG_WRITER_N\fP(_n, _logger, _level)"
+.br
+.ti -1c
+.RI "#define \fBVLOG_IS_ON\fP(verboseLevel)   verboseLevel <= \fBeasyloggingpp::internal::registeredLoggers\fP->constants()->CURRENT_VERBOSE_LEVEL"
+.br
+.ti -1c
+.RI "#define \fBCINFO\fP(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Info\fP)"
+.br
+.ti -1c
+.RI "#define \fBCWARNING\fP(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Warning\fP)"
+.br
+.ti -1c
+.RI "#define \fBCDEBUG\fP(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Debug\fP)"
+.br
+.ti -1c
+.RI "#define \fBCERROR\fP(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Error\fP)"
+.br
+.ti -1c
+.RI "#define \fBCFATAL\fP(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Fatal\fP)"
+.br
+.ti -1c
+.RI "#define \fBCQA\fP(loggerId)   \fBeasyloggingpp::internal::NullWriter\fP()"
+.br
+.ti -1c
+.RI "#define \fBCTRACE\fP(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Trace\fP)"
+.br
+.ti -1c
+.RI "#define \fBCVERBOSE\fP(vlevel_, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCINFO_IF\fP(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Info\fP)"
+.br
+.ti -1c
+.RI "#define \fBCWARNING_IF\fP(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Warning\fP)"
+.br
+.ti -1c
+.RI "#define \fBCDEBUG_IF\fP(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Debug\fP)"
+.br
+.ti -1c
+.RI "#define \fBCERROR_IF\fP(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Error\fP)"
+.br
+.ti -1c
+.RI "#define \fBCFATAL_IF\fP(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Fatal\fP)"
+.br
+.ti -1c
+.RI "#define \fBCQA_IF\fP(condition_, loggerId)   \fBeasyloggingpp::internal::NullWriter\fP()"
+.br
+.ti -1c
+.RI "#define \fBCTRACE_IF\fP(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Trace\fP)"
+.br
+.ti -1c
+.RI "#define \fBCVERBOSE_IF\fP(condition_, vlevel_, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCINFO_EVERY_N\fP(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Info\fP)"
+.br
+.ti -1c
+.RI "#define \fBCWARNING_EVERY_N\fP(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Warning\fP)"
+.br
+.ti -1c
+.RI "#define \fBCDEBUG_EVERY_N\fP(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Debug\fP)"
+.br
+.ti -1c
+.RI "#define \fBCERROR_EVERY_N\fP(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Error\fP)"
+.br
+.ti -1c
+.RI "#define \fBCFATAL_EVERY_N\fP(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Fatal\fP)"
+.br
+.ti -1c
+.RI "#define \fBCQA_EVERY_N\fP(interval_, loggerId)   \fBeasyloggingpp::internal::NullWriter\fP()"
+.br
+.ti -1c
+.RI "#define \fBCTRACE_EVERY_N\fP(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Trace\fP)"
+.br
+.ti -1c
+.RI "#define \fBCVERBOSE_EVERY_N\fP(interval_, vlevel_, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCLOG\fP(LEVEL, loggerId)   C##LEVEL(loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCLOG_VERBOSE\fP(vlevel, loggerId)   \fBCVERBOSE\fP(vlevel, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCVLOG\fP(vlevel, loggerId)   \fBCVERBOSE\fP(vlevel, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCLOG_IF\fP(condition, LEVEL, loggerId)   C##LEVEL##_IF(condition, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCLOG_VERBOSE_IF\fP(condition, vlevel, loggerId)   \fBCVERBOSE_IF\fP(condition, vlevel, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCVLOG_IF\fP(condition, vlevel, loggerId)   \fBCVERBOSE_IF\fP(condition, vlevel, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCLOG_EVERY_N\fP(n, LEVEL, loggerId)   C##LEVEL##_EVERY_N(n, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCLOG_VERBOSE_EVERY_N\fP(n, vlevel, loggerId)   \fBCVERBOSE_EVERY_N\fP(n, vlevel, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBCVLOG_EVERY_N\fP(n, vlevel, loggerId)   \fBCVERBOSE_EVERY_N\fP(n, vlevel, loggerId)"
+.br
+.ti -1c
+.RI "#define \fBLOG\fP(LEVEL)   \fBCLOG\fP(LEVEL, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLOG_VERBOSE\fP(vlevel)   \fBCLOG_VERBOSE\fP(vlevel, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBVLOG\fP(vlevel)   \fBCVLOG\fP(vlevel, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLOG_IF\fP(condition, LEVEL)   \fBCLOG_IF\fP(condition, LEVEL, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLOG_VERBOSE_IF\fP(condition, vlevel)   \fBCLOG_VERBOSE_IF\fP(condition, vlevel, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBVLOG_IF\fP(condition, vlevel)   \fBCVLOG_IF\fP(condition, vlevel, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLOG_EVERY_N\fP(n, LEVEL)   \fBCLOG_EVERY_N\fP(n, LEVEL, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLOG_VERBOSE_EVERY_N\fP(n, vlevel)   \fBCLOG_VERBOSE_EVERY_N\fP(n, vlevel, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBVLOG_EVERY_N\fP(n, vlevel)   \fBCVLOG_EVERY_N\fP(n, vlevel, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLINFO\fP   \fBCINFO\fP('trivial')"
+.br
+.ti -1c
+.RI "#define \fBLWARNING\fP   \fBCWARNING\fP('trivial')"
+.br
+.ti -1c
+.RI "#define \fBLDEBUG\fP   \fBCDEBUG\fP('trivial')"
+.br
+.ti -1c
+.RI "#define \fBLERROR\fP   \fBCERROR\fP('trivial')"
+.br
+.ti -1c
+.RI "#define \fBLFATAL\fP   \fBCFATAL\fP('trivial')"
+.br
+.ti -1c
+.RI "#define \fBLQA\fP   \fBCQA\fP('trivial')"
+.br
+.ti -1c
+.RI "#define \fBLTRACE\fP   \fBCTRACE\fP('trivial')"
+.br
+.ti -1c
+.RI "#define \fBLVERBOSE\fP(level)   \fBCVERBOSE\fP(level, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLINFO_IF\fP(condition)   \fBCINFO_IF\fP(condition, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLWARNING_IF\fP(condition)   \fBCWARNING_IF\fP(condition, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLDEBUG_IF\fP(condition)   \fBCDEBUG_IF\fP(condition, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLERROR_IF\fP(condition)   \fBCERROR_IF\fP(condition, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLFATAL_IF\fP(condition)   \fBCFATAL_IF\fP(condition, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLQA_IF\fP(condition)   \fBCQA_IF\fP(condition, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLTRACE_IF\fP(condition)   \fBCTRACE_IF\fP(condition, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLVERBOSE_IF\fP(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLINFO_EVERY_N\fP(n)   \fBCINFO_EVERY_N\fP(n, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLWARNING_EVERY_N\fP(n)   \fBCWARNING_EVERY_N\fP(n, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLDEBUG_EVERY_N\fP(n)   \fBCDEBUG_EVERY_N\fP(n, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLERROR_EVERY_N\fP(n)   \fBCERROR_EVERY_N\fP(n, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLFATAL_EVERY_N\fP(n)   \fBCFATAL_EVERY_N\fP(n, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLQA_EVERY_N\fP(n)   \fBCQA_EVERY_N\fP(n, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLTRACE_EVERY_N\fP(n)   \fBCTRACE_EVERY_N\fP(n, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBLVERBOSE_EVERY_N\fP(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'trivial')"
+.br
+.ti -1c
+.RI "#define \fBBINFO\fP   \fBCINFO\fP('business')"
+.br
+.ti -1c
+.RI "#define \fBBWARNING\fP   \fBCWARNING\fP('business')"
+.br
+.ti -1c
+.RI "#define \fBBDEBUG\fP   \fBCDEBUG\fP('business')"
+.br
+.ti -1c
+.RI "#define \fBBERROR\fP   \fBCERROR\fP('business')"
+.br
+.ti -1c
+.RI "#define \fBBFATAL\fP   \fBCFATAL\fP('business')"
+.br
+.ti -1c
+.RI "#define \fBBQA\fP   \fBCQA\fP('business')"
+.br
+.ti -1c
+.RI "#define \fBBTRACE\fP   \fBCTRACE\fP('business')"
+.br
+.ti -1c
+.RI "#define \fBBVERBOSE\fP(level)   \fBCVERBOSE\fP(level, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBINFO_IF\fP(condition)   \fBCINFO_IF\fP(condition, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBWARNING_IF\fP(condition)   \fBCWARNING_IF\fP(condition, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBDEBUG_IF\fP(condition)   \fBCDEBUG_IF\fP(condition, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBERROR_IF\fP(condition)   \fBCERROR_IF\fP(condition, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBFATAL_IF\fP(condition)   \fBCFATAL_IF\fP(condition, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBQA_IF\fP(condition)   \fBCQA_IF\fP(condition, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBTRACE_IF\fP(condition)   \fBCTRACE_IF\fP(condition, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBVERBOSE_IF\fP(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBINFO_EVERY_N\fP(n)   \fBCINFO_EVERY_N\fP(n, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBWARNING_EVERY_N\fP(n)   \fBCWARNING_EVERY_N\fP(n, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBDEBUG_EVERY_N\fP(n)   \fBCDEBUG_EVERY_N\fP(n, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBERROR_EVERY_N\fP(n)   \fBCERROR_EVERY_N\fP(n, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBFATAL_EVERY_N\fP(n)   \fBCFATAL_EVERY_N\fP(n, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBQA_EVERY_N\fP(n)   \fBCQA_EVERY_N\fP(n, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBTRACE_EVERY_N\fP(n)   \fBCTRACE_EVERY_N\fP(n, 'business')"
+.br
+.ti -1c
+.RI "#define \fBBVERBOSE_EVERY_N\fP(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'business')"
+.br
+.ti -1c
+.RI "#define \fBSINFO\fP   \fBCINFO\fP('security')"
+.br
+.ti -1c
+.RI "#define \fBSWARNING\fP   \fBCWARNING\fP('security')"
+.br
+.ti -1c
+.RI "#define \fBSDEBUG\fP   \fBCDEBUG\fP('security')"
+.br
+.ti -1c
+.RI "#define \fBSERROR\fP   \fBCERROR\fP('security')"
+.br
+.ti -1c
+.RI "#define \fBSFATAL\fP   \fBCFATAL\fP('security')"
+.br
+.ti -1c
+.RI "#define \fBSQA\fP   \fBCQA\fP('security')"
+.br
+.ti -1c
+.RI "#define \fBSTRACE\fP   \fBCTRACE\fP('security')"
+.br
+.ti -1c
+.RI "#define \fBSVERBOSE\fP(level)   \fBCVERBOSE\fP(level, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSINFO_IF\fP(condition)   \fBCINFO_IF\fP(condition, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSWARNING_IF\fP(condition)   \fBCWARNING_IF\fP(condition, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSDEBUG_IF\fP(condition)   \fBCDEBUG_IF\fP(condition, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSERROR_IF\fP(condition)   \fBCERROR_IF\fP(condition, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSFATAL_IF\fP(condition)   \fBCFATAL_IF\fP(condition, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSQA_IF\fP(condition)   \fBCQA_IF\fP(condition, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSTRACE_IF\fP(condition)   \fBCQA_IF\fP(condition, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSVERBOSE_IF\fP(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSINFO_EVERY_N\fP(n)   \fBCINFO_EVERY_N\fP(n, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSWARNING_EVERY_N\fP(n)   \fBCWARNING_EVERY_N\fP(n, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSDEBUG_EVERY_N\fP(n)   \fBCDEBUG_EVERY_N\fP(n, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSERROR_EVERY_N\fP(n)   \fBCERROR_EVERY_N\fP(n, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSFATAL_EVERY_N\fP(n)   \fBCFATAL_EVERY_N\fP(n, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSQA_EVERY_N\fP(n)   \fBCQA_EVERY_N\fP(n, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSTRACE_EVERY_N\fP(n)   \fBCTRACE_EVERY_N\fP(n, 'security')"
+.br
+.ti -1c
+.RI "#define \fBSVERBOSE_EVERY_N\fP(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'security')"
+.br
+.ti -1c
+.RI "#define \fBPINFO\fP   \fBCINFO\fP('performance')"
+.br
+.ti -1c
+.RI "#define \fBPWARNING\fP   \fBCWARNING\fP('performance')"
+.br
+.ti -1c
+.RI "#define \fBPDEBUG\fP   \fBCDEBUG\fP('performance')"
+.br
+.ti -1c
+.RI "#define \fBPERROR\fP   \fBCERROR\fP('performance')"
+.br
+.ti -1c
+.RI "#define \fBPFATAL\fP   \fBCFATAL\fP('performance')"
+.br
+.ti -1c
+.RI "#define \fBPQA\fP   \fBCQA\fP('performance')"
+.br
+.ti -1c
+.RI "#define \fBPTRACE\fP   \fBCTRACE\fP('performance')"
+.br
+.ti -1c
+.RI "#define \fBPVERBOSE\fP(level)   \fBCVERBOSE\fP(level, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPINFO_IF\fP(condition)   \fBCINFO_IF\fP(condition, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPWARNING_IF\fP(condition)   \fBCWARNING_IF\fP(condition, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPDEBUG_IF\fP(condition)   \fBCDEBUG_IF\fP(condition, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPERROR_IF\fP(condition)   \fBCERROR_IF\fP(condition, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPFATAL_IF\fP(condition)   \fBCFATAL_IF\fP(condition, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPQA_IF\fP(condition)   \fBCQA_IF\fP(condition, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPTRACE_IF\fP(condition)   \fBCQA_IF\fP(condition, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPVERBOSE_IF\fP(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPINFO_EVERY_N\fP(n)   \fBCINFO_EVERY_N\fP(n, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPWARNING_EVERY_N\fP(n)   \fBCWARNING_EVERY_N\fP(n, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPDEBUG_EVERY_N\fP(n)   \fBCDEBUG_EVERY_N\fP(n, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPERROR_EVERY_N\fP(n)   \fBCERROR_EVERY_N\fP(n, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPFATAL_EVERY_N\fP(n)   \fBCFATAL_EVERY_N\fP(n, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPQA_EVERY_N\fP(n)   \fBCQA_EVERY_N\fP(n, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPTRACE_EVERY_N\fP(n)   \fBCTRACE_EVERY_N\fP(n, 'performance')"
+.br
+.ti -1c
+.RI "#define \fBPVERBOSE_EVERY_N\fP(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'performance')"
+.br
+.ti -1c
+.RI "#define \fB_INITIALIZE_EASYLOGGINGPP\fP"
+.br
+.ti -1c
+.RI "#define \fB_START_EASYLOGGINGPP\fP(argc, argv)   \fBeasyloggingpp::Loggers::setApplicationArguments\fP(argc, argv);"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_COUNTER\fP   \fBeasyloggingpp::internal::registeredLoggers\fP->counters()->get(\fB__FILE__\fP, \fB__LINE__\fP)"
+.br
+.ti -1c
+.RI "#define \fB_ELPP_COUNTER_POSITION\fP   (\fB_ELPP_COUNTER\fP == NULL ? 0 : \fB_ELPP_COUNTER\fP->position())"
+.br
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "std::string \fBeasyloggingpp::internal::threading::getCurrentThreadId\fP (void)"
+.br
+.ti -1c
+.RI "template<typename T > void \fBeasyloggingpp::internal::utilities::safeDelete\fP (T *&pointer, bool checkNullity=true)"
+.br
+.in -1c
+.SS "Variables"
+
+.in +1c
+.ti -1c
+.RI "internal::ScopedPointer
+.br
+< internal::RegisteredLoggers > \fBeasyloggingpp::internal::registeredLoggers\fP"
+.br
+.in -1c
+.SH "Macro Definition Documentation"
+.PP 
+.SS "#define __EASYLOGGINGPP_ASSERT(expr, msg)   if (!(expr)) { std::cerr << 'EASYLOGGING++ ASSERTION FAILED (LINE: ' << __LINE__ << ') [' #expr << '] with message \\'' << msg << '\\'' << std::endl; }"
+
+.PP
+Definition at line 183 of file logger\&.hpp\&.
+.PP
+Referenced by easyloggingpp::Loggers::ConfigurationsReader::enabled(), easyloggingpp::Loggers::ConfigurationsReader::filename(), easyloggingpp::internal::TypedConfigurations::getULong(), easyloggingpp::Loggers::ConfigurationsReader::logFormat(), easyloggingpp::Loggers::ConfigurationsReader::logRollOutSize(), easyloggingpp::Loggers::ConfigurationsReader::millisecondsWidth(), easyloggingpp::Configurations::parseFromFile(), easyloggingpp::Configurations::parseFromText(), easyloggingpp::Configurations::Parser::parseLine(), easyloggingpp::Loggers::ConfigurationsReader::performanceTracking(), easyloggingpp::Loggers::ConfigurationsReader::toFile(), easyloggingpp::Loggers::ConfigurationsReader::toStandardOutput(), and easyloggingpp::internal::Writer::Writer()\&.
+.SS "#define __EASYLOGGINGPP_SUPPRESS_UNSED(x)   (void)x;"
+
+.PP
+Definition at line 188 of file logger\&.hpp\&.
+.PP
+Referenced by easyloggingpp::Logger::configure(), easyloggingpp::internal::RegisteredLoggers::get(), easyloggingpp::internal::TypedConfigurations::getULong(), easyloggingpp::internal::TypedConfigurations::parse(), and easyloggingpp::internal::RegisteredCounters::validate()\&.
+.SS "#define __FILE__   ''"
+
+.PP
+Definition at line 44 of file logger\&.hpp\&.
+.SS "#define __func__   ''"
+
+.PP
+Definition at line 60 of file logger\&.hpp\&.
+.SS "#define __LINE__   0"
+
+.PP
+Definition at line 47 of file logger\&.hpp\&.
+.SS "#define _ELPP_ASSEMBLY_SUPPORTED   0"
+
+.PP
+Definition at line 177 of file logger\&.hpp\&.
+.SS "#define _ELPP_COUNTER   \fBeasyloggingpp::internal::registeredLoggers\fP->counters()->get(\fB__FILE__\fP, \fB__LINE__\fP)"
+
+.PP
+Definition at line 4000 of file logger\&.hpp\&.
+.SS "#define _ELPP_COUNTER_POSITION   (\fB_ELPP_COUNTER\fP == NULL ? 0 : \fB_ELPP_COUNTER\fP->position())"
+
+.PP
+Definition at line 4001 of file logger\&.hpp\&.
+.SS "#define _ELPP_CRT_DBG_WARNINGS   0"
+
+.PP
+Definition at line 91 of file logger\&.hpp\&.
+.SS "#define _ELPP_DEBUG_LOG   1"
+
+.PP
+Definition at line 199 of file logger\&.hpp\&.
+.SS "#define _ELPP_ENABLE_MUTEX   1"
+
+.PP
+Definition at line 194 of file logger\&.hpp\&.
+.SS "#define _ELPP_ERROR_LOG   1"
+
+.PP
+Definition at line 214 of file logger\&.hpp\&.
+.SS "#define _ELPP_FATAL_LOG   1"
+
+.PP
+Definition at line 219 of file logger\&.hpp\&.
+.SS "#define _ELPP_INFO_LOG   1"
+
+.PP
+Definition at line 204 of file logger\&.hpp\&.
+.SS "#define _ELPP_LOG_WRITER(_logger, _level)"
+\fBValue:\fP
+.PP
+.nf
+easyloggingpp::internal::Writer(\
+    _logger, easyloggingpp::internal::Aspect::Normal, _level, __func__, __FILE__, __LINE__)
+.fi
+.PP
+Definition at line 3527 of file logger\&.hpp\&.
+.SS "#define _ELPP_LOG_WRITER_COND(_c, _logger, _level)"
+\fBValue:\fP
+.PP
+.nf
+if (_c) easyloggingpp::internal::Writer(\
+    _logger, easyloggingpp::internal::Aspect::Conditional, _level, __func__, __FILE__, __LINE__, _c)
+.fi
+.PP
+Definition at line 3529 of file logger\&.hpp\&.
+.SS "#define _ELPP_LOG_WRITER_N(_n, _logger, _level)"
+\fBValue:\fP
+.PP
+.nf
+if (easyloggingpp::internal::registeredLoggers->validateCounter(\
+    __FILE__, __LINE__, _n)) easyloggingpp::internal::Writer(_logger, easyloggingpp::internal::Aspect::Interval,\
+    _level, __func__, __FILE__, __LINE__, true, 0, _n)
+.fi
+.PP
+Definition at line 3531 of file logger\&.hpp\&.
+.SS "#define _ELPP_MINGW   0"
+
+.PP
+Definition at line 106 of file logger\&.hpp\&.
+.SS "#define _ELPP_NDK   0"
+
+.PP
+Definition at line 111 of file logger\&.hpp\&.
+.SS "#define _ELPP_OS_LINUX   0"
+
+.PP
+Definition at line 162 of file logger\&.hpp\&.
+.SS "#define _ELPP_OS_MAC   0"
+
+.PP
+Definition at line 168 of file logger\&.hpp\&.
+.SS "#define _ELPP_OS_UNIX   ((\fB_ELPP_OS_LINUX\fP || \fB_ELPP_OS_MAC\fP) && (!\fB_ELPP_OS_WINDOWS\fP))"
+
+.PP
+Definition at line 171 of file logger\&.hpp\&.
+.SS "#define _ELPP_OS_WINDOWS   0"
+
+.PP
+Definition at line 156 of file logger\&.hpp\&.
+.SS "#define _ELPP_QA_LOG   0"
+
+.PP
+Definition at line 226 of file logger\&.hpp\&.
+.SS "#define _ELPP_STD_THREAD_AVAILABLE   0"
+
+.PP
+Definition at line 131 of file logger\&.hpp\&.
+.SS "#define _ELPP_STREAM(l)   (*(l->stream()))"
+
+.PP
+Definition at line 2594 of file logger\&.hpp\&.
+.PP
+Referenced by easyloggingpp::internal::Writer::operator<<(), and easyloggingpp::internal::Writer::writeIterator()\&.
+.SS "#define _ELPP_TRACE_LOG   1"
+
+.PP
+Definition at line 229 of file logger\&.hpp\&.
+.SS "#define _ELPP_VERBOSE_LOG   1"
+
+.PP
+Definition at line 234 of file logger\&.hpp\&.
+.SS "#define _ELPP_WARNING_LOG   1"
+
+.PP
+Definition at line 209 of file logger\&.hpp\&.
+.SS "#define _ENABLE_EASYLOGGING   1"
+
+.PP
+Definition at line 147 of file logger\&.hpp\&.
+.SS "#define _INITIALIZE_EASYLOGGINGPP"
+\fBValue:\fP
+.PP
+.nf
+namespace easyloggingpp {                                     \
+        namespace internal {                                      \
+            ScopedPointer<RegisteredLoggers> registeredLoggers(   \
+                    new RegisteredLoggers());                     \
+        }                                                         \
+    }
+.fi
+.PP
+Definition at line 3992 of file logger\&.hpp\&.
+.SS "#define _START_EASYLOGGINGPP(argc, argv)   \fBeasyloggingpp::Loggers::setApplicationArguments\fP(argc, argv);"
+
+.PP
+Definition at line 3999 of file logger\&.hpp\&.
+.SS "#define BDEBUG   \fBCDEBUG\fP('business')"
+
+.PP
+Definition at line 3838 of file logger\&.hpp\&.
+.SS "#define BDEBUG_EVERY_N(n)   \fBCDEBUG_EVERY_N\fP(n, 'business')"
+
+.PP
+Definition at line 3856 of file logger\&.hpp\&.
+.SS "#define BDEBUG_IF(condition)   \fBCDEBUG_IF\fP(condition, 'business')"
+
+.PP
+Definition at line 3847 of file logger\&.hpp\&.
+.SS "#define BERROR   \fBCERROR\fP('business')"
+
+.PP
+Definition at line 3839 of file logger\&.hpp\&.
+.SS "#define BERROR_EVERY_N(n)   \fBCERROR_EVERY_N\fP(n, 'business')"
+
+.PP
+Definition at line 3857 of file logger\&.hpp\&.
+.SS "#define BERROR_IF(condition)   \fBCERROR_IF\fP(condition, 'business')"
+
+.PP
+Definition at line 3848 of file logger\&.hpp\&.
+.SS "#define BFATAL   \fBCFATAL\fP('business')"
+
+.PP
+Definition at line 3840 of file logger\&.hpp\&.
+.SS "#define BFATAL_EVERY_N(n)   \fBCFATAL_EVERY_N\fP(n, 'business')"
+
+.PP
+Definition at line 3858 of file logger\&.hpp\&.
+.SS "#define BFATAL_IF(condition)   \fBCFATAL_IF\fP(condition, 'business')"
+
+.PP
+Definition at line 3849 of file logger\&.hpp\&.
+.SS "#define BINFO   \fBCINFO\fP('business')"
+
+.PP
+Definition at line 3836 of file logger\&.hpp\&.
+.SS "#define BINFO_EVERY_N(n)   \fBCINFO_EVERY_N\fP(n, 'business')"
+
+.PP
+Definition at line 3854 of file logger\&.hpp\&.
+.SS "#define BINFO_IF(condition)   \fBCINFO_IF\fP(condition, 'business')"
+
+.PP
+Definition at line 3845 of file logger\&.hpp\&.
+.SS "#define BQA   \fBCQA\fP('business')"
+
+.PP
+Definition at line 3841 of file logger\&.hpp\&.
+.SS "#define BQA_EVERY_N(n)   \fBCQA_EVERY_N\fP(n, 'business')"
+
+.PP
+Definition at line 3859 of file logger\&.hpp\&.
+.SS "#define BQA_IF(condition)   \fBCQA_IF\fP(condition, 'business')"
+
+.PP
+Definition at line 3850 of file logger\&.hpp\&.
+.SS "#define BTRACE   \fBCTRACE\fP('business')"
+
+.PP
+Definition at line 3842 of file logger\&.hpp\&.
+.SS "#define BTRACE_EVERY_N(n)   \fBCTRACE_EVERY_N\fP(n, 'business')"
+
+.PP
+Definition at line 3860 of file logger\&.hpp\&.
+.SS "#define BTRACE_IF(condition)   \fBCTRACE_IF\fP(condition, 'business')"
+
+.PP
+Definition at line 3851 of file logger\&.hpp\&.
+.SS "#define BVERBOSE(level)   \fBCVERBOSE\fP(level, 'business')"
+
+.PP
+Definition at line 3843 of file logger\&.hpp\&.
+.SS "#define BVERBOSE_EVERY_N(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'business')"
+
+.PP
+Definition at line 3861 of file logger\&.hpp\&.
+.SS "#define BVERBOSE_IF(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'business')"
+
+.PP
+Definition at line 3852 of file logger\&.hpp\&.
+.SS "#define BWARNING   \fBCWARNING\fP('business')"
+
+.PP
+Definition at line 3837 of file logger\&.hpp\&.
+.SS "#define BWARNING_EVERY_N(n)   \fBCWARNING_EVERY_N\fP(n, 'business')"
+
+.PP
+Definition at line 3855 of file logger\&.hpp\&.
+.SS "#define BWARNING_IF(condition)   \fBCWARNING_IF\fP(condition, 'business')"
+
+.PP
+Definition at line 3846 of file logger\&.hpp\&.
+.SS "#define CDEBUG(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Debug\fP)"
+
+.PP
+Definition at line 3587 of file logger\&.hpp\&.
+.SS "#define CDEBUG_EVERY_N(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Debug\fP)"
+
+.PP
+Definition at line 3671 of file logger\&.hpp\&.
+.SS "#define CDEBUG_IF(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Debug\fP)"
+
+.PP
+Definition at line 3629 of file logger\&.hpp\&.
+.SS "#define CERROR(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Error\fP)"
+
+.PP
+Definition at line 3592 of file logger\&.hpp\&.
+.SS "#define CERROR_EVERY_N(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Error\fP)"
+
+.PP
+Definition at line 3676 of file logger\&.hpp\&.
+.SS "#define CERROR_IF(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Error\fP)"
+
+.PP
+Definition at line 3634 of file logger\&.hpp\&.
+.SS "#define CFATAL(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Fatal\fP)"
+
+.PP
+Definition at line 3597 of file logger\&.hpp\&.
+.SS "#define CFATAL_EVERY_N(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Fatal\fP)"
+
+.PP
+Definition at line 3681 of file logger\&.hpp\&.
+.SS "#define CFATAL_IF(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Fatal\fP)"
+
+.PP
+Definition at line 3639 of file logger\&.hpp\&.
+.SS "#define CINFO(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Info\fP)"
+
+.PP
+Definition at line 3577 of file logger\&.hpp\&.
+.SS "#define CINFO_EVERY_N(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Info\fP)"
+
+.PP
+Definition at line 3661 of file logger\&.hpp\&.
+.SS "#define CINFO_IF(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Info\fP)"
+
+.PP
+Definition at line 3619 of file logger\&.hpp\&.
+.SS "#define CLOG(LEVEL, loggerId)   C##LEVEL(loggerId)"
+
+.PP
+Definition at line 3716 of file logger\&.hpp\&.
+.SS "#define CLOG_EVERY_N(n, LEVEL, loggerId)   C##LEVEL##_EVERY_N(n, loggerId)"
+
+.PP
+Definition at line 3724 of file logger\&.hpp\&.
+.SS "#define CLOG_IF(condition, LEVEL, loggerId)   C##LEVEL##_IF(condition, loggerId)"
+
+.PP
+Definition at line 3720 of file logger\&.hpp\&.
+.SS "#define CLOG_VERBOSE(vlevel, loggerId)   \fBCVERBOSE\fP(vlevel, loggerId)"
+
+.PP
+Definition at line 3717 of file logger\&.hpp\&.
+.SS "#define CLOG_VERBOSE_EVERY_N(n, vlevel, loggerId)   \fBCVERBOSE_EVERY_N\fP(n, vlevel, loggerId)"
+
+.PP
+Definition at line 3725 of file logger\&.hpp\&.
+.SS "#define CLOG_VERBOSE_IF(condition, vlevel, loggerId)   \fBCVERBOSE_IF\fP(condition, vlevel, loggerId)"
+
+.PP
+Definition at line 3721 of file logger\&.hpp\&.
+.SS "#define CQA(loggerId)   \fBeasyloggingpp::internal::NullWriter\fP()"
+
+.PP
+Definition at line 3604 of file logger\&.hpp\&.
+.SS "#define CQA_EVERY_N(interval_, loggerId)   \fBeasyloggingpp::internal::NullWriter\fP()"
+
+.PP
+Definition at line 3688 of file logger\&.hpp\&.
+.SS "#define CQA_IF(condition_, loggerId)   \fBeasyloggingpp::internal::NullWriter\fP()"
+
+.PP
+Definition at line 3646 of file logger\&.hpp\&.
+.SS "#define CTRACE(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Trace\fP)"
+
+.PP
+Definition at line 3607 of file logger\&.hpp\&.
+.SS "#define CTRACE_EVERY_N(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Trace\fP)"
+
+.PP
+Definition at line 3691 of file logger\&.hpp\&.
+.SS "#define CTRACE_IF(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Trace\fP)"
+
+.PP
+Definition at line 3649 of file logger\&.hpp\&.
+.SS "#define CVERBOSE(vlevel_, loggerId)"
+\fBValue:\fP
+.PP
+.nf
+easyloggingpp::internal::Writer(loggerId, easyloggingpp::internal::Aspect::Normal,       \
+       easyloggingpp::Level::Verbose, __func__, __FILE__, __LINE__, true, vlevel_)
+.fi
+.PP
+Definition at line 3612 of file logger\&.hpp\&.
+.SS "#define CVERBOSE_EVERY_N(interval_, vlevel_, loggerId)"
+\fBValue:\fP
+.PP
+.nf
+if (easyloggingpp::internal::registeredLoggers->validateCounter(__FILE__, __LINE__, interval_)) \\
+       easyloggingpp::internal::Writer(loggerId, easyloggingpp::internal::Aspect::Interval,   \
+       easyloggingpp::Level::Verbose, __func__, __FILE__, __LINE__, true, vlevel_, interval_)
+.fi
+.PP
+Definition at line 3696 of file logger\&.hpp\&.
+.SS "#define CVERBOSE_IF(condition_, vlevel_, loggerId)"
+\fBValue:\fP
+.PP
+.nf
+if (condition_) easyloggingpp::internal::Writer(loggerId, easyloggingpp::internal::Aspect::Conditional,     \
+       easyloggingpp::Level::Verbose, __func__, __FILE__, __LINE__, condition_, vlevel_)
+.fi
+.PP
+Definition at line 3654 of file logger\&.hpp\&.
+.SS "#define CVLOG(vlevel, loggerId)   \fBCVERBOSE\fP(vlevel, loggerId)"
+
+.PP
+Definition at line 3718 of file logger\&.hpp\&.
+.SS "#define CVLOG_EVERY_N(n, vlevel, loggerId)   \fBCVERBOSE_EVERY_N\fP(n, vlevel, loggerId)"
+
+.PP
+Definition at line 3726 of file logger\&.hpp\&.
+.SS "#define CVLOG_IF(condition, vlevel, loggerId)   \fBCVERBOSE_IF\fP(condition, vlevel, loggerId)"
+
+.PP
+Definition at line 3722 of file logger\&.hpp\&.
+.SS "#define CWARNING(loggerId)   \fB_ELPP_LOG_WRITER\fP(loggerId, \fBeasyloggingpp::Level::Warning\fP)"
+
+.PP
+Definition at line 3582 of file logger\&.hpp\&.
+.SS "#define CWARNING_EVERY_N(interval_, loggerId)   \fB_ELPP_LOG_WRITER_N\fP(interval_, loggerId, \fBeasyloggingpp::Level::Warning\fP)"
+
+.PP
+Definition at line 3666 of file logger\&.hpp\&.
+.SS "#define CWARNING_IF(condition_, loggerId)   \fB_ELPP_LOG_WRITER_COND\fP(condition_, loggerId, \fBeasyloggingpp::Level::Warning\fP)"
+
+.PP
+Definition at line 3624 of file logger\&.hpp\&.
+.SS "#define ELPP_FOR_EACH(variableName, initialValue, operation, limit)"
+\fBValue:\fP
+.PP
+.nf
+unsigned int variableName = initialValue; \
+                                                                    do { \
+                                                                        operation   \
+                                                                        variableName = variableName << 1; \
+                                                                        if (variableName == 0) { ++variableName; } \
+                                                                    } while (variableName <= limit)
+.fi
+.PP
+Definition at line 238 of file logger\&.hpp\&.
+.SS "#define ELPP_FOR_EACH_CONFIGURATION(variableName, initialValue, operation)   \fBELPP_FOR_EACH\fP(variableName, initialValue, operation, \fBeasyloggingpp::ConfigurationType::kMaxValid\fP)"
+
+.PP
+Definition at line 246 of file logger\&.hpp\&.
+.PP
+Referenced by easyloggingpp::Configurations::contains()\&.
+.SS "#define ELPP_FOR_EACH_LEVEL(variableName, initialValue, operation)   \fBELPP_FOR_EACH\fP(variableName, initialValue, operation, \fBeasyloggingpp::Level::kMaxValid\fP)"
+
+.PP
+Definition at line 244 of file logger\&.hpp\&.
+.PP
+Referenced by easyloggingpp::internal::TypedConfigurations::deleteFileStreams(), easyloggingpp::internal::TypedConfigurations::insertFilename(), and easyloggingpp::Configurations::setAll()\&.
+.SS "#define END_FUNC(return_value)   \fBRETURN\fP(return_value) }"
+
+.PP
+Definition at line 3512 of file logger\&.hpp\&.
+.SS "#define END_MAIN(return_value)   \fBFUNC_SUB_COMMON_END\fP; return return_value; }"
+
+.PP
+Definition at line 3514 of file logger\&.hpp\&.
+.SS "#define END_SUB   \fBFUNC_SUB_COMMON_END\fP }"
+
+.PP
+Definition at line 3509 of file logger\&.hpp\&.
+.SS "#define FUNC(RETURNING_TYPE, FUNCTION_NAME, PARAMS)   RETURNING_TYPE FUNCTION_NAME PARAMS \fBFUNC_SUB_COMMON_START\fP"
+
+.PP
+Definition at line 3510 of file logger\&.hpp\&.
+.SS "#define FUNC_SUB_COMMON_END   \fBWRITE_FUNC_PERFORMANCE\fP;"
+
+.PP
+Definition at line 3507 of file logger\&.hpp\&.
+.SS "#define FUNC_SUB_COMMON_START   { timeval functionStartTime, functionEndTime; _ELPP_GET_CURR_TIME(&functionStartTime)"
+
+.PP
+Definition at line 3504 of file logger\&.hpp\&.
+.SS "#define LDEBUG   \fBCDEBUG\fP('trivial')"
+
+.PP
+Definition at line 3783 of file logger\&.hpp\&.
+.SS "#define LDEBUG_EVERY_N(n)   \fBCDEBUG_EVERY_N\fP(n, 'trivial')"
+
+.PP
+Definition at line 3801 of file logger\&.hpp\&.
+.SS "#define LDEBUG_IF(condition)   \fBCDEBUG_IF\fP(condition, 'trivial')"
+
+.PP
+Definition at line 3792 of file logger\&.hpp\&.
+.SS "#define LERROR   \fBCERROR\fP('trivial')"
+
+.PP
+Definition at line 3784 of file logger\&.hpp\&.
+.SS "#define LERROR_EVERY_N(n)   \fBCERROR_EVERY_N\fP(n, 'trivial')"
+
+.PP
+Definition at line 3802 of file logger\&.hpp\&.
+.SS "#define LERROR_IF(condition)   \fBCERROR_IF\fP(condition, 'trivial')"
+
+.PP
+Definition at line 3793 of file logger\&.hpp\&.
+.SS "#define LFATAL   \fBCFATAL\fP('trivial')"
+
+.PP
+Definition at line 3785 of file logger\&.hpp\&.
+.SS "#define LFATAL_EVERY_N(n)   \fBCFATAL_EVERY_N\fP(n, 'trivial')"
+
+.PP
+Definition at line 3803 of file logger\&.hpp\&.
+.SS "#define LFATAL_IF(condition)   \fBCFATAL_IF\fP(condition, 'trivial')"
+
+.PP
+Definition at line 3794 of file logger\&.hpp\&.
+.SS "#define LINFO   \fBCINFO\fP('trivial')"
+
+.PP
+Definition at line 3781 of file logger\&.hpp\&.
+.SS "#define LINFO_EVERY_N(n)   \fBCINFO_EVERY_N\fP(n, 'trivial')"
+
+.PP
+Definition at line 3799 of file logger\&.hpp\&.
+.SS "#define LINFO_IF(condition)   \fBCINFO_IF\fP(condition, 'trivial')"
+
+.PP
+Definition at line 3790 of file logger\&.hpp\&.
+.SS "#define LOG(LEVEL)   \fBCLOG\fP(LEVEL, 'trivial')"
+
+.PP
+Definition at line 3741 of file logger\&.hpp\&.
+.SS "#define LOG_EVERY_N(n, LEVEL)   \fBCLOG_EVERY_N\fP(n, LEVEL, 'trivial')"
+
+.PP
+Definition at line 3749 of file logger\&.hpp\&.
+.SS "#define LOG_IF(condition, LEVEL)   \fBCLOG_IF\fP(condition, LEVEL, 'trivial')"
+
+.PP
+Definition at line 3745 of file logger\&.hpp\&.
+.SS "#define LOG_VERBOSE(vlevel)   \fBCLOG_VERBOSE\fP(vlevel, 'trivial')"
+
+.PP
+Definition at line 3742 of file logger\&.hpp\&.
+.SS "#define LOG_VERBOSE_EVERY_N(n, vlevel)   \fBCLOG_VERBOSE_EVERY_N\fP(n, vlevel, 'trivial')"
+
+.PP
+Definition at line 3750 of file logger\&.hpp\&.
+.SS "#define LOG_VERBOSE_IF(condition, vlevel)   \fBCLOG_VERBOSE_IF\fP(condition, vlevel, 'trivial')"
+
+.PP
+Definition at line 3746 of file logger\&.hpp\&.
+.SS "#define LQA   \fBCQA\fP('trivial')"
+
+.PP
+Definition at line 3786 of file logger\&.hpp\&.
+.SS "#define LQA_EVERY_N(n)   \fBCQA_EVERY_N\fP(n, 'trivial')"
+
+.PP
+Definition at line 3804 of file logger\&.hpp\&.
+.SS "#define LQA_IF(condition)   \fBCQA_IF\fP(condition, 'trivial')"
+
+.PP
+Definition at line 3795 of file logger\&.hpp\&.
+.SS "#define LTRACE   \fBCTRACE\fP('trivial')"
+
+.PP
+Definition at line 3787 of file logger\&.hpp\&.
+.SS "#define LTRACE_EVERY_N(n)   \fBCTRACE_EVERY_N\fP(n, 'trivial')"
+
+.PP
+Definition at line 3805 of file logger\&.hpp\&.
+.SS "#define LTRACE_IF(condition)   \fBCTRACE_IF\fP(condition, 'trivial')"
+
+.PP
+Definition at line 3796 of file logger\&.hpp\&.
+.SS "#define LVERBOSE(level)   \fBCVERBOSE\fP(level, 'trivial')"
+
+.PP
+Definition at line 3788 of file logger\&.hpp\&.
+.SS "#define LVERBOSE_EVERY_N(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'trivial')"
+
+.PP
+Definition at line 3806 of file logger\&.hpp\&.
+.SS "#define LVERBOSE_IF(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'trivial')"
+
+.PP
+Definition at line 3797 of file logger\&.hpp\&.
+.SS "#define LWARNING   \fBCWARNING\fP('trivial')"
+
+.PP
+Definition at line 3782 of file logger\&.hpp\&.
+.SS "#define LWARNING_EVERY_N(n)   \fBCWARNING_EVERY_N\fP(n, 'trivial')"
+
+.PP
+Definition at line 3800 of file logger\&.hpp\&.
+.SS "#define LWARNING_IF(condition)   \fBCWARNING_IF\fP(condition, 'trivial')"
+
+.PP
+Definition at line 3791 of file logger\&.hpp\&.
+.SS "#define MAIN(argc, argv)   \fBFUNC\fP(int, \fBmain\fP, (argc, argv))"
+
+.PP
+Definition at line 3513 of file logger\&.hpp\&.
+.SS "#define PDEBUG   \fBCDEBUG\fP('performance')"
+
+.PP
+Definition at line 3948 of file logger\&.hpp\&.
+.SS "#define PDEBUG_EVERY_N(n)   \fBCDEBUG_EVERY_N\fP(n, 'performance')"
+
+.PP
+Definition at line 3966 of file logger\&.hpp\&.
+.SS "#define PDEBUG_IF(condition)   \fBCDEBUG_IF\fP(condition, 'performance')"
+
+.PP
+Definition at line 3957 of file logger\&.hpp\&.
+.SS "#define PERROR   \fBCERROR\fP('performance')"
+
+.PP
+Definition at line 3949 of file logger\&.hpp\&.
+.SS "#define PERROR_EVERY_N(n)   \fBCERROR_EVERY_N\fP(n, 'performance')"
+
+.PP
+Definition at line 3967 of file logger\&.hpp\&.
+.SS "#define PERROR_IF(condition)   \fBCERROR_IF\fP(condition, 'performance')"
+
+.PP
+Definition at line 3958 of file logger\&.hpp\&.
+.SS "#define PFATAL   \fBCFATAL\fP('performance')"
+
+.PP
+Definition at line 3950 of file logger\&.hpp\&.
+.SS "#define PFATAL_EVERY_N(n)   \fBCFATAL_EVERY_N\fP(n, 'performance')"
+
+.PP
+Definition at line 3968 of file logger\&.hpp\&.
+.SS "#define PFATAL_IF(condition)   \fBCFATAL_IF\fP(condition, 'performance')"
+
+.PP
+Definition at line 3959 of file logger\&.hpp\&.
+.SS "#define PINFO   \fBCINFO\fP('performance')"
+
+.PP
+Definition at line 3946 of file logger\&.hpp\&.
+.SS "#define PINFO_EVERY_N(n)   \fBCINFO_EVERY_N\fP(n, 'performance')"
+
+.PP
+Definition at line 3964 of file logger\&.hpp\&.
+.SS "#define PINFO_IF(condition)   \fBCINFO_IF\fP(condition, 'performance')"
+
+.PP
+Definition at line 3955 of file logger\&.hpp\&.
+.SS "#define PQA   \fBCQA\fP('performance')"
+
+.PP
+Definition at line 3951 of file logger\&.hpp\&.
+.SS "#define PQA_EVERY_N(n)   \fBCQA_EVERY_N\fP(n, 'performance')"
+
+.PP
+Definition at line 3969 of file logger\&.hpp\&.
+.SS "#define PQA_IF(condition)   \fBCQA_IF\fP(condition, 'performance')"
+
+.PP
+Definition at line 3960 of file logger\&.hpp\&.
+.SS "#define PTRACE   \fBCTRACE\fP('performance')"
+
+.PP
+Definition at line 3952 of file logger\&.hpp\&.
+.SS "#define PTRACE_EVERY_N(n)   \fBCTRACE_EVERY_N\fP(n, 'performance')"
+
+.PP
+Definition at line 3970 of file logger\&.hpp\&.
+.SS "#define PTRACE_IF(condition)   \fBCQA_IF\fP(condition, 'performance')"
+
+.PP
+Definition at line 3961 of file logger\&.hpp\&.
+.SS "#define PVERBOSE(level)   \fBCVERBOSE\fP(level, 'performance')"
+
+.PP
+Definition at line 3953 of file logger\&.hpp\&.
+.SS "#define PVERBOSE_EVERY_N(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'performance')"
+
+.PP
+Definition at line 3971 of file logger\&.hpp\&.
+.SS "#define PVERBOSE_IF(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'performance')"
+
+.PP
+Definition at line 3962 of file logger\&.hpp\&.
+.SS "#define PWARNING   \fBCWARNING\fP('performance')"
+
+.PP
+Definition at line 3947 of file logger\&.hpp\&.
+.SS "#define PWARNING_EVERY_N(n)   \fBCWARNING_EVERY_N\fP(n, 'performance')"
+
+.PP
+Definition at line 3965 of file logger\&.hpp\&.
+.SS "#define PWARNING_IF(condition)   \fBCWARNING_IF\fP(condition, 'performance')"
+
+.PP
+Definition at line 3956 of file logger\&.hpp\&.
+.SS "#define RETURN(return_value)   \fBFUNC_SUB_COMMON_END\fP return return_value;"
+
+.PP
+Definition at line 3511 of file logger\&.hpp\&.
+.SS "#define RETURN_MAIN(exit_status)   return exit_status;"
+
+.PP
+Definition at line 3515 of file logger\&.hpp\&.
+.SS "#define SDEBUG   \fBCDEBUG\fP('security')"
+
+.PP
+Definition at line 3893 of file logger\&.hpp\&.
+.SS "#define SDEBUG_EVERY_N(n)   \fBCDEBUG_EVERY_N\fP(n, 'security')"
+
+.PP
+Definition at line 3911 of file logger\&.hpp\&.
+.SS "#define SDEBUG_IF(condition)   \fBCDEBUG_IF\fP(condition, 'security')"
+
+.PP
+Definition at line 3902 of file logger\&.hpp\&.
+.SS "#define SERROR   \fBCERROR\fP('security')"
+
+.PP
+Definition at line 3894 of file logger\&.hpp\&.
+.SS "#define SERROR_EVERY_N(n)   \fBCERROR_EVERY_N\fP(n, 'security')"
+
+.PP
+Definition at line 3912 of file logger\&.hpp\&.
+.SS "#define SERROR_IF(condition)   \fBCERROR_IF\fP(condition, 'security')"
+
+.PP
+Definition at line 3903 of file logger\&.hpp\&.
+.SS "#define SFATAL   \fBCFATAL\fP('security')"
+
+.PP
+Definition at line 3895 of file logger\&.hpp\&.
+.SS "#define SFATAL_EVERY_N(n)   \fBCFATAL_EVERY_N\fP(n, 'security')"
+
+.PP
+Definition at line 3913 of file logger\&.hpp\&.
+.SS "#define SFATAL_IF(condition)   \fBCFATAL_IF\fP(condition, 'security')"
+
+.PP
+Definition at line 3904 of file logger\&.hpp\&.
+.SS "#define SINFO   \fBCINFO\fP('security')"
+
+.PP
+Definition at line 3891 of file logger\&.hpp\&.
+.SS "#define SINFO_EVERY_N(n)   \fBCINFO_EVERY_N\fP(n, 'security')"
+
+.PP
+Definition at line 3909 of file logger\&.hpp\&.
+.SS "#define SINFO_IF(condition)   \fBCINFO_IF\fP(condition, 'security')"
+
+.PP
+Definition at line 3900 of file logger\&.hpp\&.
+.SS "#define SPRINTF   sprintf"
+
+.PP
+Definition at line 120 of file logger\&.hpp\&.
+.PP
+Referenced by easyloggingpp::internal::utilities::DateUtils::getDateTime()\&.
+.SS "#define SQA   \fBCQA\fP('security')"
+
+.PP
+Definition at line 3896 of file logger\&.hpp\&.
+.SS "#define SQA_EVERY_N(n)   \fBCQA_EVERY_N\fP(n, 'security')"
+
+.PP
+Definition at line 3914 of file logger\&.hpp\&.
+.SS "#define SQA_IF(condition)   \fBCQA_IF\fP(condition, 'security')"
+
+.PP
+Definition at line 3905 of file logger\&.hpp\&.
+.SS "#define START_FUNCTION_LOG   'Executing [' << __func__ << ']'"
+
+.PP
+Definition at line 3500 of file logger\&.hpp\&.
+.SS "#define STRACE   \fBCTRACE\fP('security')"
+
+.PP
+Definition at line 3897 of file logger\&.hpp\&.
+.SS "#define STRACE_EVERY_N(n)   \fBCTRACE_EVERY_N\fP(n, 'security')"
+
+.PP
+Definition at line 3915 of file logger\&.hpp\&.
+.SS "#define STRACE_IF(condition)   \fBCQA_IF\fP(condition, 'security')"
+
+.PP
+Definition at line 3906 of file logger\&.hpp\&.
+.SS "#define STRTOK(a, b, c)   strtok(a,b)"
+
+.PP
+Definition at line 121 of file logger\&.hpp\&.
+.PP
+Referenced by easyloggingpp::internal::utilities::OSUtils::createPath()\&.
+.SS "#define SUB(FUNCTION_NAME, PARAMS)   void FUNCTION_NAME PARAMS \fBFUNC_SUB_COMMON_START\fP"
+
+.PP
+Definition at line 3508 of file logger\&.hpp\&.
+.SS "#define SVERBOSE(level)   \fBCVERBOSE\fP(level, 'security')"
+
+.PP
+Definition at line 3898 of file logger\&.hpp\&.
+.SS "#define SVERBOSE_EVERY_N(n, level)   \fBCVERBOSE_EVERY_N\fP(n, level, 'security')"
+
+.PP
+Definition at line 3916 of file logger\&.hpp\&.
+.SS "#define SVERBOSE_IF(condition, level)   \fBCVERBOSE_IF\fP(condition, level, 'security')"
+
+.PP
+Definition at line 3907 of file logger\&.hpp\&.
+.SS "#define SWARNING   \fBCWARNING\fP('security')"
+
+.PP
+Definition at line 3892 of file logger\&.hpp\&.
+.SS "#define SWARNING_EVERY_N(n)   \fBCWARNING_EVERY_N\fP(n, 'security')"
+
+.PP
+Definition at line 3910 of file logger\&.hpp\&.
+.SS "#define SWARNING_IF(condition)   \fBCWARNING_IF\fP(condition, 'security')"
+
+.PP
+Definition at line 3901 of file logger\&.hpp\&.
+.SS "#define TIME_OUTPUT"
+\fBValue:\fP
+.PP
+.nf
+'Executed [' << __func__ << '] in [' <<                    \\
+    easyloggingpp::internal::utilities::DateUtils::formatMilliSeconds(        \
+    easyloggingpp::internal::utilities::DateUtils::getTimeDifference(functionEndTime, functionStartTime)) << ']'
+.fi
+.PP
+Definition at line 3501 of file logger\&.hpp\&.
+.SS "#define VLOG(vlevel)   \fBCVLOG\fP(vlevel, 'trivial')"
+
+.PP
+Definition at line 3743 of file logger\&.hpp\&.
+.SS "#define VLOG_EVERY_N(n, vlevel)   \fBCVLOG_EVERY_N\fP(n, vlevel, 'trivial')"
+
+.PP
+Definition at line 3751 of file logger\&.hpp\&.
+.SS "#define VLOG_IF(condition, vlevel)   \fBCVLOG_IF\fP(condition, vlevel, 'trivial')"
+
+.PP
+Definition at line 3747 of file logger\&.hpp\&.
+.SS "#define VLOG_IS_ON(verboseLevel)   verboseLevel <= \fBeasyloggingpp::internal::registeredLoggers\fP->constants()->CURRENT_VERBOSE_LEVEL"
+
+.PP
+Definition at line 3535 of file logger\&.hpp\&.
+.SS "#define WRITE_FUNC_PERFORMANCE"
+\fBValue:\fP
+.PP
+.nf
+_ELPP_GET_CURR_TIME(&functionEndTime);            \
+    if (easyloggingpp::Loggers::performanceTrackingEnabled()) { PINFO << TIME_OUTPUT; }
+.fi
+.PP
+Definition at line 3505 of file logger\&.hpp\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for vocabtree from the source code\&.
