@@ -2,12 +2,12 @@
 
 #include <utils/image.hpp>
 
-#include <cstdint>
+#include <stdint.h>
 #include <vector>
 #include <string>
 #include <memory>
 
-// Structure to hold input training parameters (ex. #clusters, #examples to consider)
+/// Structure to hold input training parameters (ex. #clusters, #examples to consider)
 struct TrainParamsBase {
 };
 
@@ -22,8 +22,8 @@ struct MatchResultsBase {
 };
 
 
-// Abstract class from which all search structures and methods derive from.  Each search method
-// must implement train, search, load and save.
+/// Abstract class from which all search structures and methods derive from.  Each search method
+/// must implement train, search, load and save.
 class SearchBase {
 
 public:
