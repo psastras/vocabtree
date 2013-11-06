@@ -1,7 +1,7 @@
 vocabtree
 =========
 
-Multinode, multicore vocab tree implementation.
+Multinode, multicore vocabulary tree implementation.
 
 
 Build Instructions
@@ -16,4 +16,9 @@ cd build
 cmake ..
 make
 
-Binaries are located in you build directry under bin.
+Binaries are located in your build directory under bin.
+
+Documentation
+===================
+
+http://psastras.github.io/vocabtree/
