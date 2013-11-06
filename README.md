@@ -21,4 +21,10 @@ Binaries are located in your build directory under bin.
 Documentation
 ===================
 
+Documentation can be built by running
+
+make doc
+
+Documentation can also be found here:
+
 http://psastras.github.io/vocabtree/
