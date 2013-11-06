@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <opencv2/opencv.hpp>
 
 namespace filesystem {
@@ -19,9 +20,6 @@ namespace filesystem {
 	// Loads the BoW feature from the specified location.  First dimension of data is cluster index,
 	// second dimension is TF score.
 	bool load_bow(const std::string &fname, std::vector<std::pair<uint32_t, float > > &data);
-	
-	// Returns the filesize of the input file locatoin (useful for reading until eof).
-	size_t filesize(const std::string &filename);
 	// Lists all files in the given directory with an optional extension.  The extension must include
 	// the dot (ie. ext=".txt").
 	std::vector<std::string> list_files(const std::string &path, const std::string &ext = "") ;

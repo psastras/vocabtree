@@ -8,15 +8,6 @@
 #include <boost/filesystem.hpp>
 
 namespace filesystem {
-		
-	size_t filesize(const std::string &filename) {
-		struct stat sb;
-	    int fd = open(filename.c_str(), O_RDWR);
-		fstat(fd, &sb);
-		size_t max_off = sb.st_size;
-		close(fd);
-		return max_off;
-	}
 
 	bool file_exists(const std::string& name) {
 	  struct stat buffer;
