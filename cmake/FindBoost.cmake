@@ -35,5 +35,4 @@ else(BOOST_INCLUDE_PATH)
 	set(BOOST_FOUND 0)
 	message(FATAL_ERROR "Boost not found.  Either set BOOST_INCLUDE_PATH and BOOST_LIBRARIES or make sure Boost is included in your PATH")
 endif(BOOST_INCLUDE_PATH)
-
 MARK_AS_ADVANCED(BOOST_FOUND)
