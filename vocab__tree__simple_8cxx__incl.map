@@ -1,7 +1,7 @@
-<map id="G" name="G">
+<map id="/home/psastras/vocabtree/modules/tests/vocab_tree_simple.cxx" name="/home/psastras/vocabtree/modules/tests/vocab_tree_simple.cxx">
 <area shape="rect" id="node2" href="$tests__config_8hpp.html" title="tests_config.hpp" alt="" coords="5,208,123,235"/>
-<area shape="rect" id="node4" href="$vocab__tree_8hpp.html" title="search/vocab_tree/vocab\l_tree.hpp" alt="" coords="192,110,363,151"/>
-<area shape="rect" id="node5" href="$search__base_8hpp.html" title="search/search_base\l/search_base.hpp" alt="" coords="222,201,364,242"/>
-<area shape="rect" id="node6" href="$image_8hpp.html" title="utils/image.hpp" alt="" coords="564,365,676,392"/>
-<area shape="rect" id="node9" href="$dataset_8hpp.html" title="utils/dataset.hpp" alt="" coords="234,291,352,317"/>
+<area shape="rect" id="node4" href="$vocab__tree_8hpp.html" title="search/vocab_tree/vocab\l_tree.hpp" alt="" coords="191,110,359,151"/>
+<area shape="rect" id="node5" href="$search__base_8hpp.html" title="search/search_base\l/search_base.hpp" alt="" coords="221,201,360,242"/>
+<area shape="rect" id="node6" href="$image_8hpp.html" title="utils/image.hpp" alt="" coords="559,365,669,392"/>
+<area shape="rect" id="node9" href="$dataset_8hpp.html" title="utils/dataset.hpp" alt="" coords="231,291,349,317"/>
 </map>

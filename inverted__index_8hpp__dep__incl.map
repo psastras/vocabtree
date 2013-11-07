@@ -1,4 +1,5 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$inverted__index_8cxx.html" title="/Users/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="5,109,181,165"/>
-<area shape="rect" id="node3" href="$inverted__index__simple_8cxx.html" title="/Users/psastras/vocabtree\l/modules/tests/inverted\l_index_simple.cxx" alt="" coords="206,109,383,165"/>
+<map id="/home/psastras/vocabtree/modules/search/inverted_index/inverted_index.hpp" name="/home/psastras/vocabtree/modules/search/inverted_index/inverted_index.hpp">
+<area shape="rect" id="node2" href="$inverted__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="5,109,179,165"/>
+<area shape="rect" id="node3" href="$compute__index__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_index_simple.cxx" alt="" coords="203,109,376,165"/>
+<area shape="rect" id="node4" href="$compute__search__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_search_simple.cxx" alt="" coords="400,109,573,165"/>
 </map>

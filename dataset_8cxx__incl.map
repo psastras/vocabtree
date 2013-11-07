@@ -1,6 +1,6 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$dataset_8hpp.html" title="dataset.hpp" alt="" coords="263,96,355,123"/>
-<area shape="rect" id="node11" href="$filesystem_8hpp.html" title="filesystem.hpp" alt="" coords="119,171,225,197"/>
-<area shape="rect" id="node12" href="$vision_8hpp.html" title="vision.hpp" alt="" coords="17,96,100,123"/>
-<area shape="rect" id="node3" href="$image_8hpp.html" title="image.hpp" alt="" coords="581,171,664,197"/>
+<map id="/home/psastras/vocabtree/modules/utils/dataset.cxx" name="/home/psastras/vocabtree/modules/utils/dataset.cxx">
+<area shape="rect" id="node2" href="$dataset_8hpp.html" title="dataset.hpp" alt="" coords="261,96,352,123"/>
+<area shape="rect" id="node11" href="$filesystem_8hpp.html" title="filesystem.hpp" alt="" coords="116,171,223,197"/>
+<area shape="rect" id="node12" href="$vision_8hpp.html" title="vision.hpp" alt="" coords="17,96,97,123"/>
+<area shape="rect" id="node3" href="$image_8hpp.html" title="image.hpp" alt="" coords="575,171,657,197"/>
 </map>

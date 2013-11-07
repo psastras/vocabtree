@@ -1,5 +1,5 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$classBagOfWords.html" title="Implements a Bag of Words based (BoW) image search." alt="" coords="5,80,104,107"/>
-<area shape="rect" id="node3" href="$classInvertedIndex.html" title="Implements a Bag of Words based (BoW) image search using an inverted index." alt="" coords="129,80,231,107"/>
-<area shape="rect" id="node4" href="$classVocabTree.html" title="VocabTree" alt="" coords="255,80,341,107"/>
+<map id="SearchBase" name="SearchBase">
+<area shape="rect" id="node2" href="$classBagOfWords.html" title="Implements a Bag of Words based (BoW) image search." alt="" coords="5,80,101,107"/>
+<area shape="rect" id="node3" href="$classInvertedIndex.html" title="Implements a Bag of Words based (BoW) image search using an inverted index." alt="" coords="127,80,228,107"/>
+<area shape="rect" id="node4" href="$classVocabTree.html" title="VocabTree" alt="" coords="252,80,337,107"/>
 </map>

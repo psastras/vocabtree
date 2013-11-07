@@ -1,5 +1,7 @@
 var classSearchBase =
 [
+    [ "SearchBase", "classSearchBase.html#a7aba064ebd8ce5f40aad2607c701f001", null ],
+    [ "SearchBase", "classSearchBase.html#a03054c23b9be014cdef02b892d799a0e", null ],
     [ "~SearchBase", "classSearchBase.html#aa391cf064522f21c45f211da66882463", null ],
     [ "load", "classSearchBase.html#a8af6d745f82a66b25fcf8cc012ff6e3e", null ],
     [ "save", "classSearchBase.html#ae221617eb05aa616397da75fa1760345", null ],

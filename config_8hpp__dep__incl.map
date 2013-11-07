@@ -1,3 +1,5 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$bow__sift__simple_8cxx.html" title="/Users/psastras/vocabtree\l/modules/tests/bow_sift\l_simple.cxx" alt="" coords="5,96,181,152"/>
+<map id="/home/psastras/vocabtree/modules/config.hpp" name="/home/psastras/vocabtree/modules/config.hpp">
+<area shape="rect" id="node2" href="$inverted__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="5,96,179,152"/>
+<area shape="rect" id="node3" href="$compute__bow__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_bow_simple.cxx" alt="" coords="203,96,376,152"/>
+<area shape="rect" id="node4" href="$compute__sift__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_sift_simple.cxx" alt="" coords="400,96,573,152"/>
 </map>

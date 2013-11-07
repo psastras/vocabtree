@@ -1,9 +1,11 @@
-<map id="G" name="G">
-<area shape="rect" id="node2" href="$bag__of__words_8cxx.html" title="/Users/psastras/vocabtree\l/modules/search/bag_of\l_words/bag_of_words.cxx" alt="" coords="5,96,181,152"/>
-<area shape="rect" id="node3" href="$inverted__index_8cxx.html" title="/Users/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="206,96,383,152"/>
-<area shape="rect" id="node4" href="$bow__sift__simple_8cxx.html" title="/Users/psastras/vocabtree\l/modules/tests/bow_sift\l_simple.cxx" alt="" coords="407,96,584,152"/>
-<area shape="rect" id="node5" href="$compute__sift__simple_8cxx.html" title="/Users/psastras/vocabtree\l/modules/tests/compute\l_sift_simple.cxx" alt="" coords="609,96,785,152"/>
-<area shape="rect" id="node6" href="$dataset_8cxx.html" title="/Users/psastras/vocabtree\l/modules/utils/dataset.cxx" alt="" coords="810,103,987,145"/>
-<area shape="rect" id="node7" href="$filesystem_8cxx.html" title="/Users/psastras/vocabtree\l/modules/utils/filesystem.cxx" alt="" coords="1011,103,1201,145"/>
-<area shape="rect" id="node8" href="$image_8cxx.html" title="/Users/psastras/vocabtree\l/modules/utils/image.cxx" alt="" coords="1226,103,1403,145"/>
+<map id="/home/psastras/vocabtree/modules/utils/filesystem.hpp" name="/home/psastras/vocabtree/modules/utils/filesystem.hpp">
+<area shape="rect" id="node2" href="$bag__of__words_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/bag_of\l_words/bag_of_words.cxx" alt="" coords="5,96,179,152"/>
+<area shape="rect" id="node3" href="$inverted__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="204,96,377,152"/>
+<area shape="rect" id="node4" href="$compute__bow__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_bow_simple.cxx" alt="" coords="401,96,575,152"/>
+<area shape="rect" id="node5" href="$compute__index__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_index_simple.cxx" alt="" coords="599,96,772,152"/>
+<area shape="rect" id="node6" href="$compute__search__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_search_simple.cxx" alt="" coords="796,96,969,152"/>
+<area shape="rect" id="node7" href="$compute__sift__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_sift_simple.cxx" alt="" coords="993,96,1167,152"/>
+<area shape="rect" id="node8" href="$dataset_8cxx.html" title="/home/psastras/vocabtree\l/modules/utils/dataset.cxx" alt="" coords="1191,103,1365,145"/>
+<area shape="rect" id="node9" href="$filesystem_8cxx.html" title="/home/psastras/vocabtree\l/modules/utils/filesystem.cxx" alt="" coords="1391,103,1583,145"/>
+<area shape="rect" id="node10" href="$image_8cxx.html" title="/home/psastras/vocabtree\l/modules/utils/image.cxx" alt="" coords="1607,103,1780,145"/>
 </map>

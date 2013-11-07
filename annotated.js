@@ -1,6 +1,7 @@
 var annotated =
 [
     [ "filesystem", "namespacefilesystem.html", "namespacefilesystem" ],
+    [ "numerics", "namespacenumerics.html", null ],
     [ "vision", "namespacevision.html", "namespacevision" ],
     [ "BagOfWords", "classBagOfWords.html", "classBagOfWords" ],
     [ "Dataset", "classDataset.html", "classDataset" ],
