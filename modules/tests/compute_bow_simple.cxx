@@ -3,6 +3,7 @@
 #include <config.hpp>
 
 #include <utils/filesystem.hpp>
+#include <utils/numerics.hpp>
 #include <utils/dataset.hpp>
 #include <utils/vision.hpp>
 #include <utils/logger.hpp>
@@ -31,9 +32,6 @@ int main(int argc, char *argv[]) {
 	vocab_output_file << simple_dataset.location() << "/vocabulary/" << train_params->numClusters << ".vocab";
 	bow.save(vocab_output_file.str());
 
-	// compute bow features
-	const cv::Ptr<cv::DescriptorMatcher> &matcher = vision::construct_descriptor_matcher(bow.vocabulary());
-
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	uint32_t num_threads = omp_get_max_threads();
 	std::vector< cv::Ptr<cv::DescriptorMatcher> > matchers;
@@ -59,8 +57,9 @@ int main(int argc, char *argv[]) {
 		filesystem::create_file_directory(bow_descriptor_location);
 
 		if (!vision::compute_bow_feature(descriptors, matcher, bow_descriptors, nullptr)) continue;
-
-		filesystem::write_cvmat(bow_descriptor_location, bow_descriptors);
+		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
+		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
+		
 		LINFO << "Wrote " << bow_descriptor_location;
 	}
 

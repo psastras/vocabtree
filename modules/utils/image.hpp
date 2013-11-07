@@ -18,12 +18,6 @@ public:
 	/// Returns the corresponding feature path given a feature name (ex. "sift").
 	virtual std::string feature_path(const std::string &feat_name) const = 0;
 
-	/// Loads sift feature data as a cv::Mat into passed in class, returns true if success, false otherwise.
-	bool load_sift_feature(cv::Mat &data) const;
-	
-	/// Loads bag of words feature into the vector in a sparse format (index, value)
-	bool load_bow_feature(std::vector<std::pair<uint32_t, float > > &data) const;
-
 private:
 	
 };

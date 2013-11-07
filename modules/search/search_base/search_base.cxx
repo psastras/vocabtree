@@ -1,4 +1,8 @@
 #include "search_base.hpp"
+
+SearchBase::SearchBase() { }
+SearchBase::SearchBase(const std::string &file_path) { }
+
 SearchBase::~SearchBase() { }
 
 std::vector< std::shared_ptr<MatchResultsBase> > SearchBase::search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,

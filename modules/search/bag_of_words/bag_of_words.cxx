@@ -8,6 +8,16 @@ BagOfWords::BagOfWords() : SearchBase() {
 
 }
 
+BagOfWords::BagOfWords(const std::string &file_path) : SearchBase(file_path) {
+	if(!filesystem::file_exists(file_path)) {
+		std::cerr << "Error reading bag of words from " << file_path << std::endl;
+		return;
+	}
+	if(!this->load(file_path)) {
+		std::cerr << "Error reading bag of words from " << file_path << std::endl;
+	}
+}
+
 bool BagOfWords::load (const std::string &file_path) {
 	std::cout << "Reading bag of words from " << file_path << "..." << std::endl;
 
@@ -18,7 +28,7 @@ bool BagOfWords::load (const std::string &file_path) {
 
 	std::cout << "Done reading bag of words." << std::endl;
 	
-	return false;
+	return true;
 }
 
 
@@ -82,4 +92,8 @@ std::shared_ptr<MatchResultsBase> BagOfWords::search(Dataset &dataset, const std
 
 cv::Mat BagOfWords::vocabulary() const {
 	return vocabulary_matrix;
+}
+
+uint32_t BagOfWords::num_clusters() const {
+	return vocabulary_matrix.rows;
 }

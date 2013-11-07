@@ -26,6 +26,7 @@ public:
 	};
 
 	BagOfWords();
+	BagOfWords(const std::string &file_path);
 
 	/// Given a set of training parameters, list of images, trains.  Returns true if successful, false
 	/// if not successful.
@@ -46,6 +47,9 @@ public:
 
 	/// Returns the vocabulary matrix.
 	cv::Mat vocabulary() const;
+
+	/// Returns the number of clusters in the vocabulary.
+	uint32_t num_clusters() const;
 
 protected:
 	

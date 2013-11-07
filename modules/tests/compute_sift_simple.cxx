@@ -24,10 +24,9 @@ int main(int argc, char *argv[]) {
 
 		const std::string &keypoints_location = simple_dataset.location(image->feature_path("keypoints"));
 		const std::string &descriptors_location = simple_dataset.location(image->feature_path("descriptors"));
-		if (filesystem::file_exists(keypoints_location) && filesystem::file_exists(descriptors_location)) continue;
+		// if (filesystem::file_exists(keypoints_location) && filesystem::file_exists(descriptors_location)) continue;
 		
 		const std::string &image_location = simple_dataset.location(image->location());
-
 
 		if (!filesystem::file_exists(image_location)) continue;
 		
@@ -38,8 +37,6 @@ int main(int argc, char *argv[]) {
 
 		filesystem::create_file_directory(keypoints_location);
 		filesystem::create_file_directory(descriptors_location);
-
-
 
 		filesystem::write_cvmat(keypoints_location, keypoints);
 		filesystem::write_cvmat(descriptors_location, descriptors);

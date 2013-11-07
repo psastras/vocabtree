@@ -29,6 +29,9 @@ struct MatchResultsBase {
 class SearchBase {
 
 public:
+	SearchBase();
+	SearchBase(const std::string &file_path);
+
 	virtual ~SearchBase();
 
 	/// Given a set of training parameters, list of images, trains.  Returns true if successful, false

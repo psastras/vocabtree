@@ -12,7 +12,7 @@ public:
 
 	/// Subclass of train params base which specifies inverted index training parameters.
 	struct TrainParams : public TrainParamsBase {
-		std::shared_ptr<BagOfWords> bow;  /// bag of words to index on
+		std::shared_ptr<BagOfWords> bag_of_words;  /// bag of words to index on
 	};
 
 	/// Subclass of train params base which specifies inverted index training parameters.
@@ -26,6 +26,7 @@ public:
 	};
 
 	InvertedIndex();
+	InvertedIndex(const std::string &file_name);
 
 	/// Given a set of training parameters, list of images, trains.  Returns true if successful, false
 	/// if not successful.
@@ -38,9 +39,15 @@ public:
 	/// Saves a trained search structure to the input filepath
 	bool save (const std::string &file_path) const;
 
-	/// Given a set of search parameters, a query image, searches for matching images and returns the match
+	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
+	/// (it will fail if the example image has missing features).
 	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
 
 protected:
 	
+	std::vector< std::vector<uint64_t> > inverted_index; /// Stores the inverted index, dimension one is the cluster index, dimension two holds a list of ids containing that word.
+
 };
+
+/// Prints out information about the match results.
+std::ostream& operator<< (std::ostream &out, const InvertedIndex::MatchResults &match_results);

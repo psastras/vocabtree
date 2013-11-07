@@ -64,7 +64,6 @@ namespace vision {
 	cv::Ptr<cv::DescriptorMatcher> construct_descriptor_matcher(const cv::Mat &vocabulary) {
 		cv::Ptr<cv::DescriptorMatcher> matcher = cv::makePtr<cv::FlannBasedMatcher>();
 		matcher->add(std::vector<cv::Mat>(1, vocabulary));
-		int clusterCount = matcher->getTrainDescriptors().size();
 		return matcher;
 	}
 
