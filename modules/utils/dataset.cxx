@@ -63,7 +63,7 @@ std::shared_ptr<Image> SimpleDataset::image(uint64_t id) {
 void SimpleDataset::construct_dataset() {
 	const std::vector<std::string> &image_file_paths = filesystem::list_files(data_directory + "/images/", ".jpg");
 	for (size_t i = 0; i < image_file_paths.size(); i++) {
-		id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type( filesystem::basename(image_file_paths[i], true), i));
+		id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type( "/images/" + filesystem::basename(image_file_paths[i], true), i));
 	}
 }
 

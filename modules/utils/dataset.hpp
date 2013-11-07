@@ -66,11 +66,6 @@ protected:
 /// Prints out information about the dataset.
 std::ostream& operator<< (std::ostream &out, const Dataset &dataset);
 
-
-
-
-
-
 /// SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG
 /// images in a single folder called images/ and features are stored in a folder feats/<feat_name>.
 /// For example, given a base absolute path of /c/data/.  Image data is found in /c/data/images and
