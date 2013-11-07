@@ -1,3 +1,4 @@
 html/
 build/
 modules/tests/tests_config.hpp
+modules/config.hpp
