@@ -28,11 +28,11 @@ FIND_PACKAGE(Boost REQUIRED)
 FIND_PACKAGE(OpenCV REQUIRED)
 
 # Enable openmp
-find_package(OpenMP)
-if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-endif()
+FIND_PACKAGE(OpenMP)
+IF (OPENMP_FOUND)
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+ENDIF()
 
 # Enable c++11x
 IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -58,8 +58,20 @@ IF(DOXYGEN_FOUND)
 		COMMENT "Generating API documentation with Doxygen" VERBATIM)
 ENDIF(DOXYGEN_FOUND)
 
+# options
 
-# -----------------------------------------------------------------------------
+OPTION(ENABLE_MULTITHREAD "Enable multithreading (requires OpenMP)" ON)
+IF(ENABLE_MULTITHREAD)
+	SET(ENABLE_MULTITHREAD 1)
+ELSE()
+	SET(ENABLE_MULTITHREAD 0)
+ENDIF()
+IF(OPENMP_FOUND)
+	SET(ENABLE_OPENMP 1)
+ELSE()
+	SET(ENABLE_OPENMP 0)
+ENDIF()
+
 
 SET(VOCAB_TREE_INCLUDE  ${PROJECT_SOURCE_DIR}/modules/)
 ADD_SUBDIRECTORY(modules)

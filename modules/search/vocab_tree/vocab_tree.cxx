@@ -27,7 +27,7 @@ bool VocabTree::save (const std::string &file_path) const {
 	return false;
 }
 
-bool VocabTree::train (const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
+bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
 	const std::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
 	uint32_t split = vt_params->split;
 	uint32_t depth = vt_params->depth;
@@ -35,7 +35,7 @@ bool VocabTree::train (const std::shared_ptr<const TrainParamsBase> &params, con
 	return false;
 }
 
-std::shared_ptr<MatchResultsBase> VocabTree::search (const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
+std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
 	std::cout << "Searching for matching images..." << std::endl;
 	const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
 	

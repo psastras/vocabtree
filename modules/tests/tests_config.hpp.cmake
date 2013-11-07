@@ -4,7 +4,6 @@
 /// This header is automatically generated.  Do not modify.
 /// Contains information about datasets for running tests. 
 
-
-/// Root data directory for test datasets
-const static std::string s_test_data_dir = "@CMAKE_SOURCE_DIR@/data/";
+const static std::string s_simple_data_dir 				= "@CMAKE_SOURCE_DIR@/data/simple/";
+const static std::string s_simple_database_location 	= "@CMAKE_SOURCE_DIR@/data/simple/db_simple.bin";
 

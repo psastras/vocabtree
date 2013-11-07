@@ -22,11 +22,12 @@ namespace filesystem {
 		}
 	}
 	struct cvmat_header {
-		uint64_t elem_size, elem_type;
+		uint64_t elem_size;
+		int elem_type;
 		uint32_t rows, cols;
 	};
 
-	void write_cvmat(const std::string &fname, const cv::Mat &data) {
+	bool write_cvmat(const std::string &fname, const cv::Mat &data) {
 		std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);
 		cvmat_header h;
 		h.elem_size = data.elemSize();
@@ -35,7 +36,7 @@ namespace filesystem {
 		h.cols = data.cols;
 		ofs.write((char *)&h, sizeof(cvmat_header));
 		ofs.write((char *)data.ptr(), h.rows * h.cols * h.elem_size);
-
+		return (ofs.rdstate() & std::ofstream::failbit) == 0;
 	}
 
 	bool load_cvmat(const std::string &fname, cv::Mat &data) {
@@ -43,16 +44,18 @@ namespace filesystem {
 		std::ifstream ifs(fname.c_str(), std::ios::binary);
 		cvmat_header h;
 		ifs.read((char *)&h, sizeof(cvmat_header));
+		if (h.rows == 0 || h.cols == 0) return false;
 		data.create(h.rows, h.cols, h.elem_type);
 		ifs.read((char *)data.ptr(), h.rows * h.cols * h.elem_size);
-		return true;
+		return (ifs.rdstate() & std::ifstream::failbit) == 0;
 	}
 
-	void write_bow(const std::string &fname, const std::vector<std::pair<uint32_t, float > > &data) {
+	bool write_bow(const std::string &fname, const std::vector<std::pair<uint32_t, float > > &data) {
 		std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);
 		uint32_t dim0 = data.size();
 		ofs.write((char *)&dim0, sizeof(uint32_t));
 		ofs.write((char *)&data[0], sizeof(std::pair<uint32_t, float >) * dim0);
+		return (ofs.rdstate() & std::ofstream::failbit) == 0;
 	}
 
 	bool load_bow(const std::string &fname, std::vector<std::pair<uint32_t, float > > &data) {
@@ -62,6 +65,29 @@ namespace filesystem {
 		ifs.read((char *)&dim0, sizeof(uint32_t));
 		data.resize(dim0);
 		ifs.read((char *)&data[0], sizeof(std::pair<uint32_t, float >) * dim0);
-		return true;
+		return (ifs.rdstate() & std::ifstream::failbit) == 0;
+	}
+
+	std::vector<std::string> list_files(const std::string &path, const std::string &ext) {
+		boost::filesystem::path input_path(path);
+		std::vector<std::string> file_list;
+		if (boost::filesystem::exists(input_path) && boost::filesystem::is_directory(input_path)) {
+			boost::filesystem::directory_iterator end;
+			for (boost::filesystem::directory_iterator it(input_path); it != end; ++it) {
+				if (!boost::filesystem::is_directory(*it)) {
+					if ((ext.length() > 0 && boost::filesystem::extension(*it) == boost::filesystem::path(ext)) ||
+						ext.length() == 0) {
+							file_list.push_back(it->path().string());
+					}
+				}
+			}
+		}
+		return file_list;
+	}
+
+	std::string basename(const std::string &path, bool include_extension) {
+		if (!include_extension) return boost::filesystem::basename(boost::filesystem::path(path));
+
+		return boost::filesystem::basename(boost::filesystem::path(path)) + boost::filesystem::extension(path);
 	}
 }

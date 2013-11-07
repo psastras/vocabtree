@@ -11,8 +11,8 @@ public:
 
 	/// Subclass of train params base which specifies inverted index training parameters.
 	struct TrainParams : public TrainParamsBase {
-		uint32_t numClusters; // k number of clusters
-		uint32_t numFeatures; // number of features to cluster
+		uint32_t numClusters = 1024; // k number of clusters
+		uint32_t numFeatures = 0; // number of features to cluster
 	};
 
 	/// Subclass of train params base which specifies inverted index training parameters.
@@ -29,7 +29,7 @@ public:
 
 	/// Given a set of training parameters, list of images, trains.  Returns true if successful, false
 	/// if not successful.
-	bool train (const std::shared_ptr<const TrainParamsBase> &params,
+	bool train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params,
 		 		const std::vector< std::shared_ptr<const Image > > &examples);
 
 	/// Loads a trained search structure from the input filepath
@@ -42,8 +42,12 @@ public:
 	/// Search is not valid for bag of words - this would require computing tf-idf on all possible images in the dataset, 
 	/// and this function will assert(0) should you try to run it.  Instead, you should train a Bag of Words (BoW) model
 	/// and use it with one of the other search mechanisms, such as the inverted index.
-	std::shared_ptr<MatchResultsBase> search (const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
+	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
+
+	/// Returns the vocabulary matrix.
+	cv::Mat vocabulary() const;
 
 protected:
 	
+	cv::Mat vocabulary_matrix;
 };

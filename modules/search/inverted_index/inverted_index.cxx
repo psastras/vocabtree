@@ -1,4 +1,5 @@
 #include "inverted_index.hpp"
+#include <utils/filesystem.hpp>
 #include <iostream>
 
 InvertedIndex::InvertedIndex() : SearchBase() {
@@ -27,27 +28,20 @@ bool InvertedIndex::save (const std::string &file_path) const {
 	return false;
 }
 
-bool InvertedIndex::train (const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
-	const std::shared_ptr<const TrainParams> &ii_params = std::static_pointer_cast<const TrainParams>(params);
-	uint32_t k = ii_params->numClusters;
-	uint32_t n = ii_params->numFeatures;
+bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
+	for (size_t i = 0; i < dataset.num_images(); i++) {
+		const std::shared_ptr<const Image> &image = dataset.image(i);
+		const std::string &bow_descriptors_location = dataset.location(image->feature_path("bow_descriptors"));
 
-	std::cout << "Training inverted index with " << k << " clusters on " << n << " features." << std::endl;
-	std::cout << "Reading features from disk..." << std::endl;
-	for(size_t i=0; i<examples.size(); i++) {
-		const std::string sift_feat_path = examples[i]->feature_path("sift");
-		
-		//load sift
+		if (!filesystem::file_exists(bow_descriptors_location)) continue;
 
-		// push back feature
+
 	}
-	std::cout << "Clustering..." << std::endl;
-	// cluster all features
-	std::cout << "Done training inverted index." << std::endl;
+
 	return false;
 }
 
-std::shared_ptr<MatchResultsBase> InvertedIndex::search (const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
+std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
 	std::cout << "Searching for matching images..." << std::endl;
 	const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
 	

@@ -26,7 +26,7 @@ public:
 	// Given a set of training parameters, list of images, trains.  Returns true if successful, false
 	// if not successful.
 
-	bool train (const std::shared_ptr<const TrainParamsBase> &params,
+	bool train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params,
 		 		const std::vector< std::shared_ptr<const Image > > &examples);
 
 	// Loads a trained search structure from the input filepath
@@ -36,7 +36,7 @@ public:
 	bool save (const std::string &file_path) const;
 
 	// Given a set of search parameters, a query image, searches for matching images and returns the match
-	std::shared_ptr<MatchResultsBase> search (const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
+	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
 
 protected:
 	

@@ -11,11 +11,11 @@ namespace vision {
 	/// SIFT implementation.  See the OpenCV documentation for
 	/// more details.
 	struct SIFTParams {
-		int max_features 			= 0;
-		int num_octave_layers 		= 3;
-		double contrast_threshold 	= 0.04;
-		double edge_threshold 		= 11;
-		double sigma 				= 1.6;
+		int max_features 			= 0;	/// Max number of features to retrieve (0 keeps all features).
+		int num_octave_layers 		= 3;	/// Number of octave layers in the pyramid to compute.
+		double contrast_threshold 	= 0.04; /// Contrast threshold, lower -> more features, but less stable.
+		double edge_threshold 		= 11;   /// Edge threshold, higher -> more features, but less stable.
+		double sigma 				= 1.6;  /// Smoothing kernel size, higher -> more smoothing, fewer features.
 	};
 
 	/// Given a grayscale image, img, and SIFT extraction parameters computes sparse sift features.  If 
@@ -33,6 +33,10 @@ namespace vision {
 	/// Given a vocabulary constructs a FLANN based matcher needed to compute Bag of Words (BoW) features.  Expects
 	/// the vocabulary to be in the same format as computed in the search module.
 	cv::Ptr<cv::DescriptorMatcher> construct_descriptor_matcher(const cv::Mat &vocabulary);
+
+	/// Merges the descriptors into a single matrix.  This is useful for clustering, which requires a single
+	/// matrix.
+	cv::Mat merge_descriptors(std::vector<cv::Mat> &descriptors, bool release_original = true);
 
 	/// Given a pair of keypoints and corresponding SIFT descriptors, attempts to compute a RANSAC
 	/// homography between them.  Results are returned as MatchInfo.  This function is useful in conjuction

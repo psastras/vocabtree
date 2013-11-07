@@ -35,7 +35,7 @@ namespace vision {
 	bool compute_bow_feature(const cv::Mat& descriptors, const cv::Ptr<cv::DescriptorMatcher> &matcher,
 			cv::Mat& bow_descriptors, std::shared_ptr< std::vector<std::vector<uint32_t> > > cluster_indices) {
 
-		int clusterCount = matcher->getTrainDescriptors().size();
+		int clusterCount = matcher->getTrainDescriptors()[0].rows;
 
 	    std::vector<cv::DMatch> matches;
 	    matcher->match(descriptors, matches);
@@ -64,6 +64,24 @@ namespace vision {
 	cv::Ptr<cv::DescriptorMatcher> construct_descriptor_matcher(const cv::Mat &vocabulary) {
 		cv::Ptr<cv::DescriptorMatcher> matcher = cv::makePtr<cv::FlannBasedMatcher>();
 		matcher->add(std::vector<cv::Mat>(1, vocabulary));
+		int clusterCount = matcher->getTrainDescriptors().size();
 		return matcher;
+	}
+
+	cv::Mat merge_descriptors(std::vector<cv::Mat> &descriptors, bool release_original) {
+		uint64_t descriptor_count = 0;
+		for (size_t i = 0; i < descriptors.size(); i++) {
+			descriptor_count += descriptors[i].rows;
+		}
+
+		cv::Mat merged(descriptor_count, descriptors[0].cols, descriptors[0].type());
+		for (size_t i = 0, start = 0; i < descriptors.size(); i++) {
+			cv::Mat submut = merged.rowRange((int)start, (int)(start + descriptors[i].rows));
+			descriptors[i].copyTo(submut);
+			if (release_original) descriptors[i].release();
+			start += descriptors[i].rows;
+		}
+
+		return merged;
 	}
 }
