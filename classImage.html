@@ -44,7 +44,7 @@
     <ul class="tablist">
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
@@ -71,33 +71,39 @@ $(document).ready(function(){initNavTree('classImage.html','');});
 </div><!--header-->
 <div class="contents">
 
+<p>Abstract class representing an image.  
+ <a href="classImage.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="image_8hpp_source.html">image.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Image:</div>
 <div class="dyncontent">
- <div class="center">
-  <img src="classImage.png" usemap="#Image_map" alt=""/>
-  <map id="Image_map" name="Image_map">
-<area href="classSimpleImage.html" alt="SimpleImage" shape="rect" coords="0,56,82,80"/>
-<area href="classSimpleImage.html" alt="SimpleImage" shape="rect" coords="92,56,174,80"/>
-</map>
- </div></div>
+<div class="center"><img src="classImage__inherit__graph.png" border="0" usemap="#Image_inherit__map" alt="Inheritance graph"/></div>
+<map name="Image_inherit__map" id="Image_inherit__map">
+<area shape="rect" id="node2" href="classSimpleDataset_1_1SimpleImage.html" title="SimpleImage class used with the SimpleDataset class." alt="" coords="5,80,197,107"/></map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa0430ef96457eafaf585ff54abc8194f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#aa0430ef96457eafaf585ff54abc8194f">Image</a> (uint64_t image_id)</td></tr>
 <tr class="memitem:a0294f63700543e11c0f0da85601c7ae5"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a0294f63700543e11c0f0da85601c7ae5">~Image</a> ()</td></tr>
+<tr class="memdesc:a0294f63700543e11c0f0da85601c7ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">All images are assigned a unique id in the dataset.  <a href="#a0294f63700543e11c0f0da85601c7ae5"></a><br/></td></tr>
 <tr class="memitem:aa4903872aaca70ea52f2a219602d6ff2"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">feature_path</a> (const std::string &amp;feat_name) const =0</td></tr>
+<tr class="memdesc:aa4903872aaca70ea52f2a219602d6ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the corresponding feature path given a feature name (ex. "sift").  <a href="#aa4903872aaca70ea52f2a219602d6ff2"></a><br/></td></tr>
 <tr class="memitem:af2327d89ff13d9c3cad761723883c86e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#af2327d89ff13d9c3cad761723883c86e">load_sift_feature</a> (cv::Mat &amp;data) const </td></tr>
+<tr class="memdesc:af2327d89ff13d9c3cad761723883c86e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads sift feature data as a cv::Mat into passed in class, returns true if success, false otherwise.  <a href="#af2327d89ff13d9c3cad761723883c86e"></a><br/></td></tr>
 <tr class="memitem:a95009cbf9f7724f514d0220207a9e126"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a95009cbf9f7724f514d0220207a9e126">load_bow_feature</a> (std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;data) const </td></tr>
+<tr class="memdesc:a95009cbf9f7724f514d0220207a9e126"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads bag of words feature into the vector in a sparse format (index, value)  <a href="#a95009cbf9f7724f514d0220207a9e126"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a9800c46cdd3a9b037eee627a9c0a8259"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classImage.html#a9800c46cdd3a9b037eee627a9c0a8259">id</a></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock">
-<p>Definition at line <a class="el" href="image_8hpp_source.html#l00009">9</a> of file <a class="el" href="image_8hpp_source.html">image.hpp</a>.</p>
+<div class="textblock"><p>Abstract class representing an image. </p>
+<p>Implementing classes must provide a way to load images and construct image paths for loading features. See tests and benchmarks for example implementations of <a class="el" href="classImage.html" title="Abstract class representing an image.">Image</a>. </p>
+
+<p>Definition at line <a class="el" href="image_8hpp_source.html#l00010">10</a> of file <a class="el" href="image_8hpp_source.html">image.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa0430ef96457eafaf585ff54abc8194f"></a>
 <div class="memitem">
@@ -141,6 +147,8 @@ Data Fields</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>All images are assigned a unique id in the dataset. </p>
+
 <p>Definition at line <a class="el" href="image_8cxx_source.html#l00009">9</a> of file <a class="el" href="image_8cxx_source.html">image.cxx</a>.</p>
 <div class="fragment"><div class="line">{ }</div>
 </div><!-- fragment -->
@@ -169,7 +177,9 @@ Data Fields</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classSimpleImage.html#a0702c5366f545d3b44a7ecfb900932ac">SimpleImage</a>, and <a class="el" href="classSimpleImage.html#a0702c5366f545d3b44a7ecfb900932ac">SimpleImage</a>.</p>
+<p>Returns the corresponding feature path given a feature name (ex. "sift"). </p>
+
+<p>Implemented in <a class="el" href="classSimpleDataset_1_1SimpleImage.html#a52572cf12c70ac838995585307548751">SimpleDataset::SimpleImage</a>.</p>
 
 <p>Referenced by <a class="el" href="image_8cxx_source.html#l00016">load_bow_feature()</a>, and <a class="el" href="image_8cxx_source.html#l00011">load_sift_feature()</a>.</p>
 
@@ -189,12 +199,14 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads bag of words feature into the vector in a sparse format (index, value) </p>
+
 <p>Definition at line <a class="el" href="image_8cxx_source.html#l00016">16</a> of file <a class="el" href="image_8cxx_source.html">image.cxx</a>.</p>
 
-<p>References <a class="el" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">feature_path()</a>, and <a class="el" href="filesystem_8cxx_source.html#l00058">filesystem::load_bow()</a>.</p>
+<p>References <a class="el" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">feature_path()</a>, and <a class="el" href="filesystem_8cxx_source.html#l00061">filesystem::load_bow()</a>.</p>
 <div class="fragment"><div class="line">                                                                              {</div>
-<div class="line">        std::string path = <a class="code" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">feature_path</a>(<span class="stringliteral">&quot;bow&quot;</span>);</div>
-<div class="line">        <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a6a1838f1e907bb3641be831a30c15448">filesystem::load_bow</a>(path, data);</div>
+<div class="line">        std::string path = <a class="code" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2" title="Returns the corresponding feature path given a feature name (ex. &quot;sift&quot;).">feature_path</a>(<span class="stringliteral">&quot;bow&quot;</span>);</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a6a1838f1e907bb3641be831a30c15448" title="Loads the BoW feature from the specified location.">filesystem::load_bow</a>(path, data);</div>
 <div class="line">}</div><!-- fragment -->
 </div>
 </div>
@@ -212,12 +224,14 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads sift feature data as a cv::Mat into passed in class, returns true if success, false otherwise. </p>
+
 <p>Definition at line <a class="el" href="image_8cxx_source.html#l00011">11</a> of file <a class="el" href="image_8cxx_source.html">image.cxx</a>.</p>
 
-<p>References <a class="el" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">feature_path()</a>, and <a class="el" href="filesystem_8cxx_source.html#l00041">filesystem::load_cvmat()</a>.</p>
+<p>References <a class="el" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">feature_path()</a>, and <a class="el" href="filesystem_8cxx_source.html#l00042">filesystem::load_cvmat()</a>.</p>
 <div class="fragment"><div class="line">                                               {</div>
-<div class="line">        std::string path = <a class="code" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">feature_path</a>(<span class="stringliteral">&quot;sift&quot;</span>);</div>
-<div class="line">        <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a4302c4377292b2c6dc2813cf5bb2b225">filesystem::load_cvmat</a>(path, data);</div>
+<div class="line">        std::string path = <a class="code" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2" title="Returns the corresponding feature path given a feature name (ex. &quot;sift&quot;).">feature_path</a>(<span class="stringliteral">&quot;sift&quot;</span>);</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a4302c4377292b2c6dc2813cf5bb2b225" title="Loads a cv::Mat structure from the specified location.">filesystem::load_cvmat</a>(path, data);</div>
 <div class="line">}</div>
 </div><!-- fragment -->
 </div>
@@ -233,7 +247,7 @@ Data Fields</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="image_8hpp_source.html#l00013">13</a> of file <a class="el" href="image_8hpp_source.html">image.hpp</a>.</p>
+<p>Definition at line <a class="el" href="image_8hpp_source.html#l00014">14</a> of file <a class="el" href="image_8hpp_source.html">image.hpp</a>.</p>
 
 </div>
 </div>
@@ -247,7 +261,7 @@ Data Fields</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classImage.html">Image</a></li>
-    <li class="footer">Generated on Wed Nov 6 2013 02:35:28 for vocabtree by
+    <li class="footer">Generated on Thu Nov 7 2013 03:39:07 for vocabtree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

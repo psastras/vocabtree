@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$structSearchParamsBase.html" title="Structure to hold input search parameters (ex. #matches, threshold, number neighbors to consider..." alt="" coords="6,56,146,83"/>
+<area shape="rect" id="node2" href="$structBagOfWords_1_1SearchParams.html" title="Subclass of train params base which specifies inverted index training parameters." alt="" coords="198,5,391,32"/>
+<area shape="rect" id="node3" href="$structInvertedIndex_1_1SearchParams.html" title="Subclass of train params base which specifies inverted index training parameters." alt="" coords="195,56,394,83"/>
+<area shape="rect" id="node4" href="$structVocabTree_1_1SearchParams.html" title="VocabTree::SearchParams" alt="" coords="203,107,386,133"/>
+</map>

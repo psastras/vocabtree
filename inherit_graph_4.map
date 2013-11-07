@@ -1,0 +1,6 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classSearchBase.html" title="Abstract class from which all search structures and methods derive from." alt="" coords="6,56,101,83"/>
+<area shape="rect" id="node2" href="$classBagOfWords.html" title="Implements a Bag of Words based (BoW) image search." alt="" coords="152,5,251,32"/>
+<area shape="rect" id="node3" href="$classInvertedIndex.html" title="Implements a Bag of Words based (BoW) image search using an inverted index." alt="" coords="150,56,253,83"/>
+<area shape="rect" id="node4" href="$classVocabTree.html" title="VocabTree" alt="" coords="158,107,245,133"/>
+</map>

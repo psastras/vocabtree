@@ -44,7 +44,7 @@
     <ul class="tablist">
       <li><a href="annotated.html"><span>Data&#160;Structures</span></a></li>
       <li><a href="classes.html"><span>Data&#160;Structure&#160;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
+      <li><a href="inherits.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Data&#160;Fields</span></a></li>
     </ul>
   </div>
@@ -78,33 +78,35 @@ $(document).ready(function(){initNavTree('classSearchBase.html','');});
 <div class="dynheader">
 Inheritance diagram for SearchBase:</div>
 <div class="dyncontent">
- <div class="center">
-  <img src="classSearchBase.png" usemap="#SearchBase_map" alt=""/>
-  <map id="SearchBase_map" name="SearchBase_map">
-<area href="classInvertedIndex.html" alt="InvertedIndex" shape="rect" coords="0,56,88,80"/>
-<area href="classVocabTree.html" alt="VocabTree" shape="rect" coords="98,56,186,80"/>
-</map>
- </div></div>
+<div class="center"><img src="classSearchBase__inherit__graph.png" border="0" usemap="#SearchBase_inherit__map" alt="Inheritance graph"/></div>
+<map name="SearchBase_inherit__map" id="SearchBase_inherit__map">
+<area shape="rect" id="node2" href="classBagOfWords.html" title="Implements a Bag of Words based (BoW) image search." alt="" coords="5,80,104,107"/><area shape="rect" id="node3" href="classInvertedIndex.html" title="Implements a Bag of Words based (BoW) image search using an inverted index." alt="" coords="129,80,231,107"/><area shape="rect" id="node4" href="classVocabTree.html" title="VocabTree" alt="" coords="255,80,341,107"/></map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa391cf064522f21c45f211da66882463"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#aa391cf064522f21c45f211da66882463">~SearchBase</a> ()</td></tr>
-<tr class="memitem:a83240f56d0981d5eb33cbe9068a79d1e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#a83240f56d0981d5eb33cbe9068a79d1e">train</a> (const std::shared_ptr&lt; const <a class="el" href="structTrainParamsBase.html">TrainParamsBase</a> &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt; &amp;examples)=0</td></tr>
-<tr class="memitem:a090a073fa0e68e1b6fbd24def21f9d0c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
-&lt; <a class="el" href="structMatchResultsBase.html">MatchResultsBase</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#a090a073fa0e68e1b6fbd24def21f9d0c">search</a> (const std::shared_ptr&lt; <a class="el" href="structSearchParamsBase.html">SearchParamsBase</a> &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt; &amp;examples)</td></tr>
+<tr class="memitem:a7f8a2ba4698c76ef8ca5b608e5de2ea4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#a7f8a2ba4698c76ef8ca5b608e5de2ea4">train</a> (<a class="el" href="classDataset.html">Dataset</a> &amp;dataset, const std::shared_ptr&lt; const <a class="el" href="structTrainParamsBase.html">TrainParamsBase</a> &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt; &amp;examples)=0</td></tr>
+<tr class="memdesc:a7f8a2ba4698c76ef8ca5b608e5de2ea4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a set of training parameters, list of images, trains.  <a href="#a7f8a2ba4698c76ef8ca5b608e5de2ea4"></a><br/></td></tr>
+<tr class="memitem:a8589889c76c103d15f75f0d55baf8fa0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="structMatchResultsBase.html">MatchResultsBase</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#a8589889c76c103d15f75f0d55baf8fa0">search</a> (<a class="el" href="classDataset.html">Dataset</a> &amp;dataset, const std::shared_ptr&lt; <a class="el" href="structSearchParamsBase.html">SearchParamsBase</a> &gt; &amp;params, const std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt; &amp;examples)</td></tr>
+<tr class="memdesc:a8589889c76c103d15f75f0d55baf8fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a set of search parameters, list of query images, searches for matching images and returns the result matches.  <a href="#a8589889c76c103d15f75f0d55baf8fa0"></a><br/></td></tr>
 <tr class="memitem:a8af6d745f82a66b25fcf8cc012ff6e3e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#a8af6d745f82a66b25fcf8cc012ff6e3e">load</a> (const std::string &amp;file_path)=0</td></tr>
+<tr class="memdesc:a8af6d745f82a66b25fcf8cc012ff6e3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a trained search structure from the input filepath.  <a href="#a8af6d745f82a66b25fcf8cc012ff6e3e"></a><br/></td></tr>
 <tr class="memitem:ae221617eb05aa616397da75fa1760345"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#ae221617eb05aa616397da75fa1760345">save</a> (const std::string &amp;file_path) const =0</td></tr>
+<tr class="memdesc:ae221617eb05aa616397da75fa1760345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves a trained search structure to the input filepath.  <a href="#ae221617eb05aa616397da75fa1760345"></a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ad624acf4e4f788345f45c6a0e5920093"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr<br class="typebreak"/>
-&lt; <a class="el" href="structMatchResultsBase.html">MatchResultsBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#ad624acf4e4f788345f45c6a0e5920093">search</a> (const std::shared_ptr&lt; const <a class="el" href="structSearchParamsBase.html">SearchParamsBase</a> &gt; &amp;params, const std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &amp;example)=0</td></tr>
+<tr class="memitem:a8b42b92d30c0b4b7f5d43012f6232f8d"><td class="memItemLeft" align="right" valign="top">virtual std::shared_ptr<br class="typebreak"/>
+&lt; <a class="el" href="structMatchResultsBase.html">MatchResultsBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSearchBase.html#a8b42b92d30c0b4b7f5d43012f6232f8d">search</a> (<a class="el" href="classDataset.html">Dataset</a> &amp;dataset, const std::shared_ptr&lt; const <a class="el" href="structSearchParamsBase.html">SearchParamsBase</a> &gt; &amp;params, const std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &amp;example)=0</td></tr>
+<tr class="memdesc:a8b42b92d30c0b4b7f5d43012f6232f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a set of search parameters, a query images, searches for matching images and returns the match.  <a href="#a8b42b92d30c0b4b7f5d43012f6232f8d"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Abstract class from which all search structures and methods derive from. </p>
 <p>Each search method must implement train, search, load and save. </p>
 
-<p>Definition at line <a class="el" href="search__base_8hpp_source.html#l00027">27</a> of file <a class="el" href="search__base_8hpp_source.html">search_base.hpp</a>.</p>
+<p>Definition at line <a class="el" href="search__base_8hpp_source.html#l00029">29</a> of file <a class="el" href="search__base_8hpp_source.html">search_base.hpp</a>.</p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aa391cf064522f21c45f211da66882463"></a>
 <div class="memitem">
@@ -155,7 +157,9 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classInvertedIndex.html#a815b5aaa4565500df3aa2eb92f865535">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328">VocabTree</a>.</p>
+<p>Loads a trained search structure from the input filepath. </p>
+
+<p>Implemented in <a class="el" href="classBagOfWords.html#af835436c37019e152e897b84f345a8d3">BagOfWords</a>, <a class="el" href="classInvertedIndex.html#a815b5aaa4565500df3aa2eb92f865535">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328">VocabTree</a>.</p>
 
 </div>
 </div>
@@ -181,17 +185,25 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classInvertedIndex.html#a3864d16c75319e4d38d03145ad3dcc5f">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#ac0fcc2c407d6ad58d6589996ff023f3f">VocabTree</a>.</p>
+<p>Saves a trained search structure to the input filepath. </p>
+
+<p>Implemented in <a class="el" href="classBagOfWords.html#a8b0d3b0cba9657b9a4b4530c843928f5">BagOfWords</a>, <a class="el" href="classInvertedIndex.html#a3864d16c75319e4d38d03145ad3dcc5f">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#ac0fcc2c407d6ad58d6589996ff023f3f">VocabTree</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a090a073fa0e68e1b6fbd24def21f9d0c"></a>
+<a class="anchor" id="a8589889c76c103d15f75f0d55baf8fa0"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt; std::shared_ptr&lt; <a class="el" href="structMatchResultsBase.html">MatchResultsBase</a> &gt; &gt; SearchBase::search </td>
           <td>(</td>
+          <td class="paramtype"><a class="el" href="classDataset.html">Dataset</a> &amp;&#160;</td>
+          <td class="paramname"><em>dataset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="structSearchParamsBase.html">SearchParamsBase</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>params</em>, </td>
         </tr>
@@ -209,17 +221,19 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Given a set of search parameters, list of query images, searches for matching images and returns the result matches. </p>
+
 <p>Definition at line <a class="el" href="search__base_8cxx_source.html#l00004">4</a> of file <a class="el" href="search__base_8cxx_source.html">search_base.cxx</a>.</p>
 <div class="fragment"><div class="line">                                                                                                                                                                                   {</div>
 <div class="line">        std::vector&lt; std::shared_ptr&lt;MatchResultsBase&gt; &gt; all_matches;</div>
 <div class="line">        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0; i&lt;examples.size(); i++) {</div>
-<div class="line">                all_matches.push_back(<a class="code" href="classSearchBase.html#a090a073fa0e68e1b6fbd24def21f9d0c">search</a>(params, examples[i]));</div>
+<div class="line">                all_matches.push_back(<a class="code" href="classSearchBase.html#a8589889c76c103d15f75f0d55baf8fa0" title="Given a set of search parameters, list of query images, searches for matching images and returns the ...">search</a>(dataset, params, examples[i]));</div>
 <div class="line">        }</div>
 <div class="line">        <span class="keywordflow">return</span> all_matches;</div>
 <div class="line">}</div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="ad624acf4e4f788345f45c6a0e5920093"></a>
+<a class="anchor" id="a8b42b92d30c0b4b7f5d43012f6232f8d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -229,6 +243,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual std::shared_ptr&lt;<a class="el" href="structMatchResultsBase.html">MatchResultsBase</a>&gt; SearchBase::search </td>
           <td>(</td>
+          <td class="paramtype"><a class="el" href="classDataset.html">Dataset</a> &amp;&#160;</td>
+          <td class="paramname"><em>dataset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="structSearchParamsBase.html">SearchParamsBase</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>params</em>, </td>
         </tr>
@@ -251,11 +271,13 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classInvertedIndex.html#ae7f42b2552e9618c7fc0f5f36b365ca7">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#ac7e3abd0728bcb9218f70b324b40ae22">VocabTree</a>.</p>
+<p>Given a set of search parameters, a query images, searches for matching images and returns the match. </p>
+
+<p>Implemented in <a class="el" href="classBagOfWords.html#ad84a19badd7963c2e20641516e822b61">BagOfWords</a>, <a class="el" href="classInvertedIndex.html#a2932dcda6816fb08348f89203f2a8acf">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#a5f2e1e4f74178cf901a55f5ab8464933">VocabTree</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a83240f56d0981d5eb33cbe9068a79d1e"></a>
+<a class="anchor" id="a7f8a2ba4698c76ef8ca5b608e5de2ea4"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -265,6 +287,12 @@ Protected Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual bool SearchBase::train </td>
           <td>(</td>
+          <td class="paramtype"><a class="el" href="classDataset.html">Dataset</a> &amp;&#160;</td>
+          <td class="paramname"><em>dataset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="structTrainParamsBase.html">TrainParamsBase</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>params</em>, </td>
         </tr>
@@ -287,7 +315,10 @@ Protected Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classInvertedIndex.html#ae3f81ab03c477a2813c95334473c8e95">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#a28fae9e130e85b6e7daa3e6f7d44105c">VocabTree</a>.</p>
+<p>Given a set of training parameters, list of images, trains. </p>
+<p>Returns true if successful, false if not successful. </p>
+
+<p>Implemented in <a class="el" href="classBagOfWords.html#a7c53939693970137d363dee3b69da898">BagOfWords</a>, <a class="el" href="classInvertedIndex.html#ad0d9cb36a504b0debdf1a47bb6d77e8e">InvertedIndex</a>, and <a class="el" href="classVocabTree.html#aaf9c57f3d8924489f1f627ac146b792c">VocabTree</a>.</p>
 
 </div>
 </div>
@@ -301,7 +332,7 @@ Protected Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classSearchBase.html">SearchBase</a></li>
-    <li class="footer">Generated on Wed Nov 6 2013 02:35:28 for vocabtree by
+    <li class="footer">Generated on Thu Nov 7 2013 03:39:07 for vocabtree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

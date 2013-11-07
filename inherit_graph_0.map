@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$classDataset.html" title="The Dataset class is an abstract wrapper describing a dataset." alt="" coords="6,5,74,32"/>
+<area shape="rect" id="node2" href="$classSimpleDataset.html" title="SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG images in a s..." alt="" coords="123,5,232,32"/>
+</map>

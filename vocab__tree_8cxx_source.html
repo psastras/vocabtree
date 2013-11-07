@@ -73,7 +73,7 @@ $(document).ready(function(){initNavTree('vocab__tree_8cxx.html','');});
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;}</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="code" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328">    9</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328">VocabTree::load</a> (<span class="keyword">const</span> std::string &amp;file_path) {</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="code" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328">    9</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328" title="Loads a trained search structure from the input filepath.">VocabTree::load</a> (<span class="keyword">const</span> std::string &amp;file_path) {</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Reading vocab tree from &quot;</span> &lt;&lt; file_path &lt;&lt; <span class="stringliteral">&quot;...&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="comment">// code here</span></div>
@@ -84,7 +84,7 @@ $(document).ready(function(){initNavTree('vocab__tree_8cxx.html','');});
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;}</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="classVocabTree.html#ac0fcc2c407d6ad58d6589996ff023f3f">   20</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classVocabTree.html#ac0fcc2c407d6ad58d6589996ff023f3f">VocabTree::save</a> (<span class="keyword">const</span> std::string &amp;file_path)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="classVocabTree.html#ac0fcc2c407d6ad58d6589996ff023f3f">   20</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classVocabTree.html#ac0fcc2c407d6ad58d6589996ff023f3f" title="Saves a trained search structure to the input filepath.">VocabTree::save</a> (<span class="keyword">const</span> std::string &amp;file_path)<span class="keyword"> const </span>{</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Writing vocab tree to &quot;</span> &lt;&lt; file_path &lt;&lt; <span class="stringliteral">&quot;...&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="comment">// code here</span></div>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('vocab__tree_8cxx.html','');});
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="classVocabTree.html#a28fae9e130e85b6e7daa3e6f7d44105c">   30</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classVocabTree.html#a28fae9e130e85b6e7daa3e6f7d44105c">VocabTree::train</a> (<span class="keyword">const</span> std::shared_ptr&lt;const TrainParamsBase&gt; &amp;params, <span class="keyword">const</span> std::vector&lt; std::shared_ptr&lt;const Image &gt; &gt; &amp;examples) {</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="code" href="classVocabTree.html#aaf9c57f3d8924489f1f627ac146b792c">   30</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classVocabTree.html#aaf9c57f3d8924489f1f627ac146b792c" title="Given a set of training parameters, list of images, trains.">VocabTree::train</a>(<a class="code" href="classDataset.html" title="The Dataset class is an abstract wrapper describing a dataset.">Dataset</a> &amp;dataset, <span class="keyword">const</span> std::shared_ptr&lt;const TrainParamsBase&gt; &amp;params, <span class="keyword">const</span> std::vector&lt; std::shared_ptr&lt;const Image &gt; &gt; &amp;examples) {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keyword">const</span> std::shared_ptr&lt;const TrainParams&gt; &amp;vt_params = std::static_pointer_cast&lt;<span class="keyword">const</span> <a class="code" href="structVocabTree_1_1TrainParams.html">TrainParams</a>&gt;(params);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        uint32_t split = vt_params-&gt;<a class="code" href="structVocabTree_1_1TrainParams.html#af2eec2a04b76dd1b075cf68d259492c0">split</a>;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        uint32_t depth = vt_params-&gt;depth;</div>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('vocab__tree_8cxx.html','');});
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="classVocabTree.html#ac7e3abd0728bcb9218f70b324b40ae22">   38</a></span>&#160;std::shared_ptr&lt;MatchResultsBase&gt; <a class="code" href="classVocabTree.html#ac7e3abd0728bcb9218f70b324b40ae22">VocabTree::search</a> (<span class="keyword">const</span> std::shared_ptr&lt;const SearchParamsBase&gt; &amp;params, <span class="keyword">const</span> std::shared_ptr&lt;const Image &gt; &amp;example) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="classVocabTree.html#a5f2e1e4f74178cf901a55f5ab8464933">   38</a></span>&#160;std::shared_ptr&lt;MatchResultsBase&gt; <a class="code" href="classVocabTree.html#a5f2e1e4f74178cf901a55f5ab8464933" title="Given a set of search parameters, a query images, searches for matching images and returns the match...">VocabTree::search</a>(<a class="code" href="classDataset.html" title="The Dataset class is an abstract wrapper describing a dataset.">Dataset</a> &amp;dataset, <span class="keyword">const</span> std::shared_ptr&lt;const SearchParamsBase&gt; &amp;params, <span class="keyword">const</span> std::shared_ptr&lt;const Image &gt; &amp;example) {</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Searching for matching images...&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">const</span> std::shared_ptr&lt;const SearchParams&gt; &amp;ii_params = std::static_pointer_cast&lt;<span class="keyword">const</span> <a class="code" href="structVocabTree_1_1SearchParams.html">SearchParams</a>&gt;(params);</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        </div>
@@ -118,8 +118,8 @@ $(document).ready(function(){initNavTree('vocab__tree_8cxx.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_908b8a04fdc815fa4463d93a9b220462.html">modules</a></li><li class="navelem"><a class="el" href="dir_d31a226f3193c1141acfb7f7425bf42c.html">search</a></li><li class="navelem"><a class="el" href="dir_9e6c67ab84d76efa0c69ea67a620b337.html">vocab_tree</a></li><li class="navelem"><a class="el" href="vocab__tree_8cxx.html">vocab_tree.cxx</a></li>
-    <li class="footer">Generated on Wed Nov 6 2013 02:35:28 for vocabtree by
+    <li class="navelem"><a class="el" href="dir_e05d7e2b1ecd646af5bb94391405f3b5.html">modules</a></li><li class="navelem"><a class="el" href="dir_fd1717190c36556d2776daec21b52a8a.html">search</a></li><li class="navelem"><a class="el" href="dir_4ff5b70ea48e7a8c0b5c235c8a364d39.html">vocab_tree</a></li><li class="navelem"><a class="el" href="vocab__tree_8cxx.html">vocab_tree.cxx</a></li>
+    <li class="footer">Generated on Thu Nov 7 2013 03:39:07 for vocabtree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>

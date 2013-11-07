@@ -68,11 +68,11 @@ $(document).ready(function(){initNavTree('search__base_8cxx.html','');});
 <a href="search__base_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="search__base_8hpp.html">search_base.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno"><a class="code" href="classSearchBase.html#aa391cf064522f21c45f211da66882463">    2</a></span>&#160;<a class="code" href="classSearchBase.html#aa391cf064522f21c45f211da66882463">SearchBase::~SearchBase</a>() { }</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="code" href="classSearchBase.html#a090a073fa0e68e1b6fbd24def21f9d0c">    4</a></span>&#160;std::vector&lt; std::shared_ptr&lt;MatchResultsBase&gt; &gt; <a class="code" href="classSearchBase.html#a090a073fa0e68e1b6fbd24def21f9d0c">SearchBase::search</a>     (<span class="keyword">const</span> std::shared_ptr&lt;SearchParamsBase&gt; &amp;params,  </div>
+<div class="line"><a name="l00004"></a><span class="lineno"><a class="code" href="classSearchBase.html#a8589889c76c103d15f75f0d55baf8fa0">    4</a></span>&#160;std::vector&lt; std::shared_ptr&lt;MatchResultsBase&gt; &gt; <a class="code" href="classSearchBase.html#a8589889c76c103d15f75f0d55baf8fa0" title="Given a set of search parameters, list of query images, searches for matching images and returns the ...">SearchBase::search</a>(<a class="code" href="classDataset.html" title="The Dataset class is an abstract wrapper describing a dataset.">Dataset</a> &amp;dataset, <span class="keyword">const</span> std::shared_ptr&lt;SearchParamsBase&gt; &amp;params,</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;                                                                                                                         <span class="keyword">const</span> std::vector&lt; std::shared_ptr&lt;const Image &gt; &gt; &amp;examples) {</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;        std::vector&lt; std::shared_ptr&lt;MatchResultsBase&gt; &gt; all_matches;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">size_t</span> i=0; i&lt;examples.size(); i++) {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;                all_matches.push_back(<a class="code" href="classSearchBase.html#a090a073fa0e68e1b6fbd24def21f9d0c">search</a>(params, examples[i]));</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;                all_matches.push_back(<a class="code" href="classSearchBase.html#a8589889c76c103d15f75f0d55baf8fa0" title="Given a set of search parameters, list of query images, searches for matching images and returns the ...">search</a>(dataset, params, examples[i]));</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        }</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <span class="keywordflow">return</span> all_matches;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;}</div>
@@ -81,8 +81,8 @@ $(document).ready(function(){initNavTree('search__base_8cxx.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_908b8a04fdc815fa4463d93a9b220462.html">modules</a></li><li class="navelem"><a class="el" href="dir_d31a226f3193c1141acfb7f7425bf42c.html">search</a></li><li class="navelem"><a class="el" href="dir_23ae2bcb9b923da3f2416604d3325793.html">search_base</a></li><li class="navelem"><a class="el" href="search__base_8cxx.html">search_base.cxx</a></li>
-    <li class="footer">Generated on Wed Nov 6 2013 02:35:28 for vocabtree by
+    <li class="navelem"><a class="el" href="dir_e05d7e2b1ecd646af5bb94391405f3b5.html">modules</a></li><li class="navelem"><a class="el" href="dir_fd1717190c36556d2776daec21b52a8a.html">search</a></li><li class="navelem"><a class="el" href="dir_3cab43559b9e2964b58e66b30f925370.html">search_base</a></li><li class="navelem"><a class="el" href="search__base_8cxx.html">search_base.cxx</a></li>
+    <li class="footer">Generated on Thu Nov 7 2013 03:39:07 for vocabtree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.1 </li>
   </ul>
