@@ -39,5 +39,17 @@ public:
 	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
 
 protected:
+
+  struct TreeNode {
+    uint32_t invertedFileLength;
+    cv::Mat mean;
+    std::vector<TreeNode> children;
+  };
+
+  TreeNode root;
+
+  // Recursively builds a tree, starting with 0 and ending with currLevel = maxLevel-1
+  void buildTreeRecursive(TreeNode t, cv::Mat descriptors, int split, cv::TermCriteria tc, int attempts, int flags, 
+    int currLevel, int maxLevel);
 	
 };
