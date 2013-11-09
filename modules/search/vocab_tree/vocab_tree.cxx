@@ -66,10 +66,12 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 16, 0.0001);
   // end of stuff from bag of words
 
-  //cv::Mat centers;
-  //cv::kmeans(merged_descriptor, split, labels, tc, attempts, cv::KMEANS_PP_CENTERS, centers);
 
+  //root.child_number = 0;
   buildTreeRecursive(root, merged_descriptor, split, tc, attempts, cv::KMEANS_PP_CENTERS, 6, 0);
+
+  // would now generate data on the reference images - descriptors go down tree, add images to inverted lists at leaves, 
+  //   and generate di vector for image
 
 	return false;
 }
@@ -78,10 +80,12 @@ void VocabTree::buildTreeRecursive(TreeNode t, cv::Mat descriptors, int split, c
   int attempts, int flags, int currLevel, int maxLevel) {
 
   t.invertedFileLength = descriptors.rows;
+  t.level = currLevel;
+  // add in entropy weighting here?
 
   // handles the leaves
   if (currLevel == maxLevel - 1) {
-
+    //create inverted file
     return;
   }
 
@@ -102,6 +106,7 @@ void VocabTree::buildTreeRecursive(TreeNode t, cv::Mat descriptors, int split, c
   for (int i = 0; i < split; i++) {
     TreeNode child;
     child.mean = centers.row(i);
+    //child.child_number = i;
     t.children.push_back(child);
     buildTreeRecursive(child, groups[i], split, tc, attempts, flags, currLevel + 1, maxLevel);
   }

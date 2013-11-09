@@ -42,6 +42,8 @@ protected:
 
   struct TreeNode {
     uint32_t invertedFileLength;
+    uint32_t level; // range from 0..maxLevel-1
+    //uint32_t child_number; //range from 0..split-1
     cv::Mat mean;
     std::vector<TreeNode> children;
   };
