@@ -71,6 +71,7 @@ protected:
   std::vector<float> weights;
 
   TreeNode root;
+
   // Stores the database vectors for all images in the database - d_i in the paper
   // Indexes by the image id
   std::unordered_map<uint64_t, std::vector<float>> databaseVectors;

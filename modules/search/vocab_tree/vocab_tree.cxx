@@ -2,6 +2,7 @@
 #include <utils/filesystem.hpp>
 #include <utils/vision.hpp>
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <math.h> // for pow
 #include <utility> // std::pair
@@ -25,7 +26,20 @@ bool VocabTree::load (const std::string &file_path) {
 bool VocabTree::save (const std::string &file_path) const {
 	std::cout << "Writing vocab tree to " << file_path << "..." << std::endl;
 
-	// code here
+  std::ofstream ofs(file_path, std::ios::binary | std::ios::trunc);
+
+  //uint32_t num_clusters = inverted_index.size();
+  ofs.write((const char *)&split, sizeof(uint32_t));
+  ofs.write((const char *)&maxLevel, sizeof(uint32_t));
+  ofs.write((const char *)&numberOfNodes, sizeof(uint32_t));
+  ofs.write((const char *)&weights[0], sizeof(float)*numberOfNodes); // weights
+  // write out databaseVectors
+  uint32_t imageCount = databaseVectors.size();
+  ofs.write((const char *)&imageCount, sizeof(uint32_t));
+  for (auto& pair : databaseVectors) {
+    ofs.write((const char *)&pair.first, sizeof(uint64_t));
+    ofs.write((const char *)&(pair.second)[0], sizeof(float)*numberOfNodes); 
+  }
 
 	std::cout << "Done writing vocab tree." << std::endl;
 
