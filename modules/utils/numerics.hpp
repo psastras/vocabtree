@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 #include <vector>
 #include <opencv2/opencv.hpp>
 
