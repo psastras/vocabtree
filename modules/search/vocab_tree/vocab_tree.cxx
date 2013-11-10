@@ -12,16 +12,73 @@ VocabTree::VocabTree() : SearchBase() {
 
 }
 
+// struct used for writing and reading cv::mat's
+struct cvmat_header {
+  uint64_t elem_size;
+  int32_t elem_type;
+  uint32_t rows, cols;
+};
+
 bool VocabTree::load (const std::string &file_path) {
 	std::cout << "Reading vocab tree from " << file_path << "..." << std::endl;
 
-	// code here
+  std::ifstream ifs(file_path, std::ios::binary);
+  ifs.read((char *)&split, sizeof(uint32_t));
+  ifs.read((char *)&maxLevel, sizeof(uint32_t));
+  ifs.read((char *)&numberOfNodes, sizeof(uint32_t));
+
+  weights.resize(numberOfNodes);
+  ifs.read((char *)&weights[0], sizeof(float)*numberOfNodes);
+
+  // load image data
+  uint32_t imageCount;
+  ifs.read((char *)&imageCount, sizeof(uint32_t));
+  for (uint32_t i = 0; i < imageCount; i++) {
+    uint64_t imageId;
+    std::vector<float> vec(numberOfNodes);
+    ifs.read((char *)&imageId, sizeof(uint64_t));
+    ifs.read((char *)&vec[0], sizeof(float)*numberOfNodes);
+    databaseVectors[imageId] = vec;
+  }
+
+  // load inveted files
+  uint32_t invertedFileCount;
+  ifs.read((char *)&invertedFileCount, sizeof(uint32_t));
+  invertedFiles.resize(invertedFileCount);
+
+  for (uint32_t i = 0; i < invertedFileCount; i++) {
+    uint32_t size;
+    ifs.read((char *)&size, sizeof(uint32_t));
+    for (uint32_t j = 0; j < size; j++) {
+      uint64_t imageId;
+      uint32_t imageCount;
+      ifs.read((char *)&imageId, sizeof(uint64_t));
+      ifs.read((char *)&imageCount, sizeof(uint32_t));
+      invertedFiles[i][imageId] = imageCount;
+    }
+  }
+
+  // read in tree
+  tree.resize(numberOfNodes);
+  for (uint32_t i = 0; i < numberOfNodes; i++) {
+    TreeNode t = tree[i];
+    ifs.read((char *)&t.firstChildIndex, sizeof(uint32_t));
+    ifs.read((char *)&t.index, sizeof(uint32_t));
+    ifs.read((char *)&t.invertedFileLength, sizeof(uint32_t));
+    ifs.read((char *)&t.level, sizeof(uint32_t));
+    ifs.read((char *)&t.levelIndex, sizeof(uint32_t));
+
+    // read cv::mat, copied from filesystem.cxx
+    cvmat_header h;
+    ifs.read((char *)&h, sizeof(cvmat_header));
+    t.mean.create(h.rows, h.cols, h.elem_type);
+    ifs.read((char *)t.mean.ptr(), h.rows * h.cols * h.elem_size);
+  }
 
 	std::cout << "Done reading vocab tree." << std::endl;
 	
-	return false;
+  return (ifs.rdstate() & std::ifstream::failbit) == 0;
 }
-
 
 bool VocabTree::save (const std::string &file_path) const {
 	std::cout << "Writing vocab tree to " << file_path << "..." << std::endl;
@@ -33,6 +90,7 @@ bool VocabTree::save (const std::string &file_path) const {
   ofs.write((const char *)&maxLevel, sizeof(uint32_t));
   ofs.write((const char *)&numberOfNodes, sizeof(uint32_t));
   ofs.write((const char *)&weights[0], sizeof(float)*numberOfNodes); // weights
+
   // write out databaseVectors
   uint32_t imageCount = databaseVectors.size();
   ofs.write((const char *)&imageCount, sizeof(uint32_t));
@@ -41,9 +99,40 @@ bool VocabTree::save (const std::string &file_path) const {
     ofs.write((const char *)&(pair.second)[0], sizeof(float)*numberOfNodes); 
   }
 
+  // write out inverted files
+  uint32_t numInvertedFiles = invertedFiles.size();
+  ofs.write((const char *)&numInvertedFiles, sizeof(uint32_t));
+  for (std::unordered_map<uint64_t, uint32_t> invFile : invertedFiles) {
+    uint32_t size = invFile.size();
+    ofs.write((const char *)&size, sizeof(uint32_t));
+    for (std::pair<uint64_t, uint32_t> pair : invFile) {
+      ofs.write((const char *)&pair.first, sizeof(uint64_t));
+      ofs.write((const char *)&pair.second, sizeof(uint32_t));
+    }
+  }
+
+  // write out tree
+  for (uint32_t i = 0; i < numberOfNodes; i++) {
+    TreeNode t = tree[i];
+    ofs.write((const char *)&t.firstChildIndex, sizeof(uint32_t));
+    ofs.write((const char *)&t.index, sizeof(uint32_t));
+    ofs.write((const char *)&t.invertedFileLength, sizeof(uint32_t));
+    ofs.write((const char *)&t.level, sizeof(uint32_t));
+    ofs.write((const char *)&t.levelIndex, sizeof(uint32_t));
+
+    // write cv::mat, copied from filesystem.cxx
+    cvmat_header h;
+    h.elem_size = t.mean.elemSize();
+    h.elem_type = t.mean.type();
+    h.rows = t.mean.rows;
+    h.cols = t.mean.cols;
+    ofs.write((char *)&h, sizeof(cvmat_header));
+    ofs.write((char *)t.mean.ptr(), h.rows * h.cols * h.elem_size);
+  }
+
 	std::cout << "Done writing vocab tree." << std::endl;
 
-	return false;
+  return (ofs.rdstate() & std::ofstream::failbit) == 0;;
 }
 
 bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, 
