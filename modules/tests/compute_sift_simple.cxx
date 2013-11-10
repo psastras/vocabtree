@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
-	for (uint64_t i = 0; i < simple_dataset.num_images(); i++) {
+	for (int64_t i = 0; i < simple_dataset.num_images(); i++) {
 
 		std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(simple_dataset.image(i));
 		if (image == nullptr) continue;
