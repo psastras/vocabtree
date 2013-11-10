@@ -55,9 +55,9 @@ protected:
     // index in a level order traversal of the tree
     uint32_t index;
     cv::Mat mean;
-    std::vector<TreeNode> children;
-    // only use for leaves
-    std::unordered_map<uint64_t, uint32_t> invertedFile;
+    // index into the array of nodes of the first child, all children are next to eachother
+    // if this is < 0 then it is a leaf
+    uint32_t firstChildIndex;
   };
 
   // stores the amount of splits used to generate tree
@@ -70,14 +70,15 @@ protected:
 
   std::vector<float> weights;
 
-  TreeNode root;
+  std::vector<TreeNode> tree;
+  std::vector<std::unordered_map<uint64_t, uint32_t>> invertedFiles;
 
   // Stores the database vectors for all images in the database - d_i in the paper
   // Indexes by the image id
   std::unordered_map<uint64_t, std::vector<float>> databaseVectors;
 
   // Recursively builds a tree, starting with 0 and ending with currLevel = maxLevel-1
-  void buildTreeRecursive(TreeNode t, cv::Mat descriptors, cv::TermCriteria tc, int attempts, int flags, int currLevel);
+  void buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCriteria tc, int attempts, int flags, int currLevel);
 
   // helper function, inserts a dummy possibleMatches
   std::vector<float> generateVector(cv::Mat descriptors, bool shouldWeight, uint64_t id = -1);
@@ -94,7 +95,7 @@ protected:
   // On each node increments cound in the counts vector
   // If id is set (>=0) then adds the image with that id to the leaf
   // Picks the child to traverse down based on the max dot product
-  void generateVectorHelper(TreeNode t, cv::Mat descriptor, std::vector<float> & counts, 
+  void generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std::vector<float> & counts,
     std::unordered_set<uint64_t> & possibleMatches, uint64_t id = -1);
 
 	
