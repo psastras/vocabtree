@@ -215,7 +215,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   //  then normalizes the vector
   typedef std::unordered_map<uint64_t, std::vector<float>>::iterator it_type;
   for (it_type iterator = databaseVectors.begin(); iterator != databaseVectors.end(); iterator++) {
-    float length = 0; // hopefully shouldn't overflow
+    float length = 0; // hopefully shouldn't overflow from adding doubles
     for (size_t i = 0; i < numberOfNodes; i++) {
       (iterator->second)[i] *= weights[i];
       length += (float)pow((iterator->second)[i], 2.0);
@@ -338,13 +338,13 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std
 }
 
 
-std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
+std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params,
   const std::shared_ptr<const Image > &example) {
 
-	std::cout << "Searching for matching images..." << std::endl;
-	const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
-	
-	std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
+  std::cout << "Searching for matching images..." << std::endl;
+  const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
+
+  std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
 
   // get descriptors for example
   if (example == nullptr) return nullptr;
@@ -375,9 +375,11 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
 
   std::sort(values.begin(), values.end(), comparer);
 
-	// add in matches, right now just return the top 10%
-  for (int i = 0; i < possibleMatches.size() / 10.0; i++)
+  // add in matches, right now just return the top 10%
+  for (int i = 0; i < possibleMatches.size() / 10.0; i++) {
     match_result->matches.push_back(values[i].first);
+    match_result->tfidf_scores.push_back(values[i].second);
+  }
 	//match_result->matches.push_back(0);
 
 	return (std::shared_ptr<MatchResultsBase>)match_result;

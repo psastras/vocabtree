@@ -20,7 +20,7 @@ public:
 
 	// Subclass of match results base which also returns scores
 	struct MatchResults : public MatchResultsBase {
-		std::vector<float> tfidf_scores;
+    std::vector<float> tfidf_scores;
 	};
 
 	VocabTree();
