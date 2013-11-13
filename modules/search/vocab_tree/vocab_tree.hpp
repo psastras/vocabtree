@@ -44,17 +44,7 @@ protected:
 
   struct TreeNode {
     uint32_t invertedFileLength;
-<<<<<<< HEAD
-    cv::Mat mean;
-    std::vector<TreeNode> children;
-  };
 
-  TreeNode root;
-
-  // Recursively builds a tree, starting with 0 and ending with currLevel = maxLevel-1
-  void buildTreeRecursive(TreeNode t, cv::Mat descriptors, int split, cv::TermCriteria tc, int attempts, int flags, 
-    int currLevel, int maxLevel);
-=======
     uint32_t level; // range from 0..maxLevel-1
     // index for this level, ranging from 0..split^level-1
     // For example: the first level children will simply have indexes from 0..split-1
@@ -108,7 +98,5 @@ protected:
   // Picks the child to traverse down based on the max dot product
   void generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std::vector<float> & counts,
     std::unordered_set<uint64_t> & possibleMatches, uint64_t id = -1);
-
->>>>>>> initial_tree
 	
 };

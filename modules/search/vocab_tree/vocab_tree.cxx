@@ -2,14 +2,10 @@
 #include <utils/filesystem.hpp>
 #include <utils/vision.hpp>
 #include <iostream>
-<<<<<<< HEAD
-#include <memory>
-=======
 #include <fstream>
 #include <memory>
 #include <math.h> // for pow
 #include <utility> // std::pair
->>>>>>> initial_tree
 
 VocabTree::VocabTree() : SearchBase() {
 
@@ -157,16 +153,6 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   }
   std::random_shuffle(all_ids.begin(), all_ids.end());
 
-<<<<<<< HEAD
-  // took the following from bag_of_words
-  std::vector<uint64_t> all_ids(examples.size());
-  for (uint64_t i = 0; i < examples.size(); i++) {
-    all_ids[i] = examples[i]->id;
-  }
-  std::random_shuffle(all_ids.begin(), all_ids.end());
-
-=======
->>>>>>> initial_tree
   std::vector<cv::Mat> all_descriptors;
   uint64_t num_features = 0;
   for (size_t i = 0; i < all_ids.size(); i++) {
@@ -179,10 +165,6 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     cv::Mat descriptors;
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
       num_features += descriptors.rows;
-<<<<<<< HEAD
-      //if (n > 0 && num_features > n) break;
-=======
->>>>>>> initial_tree
 
       all_descriptors.push_back(descriptors);
     }
@@ -193,25 +175,6 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   uint32_t attempts = 1;
   cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 16, 0.0001);
   // end of stuff from bag of words
-
-<<<<<<< HEAD
-  //cv::Mat centers;
-  //cv::kmeans(merged_descriptor, split, labels, tc, attempts, cv::KMEANS_PP_CENTERS, centers);
-
-  buildTreeRecursive(root, merged_descriptor, split, tc, attempts, cv::KMEANS_PP_CENTERS, 6, 0);
-
-	return false;
-}
-
-void VocabTree::buildTreeRecursive(TreeNode t, cv::Mat descriptors, int split, cv::TermCriteria tc, 
-  int attempts, int flags, int currLevel, int maxLevel) {
-
-  t.invertedFileLength = descriptors.rows;
-
-  // handles the leaves
-  if (currLevel == maxLevel - 1) {
-
-=======
 
   tree[0].levelIndex = 0;
   tree[0].index = 0;
@@ -274,7 +237,6 @@ void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCrit
   // handles the leaves
   if (currLevel == maxLevel - 1) {
     tree[t].firstChildIndex = -1;
->>>>>>> initial_tree
     return;
   }
 
@@ -284,11 +246,7 @@ void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCrit
   cv::kmeans(descriptors, split, labels, tc, attempts, flags, centers);
 
   std::vector<cv::Mat> groups(split);
-<<<<<<< HEAD
-  for (int i = 0; i < split; i++)
-=======
   for (uint32_t i = 0; i < split; i++)
->>>>>>> initial_tree
     groups[i] = cv::Mat();
 
   for (int i = 0; i < labels.rows; i++) {
@@ -296,17 +254,6 @@ void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCrit
     groups[index].push_back(descriptors.row(i));
   }
 
-<<<<<<< HEAD
-  for (int i = 0; i < split; i++) {
-    TreeNode child;
-    child.mean = centers.row(i);
-    t.children.push_back(child);
-    buildTreeRecursive(child, groups[i], split, tc, attempts, flags, currLevel + 1, maxLevel);
-  }
-}
-
-std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
-=======
   for (uint32_t i = 0; i < split; i++) {
     uint32_t childLevelIndex = tree[t].levelIndex*split + i;
     uint32_t childIndex = (uint32_t)(pow(split, tree[t].level) / (split - 1)) + childLevelIndex;
@@ -394,7 +341,6 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std
 std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
   const std::shared_ptr<const Image > &example) {
 
->>>>>>> initial_tree
 	std::cout << "Searching for matching images..." << std::endl;
 	const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
 	
