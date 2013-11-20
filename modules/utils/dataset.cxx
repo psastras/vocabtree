@@ -31,6 +31,13 @@ std::vector< std::shared_ptr<const Image> > Dataset::all_images() {
 	return images;
 }
 
+std::vector< std::shared_ptr<const Image> > Dataset::random_images(size_t count) {
+	std::vector< std::shared_ptr< const Image> > all = this->all_images();
+	std::random_shuffle(all.begin(), all.end());
+	std::vector< std::shared_ptr< const Image> > images(all.begin(), all.begin() + count);
+	return images;
+}
+
 std::ostream& operator<< (std::ostream &out, const Dataset &dataset) {
 	out << "Dataset location: " << dataset.location() << ", number of images: " << dataset.num_images();
 	return out;
@@ -121,8 +128,15 @@ SimpleDataset::SimpleImage::SimpleImage(const std::string &path, uint64_t imagei
 }
 
 std::string SimpleDataset::SimpleImage::feature_path(const std::string &feat_name) const {
+	uint32_t level0 = id >> 20;
+	uint32_t level1 = (id - (level0 << 20)) >> 10;
+
 	std::stringstream ss;
-	ss << "/feats/" << feat_name << "/" << std::setw(6) << std::setfill('0') << id << "." << feat_name;
+	ss << "/feats/" << feat_name << "/" << 
+		std::setw(4) << std::setfill('0') << level0 << "/" <<
+		std::setw(4) << std::setfill('0') << level1 << "/" <<
+		std::setw(9) << std::setfill('0') << id << "." << feat_name;
+		
 	return ss.str();
 }
 

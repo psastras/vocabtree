@@ -1,11 +1,14 @@
 #pragma once
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/stitching.hpp>
 #include <memory>
 
 /// Provides useful wrappers around many OpenCV functions as well
 /// as some simple vision - based routines.
 namespace vision {
+
+	typedef std::set<std::pair<int,int> > MatchesSet;
 
 	/// Describes SIFT extraction parameters when calling OpenCV's
 	/// SIFT implementation.  See the OpenCV documentation for
@@ -38,10 +41,17 @@ namespace vision {
 	/// matrix.
 	cv::Mat merge_descriptors(std::vector<cv::Mat> &descriptors, bool release_original = true);
 
-	/// Given a pair of keypoints and corresponding SIFT descriptors, attempts to compute a RANSAC
-	/// homography between them.  Results are returned as MatchInfo.  This function is useful in conjuction
-	/// with is_good_homography_match which reads the MatchInfo from this function and determines if
-	/// a good registration has been found.
-	// cv::MatchInfo find_homography(const cv::Mat &keypoints_0, const cv::Mat &descriptors_0, 
-	// 	const cv::Mat &keypoints_1, const cv::Mat &descriptors_1);
+	/// Computes a homography between the input pairs of points and descriptors and returns the result
+	/// in MatchesInfo (including homography, confidence score, etc.)  If output inlier vectors are 
+	/// provided, will insert a list of feature indices belonging to the homography inliers.
+	void geo_verify_h(const cv::Mat &descriptors0, const cv::Mat &points0,
+		const cv::Mat &descriptors1, const cv::Mat &points1, cv::detail::MatchesInfo &matches_info,
+		std::vector<uint32_t> *inliers0 = 0, std::vector<uint32_t> *inliers1 = 0);
+
+	/// Computes a fundamental matrix between the input pairs of points and descriptors and returns the result
+	/// in MatchesInfo (including fundamental, confidence score, etc.)  If output inlier vectors are 
+	/// provided, will insert a list of feature indices belonging to the fundamental inliers.
+	void geo_verify_f(const cv::Mat &descriptors0, const cv::Mat &points0,
+		const cv::Mat &descriptors1, const cv::Mat &points1, cv::detail::MatchesInfo &matches_info,
+		std::vector<uint32_t> *inliers0 = 0, std::vector<uint32_t> *inliers1 = 0);
 };

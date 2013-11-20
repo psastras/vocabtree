@@ -56,6 +56,9 @@ public:
 	/// Returns a vector of all images in the dataset.
 	std::vector<  std::shared_ptr< const Image> > all_images();
 
+	/// Returns a vector of random images in the dataset of size count.
+	std::vector<  std::shared_ptr< const Image> > random_images(size_t count);
+
 	/// @TODO: Shards the dataset to the new input locations, and returns the sharded datasets
 	std::vector<Dataset> shard(const std::vector<std::string> &new_locations);
 
