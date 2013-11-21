@@ -1,0 +1,7 @@
+#!/usr/bin/python
+
+SCRIPTS_DIR = "@CMAKE_SOURCE_DIR@/scripts/"
+BENCH_FEATURES_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_compute_features"
+BENCH_BOW_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_bow"
+BENCH_INDEX_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_index"
+BENCH_SEARCH_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_search"

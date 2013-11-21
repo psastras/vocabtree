@@ -30,6 +30,8 @@ bool InvertedIndex::load (const std::string &file_path) {
 	uint32_t num_clusters;
 	ifs.read((char *)&num_clusters, sizeof(uint32_t));
 	inverted_index.resize(num_clusters);
+	idf_weights.resize(num_clusters);
+	ifs.read((char *)&idf_weights[0], sizeof(float) * num_clusters);
 	for(uint32_t i=0; i<num_clusters; i++) {
 		uint64_t num_entries;
 		ifs.read((char *)&num_entries, sizeof(uint64_t));
@@ -50,6 +52,7 @@ bool InvertedIndex::save (const std::string &file_path) const {
 
 	uint32_t num_clusters = inverted_index.size();
 	ofs.write((const char *)&num_clusters, sizeof(uint32_t));
+	ofs.write((const char *)&idf_weights[0], sizeof(float) * num_clusters);
 	for(uint32_t i=0; i<num_clusters; i++) {
 		uint64_t num_entries = inverted_index[i].size();
 		ofs.write((const char *)&num_entries, sizeof(uint64_t));
@@ -69,6 +72,7 @@ bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainPar
 	if(bag_of_words == nullptr) return false;
 
 	inverted_index.resize(bag_of_words->num_clusters());
+	idf_weights.resize(bag_of_words->num_clusters(), 0.f);
 
 	for (size_t i = 0; i < examples.size(); i++) {
 		const std::shared_ptr<const Image> &image = examples[i];
@@ -84,6 +88,12 @@ bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainPar
 		}
 	}
 
+	for(size_t i=0; i<idf_weights.size(); i++) {
+		idf_weights[i] = logf(
+				(float)examples.size() /
+				(float)inverted_index[i].size());
+	}
+
 	return true;
 }
 
@@ -95,9 +105,15 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
 
 	const std::string &example_bow_descriptors_location = dataset.location(example->feature_path("bow_descriptors"));
-	if (!filesystem::file_exists(example_bow_descriptors_location)) return nullptr;
+	if(!filesystem::file_exists(example_bow_descriptors_location)) {
+		std::cerr << "No file at load " << example_bow_descriptors_location << std::endl;
+		return nullptr;
+	}
 	numerics::sparse_vector_t example_bow_descriptors;
-	if(!filesystem::load_sparse_vector(example_bow_descriptors_location, example_bow_descriptors)) return nullptr;
+	if(!filesystem::load_sparse_vector(example_bow_descriptors_location, example_bow_descriptors))  {
+		std::cerr << "Failed to load " << example_bow_descriptors_location << std::endl;
+		return nullptr;
+	}
 
 	std::vector<uint64_t> candidates(dataset.num_images(), 0);
 	uint64_t num_candidates = 0;
@@ -108,8 +124,6 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 				candidates[inverted_index[cluster][j]] = ++num_candidates;
 		}
 	}
-
-	std::vector<float> fake_idfw(inverted_index.size(), 1.f); // sets idf weights to one.
 
 	std::vector< std::pair<float, uint64_t> > candidate_scores(num_candidates);
 
@@ -124,7 +138,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 		numerics::sparse_vector_t bow_descriptors;
 		if(!filesystem::load_sparse_vector(bow_descriptors_location, bow_descriptors)) continue;
 
-		float sim = numerics::cos_sim(example_bow_descriptors, bow_descriptors, fake_idfw);
+		float sim = numerics::min_hist(example_bow_descriptors, bow_descriptors, idf_weights);
 		candidate_scores[candidates[i]-1] = std::pair<float, uint64_t>(sim, i);
 	}
 

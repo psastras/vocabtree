@@ -14,7 +14,7 @@ _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
 
-	const uint32_t num_clusters = 16000;
+	const uint32_t num_clusters = s_oxford_num_clusters;
 
 	SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
 	LINFO << oxford_dataset;
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 	InvertedIndex ii;
 	std::shared_ptr<InvertedIndex::TrainParams> train_params = std::make_shared<InvertedIndex::TrainParams>();
 	train_params->bag_of_words = bow;
-	ii.train(oxford_dataset, train_params, oxford_dataset.random_images(1024));
+	ii.train(oxford_dataset, train_params, oxford_dataset.all_images());
 
 	std::stringstream index_output_file;
 	index_output_file << oxford_dataset.location() << "/index/" << num_clusters << ".index";

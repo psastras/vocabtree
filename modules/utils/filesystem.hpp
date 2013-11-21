@@ -26,4 +26,7 @@ namespace filesystem {
 	/// Lists all files in the given directory with an optional extension.  The extension must include
 	/// the dot (ie. ext=".txt").
 	std::vector<std::string> list_files(const std::string &path, const std::string &ext = "") ;
+	/// Writes a text file to the input file location given the input string.  Returns true if success,
+	/// false otherwise.
+	bool write_text(const std::string &fname, const std::string &text);
 };

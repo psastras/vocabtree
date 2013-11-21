@@ -18,6 +18,9 @@ public:
 	/// Returns the corresponding feature path given a feature name (ex. "sift").
 	virtual std::string feature_path(const std::string &feat_name) const = 0;
 
+	/// Returns the image location relative to the database data directory.
+	virtual std::string location() const = 0;
+
 private:
 	
 };

@@ -60,7 +60,7 @@ SimpleDataset::SimpleDataset(const std::string &base_location, const std::string
 
 SimpleDataset::~SimpleDataset() { }
 
-std::shared_ptr<Image> SimpleDataset::image(uint64_t id) {
+std::shared_ptr<Image> SimpleDataset::image(uint64_t id) const {
 	const std::string &image_path = id_image_map.right.at(id);
 
 	std::shared_ptr<Image> current_image = std::make_shared<SimpleImage>(image_path, id);

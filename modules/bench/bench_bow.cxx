@@ -22,15 +22,24 @@ int main(int argc, char *argv[]) {
 
 	SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
 	LINFO << oxford_dataset;
-
-	BagOfWords bow;
+	
 	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
-	const std::vector<  std::shared_ptr<const Image> > &all_images = oxford_dataset.all_images();
-	bow.train(oxford_dataset, train_params, all_images);
+	train_params->numClusters = s_oxford_num_clusters;
 
+	// cluster sift features
+	BagOfWords bow;
 	std::stringstream vocab_output_file;
 	vocab_output_file << oxford_dataset.location() << "/vocabulary/" << train_params->numClusters << ".vocab";
-	bow.save(vocab_output_file.str());
+	if(filesystem::file_exists(vocab_output_file.str())) {
+		bow.load(vocab_output_file.str());
+	} else {
+		
+		const std::vector<  std::shared_ptr<const Image> > &random_images = oxford_dataset.random_images(1024);
+		bow.train(oxford_dataset, train_params, random_images);		
+		bow.save(vocab_output_file.str());
+	}
+	
+	const std::vector<  std::shared_ptr<const Image> > &all_images = oxford_dataset.all_images();
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	uint32_t num_threads = omp_get_max_threads();

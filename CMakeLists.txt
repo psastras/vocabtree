@@ -74,6 +74,11 @@ ELSE()
 	SET(ENABLE_OPENMP 0)
 ENDIF()
 
+CONFIGURE_FILE(
+		${CMAKE_SOURCE_DIR}/scripts/config.py.cmake
+		${CMAKE_SOURCE_DIR}/scripts/config.py
+)
 
 SET(VOCAB_TREE_INCLUDE  ${PROJECT_SOURCE_DIR}/modules/)
 ADD_SUBDIRECTORY(modules)
+

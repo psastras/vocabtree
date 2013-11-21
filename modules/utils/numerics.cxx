@@ -44,4 +44,33 @@ namespace numerics {
 		}
 		return ab / (sqrtf(a2)*sqrtf(b2));
 	}
+
+	float min_hist(const std::vector<std::pair<uint32_t, float> > &weights0, 
+		const std::vector<std::pair<uint32_t, float> > &weights1,
+		const std::vector<float> &idfw) {
+		float a = 0.f, b = 0.f, ab = 0.f;
+		for(int k=0; k<weights0.size(); k++) {
+			a += weights0[k].second*idfw[weights0[k].first];
+		}
+		for(int k=0; k<weights1.size(); k++) {
+			b += weights1[k].second*idfw[weights1[k].first];
+		}
+		for(size_t i=0, j=0; i < weights0.size() && j < weights1.size();) {
+			if(i < weights0.size() && j < weights1.size()) {
+				if (weights0[i].first == weights1[j].first) {
+					float min_val = weights0[i].second / a;
+					if(min_val > (weights1[j].second / b))	{
+						min_val = weights1[j].second / b;
+					}
+					ab += min_val * idfw[weights0[i].first];
+					i++, j++;
+				} else if (weights0[i].first < weights1[j].first) {
+					i++;
+				} else {
+					j++;
+				}
+			}
+		}
+		return ab;
+	}
 }

@@ -46,6 +46,7 @@ public:
 protected:
 	
 	std::vector< std::vector<uint64_t> > inverted_index; /// Stores the inverted index, dimension one is the cluster index, dimension two holds a list of ids containing that word.
+	std::vector<float> idf_weights; /// Stores the idf weights, one element per cluster
 
 };
 

@@ -90,4 +90,10 @@ namespace filesystem {
 
 		return boost::filesystem::basename(boost::filesystem::path(path)) + boost::filesystem::extension(path);
 	}
+
+	bool write_text(const std::string &fname, const std::string &text) {
+		std::ofstream ofs(fname, std::ios::trunc);
+		ofs.write(text.c_str(), text.size());
+		return (ofs.rdstate() & std::ofstream::failbit) == 0;
+	}
 }
