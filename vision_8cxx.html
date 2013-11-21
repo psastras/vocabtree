@@ -78,7 +78,7 @@ Include dependency graph for vision.cxx:</div>
 <div class="dyncontent">
 <div class="center"><img src="vision_8cxx__incl.png" border="0" usemap="#_2home_2psastras_2vocabtree_2modules_2utils_2vision_8cxx" alt=""/></div>
 <map name="_2home_2psastras_2vocabtree_2modules_2utils_2vision_8cxx" id="_2home_2psastras_2vocabtree_2modules_2utils_2vision_8cxx">
-<area shape="rect" id="node2" href="vision_8hpp.html" title="vision.hpp" alt="" coords="101,96,181,123"/></map>
+<area shape="rect" id="node2" href="vision_8hpp.html" title="vision.hpp" alt="" coords="206,96,287,123"/></map>
 </div>
 </div>
 <p><a href="vision_8cxx_source.html">Go to the source code of this file.</a></p>
@@ -91,6 +91,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a42f0c2d422ec0fdf6aafd4cb8873d857"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevision.html#a42f0c2d422ec0fdf6aafd4cb8873d857">vision::geo_verify_f</a> (const cv::Mat &amp;descriptors0, const cv::Mat &amp;points0, const cv::Mat &amp;descriptors1, const cv::Mat &amp;points1, cv::detail::MatchesInfo &amp;matches_info, std::vector&lt; uint32_t &gt; *inliers0=0, std::vector&lt; uint32_t &gt; *inliers1=0)</td></tr>
+<tr class="memdesc:a42f0c2d422ec0fdf6aafd4cb8873d857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a fundamental matrix between the input pairs of points and descriptors and returns the result in MatchesInfo (including fundamental, confidence score, etc.) If output inlier vectors are provided, will insert a list of feature indices belonging to the fundamental inliers.  <a href="#a42f0c2d422ec0fdf6aafd4cb8873d857">More...</a><br/></td></tr>
+<tr class="separator:a42f0c2d422ec0fdf6aafd4cb8873d857"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac83ac71c5790f8d82c005e9ce000c1b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevision.html#ac83ac71c5790f8d82c005e9ce000c1b2">vision::geo_verify_h</a> (const cv::Mat &amp;descriptors0, const cv::Mat &amp;points0, const cv::Mat &amp;descriptors1, const cv::Mat &amp;points1, cv::detail::MatchesInfo &amp;matches_info, std::vector&lt; uint32_t &gt; *inliers0=0, std::vector&lt; uint32_t &gt; *inliers1=0)</td></tr>
+<tr class="memdesc:ac83ac71c5790f8d82c005e9ce000c1b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a homography between the input pairs of points and descriptors and returns the result in MatchesInfo (including homography, confidence score, etc.) If output inlier vectors are provided, will insert a list of feature indices belonging to the homography inliers.  <a href="#ac83ac71c5790f8d82c005e9ce000c1b2">More...</a><br/></td></tr>
+<tr class="separator:ac83ac71c5790f8d82c005e9ce000c1b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af32568481574bcf43057392bd9126b5c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevision.html#af32568481574bcf43057392bd9126b5c">vision::compute_sparse_sift_feature</a> (const cv::Mat &amp;img, const std::shared_ptr&lt; const SIFTParams &gt; &amp;params, cv::Mat &amp;keypoints, cv::Mat &amp;descriptors)</td></tr>
 <tr class="memdesc:af32568481574bcf43057392bd9126b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a grayscale image, img, and SIFT extraction parameters computes sparse sift features.  <a href="#af32568481574bcf43057392bd9126b5c">More...</a><br/></td></tr>
 <tr class="separator:af32568481574bcf43057392bd9126b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>

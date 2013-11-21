@@ -65,6 +65,7 @@
       <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
+      <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
@@ -111,14 +112,18 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="structInvertedIndex_1_1TrainParams.html#ac2dd137ecdf27afdfad06ceef555372d">InvertedIndex::TrainParams</a>
 </li>
 <li>BagOfWords()
-: <a class="el" href="classBagOfWords.html#a3635991a6a444ee569faf7589347c208">BagOfWords</a>
+: <a class="el" href="classBagOfWords.html#a47c36fb60850a08efa153fe881804523">BagOfWords</a>
+</li>
+<li>buildTreeRecursive()
+: <a class="el" href="classVocabTree.html#ab86813ba8b18714887d608a92040ee2b">VocabTree</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
 <li>cols
-: <a class="el" href="structfilesystem_1_1cvmat__header.html#ab8ef888e91c088f0d74931b13c84ca56">filesystem::cvmat_header</a>
+: <a class="el" href="structcvmat__header.html#a76c437502b110c5d026c71977ddd8ba2">cvmat_header</a>
+, <a class="el" href="structfilesystem_1_1cvmat__header.html#ab8ef888e91c088f0d74931b13c84ca56">filesystem::cvmat_header</a>
 </li>
 <li>construct_dataset()
 : <a class="el" href="classSimpleDataset.html#abbcf7ae5cdfb9b214884ace34287d4be">SimpleDataset</a>
@@ -133,8 +138,11 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>data_directory
 : <a class="el" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">Dataset</a>
 </li>
+<li>databaseVectors
+: <a class="el" href="classVocabTree.html#af726c5bf8c1cae60b2d0753121322e6e">VocabTree</a>
+</li>
 <li>Dataset()
-: <a class="el" href="classDataset.html#a0a61b1bc944336ce81737c9f07d26c13">Dataset</a>
+: <a class="el" href="classDataset.html#aab7b38cb00062d8829dfb936fcd8d4f7">Dataset</a>
 </li>
 <li>depth
 : <a class="el" href="structVocabTree_1_1TrainParams.html#a19cf8b48b0421b61e6d509e23aa505e1">VocabTree::TrainParams</a>
@@ -147,10 +155,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="structvision_1_1SIFTParams.html#a4cecc47e477c8df5d7d1e4bc5816df2f">vision::SIFTParams</a>
 </li>
 <li>elem_size
-: <a class="el" href="structfilesystem_1_1cvmat__header.html#a0a5c08bca19d68690a6f0e3669749ad7">filesystem::cvmat_header</a>
+: <a class="el" href="structcvmat__header.html#ab1156ab3006cb634c23e836c23e1f880">cvmat_header</a>
+, <a class="el" href="structfilesystem_1_1cvmat__header.html#a0a5c08bca19d68690a6f0e3669749ad7">filesystem::cvmat_header</a>
 </li>
 <li>elem_type
-: <a class="el" href="structfilesystem_1_1cvmat__header.html#abc301239a5e24f7d05388c0866158a41">filesystem::cvmat_header</a>
+: <a class="el" href="structcvmat__header.html#a2e642b14dc5e5e0c7d7343b4c716c50d">cvmat_header</a>
+, <a class="el" href="structfilesystem_1_1cvmat__header.html#abc301239a5e24f7d05388c0866158a41">filesystem::cvmat_header</a>
 </li>
 </ul>
 
@@ -159,6 +169,19 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>feature_path()
 : <a class="el" href="classSimpleDataset_1_1SimpleImage.html#a52572cf12c70ac838995585307548751">SimpleDataset::SimpleImage</a>
 , <a class="el" href="classImage.html#aa4903872aaca70ea52f2a219602d6ff2">Image</a>
+</li>
+<li>firstChildIndex
+: <a class="el" href="structVocabTree_1_1TreeNode.html#a627cfb600c7368bd5d6020d519d971b1">VocabTree::TreeNode</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_g"></a>- g -</h3><ul>
+<li>generateVector()
+: <a class="el" href="classVocabTree.html#a433a9b794078f3c746b20f186ea426c7">VocabTree</a>
+</li>
+<li>generateVectorHelper()
+: <a class="el" href="classVocabTree.html#ad110addea52236bf60250b915338c79f">VocabTree</a>
 </li>
 </ul>
 
@@ -182,25 +205,40 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>image_path
 : <a class="el" href="classSimpleDataset_1_1SimpleImage.html#a7ceefe624bfb388d9d19590cdf839666">SimpleDataset::SimpleImage</a>
 </li>
+<li>index
+: <a class="el" href="structVocabTree_1_1TreeNode.html#afc8881e214f02c7741fb17899e551f65">VocabTree::TreeNode</a>
+</li>
 <li>inverted_index
 : <a class="el" href="classInvertedIndex.html#a0b14366e8875227d1bc9c05b24a6d993">InvertedIndex</a>
 </li>
+<li>invertedFileLength
+: <a class="el" href="structVocabTree_1_1TreeNode.html#addc988fc7d198f71958c83de6c25ed9a">VocabTree::TreeNode</a>
+</li>
+<li>invertedFiles
+: <a class="el" href="classVocabTree.html#a34e29a505f7c44a172c95bf8e9119e88">VocabTree</a>
+</li>
 <li>InvertedIndex()
-: <a class="el" href="classInvertedIndex.html#a29cb6e37c9bf93ac94c2c6985c4224a8">InvertedIndex</a>
+: <a class="el" href="classInvertedIndex.html#a4c72186acb5b96054e522354f398257e">InvertedIndex</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
+<li>level
+: <a class="el" href="structVocabTree_1_1TreeNode.html#a7f4c9ee4ec78d7fe4b43a4565b23a8b9">VocabTree::TreeNode</a>
+</li>
+<li>levelIndex
+: <a class="el" href="structVocabTree_1_1TreeNode.html#a83b223b6e9bb26d121cebc2b1030cb7e">VocabTree::TreeNode</a>
+</li>
 <li>load()
-: <a class="el" href="classBagOfWords.html#af835436c37019e152e897b84f345a8d3">BagOfWords</a>
-, <a class="el" href="classInvertedIndex.html#a815b5aaa4565500df3aa2eb92f865535">InvertedIndex</a>
-, <a class="el" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328">VocabTree</a>
+: <a class="el" href="classInvertedIndex.html#a815b5aaa4565500df3aa2eb92f865535">InvertedIndex</a>
 , <a class="el" href="classSearchBase.html#a8af6d745f82a66b25fcf8cc012ff6e3e">SearchBase</a>
+, <a class="el" href="classVocabTree.html#ad8645f1901ce25a989dacfba7642d328">VocabTree</a>
+, <a class="el" href="classBagOfWords.html#af835436c37019e152e897b84f345a8d3">BagOfWords</a>
 </li>
 <li>location()
 : <a class="el" href="classSimpleDataset_1_1SimpleImage.html#ac5fc639e05e14ff7a2eec79af79ea221">SimpleDataset::SimpleImage</a>
-, <a class="el" href="classDataset.html#a1be6c736cec176a950234ea610abf3e5">Dataset</a>
+, <a class="el" href="classDataset.html#a1ff0b7af20efb2069a4375f54fd069cd">Dataset</a>
 </li>
 </ul>
 
@@ -211,6 +249,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>max_features
 : <a class="el" href="structvision_1_1SIFTParams.html#ac519d46a13cec9f91f3c3ef92fb87602">vision::SIFTParams</a>
+</li>
+<li>maxLevel
+: <a class="el" href="classVocabTree.html#a4ade9822092326165d8710d8b1f7c639">VocabTree</a>
+</li>
+<li>mean
+: <a class="el" href="structVocabTree_1_1TreeNode.html#a048f59b318335ecbaf184bd721509b2f">VocabTree::TreeNode</a>
 </li>
 </ul>
 
@@ -226,6 +270,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>num_octave_layers
 : <a class="el" href="structvision_1_1SIFTParams.html#ad7d01eb10b930f6e4e672aa507bc5779">vision::SIFTParams</a>
 </li>
+<li>numberOfNodes
+: <a class="el" href="classVocabTree.html#a4644191b6219ad132cc516216389eed9">VocabTree</a>
+</li>
 <li>numClusters
 : <a class="el" href="structBagOfWords_1_1TrainParams.html#acd3b584a1f0b67c0a4ac1edfeaf09089">BagOfWords::TrainParams</a>
 </li>
@@ -236,12 +283,16 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>random_images()
+: <a class="el" href="classDataset.html#a1ea32e027e9c7cec5076728803b88e30">Dataset</a>
+</li>
 <li>read()
 : <a class="el" href="classDataset.html#a39223855be0678ff51a1abfd13b83e74">Dataset</a>
 , <a class="el" href="classSimpleDataset.html#ad1796ff9bf06fd775e59033862ab3881">SimpleDataset</a>
 </li>
 <li>rows
-: <a class="el" href="structfilesystem_1_1cvmat__header.html#acdcf543a27c35af493a6e2e77e4beac9">filesystem::cvmat_header</a>
+: <a class="el" href="structcvmat__header.html#a09ca491336dde9ae4af2c1ea8aa6c266">cvmat_header</a>
+, <a class="el" href="structfilesystem_1_1cvmat__header.html#acdcf543a27c35af493a6e2e77e4beac9">filesystem::cvmat_header</a>
 </li>
 </ul>
 
@@ -270,13 +321,14 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="structvision_1_1SIFTParams.html#a89a1e7850a2a8a662df90b2c2bbdb638">vision::SIFTParams</a>
 </li>
 <li>SimpleDataset()
-: <a class="el" href="classSimpleDataset.html#ad064a69a0ee47529f2dd18f82575a43b">SimpleDataset</a>
+: <a class="el" href="classSimpleDataset.html#aa6e20a02118446d1ce6c618194c21dad">SimpleDataset</a>
 </li>
 <li>SimpleImage()
 : <a class="el" href="classSimpleDataset_1_1SimpleImage.html#ab9a3925d415cced8a3a949a59bd13b44">SimpleDataset::SimpleImage</a>
 </li>
 <li>split
-: <a class="el" href="structVocabTree_1_1TrainParams.html#af2eec2a04b76dd1b075cf68d259492c0">VocabTree::TrainParams</a>
+: <a class="el" href="classVocabTree.html#a6ab3b90e1675f17341675ca1419aad7d">VocabTree</a>
+, <a class="el" href="structVocabTree_1_1TrainParams.html#af2eec2a04b76dd1b075cf68d259492c0">VocabTree::TrainParams</a>
 </li>
 </ul>
 
@@ -288,10 +340,13 @@ $(document).ready(function(){initNavTree('functions.html','');});
 , <a class="el" href="structVocabTree_1_1MatchResults.html#a00cf3256deacff07bddb455b30b7075a">VocabTree::MatchResults</a>
 </li>
 <li>train()
-: <a class="el" href="classInvertedIndex.html#ad0d9cb36a504b0debdf1a47bb6d77e8e">InvertedIndex</a>
+: <a class="el" href="classSearchBase.html#a7f8a2ba4698c76ef8ca5b608e5de2ea4">SearchBase</a>
+, <a class="el" href="classInvertedIndex.html#ad0d9cb36a504b0debdf1a47bb6d77e8e">InvertedIndex</a>
 , <a class="el" href="classBagOfWords.html#a7c53939693970137d363dee3b69da898">BagOfWords</a>
-, <a class="el" href="classSearchBase.html#a7f8a2ba4698c76ef8ca5b608e5de2ea4">SearchBase</a>
 , <a class="el" href="classVocabTree.html#aaf9c57f3d8924489f1f627ac146b792c">VocabTree</a>
+</li>
+<li>tree
+: <a class="el" href="classVocabTree.html#a8dc8006fa8e445b834aa800f2e6f2069">VocabTree</a>
 </li>
 </ul>
 
@@ -310,9 +365,12 @@ $(document).ready(function(){initNavTree('functions.html','');});
 
 
 <h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
+<li>weights
+: <a class="el" href="classVocabTree.html#a183aed20b90dacfa47a454d6223bb094">VocabTree</a>
+</li>
 <li>write()
-: <a class="el" href="classDataset.html#aa4fee6b7d35d52a0ed56875371cf391c">Dataset</a>
-, <a class="el" href="classSimpleDataset.html#a823512d4c42988cb2ae444d83e427670">SimpleDataset</a>
+: <a class="el" href="classSimpleDataset.html#a823512d4c42988cb2ae444d83e427670">SimpleDataset</a>
+, <a class="el" href="classDataset.html#aa4fee6b7d35d52a0ed56875371cf391c">Dataset</a>
 </li>
 </ul>
 

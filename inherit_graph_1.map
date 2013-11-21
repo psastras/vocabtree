@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structfilesystem_1_1cvmat__header.html" title="filesystem::cvmat_header" alt="" coords="6,5,178,32"/>
+<area shape="rect" id="node1" href="$classDataset.html" title="The Dataset class is an abstract wrapper describing a dataset." alt="" coords="6,5,74,32"/>
+<area shape="rect" id="node2" href="$classSimpleDataset.html" title="SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG images in a s..." alt="" coords="123,5,231,32"/>
 </map>

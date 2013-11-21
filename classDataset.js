@@ -9,6 +9,7 @@ var classDataset =
     [ "location", "classDataset.html#a1be6c736cec176a950234ea610abf3e5", null ],
     [ "location", "classDataset.html#a1ff0b7af20efb2069a4375f54fd069cd", null ],
     [ "num_images", "classDataset.html#a3250d45d768eb9d8076e447a8bc0f44c", null ],
+    [ "random_images", "classDataset.html#a1ea32e027e9c7cec5076728803b88e30", null ],
     [ "read", "classDataset.html#a39223855be0678ff51a1abfd13b83e74", null ],
     [ "shard", "classDataset.html#ad27e0b47c2457bfa864c6259651b3925", null ],
     [ "write", "classDataset.html#aa4fee6b7d35d52a0ed56875371cf391c", null ],

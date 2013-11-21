@@ -1,6 +1,7 @@
 var hierarchy =
 [
     [ "filesystem::cvmat_header", "structfilesystem_1_1cvmat__header.html", null ],
+    [ "cvmat_header", "structcvmat__header.html", null ],
     [ "Dataset", "classDataset.html", [
       [ "SimpleDataset", "classSimpleDataset.html", null ]
     ] ],
@@ -27,5 +28,6 @@ var hierarchy =
       [ "BagOfWords::TrainParams", "structBagOfWords_1_1TrainParams.html", null ],
       [ "InvertedIndex::TrainParams", "structInvertedIndex_1_1TrainParams.html", null ],
       [ "VocabTree::TrainParams", "structVocabTree_1_1TrainParams.html", null ]
-    ] ]
+    ] ],
+    [ "VocabTree::TreeNode", "structVocabTree_1_1TreeNode.html", null ]
 ];

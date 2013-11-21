@@ -121,6 +121,10 @@ Public Member Functions</h2></td></tr>
 &lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#abdf79c1dc7a7018bcac2a17d48955b9d">all_images</a> ()</td></tr>
 <tr class="memdesc:abdf79c1dc7a7018bcac2a17d48955b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of all images in the dataset.  <a href="#abdf79c1dc7a7018bcac2a17d48955b9d">More...</a><br/></td></tr>
 <tr class="separator:abdf79c1dc7a7018bcac2a17d48955b9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ea32e027e9c7cec5076728803b88e30"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
+&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#a1ea32e027e9c7cec5076728803b88e30">random_images</a> (size_t count)</td></tr>
+<tr class="memdesc:a1ea32e027e9c7cec5076728803b88e30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of random images in the dataset of size count.  <a href="#a1ea32e027e9c7cec5076728803b88e30">More...</a><br/></td></tr>
+<tr class="separator:a1ea32e027e9c7cec5076728803b88e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad27e0b47c2457bfa864c6259651b3925"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classDataset.html">Dataset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#ad27e0b47c2457bfa864c6259651b3925">shard</a> (const std::vector&lt; std::string &gt; &amp;new_locations)</td></tr>
 <tr class="memdesc:ad27e0b47c2457bfa864c6259651b3925"><td class="mdescLeft">&#160;</td><td class="mdescRight">: Shards the dataset to the new input locations, and returns the sharded datasets  <a href="#ad27e0b47c2457bfa864c6259651b3925">More...</a><br/></td></tr>
 <tr class="separator:ad27e0b47c2457bfa864c6259651b3925"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,7 +160,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00007">7</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
-<p>References <a class="el" href="dataset_8hpp_source.html#l00063">data_directory</a>.</p>
+<p>References <a class="el" href="dataset_8hpp_source.html#l00066">data_directory</a>.</p>
 <div class="fragment"><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;                                               {</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        <a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a> = base_location;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;}</div>
@@ -192,7 +196,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00011">11</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
-<p>References <a class="el" href="dataset_8hpp_source.html#l00063">data_directory</a>.</p>
+<p>References <a class="el" href="dataset_8hpp_source.html#l00066">data_directory</a>.</p>
 <div class="fragment"><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;                                                                                  {</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a> = base_location;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
@@ -272,6 +276,8 @@ Protected Attributes</h2></td></tr>
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00026">26</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
 <p>References <a class="el" href="classDataset.html#a3ee7cf3fec979276cfe51940d05ce21c">image()</a>, and <a class="el" href="classDataset.html#a3250d45d768eb9d8076e447a8bc0f44c">num_images()</a>.</p>
+
+<p>Referenced by <a class="el" href="vocab__tree__simple_8cxx_source.html#l00012">main()</a>, and <a class="el" href="dataset_8cxx_source.html#l00034">random_images()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                                                            {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        std::vector&lt; std::shared_ptr&lt; const Image&gt; &gt; images(this-&gt;<a class="code" href="classDataset.html#a3250d45d768eb9d8076e447a8bc0f44c" title="Returns the number of images in the dataset.">num_images</a>());</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">for</span> (uint64_t i = 0; i &lt; this-&gt;<a class="code" href="classDataset.html#a3250d45d768eb9d8076e447a8bc0f44c" title="Returns the number of images in the dataset.">num_images</a>(); i++) {</div>
@@ -308,7 +314,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100">SimpleDataset</a>.</p>
 
-<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00026">all_images()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
+<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00026">all_images()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
 
 </div>
 </div>
@@ -329,9 +335,9 @@ Protected Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00017">17</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
-<p>References <a class="el" href="dataset_8hpp_source.html#l00063">data_directory</a>.</p>
+<p>References <a class="el" href="dataset_8hpp_source.html#l00066">data_directory</a>.</p>
 
-<p>Referenced by <a class="el" href="compute__index__simple_8cxx_source.html#l00015">main()</a>, <a class="el" href="dataset_8cxx_source.html#l00034">operator&lt;&lt;()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>, and <a class="el" href="inverted__index_8cxx_source.html#l00064">InvertedIndex::train()</a>.</p>
+<p>Referenced by <a class="el" href="bench__search_8cxx_source.html#l00015">bench_oxford()</a>, <a class="el" href="bench__index_8cxx_source.html#l00015">main()</a>, <a class="el" href="dataset_8cxx_source.html#l00041">operator&lt;&lt;()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00341">VocabTree::search()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>, and <a class="el" href="inverted__index_8cxx_source.html#l00064">InvertedIndex::train()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                                  {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a>;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
@@ -356,7 +362,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00021">21</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
-<p>References <a class="el" href="dataset_8hpp_source.html#l00063">data_directory</a>.</p>
+<p>References <a class="el" href="dataset_8hpp_source.html#l00066">data_directory</a>.</p>
 <div class="fragment"><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                                                                {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a> + <span class="stringliteral">&quot;/&quot;</span> + relative_path;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
@@ -388,8 +394,36 @@ Protected Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classSimpleDataset.html#a74d2eb39bfe3e13d018ee32661909872">SimpleDataset</a>.</p>
 
-<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00026">all_images()</a>, <a class="el" href="dataset_8cxx_source.html#l00034">operator&lt;&lt;()</a>, and <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>.</p>
+<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00026">all_images()</a>, <a class="el" href="dataset_8cxx_source.html#l00041">operator&lt;&lt;()</a>, and <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>.</p>
 
+</div>
+</div>
+<a class="anchor" id="a1ea32e027e9c7cec5076728803b88e30"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt; Dataset::random_images </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a vector of random images in the dataset of size count. </p>
+
+<p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00034">34</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
+
+<p>References <a class="el" href="dataset_8cxx_source.html#l00026">all_images()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                                                                           {</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        std::vector&lt; std::shared_ptr&lt; const Image&gt; &gt; all = this-&gt;<a class="code" href="classDataset.html#abdf79c1dc7a7018bcac2a17d48955b9d" title="Returns a vector of all images in the dataset.">all_images</a>();</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        std::random_shuffle(all.begin(), all.end());</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        std::vector&lt; std::shared_ptr&lt; const Image&gt; &gt; images(all.begin(), all.begin() + count);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordflow">return</span> images;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a39223855be0678ff51a1abfd13b83e74"></a>
@@ -487,9 +521,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="dataset_8hpp_source.html#l00063">63</a> of file <a class="el" href="dataset_8hpp_source.html">dataset.hpp</a>.</p>
+<p>Definition at line <a class="el" href="dataset_8hpp_source.html#l00066">66</a> of file <a class="el" href="dataset_8hpp_source.html">dataset.hpp</a>.</p>
 
-<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00063">SimpleDataset::construct_dataset()</a>, <a class="el" href="dataset_8cxx_source.html#l00007">Dataset()</a>, and <a class="el" href="dataset_8cxx_source.html#l00017">location()</a>.</p>
+<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00070">SimpleDataset::construct_dataset()</a>, <a class="el" href="dataset_8cxx_source.html#l00007">Dataset()</a>, and <a class="el" href="dataset_8cxx_source.html#l00017">location()</a>.</p>
 
 </div>
 </div>

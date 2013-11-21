@@ -139,7 +139,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00088">88</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00063">SimpleDataset::construct_dataset()</a>.</p>
+<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00070">SimpleDataset::construct_dataset()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                                                          {</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="keywordflow">if</span> (!include_extension) <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a963d48f25256d9b41b72bd14259493c1" title="Returns the basename of the input filepath, including or not including the extension.">boost::filesystem::basename</a>(boost::filesystem::path(path));</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
@@ -166,7 +166,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00017">17</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="compute__bow__simple_8cxx_source.html#l00021">main()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00035">BagOfWords::save()</a>, and <a class="el" href="dataset_8cxx_source.html#l00095">SimpleDataset::write()</a>.</p>
+<p>Referenced by <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00035">BagOfWords::save()</a>, and <a class="el" href="dataset_8cxx_source.html#l00102">SimpleDataset::write()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                                                                 {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                boost::filesystem::path p(absfilepath.c_str());</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                boost::filesystem::path d = p.parent_path();</div>
@@ -195,7 +195,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00012">12</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="bag__of__words_8cxx_source.html#l00011">BagOfWords::BagOfWords()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00016">InvertedIndex::InvertedIndex()</a>, <a class="el" href="filesystem_8cxx_source.html#l00042">load_cvmat()</a>, <a class="el" href="filesystem_8cxx_source.html#l00061">load_sparse_vector()</a>, <a class="el" href="compute__bow__simple_8cxx_source.html#l00021">main()</a>, <a class="el" href="dataset_8cxx_source.html#l00070">SimpleDataset::read()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, <a class="el" href="dataset_8cxx_source.html#l00043">SimpleDataset::SimpleDataset()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00064">InvertedIndex::train()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
+<p>Referenced by <a class="el" href="bag__of__words_8cxx_source.html#l00011">BagOfWords::BagOfWords()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00016">InvertedIndex::InvertedIndex()</a>, <a class="el" href="filesystem_8cxx_source.html#l00042">load_cvmat()</a>, <a class="el" href="filesystem_8cxx_source.html#l00061">load_sparse_vector()</a>, <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>, <a class="el" href="dataset_8cxx_source.html#l00077">SimpleDataset::read()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00341">VocabTree::search()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, <a class="el" href="dataset_8cxx_source.html#l00050">SimpleDataset::SimpleDataset()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00064">InvertedIndex::train()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;                                                {</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;          <span class="keyword">struct </span>stat buffer;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;          <span class="keywordflow">return</span> (stat (name.c_str(), &amp;buffer) == 0);</div>
@@ -232,7 +232,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00071">71</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00063">SimpleDataset::construct_dataset()</a>.</p>
+<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00070">SimpleDataset::construct_dataset()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                                                                     {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                boost::filesystem::path input_path(path);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                std::vector&lt;std::string&gt; file_list;</div>
@@ -283,12 +283,12 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="filesystem_8cxx_source.html#l00012">file_exists()</a>.</p>
 
-<p>Referenced by <a class="el" href="bag__of__words_8cxx_source.html#l00021">BagOfWords::load()</a>, <a class="el" href="compute__bow__simple_8cxx_source.html#l00021">main()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
+<p>Referenced by <a class="el" href="bag__of__words_8cxx_source.html#l00021">BagOfWords::load()</a>, <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00341">VocabTree::search()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                                                             {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span>(!<a class="code" href="namespacefilesystem.html#a1d10e228c7c784ffc2e9c3c5bfc0dd11" title="Returns true if file exists at location, else returns false.">file_exists</a>(fname)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                std::ifstream ifs(fname.c_str(), std::ios::binary);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                cvmat_header h;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                ifs.read((<span class="keywordtype">char</span> *)&amp;h, <span class="keyword">sizeof</span>(cvmat_header));</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <a class="code" href="structcvmat__header.html">cvmat_header</a> h;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                ifs.read((<span class="keywordtype">char</span> *)&amp;h, <span class="keyword">sizeof</span>(<a class="code" href="structcvmat__header.html">cvmat_header</a>));</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <span class="keywordflow">if</span> (h.rows == 0 || h.cols == 0) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                data.create(h.rows, h.cols, h.elem_type);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                ifs.read((<span class="keywordtype">char</span> *)data.ptr(), h.rows * h.cols * h.elem_size);</div>
@@ -371,15 +371,15 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="filesystem_8cxx_source.html#l00025">filesystem::cvmat_header::elem_size</a>.</p>
 
-<p>Referenced by <a class="el" href="compute__sift__simple_8cxx_source.html#l00013">main()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00035">BagOfWords::save()</a>.</p>
+<p>Referenced by <a class="el" href="bench__compute__features_8cxx_source.html#l00013">main()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00035">BagOfWords::save()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                                                                    {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                cvmat_header h;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                h.elem_size = data.elemSize();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <a class="code" href="structcvmat__header.html">cvmat_header</a> h;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                h.<a class="code" href="structcvmat__header.html#ab1156ab3006cb634c23e836c23e1f880">elem_size</a> = data.elemSize();</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                h.elem_type = data.type();</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                h.rows = data.rows;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                h.cols = data.cols;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                ofs.write((<span class="keywordtype">char</span> *)&amp;h, <span class="keyword">sizeof</span>(cvmat_header));</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                ofs.write((<span class="keywordtype">char</span> *)&amp;h, <span class="keyword">sizeof</span>(<a class="code" href="structcvmat__header.html">cvmat_header</a>));</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                ofs.write((<span class="keywordtype">char</span> *)data.ptr(), h.rows * h.cols * h.elem_size);</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="keywordflow">return</span> (ofs.rdstate() &amp; std::ofstream::failbit) == 0;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        }</div>
@@ -415,7 +415,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00053">53</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="compute__bow__simple_8cxx_source.html#l00021">main()</a>.</p>
+<p>Referenced by <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                                                                                            {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                uint32_t dim0 = data.size();</div>

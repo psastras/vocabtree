@@ -8,6 +8,7 @@ var dir_2cd352c31e16031ace7077fb0dbfbf02 =
     [ "image.hpp", "image_8hpp.html", [
       [ "Image", "classImage.html", "classImage" ]
     ] ],
+    [ "mmap.hpp", "mmap_8hpp.html", null ],
     [ "numerics.cxx", "numerics_8cxx.html", "numerics_8cxx" ],
     [ "numerics.hpp", "numerics_8hpp.html", "numerics_8hpp" ],
     [ "vision.cxx", "vision_8cxx.html", "vision_8cxx" ],
