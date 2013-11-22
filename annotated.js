@@ -1,6 +1,8 @@
 var annotated =
 [
+    [ "CycleTimer", "namespaceCycleTimer.html", null ],
     [ "filesystem", "namespacefilesystem.html", "namespacefilesystem" ],
+    [ "misc", "namespacemisc.html", null ],
     [ "numerics", "namespacenumerics.html", null ],
     [ "vision", "namespacevision.html", "namespacevision" ],
     [ "BagOfWords", "classBagOfWords.html", "classBagOfWords" ],
@@ -8,6 +10,7 @@ var annotated =
     [ "Dataset", "classDataset.html", "classDataset" ],
     [ "Image", "classImage.html", "classImage" ],
     [ "InvertedIndex", "classInvertedIndex.html", "classInvertedIndex" ],
+    [ "MatchesPage", "classMatchesPage.html", "classMatchesPage" ],
     [ "MatchResultsBase", "structMatchResultsBase.html", "structMatchResultsBase" ],
     [ "SearchBase", "classSearchBase.html", "classSearchBase" ],
     [ "SearchParamsBase", "structSearchParamsBase.html", null ],

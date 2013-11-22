@@ -8,6 +8,7 @@ var hierarchy =
     [ "Image", "classImage.html", [
       [ "SimpleDataset::SimpleImage", "classSimpleDataset_1_1SimpleImage.html", null ]
     ] ],
+    [ "MatchesPage", "classMatchesPage.html", null ],
     [ "MatchResultsBase", "structMatchResultsBase.html", [
       [ "BagOfWords::MatchResults", "structBagOfWords_1_1MatchResults.html", null ],
       [ "InvertedIndex::MatchResults", "structInvertedIndex_1_1MatchResults.html", null ],

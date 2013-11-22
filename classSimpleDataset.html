@@ -117,10 +117,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1796ff9bf06fd775e59033862ab3881"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleDataset.html#ad1796ff9bf06fd775e59033862ab3881">read</a> (const std::string &amp;db_data_location)</td></tr>
 <tr class="memdesc:ad1796ff9bf06fd775e59033862ab3881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the specified <a class="el" href="classSimpleDataset.html" title="SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG images in a s...">SimpleDataset</a>.  <a href="#ad1796ff9bf06fd775e59033862ab3881">More...</a><br/></td></tr>
 <tr class="separator:ad1796ff9bf06fd775e59033862ab3881"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea05ca72eb4410852f194c5e5a087100"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classImage.html">Image</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100">image</a> (uint64_t id)</td></tr>
-<tr class="memdesc:aea05ca72eb4410852f194c5e5a087100"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a unique integer ID, returns an <a class="el" href="classImage.html" title="Abstract class representing an image.">Image</a> associated with that ID.  <a href="#aea05ca72eb4410852f194c5e5a087100">More...</a><br/></td></tr>
-<tr class="separator:aea05ca72eb4410852f194c5e5a087100"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5aad7db897421cbfc514723ea3644aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleDataset.html#ac5aad7db897421cbfc514723ea3644aa">add_image</a> (const std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &amp;<a class="el" href="classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100">image</a>)</td></tr>
+<tr class="memitem:a74ccac82fe0034cab5684d137d093a12"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classImage.html">Image</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12">image</a> (uint64_t id) const </td></tr>
+<tr class="memdesc:a74ccac82fe0034cab5684d137d093a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a unique integer ID, returns an <a class="el" href="classImage.html" title="Abstract class representing an image.">Image</a> associated with that ID.  <a href="#a74ccac82fe0034cab5684d137d093a12">More...</a><br/></td></tr>
+<tr class="separator:a74ccac82fe0034cab5684d137d093a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5aad7db897421cbfc514723ea3644aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleDataset.html#ac5aad7db897421cbfc514723ea3644aa">add_image</a> (const std::shared_ptr&lt; const <a class="el" href="classImage.html">Image</a> &gt; &amp;<a class="el" href="classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12">image</a>)</td></tr>
 <tr class="memdesc:ac5aad7db897421cbfc514723ea3644aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the given image to the database, if there is an id collision, will not add the image and return false, otherwise returns true.  <a href="#ac5aad7db897421cbfc514723ea3644aa">More...</a><br/></td></tr>
 <tr class="separator:ac5aad7db897421cbfc514723ea3644aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74d2eb39bfe3e13d018ee32661909872"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleDataset.html#a74d2eb39bfe3e13d018ee32661909872">num_images</a> () const </td></tr>
@@ -141,14 +141,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1ff0b7af20efb2069a4375f54fd069cd inherit pub_methods_classDataset"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#a1ff0b7af20efb2069a4375f54fd069cd">location</a> (const std::string &amp;relative_path) const </td></tr>
 <tr class="memdesc:a1ff0b7af20efb2069a4375f54fd069cd inherit pub_methods_classDataset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the absolute path of the file (appends the file path to the database path).  <a href="#a1ff0b7af20efb2069a4375f54fd069cd">More...</a><br/></td></tr>
 <tr class="separator:a1ff0b7af20efb2069a4375f54fd069cd inherit pub_methods_classDataset"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdf79c1dc7a7018bcac2a17d48955b9d inherit pub_methods_classDataset"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
-&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#abdf79c1dc7a7018bcac2a17d48955b9d">all_images</a> ()</td></tr>
-<tr class="memdesc:abdf79c1dc7a7018bcac2a17d48955b9d inherit pub_methods_classDataset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of all images in the dataset.  <a href="#abdf79c1dc7a7018bcac2a17d48955b9d">More...</a><br/></td></tr>
-<tr class="separator:abdf79c1dc7a7018bcac2a17d48955b9d inherit pub_methods_classDataset"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ea32e027e9c7cec5076728803b88e30 inherit pub_methods_classDataset"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
-&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#a1ea32e027e9c7cec5076728803b88e30">random_images</a> (size_t count)</td></tr>
-<tr class="memdesc:a1ea32e027e9c7cec5076728803b88e30 inherit pub_methods_classDataset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of random images in the dataset of size count.  <a href="#a1ea32e027e9c7cec5076728803b88e30">More...</a><br/></td></tr>
-<tr class="separator:a1ea32e027e9c7cec5076728803b88e30 inherit pub_methods_classDataset"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aade5bdeb81e85b7f9e1b10e53320a979 inherit pub_methods_classDataset"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
+&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#aade5bdeb81e85b7f9e1b10e53320a979">all_images</a> () const </td></tr>
+<tr class="memdesc:aade5bdeb81e85b7f9e1b10e53320a979 inherit pub_methods_classDataset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of all images in the dataset.  <a href="#aade5bdeb81e85b7f9e1b10e53320a979">More...</a><br/></td></tr>
+<tr class="separator:aade5bdeb81e85b7f9e1b10e53320a979 inherit pub_methods_classDataset"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91c2c23a825bb557c24cb893d474f93e inherit pub_methods_classDataset"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr<br class="typebreak"/>
+&lt; const <a class="el" href="classImage.html">Image</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#a91c2c23a825bb557c24cb893d474f93e">random_images</a> (size_t count) const </td></tr>
+<tr class="memdesc:a91c2c23a825bb557c24cb893d474f93e inherit pub_methods_classDataset"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector of random images in the dataset of size count.  <a href="#a91c2c23a825bb557c24cb893d474f93e">More...</a><br/></td></tr>
+<tr class="separator:a91c2c23a825bb557c24cb893d474f93e inherit pub_methods_classDataset"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad27e0b47c2457bfa864c6259651b3925 inherit pub_methods_classDataset"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classDataset.html">Dataset</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDataset.html#ad27e0b47c2457bfa864c6259651b3925">shard</a> (const std::vector&lt; std::string &gt; &amp;new_locations)</td></tr>
 <tr class="memdesc:ad27e0b47c2457bfa864c6259651b3925 inherit pub_methods_classDataset"><td class="mdescLeft">&#160;</td><td class="mdescRight">: Shards the dataset to the new input locations, and returns the sharded datasets  <a href="#ad27e0b47c2457bfa864c6259651b3925">More...</a><br/></td></tr>
 <tr class="separator:ad27e0b47c2457bfa864c6259651b3925 inherit pub_methods_classDataset"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -296,8 +296,8 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00077">read()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;                                                                     {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.right.find(<a class="code" href="classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100" title="Given a unique integer ID, returns an Image associated with that ID.">image</a>-&gt;id) != <a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.right.end()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keyword">const</span> std::shared_ptr&lt;const SimpleDataset::SimpleImage&gt; simage = std::static_pointer_cast&lt;<span class="keyword">const</span> <a class="code" href="classSimpleDataset_1_1SimpleImage.html" title="SimpleImage class used with the SimpleDataset class.">SimpleDataset::SimpleImage</a>&gt;(<a class="code" href="classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100" title="Given a unique integer ID, returns an Image associated with that ID.">image</a>);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.right.find(<a class="code" href="classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12" title="Given a unique integer ID, returns an Image associated with that ID.">image</a>-&gt;id) != <a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.right.end()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keyword">const</span> std::shared_ptr&lt;const SimpleDataset::SimpleImage&gt; simage = std::static_pointer_cast&lt;<span class="keyword">const</span> <a class="code" href="classSimpleDataset_1_1SimpleImage.html" title="SimpleImage class used with the SimpleDataset class.">SimpleDataset::SimpleImage</a>&gt;(<a class="code" href="classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12" title="Given a unique integer ID, returns an Image associated with that ID.">image</a>);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.insert(boost::bimap&lt;std::string, uint64_t&gt;::value_type(simage-&gt;location(), simage-&gt;id));</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;}</div><!-- fragment -->
@@ -328,19 +328,19 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00070">70</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
-<p>References <a class="el" href="filesystem_8cxx_source.html#l00088">filesystem::basename()</a>, <a class="el" href="dataset_8hpp_source.html#l00066">Dataset::data_directory</a>, <a class="el" href="dataset_8hpp_source.html#l00135">id_image_map</a>, and <a class="el" href="filesystem_8cxx_source.html#l00071">filesystem::list_files()</a>.</p>
+<p>References <a class="el" href="dataset_8hpp_source.html#l00066">Dataset::data_directory</a>, <a class="el" href="dataset_8hpp_source.html#l00135">id_image_map</a>, and <a class="el" href="filesystem_8cxx_source.html#l00071">filesystem::list_files()</a>.</p>
 
 <p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00046">SimpleDataset()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                                      {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;image_file_paths = <a class="code" href="namespacefilesystem.html#a660713e18263b3e3fd81940e2edff8ed" title="Lists all files in the given directory with an optional extension.">filesystem::list_files</a>(<a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a> + <span class="stringliteral">&quot;/images/&quot;</span>, <span class="stringliteral">&quot;.jpg&quot;</span>);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;image_file_paths = <a class="code" href="namespacefilesystem.html#a0a7296e96d5d6f6f1f5864387f34c04a" title="Lists all files in the given directory with an optional extension.">filesystem::list_files</a>(<a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a> + <span class="stringliteral">&quot;/images/&quot;</span>, <span class="stringliteral">&quot;.jpg&quot;</span>);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; image_file_paths.size(); i++) {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.insert(boost::bimap&lt;std::string, uint64_t&gt;::value_type( <span class="stringliteral">&quot;/images/&quot;</span> + <a class="code" href="namespacefilesystem.html#a963d48f25256d9b41b72bd14259493c1" title="Returns the basename of the input filepath, including or not including the extension.">filesystem::basename</a>(image_file_paths[i], <span class="keyword">true</span>), i));</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                <a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.insert(boost::bimap&lt;std::string, uint64_t&gt;::value_type( image_file_paths[i].substr(<a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a>.size(), image_file_paths[i].size() - <a class="code" href="classDataset.html#a8b6b91935142fb1bffb8155676995d4c">data_directory</a>.size()), i));</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="aea05ca72eb4410852f194c5e5a087100"></a>
+<a class="anchor" id="a74ccac82fe0034cab5684d137d093a12"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -352,7 +352,7 @@ Additional Inherited Members</h2></td></tr>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -364,14 +364,14 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Given a unique integer ID, returns an <a class="el" href="classImage.html" title="Abstract class representing an image.">Image</a> associated with that ID. </p>
 
-<p>Implements <a class="el" href="classDataset.html#a3ee7cf3fec979276cfe51940d05ce21c">Dataset</a>.</p>
+<p>Implements <a class="el" href="classDataset.html#a2b025f14638b6503644fe4bd98c7617a">Dataset</a>.</p>
 
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00063">63</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
 <p>References <a class="el" href="dataset_8hpp_source.html#l00135">id_image_map</a>.</p>
 
 <p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00147">add_image()</a>, and <a class="el" href="dataset_8cxx_source.html#l00102">write()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                                     {</div>
+<div class="fragment"><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                                                           {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">const</span> std::string &amp;image_path = <a class="code" href="classSimpleDataset.html#a334076e2238805b485d59f4a058b6f7e">id_image_map</a>.right.at(<span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        std::shared_ptr&lt;Image&gt; current_image = std::make_shared&lt;SimpleImage&gt;(image_path, id);</div>
@@ -515,7 +515,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        ofs.write((<span class="keyword">const</span> <span class="keywordtype">char</span> *)&amp;num_images, <span class="keyword">sizeof</span>(uint64_t));</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">for</span> (uint64_t i = 0; i &lt; this-&gt;<a class="code" href="classSimpleDataset.html#a74d2eb39bfe3e13d018ee32661909872" title="Returns the number of images in the dataset.">num_images</a>(); i++) {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                std::shared_ptr&lt;SimpleDataset::SimpleImage&gt; <a class="code" href="classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100" title="Given a unique integer ID, returns an Image associated with that ID.">image</a> = std::static_pointer_cast&lt;<a class="code" href="classSimpleDataset_1_1SimpleImage.html" title="SimpleImage class used with the SimpleDataset class.">SimpleDataset::SimpleImage</a>&gt;(this-&gt;<a class="code" href="classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100" title="Given a unique integer ID, returns an Image associated with that ID.">image</a>(i));</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                std::shared_ptr&lt;SimpleDataset::SimpleImage&gt; <a class="code" href="classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12" title="Given a unique integer ID, returns an Image associated with that ID.">image</a> = std::static_pointer_cast&lt;<a class="code" href="classSimpleDataset_1_1SimpleImage.html" title="SimpleImage class used with the SimpleDataset class.">SimpleDataset::SimpleImage</a>&gt;(this-&gt;<a class="code" href="classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12" title="Given a unique integer ID, returns an Image associated with that ID.">image</a>(i));</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                <span class="keyword">const</span> std::string &amp;image_location = image-&gt;<a class="code" href="classSimpleDataset_1_1SimpleImage.html#ac5fc639e05e14ff7a2eec79af79ea221" title="Returns the image location relative to the database data directory.">location</a>();</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                uint64_t image_id = image-&gt;id;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                uint16_t length = image_location.size();</div>

@@ -119,17 +119,17 @@ Functions</h2></td></tr>
 
 <p>Prints out information about the match results. </p>
 
-<p>Definition at line <a class="el" href="inverted__index_8cxx_source.html#l00146">146</a> of file <a class="el" href="inverted__index_8cxx_source.html">inverted_index.cxx</a>.</p>
+<p>Definition at line <a class="el" href="inverted__index_8cxx_source.html#l00162">162</a> of file <a class="el" href="inverted__index_8cxx_source.html">inverted_index.cxx</a>.</p>
 
 <p>References <a class="el" href="search__base_8hpp_source.html#l00022">MatchResultsBase::matches</a>, and <a class="el" href="inverted__index_8hpp_source.html#l00025">InvertedIndex::MatchResults::tfidf_scores</a>.</p>
-<div class="fragment"><div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                                                                                         {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;[ &quot;</span>;</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">for</span>(uint32_t i=0; i&lt;MIN(8, match_results.<a class="code" href="structMatchResultsBase.html#aba6a7554c61bf5f8429120c58c97606b">matches</a>.size()); i++) {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                out &lt;&lt; <span class="stringliteral">&quot;[ &quot;</span> &lt;&lt; match_results.<a class="code" href="structMatchResultsBase.html#aba6a7554c61bf5f8429120c58c97606b">matches</a>[i] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt;  match_results.<a class="code" href="structInvertedIndex_1_1MatchResults.html#a8acc0fd9cd82f3c0a794f63de97a75d3">tfidf_scores</a>[i] &lt;&lt; <span class="stringliteral">&quot; ] &quot;</span>;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="keywordflow">return</span> out;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                                                                                         {</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;[ &quot;</span>;</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">for</span>(uint32_t i=0; i&lt;MIN(8, match_results.<a class="code" href="structMatchResultsBase.html#aba6a7554c61bf5f8429120c58c97606b">matches</a>.size()); i++) {</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                out &lt;&lt; <span class="stringliteral">&quot;[ &quot;</span> &lt;&lt; match_results.<a class="code" href="structMatchResultsBase.html#aba6a7554c61bf5f8429120c58c97606b">matches</a>[i] &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt;  match_results.<a class="code" href="structInvertedIndex_1_1MatchResults.html#a8acc0fd9cd82f3c0a794f63de97a75d3">tfidf_scores</a>[i] &lt;&lt; <span class="stringliteral">&quot; ] &quot;</span>;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        }</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;]&quot;</span>;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keywordflow">return</span> out;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;}</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

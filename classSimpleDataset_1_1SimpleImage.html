@@ -209,6 +209,9 @@ Additional Inherited Members</h2></td></tr>
 <a class="anchor" id="ac5fc639e05e14ff7a2eec79af79ea221"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::string SimpleDataset::SimpleImage::location </td>
@@ -217,13 +220,20 @@ Additional Inherited Members</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Returns the image location relative to the database data directory. </p>
 
+<p>Implements <a class="el" href="classImage.html#a435ae2f2e056122f1ce6857548a16c6c">Image</a>.</p>
+
 <p>Definition at line <a class="el" href="dataset_8cxx_source.html#l00143">143</a> of file <a class="el" href="dataset_8cxx_source.html">dataset.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="bench__compute__features_8cxx_source.html#l00013">main()</a>, and <a class="el" href="dataset_8cxx_source.html#l00102">SimpleDataset::write()</a>.</p>
+<p>Referenced by <a class="el" href="bench__compute__features_8cxx_source.html#l00021">compute_features()</a>, <a class="el" href="compute__sift__simple_8cxx_source.html#l00013">main()</a>, and <a class="el" href="dataset_8cxx_source.html#l00102">SimpleDataset::write()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;                                                   {</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classSimpleDataset_1_1SimpleImage.html#a7ceefe624bfb388d9d19590cdf839666">image_path</a>;</div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;}</div>

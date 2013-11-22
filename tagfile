@@ -12,10 +12,17 @@
     <includes id="vision_8hpp" name="vision.hpp" local="no" imported="no">utils/vision.hpp</includes>
     <includes id="bag__of__words_8hpp" name="bag_of_words.hpp" local="no" imported="no">search/bag_of_words/bag_of_words.hpp</includes>
     <member kind="function">
-      <type>_INITIALIZE_EASYLOGGINGPP int</type>
+      <type>_INITIALIZE_EASYLOGGINGPP void</type>
+      <name>compute_bow</name>
+      <anchorfile>bench__bow_8cxx.html</anchorfile>
+      <anchor>aaef33d9504e05c52d54fdae577c151a1</anchor>
+      <arglist>(SimpleDataset &amp;dataset, int num_clusters, int num_images, int num_features)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>main</name>
       <anchorfile>bench__bow_8cxx.html</anchorfile>
-      <anchor>a9306418341be659f27ec30656afed137</anchor>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
       <arglist>(int argc, char *argv[])</arglist>
     </member>
   </compound>
@@ -29,10 +36,17 @@
     <includes id="dataset_8hpp" name="dataset.hpp" local="no" imported="no">utils/dataset.hpp</includes>
     <includes id="vision_8hpp" name="vision.hpp" local="no" imported="no">utils/vision.hpp</includes>
     <member kind="function">
-      <type>_INITIALIZE_EASYLOGGINGPP int</type>
+      <type>_INITIALIZE_EASYLOGGINGPP void</type>
+      <name>compute_features</name>
+      <anchorfile>bench__compute__features_8cxx.html</anchorfile>
+      <anchor>a6695a0bf072ce49a81eab304c26faed1</anchor>
+      <arglist>(const SimpleDataset &amp;dataset)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>main</name>
       <anchorfile>bench__compute__features_8cxx.html</anchorfile>
-      <anchor>a9306418341be659f27ec30656afed137</anchor>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
       <arglist>(int argc, char *argv[])</arglist>
     </member>
   </compound>
@@ -75,6 +89,27 @@
       <anchor>a29c324f9a17607ef391b42a41d3530be</anchor>
       <arglist></arglist>
     </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxford100k_data_dir</name>
+      <anchorfile>bench__config_8hpp.html</anchorfile>
+      <anchor>aa6b7aac551614e1fd8789df60b1a79b0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxford100k_database_location</name>
+      <anchorfile>bench__config_8hpp.html</anchorfile>
+      <anchor>a1f90b0536a23b34ae8c47f3ee6b71380</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const int</type>
+      <name>s_oxford100k_num_clusters</name>
+      <anchorfile>bench__config_8hpp.html</anchorfile>
+      <anchor>aa42dfa9789d16e6e04ff8ba43bf4409f</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>bench_index.cxx</name>
@@ -100,12 +135,16 @@
     <path>/home/psastras/vocabtree/modules/bench/</path>
     <filename>bench__search_8cxx</filename>
     <includes id="bench__config_8hpp" name="bench_config.hpp" local="yes" imported="no">bench_config.hpp</includes>
+    <includes id="config_8hpp" name="config.hpp" local="no" imported="no">config.hpp</includes>
     <includes id="filesystem_8hpp" name="filesystem.hpp" local="no" imported="no">utils/filesystem.hpp</includes>
     <includes id="numerics_8hpp" name="numerics.hpp" local="no" imported="no">utils/numerics.hpp</includes>
     <includes id="dataset_8hpp" name="dataset.hpp" local="no" imported="no">utils/dataset.hpp</includes>
+    <includes id="misc_8hpp" name="misc.hpp" local="no" imported="no">utils/misc.hpp</includes>
     <includes id="vision_8hpp" name="vision.hpp" local="no" imported="no">utils/vision.hpp</includes>
+    <includes id="cycletimer_8hpp" name="cycletimer.hpp" local="no" imported="no">utils/cycletimer.hpp</includes>
     <includes id="bag__of__words_8hpp" name="bag_of_words.hpp" local="no" imported="no">search/bag_of_words/bag_of_words.hpp</includes>
     <includes id="inverted__index_8hpp" name="inverted_index.hpp" local="no" imported="no">search/inverted_index/inverted_index.hpp</includes>
+    <includes id="matches__page_8hpp" name="matches_page.hpp" local="no" imported="no">vis/matches_page.hpp</includes>
     <member kind="function">
       <type>_INITIALIZE_EASYLOGGINGPP void</type>
       <name>bench_oxford</name>
@@ -134,6 +173,20 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>ENABLE_MPI</name>
+      <anchorfile>config_8hpp.html</anchorfile>
+      <anchor>aa84164aed4ba3c6c236edde52de3930b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ENABLE_FASTCLUSTER</name>
+      <anchorfile>config_8hpp.html</anchorfile>
+      <anchor>aba7e819167483168eea1ce997d177563</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>ENABLE_MULTITHREADING</name>
       <anchorfile>config_8hpp.html</anchorfile>
       <anchor>a112b344dd251bdf62eba2d1cbcc97f31</anchor>
@@ -144,6 +197,7 @@
     <name>bag_of_words.cxx</name>
     <path>/home/psastras/vocabtree/modules/search/bag_of_words/</path>
     <filename>bag__of__words_8cxx</filename>
+    <includes id="config_8hpp" name="config.hpp" local="no" imported="no">config.hpp</includes>
     <includes id="bag__of__words_8hpp" name="bag_of_words.hpp" local="yes" imported="no">bag_of_words.hpp</includes>
     <includes id="filesystem_8hpp" name="filesystem.hpp" local="no" imported="no">utils/filesystem.hpp</includes>
     <includes id="vision_8hpp" name="vision.hpp" local="no" imported="no">utils/vision.hpp</includes>
@@ -341,6 +395,61 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>cycletimer.hpp</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>cycletimer_8hpp</filename>
+    <namespace>CycleTimer</namespace>
+    <member kind="typedef">
+      <type>unsigned long long</type>
+      <name>SysClock</name>
+      <anchorfile>namespaceCycleTimer.html</anchorfile>
+      <anchor>a756e51d31680afd939df5b3c3bcf599d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>SysClock</type>
+      <name>currentTicks</name>
+      <anchorfile>namespaceCycleTimer.html</anchorfile>
+      <anchor>a08ffb5235af5b72ae4383d7238fa4490</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>const char *</type>
+      <name>tickUnits</name>
+      <anchorfile>namespaceCycleTimer.html</anchorfile>
+      <anchor>a5099b2bd5a6f211a3982c2fd03b44e29</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>secondsPerTick</name>
+      <anchorfile>namespaceCycleTimer.html</anchorfile>
+      <anchor>a0808d22d25de40774ec85e2dd995a457</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>msPerTick</name>
+      <anchorfile>namespaceCycleTimer.html</anchorfile>
+      <anchor>aed721398a8329a4c2cc293201a819b85</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>currentSeconds</name>
+      <anchorfile>namespaceCycleTimer.html</anchorfile>
+      <anchor>a283f1082702ac6d85b86880d29d53ee4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>ticksPerSecond</name>
+      <anchorfile>namespaceCycleTimer.html</anchorfile>
+      <anchor>a97d6344da8d39071adf37cca332d218b</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>dataset.cxx</name>
     <path>/home/psastras/vocabtree/modules/utils/</path>
     <filename>dataset_8cxx</filename>
@@ -424,8 +533,8 @@
       <type>std::vector&lt; std::string &gt;</type>
       <name>list_files</name>
       <anchorfile>namespacefilesystem.html</anchorfile>
-      <anchor>a660713e18263b3e3fd81940e2edff8ed</anchor>
-      <arglist>(const std::string &amp;path, const std::string &amp;ext=&quot;&quot;)</arglist>
+      <anchor>a0a7296e96d5d6f6f1f5864387f34c04a</anchor>
+      <arglist>(const std::string &amp;path, const std::string &amp;ext=&quot;&quot;, bool recursive=true)</arglist>
     </member>
     <member kind="function">
       <type>std::string</type>
@@ -433,6 +542,13 @@
       <anchorfile>namespacefilesystem.html</anchorfile>
       <anchor>a963d48f25256d9b41b72bd14259493c1</anchor>
       <arglist>(const std::string &amp;path, bool include_extension=false)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>write_text</name>
+      <anchorfile>namespacefilesystem.html</anchorfile>
+      <anchor>abbd822ce1a5abf780217e390c7aafb13</anchor>
+      <arglist>(const std::string &amp;fname, const std::string &amp;text)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -453,6 +569,26 @@
     <path>/home/psastras/vocabtree/modules/utils/</path>
     <filename>image_8hpp</filename>
     <class kind="class">Image</class>
+  </compound>
+  <compound kind="file">
+    <name>misc.cxx</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>misc_8cxx</filename>
+    <includes id="misc_8hpp" name="misc.hpp" local="yes" imported="no">misc.hpp</includes>
+    <namespace>misc</namespace>
+    <member kind="function">
+      <type>std::string</type>
+      <name>get_machine_name</name>
+      <anchorfile>namespacemisc.html</anchorfile>
+      <anchor>a9f0c17742324dbdf57c70e8644293f45</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>misc.hpp</name>
+    <path>/home/psastras/vocabtree/modules/utils/</path>
+    <filename>misc_8hpp</filename>
+    <namespace>misc</namespace>
   </compound>
   <compound kind="file">
     <name>mmap.hpp</name>
@@ -477,6 +613,13 @@
       <name>cos_sim</name>
       <anchorfile>namespacenumerics.html</anchorfile>
       <anchor>a9d9eaa0c41af74685eb1fd69c664f149</anchor>
+      <arglist>(const std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;weights0, const std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;weights1, const std::vector&lt; float &gt; &amp;idfw)</arglist>
+    </member>
+    <member kind="function">
+      <type>float</type>
+      <name>min_hist</name>
+      <anchorfile>namespacenumerics.html</anchorfile>
+      <anchor>a598b43db43a77c62e037215a270f7383</anchor>
       <arglist>(const std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;weights0, const std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;weights1, const std::vector&lt; float &gt; &amp;idfw)</arglist>
     </member>
   </compound>
@@ -555,6 +698,27 @@
       <anchor>add26c57fcfa204b2b9fb763b6ad00057</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="file">
+    <name>matches_page.cxx</name>
+    <path>/home/psastras/vocabtree/modules/vis/</path>
+    <filename>matches__page_8cxx</filename>
+    <includes id="matches__page_8hpp" name="matches_page.hpp" local="yes" imported="no">matches_page.hpp</includes>
+    <includes id="filesystem_8hpp" name="filesystem.hpp" local="no" imported="no">utils/filesystem.hpp</includes>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_stylesheet_name</name>
+      <anchorfile>matches__page_8cxx.html</anchorfile>
+      <anchor>a4118bc2c6d1eda0386db89e89f8990dd</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>matches_page.hpp</name>
+    <path>/home/psastras/vocabtree/modules/vis/</path>
+    <filename>matches__page_8hpp</filename>
+    <includes id="dataset_8hpp" name="dataset.hpp" local="no" imported="no">utils/dataset.hpp</includes>
+    <class kind="class">MatchesPage</class>
   </compound>
   <compound kind="class">
     <name>BagOfWords</name>
@@ -772,8 +936,8 @@
       <type>virtual std::shared_ptr&lt; Image &gt;</type>
       <name>image</name>
       <anchorfile>classDataset.html</anchorfile>
-      <anchor>a3ee7cf3fec979276cfe51940d05ce21c</anchor>
-      <arglist>(uint64_t id)=0</arglist>
+      <anchor>a2b025f14638b6503644fe4bd98c7617a</anchor>
+      <arglist>(uint64_t id) const =0</arglist>
     </member>
     <member kind="function" virtualness="pure">
       <type>virtual uint64_t</type>
@@ -807,15 +971,15 @@
       <type>std::vector&lt; std::shared_ptr&lt; const Image &gt; &gt;</type>
       <name>all_images</name>
       <anchorfile>classDataset.html</anchorfile>
-      <anchor>abdf79c1dc7a7018bcac2a17d48955b9d</anchor>
-      <arglist>()</arglist>
+      <anchor>aade5bdeb81e85b7f9e1b10e53320a979</anchor>
+      <arglist>() const </arglist>
     </member>
     <member kind="function">
       <type>std::vector&lt; std::shared_ptr&lt; const Image &gt; &gt;</type>
       <name>random_images</name>
       <anchorfile>classDataset.html</anchorfile>
-      <anchor>a1ea32e027e9c7cec5076728803b88e30</anchor>
-      <arglist>(size_t count)</arglist>
+      <anchor>a91c2c23a825bb557c24cb893d474f93e</anchor>
+      <arglist>(size_t count) const </arglist>
     </member>
     <member kind="function">
       <type>std::vector&lt; Dataset &gt;</type>
@@ -855,6 +1019,13 @@
       <anchorfile>classImage.html</anchorfile>
       <anchor>aa4903872aaca70ea52f2a219602d6ff2</anchor>
       <arglist>(const std::string &amp;feat_name) const =0</arglist>
+    </member>
+    <member kind="function" virtualness="pure">
+      <type>virtual std::string</type>
+      <name>location</name>
+      <anchorfile>classImage.html</anchorfile>
+      <anchor>a435ae2f2e056122f1ce6857548a16c6c</anchor>
+      <arglist>() const =0</arglist>
     </member>
     <member kind="variable">
       <type>uint64_t</type>
@@ -907,6 +1078,13 @@
       <arglist>(const std::string &amp;file_path) const </arglist>
     </member>
     <member kind="function">
+      <type>uint32_t</type>
+      <name>num_clusters</name>
+      <anchorfile>classInvertedIndex.html</anchorfile>
+      <anchor>a59d124d016aba23efb4b1231e1017cce</anchor>
+      <arglist>() const </arglist>
+    </member>
+    <member kind="function">
       <type>std::shared_ptr&lt; MatchResultsBase &gt;</type>
       <name>search</name>
       <anchorfile>classInvertedIndex.html</anchorfile>
@@ -918,6 +1096,13 @@
       <name>inverted_index</name>
       <anchorfile>classInvertedIndex.html</anchorfile>
       <anchor>a0b14366e8875227d1bc9c05b24a6d993</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>std::vector&lt; float &gt;</type>
+      <name>idf_weights</name>
+      <anchorfile>classInvertedIndex.html</anchorfile>
+      <anchor>a4b1b6dbbd8d234a70deb80ad2ee19d04</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -947,6 +1132,94 @@
       <name>bag_of_words</name>
       <anchorfile>structInvertedIndex_1_1TrainParams.html</anchorfile>
       <anchor>ac2dd137ecdf27afdfad06ceef555372d</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>MatchesPage</name>
+    <filename>classMatchesPage.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>MatchesPage</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a0810ed60f423e7a4f8ba20d5fb0dab49</anchor>
+      <arglist>(uint32_t max_matches_per_page=24, uint32_t max_images_per_match=24)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>~MatchesPage</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a32d81abe2cc3bbd4395bb8cba6dd6214</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_match</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a61b145226ca470cac19791c87a7a0043</anchor>
+      <arglist>(uint32_t query_id, std::vector&lt; uint64_t &gt; &amp;match_ids, const Dataset &amp;dataset)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>write</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a6899a6eba95103363da7a6fc9f5c2ae9</anchor>
+      <arglist>(const std::string &amp;folder) const </arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type>std::string</type>
+      <name>stylesheet</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a254f34e89b0de9ba0ffe126a181f5f98</anchor>
+      <arglist>() const </arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type>std::string</type>
+      <name>header</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a2c6742d8e6513b3771d1413678147a11</anchor>
+      <arglist>() const </arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type>std::string</type>
+      <name>footer</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>acb451523f8e99f8182882dfd2a511972</anchor>
+      <arglist>() const </arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type>std::string</type>
+      <name>navbar</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a9629dc607640bcda4c71097e50aac98c</anchor>
+      <arglist>(uint32_t cur_page, uint32_t max_pages) const </arglist>
+    </member>
+    <member kind="function" protection="protected">
+      <type>std::string</type>
+      <name>pagename</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a2633c2ff66dea20f3c9fa0fee5541d1f</anchor>
+      <arglist>(uint32_t cur_page) const </arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>std::vector&lt; std::string &gt;</type>
+      <name>html_strings</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>a145fbdd474e1ef37ca8ded494e5d2743</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>uint32_t</type>
+      <name>max_matches_per_page_</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>ad2026dec02840e7a1806a5d25350833b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>uint32_t</type>
+      <name>max_images_per_match_</name>
+      <anchorfile>classMatchesPage.html</anchorfile>
+      <anchor>aea1d37e2deb0b543486a62fd74327295</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -1034,8 +1307,8 @@
       <type>std::shared_ptr&lt; Image &gt;</type>
       <name>image</name>
       <anchorfile>classSimpleDataset.html</anchorfile>
-      <anchor>aea05ca72eb4410852f194c5e5a087100</anchor>
-      <arglist>(uint64_t id)</arglist>
+      <anchor>a74ccac82fe0034cab5684d137d093a12</anchor>
+      <arglist>(uint64_t id) const </arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -1307,6 +1580,10 @@
     </member>
   </compound>
   <compound kind="namespace">
+    <name>CycleTimer</name>
+    <filename>namespaceCycleTimer.html</filename>
+  </compound>
+  <compound kind="namespace">
     <name>filesystem</name>
     <filename>namespacefilesystem.html</filename>
     <class kind="struct">filesystem::cvmat_header</class>
@@ -1342,6 +1619,10 @@
       <anchor>ab8ef888e91c088f0d74931b13c84ca56</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="namespace">
+    <name>misc</name>
+    <filename>namespacemisc.html</filename>
   </compound>
   <compound kind="namespace">
     <name>numerics</name>
@@ -1423,6 +1704,7 @@
     <dir>/home/psastras/vocabtree/modules/search</dir>
     <dir>/home/psastras/vocabtree/modules/tests</dir>
     <dir>/home/psastras/vocabtree/modules/utils</dir>
+    <dir>/home/psastras/vocabtree/modules/vis</dir>
     <file>config.hpp</file>
   </compound>
   <compound kind="dir">
@@ -1456,17 +1738,27 @@
     <name>/home/psastras/vocabtree/modules/utils</name>
     <path>/home/psastras/vocabtree/modules/utils/</path>
     <filename>dir_2cd352c31e16031ace7077fb0dbfbf02.html</filename>
+    <file>cycletimer.hpp</file>
     <file>dataset.cxx</file>
     <file>dataset.hpp</file>
     <file>filesystem.cxx</file>
     <file>filesystem.hpp</file>
     <file>image.cxx</file>
     <file>image.hpp</file>
+    <file>misc.cxx</file>
+    <file>misc.hpp</file>
     <file>mmap.hpp</file>
     <file>numerics.cxx</file>
     <file>numerics.hpp</file>
     <file>vision.cxx</file>
     <file>vision.hpp</file>
+  </compound>
+  <compound kind="dir">
+    <name>/home/psastras/vocabtree/modules/vis</name>
+    <path>/home/psastras/vocabtree/modules/vis/</path>
+    <filename>dir_9443631f92ae98ae53c487930a45de6c.html</filename>
+    <file>matches_page.cxx</file>
+    <file>matches_page.hpp</file>
   </compound>
   <compound kind="dir">
     <name>/home/psastras/vocabtree/modules/search/vocab_tree</name>

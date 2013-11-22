@@ -6,7 +6,7 @@ var classSimpleDataset =
     [ "~SimpleDataset", "classSimpleDataset.html#ad2c27d786eb81c46b18f99bed9dc2c20", null ],
     [ "add_image", "classSimpleDataset.html#ac5aad7db897421cbfc514723ea3644aa", null ],
     [ "construct_dataset", "classSimpleDataset.html#abbcf7ae5cdfb9b214884ace34287d4be", null ],
-    [ "image", "classSimpleDataset.html#aea05ca72eb4410852f194c5e5a087100", null ],
+    [ "image", "classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12", null ],
     [ "num_images", "classSimpleDataset.html#a74d2eb39bfe3e13d018ee32661909872", null ],
     [ "read", "classSimpleDataset.html#ad1796ff9bf06fd775e59033862ab3881", null ],
     [ "write", "classSimpleDataset.html#a823512d4c42988cb2ae444d83e427670", null ],

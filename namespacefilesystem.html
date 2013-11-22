@@ -100,12 +100,15 @@ Functions</h2></td></tr>
 <tr class="memitem:aab5d196a6d0ae2133ad1e76afe91aac2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefilesystem.html#aab5d196a6d0ae2133ad1e76afe91aac2">load_sparse_vector</a> (const std::string &amp;fname, std::vector&lt; std::pair&lt; uint32_t, float &gt; &gt; &amp;data)</td></tr>
 <tr class="memdesc:aab5d196a6d0ae2133ad1e76afe91aac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the BoW feature from the specified location.  <a href="#aab5d196a6d0ae2133ad1e76afe91aac2">More...</a><br/></td></tr>
 <tr class="separator:aab5d196a6d0ae2133ad1e76afe91aac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a660713e18263b3e3fd81940e2edff8ed"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefilesystem.html#a660713e18263b3e3fd81940e2edff8ed">list_files</a> (const std::string &amp;path, const std::string &amp;ext=&quot;&quot;)</td></tr>
-<tr class="memdesc:a660713e18263b3e3fd81940e2edff8ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists all files in the given directory with an optional extension.  <a href="#a660713e18263b3e3fd81940e2edff8ed">More...</a><br/></td></tr>
-<tr class="separator:a660713e18263b3e3fd81940e2edff8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a7296e96d5d6f6f1f5864387f34c04a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefilesystem.html#a0a7296e96d5d6f6f1f5864387f34c04a">list_files</a> (const std::string &amp;path, const std::string &amp;ext=&quot;&quot;, bool recursive=true)</td></tr>
+<tr class="memdesc:a0a7296e96d5d6f6f1f5864387f34c04a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists all files in the given directory with an optional extension.  <a href="#a0a7296e96d5d6f6f1f5864387f34c04a">More...</a><br/></td></tr>
+<tr class="separator:a0a7296e96d5d6f6f1f5864387f34c04a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a963d48f25256d9b41b72bd14259493c1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefilesystem.html#a963d48f25256d9b41b72bd14259493c1">basename</a> (const std::string &amp;path, bool include_extension=false)</td></tr>
 <tr class="memdesc:a963d48f25256d9b41b72bd14259493c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the basename of the input filepath, including or not including the extension.  <a href="#a963d48f25256d9b41b72bd14259493c1">More...</a><br/></td></tr>
 <tr class="separator:a963d48f25256d9b41b72bd14259493c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd822ce1a5abf780217e390c7aafb13"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacefilesystem.html#abbd822ce1a5abf780217e390c7aafb13">write_text</a> (const std::string &amp;fname, const std::string &amp;text)</td></tr>
+<tr class="memdesc:abbd822ce1a5abf780217e390c7aafb13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a text file to the input file location given the input string.  <a href="#abbd822ce1a5abf780217e390c7aafb13">More...</a><br/></td></tr>
+<tr class="separator:abbd822ce1a5abf780217e390c7aafb13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides useful wrappers around many filesystem related functionality, including reading writing certain common data structures as well as common operations (ex. </p>
@@ -137,14 +140,12 @@ Functions</h2></td></tr>
 
 <p>Returns the basename of the input filepath, including or not including the extension. </p>
 
-<p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00088">88</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
-
-<p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00070">SimpleDataset::construct_dataset()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                                                          {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                <span class="keywordflow">if</span> (!include_extension) <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a963d48f25256d9b41b72bd14259493c1" title="Returns the basename of the input filepath, including or not including the extension.">boost::filesystem::basename</a>(boost::filesystem::path(path));</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a963d48f25256d9b41b72bd14259493c1" title="Returns the basename of the input filepath, including or not including the extension.">boost::filesystem::basename</a>(boost::filesystem::path(path)) + boost::filesystem::extension(path);</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
+<p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00100">100</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
+<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;                                                                          {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                <span class="keywordflow">if</span> (!include_extension) <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a963d48f25256d9b41b72bd14259493c1" title="Returns the basename of the input filepath, including or not including the extension.">boost::filesystem::basename</a>(boost::filesystem::path(path));</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="namespacefilesystem.html#a963d48f25256d9b41b72bd14259493c1" title="Returns the basename of the input filepath, including or not including the extension.">boost::filesystem::basename</a>(boost::filesystem::path(path)) + boost::filesystem::extension(path);</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -166,7 +167,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00017">17</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00035">BagOfWords::save()</a>, and <a class="el" href="dataset_8cxx_source.html#l00102">SimpleDataset::write()</a>.</p>
+<p>Referenced by <a class="el" href="bench__bow_8cxx_source.html#l00024">compute_bow()</a>, <a class="el" href="bench__compute__features_8cxx_source.html#l00021">compute_features()</a>, <a class="el" href="bench__index_8cxx_source.html#l00022">main()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00047">BagOfWords::save()</a>, <a class="el" href="matches__page_8cxx_source.html#l00032">MatchesPage::write()</a>, and <a class="el" href="dataset_8cxx_source.html#l00102">SimpleDataset::write()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                                                                 {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                boost::filesystem::path p(absfilepath.c_str());</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                boost::filesystem::path d = p.parent_path();</div>
@@ -195,7 +196,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00012">12</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="bag__of__words_8cxx_source.html#l00011">BagOfWords::BagOfWords()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00016">InvertedIndex::InvertedIndex()</a>, <a class="el" href="filesystem_8cxx_source.html#l00042">load_cvmat()</a>, <a class="el" href="filesystem_8cxx_source.html#l00061">load_sparse_vector()</a>, <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>, <a class="el" href="dataset_8cxx_source.html#l00077">SimpleDataset::read()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00341">VocabTree::search()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, <a class="el" href="dataset_8cxx_source.html#l00050">SimpleDataset::SimpleDataset()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00064">InvertedIndex::train()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
+<p>Referenced by <a class="el" href="bag__of__words_8cxx_source.html#l00023">BagOfWords::BagOfWords()</a>, <a class="el" href="bench__bow_8cxx_source.html#l00024">compute_bow()</a>, <a class="el" href="bench__compute__features_8cxx_source.html#l00021">compute_features()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00015">InvertedIndex::InvertedIndex()</a>, <a class="el" href="filesystem_8cxx_source.html#l00042">load_cvmat()</a>, <a class="el" href="filesystem_8cxx_source.html#l00061">load_sparse_vector()</a>, <a class="el" href="compute__bow__simple_8cxx_source.html#l00023">main()</a>, <a class="el" href="dataset_8cxx_source.html#l00077">SimpleDataset::read()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00341">VocabTree::search()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00099">InvertedIndex::search()</a>, <a class="el" href="dataset_8cxx_source.html#l00050">SimpleDataset::SimpleDataset()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, <a class="el" href="inverted__index_8cxx_source.html#l00066">InvertedIndex::train()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00077">BagOfWords::train()</a>, and <a class="el" href="matches__page_8cxx_source.html#l00032">MatchesPage::write()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;                                                {</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;          <span class="keyword">struct </span>stat buffer;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;          <span class="keywordflow">return</span> (stat (name.c_str(), &amp;buffer) == 0);</div>
@@ -203,7 +204,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 </div>
 </div>
-<a class="anchor" id="a660713e18263b3e3fd81940e2edff8ed"></a>
+<a class="anchor" id="a0a7296e96d5d6f6f1f5864387f34c04a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -217,7 +218,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>ext</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>ext</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>recursive</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -228,27 +235,39 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Lists all files in the given directory with an optional extension. </p>
-<p>The extension must include the dot (ie. ext=".txt"). </p>
+<p>The extension must include the dot (ie. ext=".txt"). If recursive is true (default), will recursively enter all directories </p>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00071">71</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
 <p>Referenced by <a class="el" href="dataset_8cxx_source.html#l00070">SimpleDataset::construct_dataset()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                                                                     {</div>
+<div class="fragment"><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                                                                                                     {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                boost::filesystem::path input_path(path);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                std::vector&lt;std::string&gt; file_list;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                <span class="keywordflow">if</span> (boost::filesystem::exists(input_path) &amp;&amp; boost::filesystem::is_directory(input_path)) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                        boost::filesystem::directory_iterator end;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                        <span class="keywordflow">for</span> (boost::filesystem::directory_iterator it(input_path); it != end; ++it) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                                <span class="keywordflow">if</span> (!boost::filesystem::is_directory(*it)) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                                        <span class="keywordflow">if</span> ((ext.length() &gt; 0 &amp;&amp; boost::filesystem::extension(*it) == boost::filesystem::path(ext)) ||</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                                                ext.length() == 0) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                                        file_list.push_back(it-&gt;path().string());</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                        }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                        }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                <span class="keywordflow">return</span> file_list;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                        <span class="keywordflow">if</span>(recursive) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                                boost::filesystem::recursive_directory_iterator end;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                                <span class="keywordflow">for</span> (boost::filesystem::recursive_directory_iterator it(input_path); it != end; ++it) {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                                        <span class="keywordflow">if</span> (!boost::filesystem::is_directory(*it)) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                                                <span class="keywordflow">if</span> ((ext.length() &gt; 0 &amp;&amp; boost::filesystem::extension(*it) == boost::filesystem::path(ext)) ||</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;                                                        ext.length() == 0) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                                                                file_list.push_back(it-&gt;path().string());</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                                                }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;                                        }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                                }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                                boost::filesystem::directory_iterator end;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                                <span class="keywordflow">for</span> (boost::filesystem::directory_iterator it(input_path); it != end; ++it) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                                        <span class="keywordflow">if</span> (!boost::filesystem::is_directory(*it)) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                                <span class="keywordflow">if</span> ((ext.length() &gt; 0 &amp;&amp; boost::filesystem::extension(*it) == boost::filesystem::path(ext)) ||</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                                        ext.length() == 0) {</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                                                                file_list.push_back(it-&gt;path().string());</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                                                }</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                                        }</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                                }</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                        }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="keywordflow">return</span> file_list;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -283,7 +302,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="filesystem_8cxx_source.html#l00012">file_exists()</a>.</p>
 
-<p>Referenced by <a class="el" href="bag__of__words_8cxx_source.html#l00021">BagOfWords::load()</a>, <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00341">VocabTree::search()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00048">BagOfWords::train()</a>.</p>
+<p>Referenced by <a class="el" href="bench__bow_8cxx_source.html#l00024">compute_bow()</a>, <a class="el" href="bag__of__words_8cxx_source.html#l00033">BagOfWords::load()</a>, <a class="el" href="compute__bow__simple_8cxx_source.html#l00023">main()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00341">VocabTree::search()</a>, <a class="el" href="vocab__tree_8cxx_source.html#l00138">VocabTree::train()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00077">BagOfWords::train()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                                                             {</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span>(!<a class="code" href="namespacefilesystem.html#a1d10e228c7c784ffc2e9c3c5bfc0dd11" title="Returns true if file exists at location, else returns false.">file_exists</a>(fname)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                std::ifstream ifs(fname.c_str(), std::ios::binary);</div>
@@ -328,7 +347,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="filesystem_8cxx_source.html#l00012">file_exists()</a>.</p>
 
-<p>Referenced by <a class="el" href="inverted__index_8cxx_source.html#l00090">InvertedIndex::search()</a>, and <a class="el" href="inverted__index_8cxx_source.html#l00064">InvertedIndex::train()</a>.</p>
+<p>Referenced by <a class="el" href="inverted__index_8cxx_source.html#l00099">InvertedIndex::search()</a>, and <a class="el" href="inverted__index_8cxx_source.html#l00066">InvertedIndex::train()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                                                                                     {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordflow">if</span>(!<a class="code" href="namespacefilesystem.html#a1d10e228c7c784ffc2e9c3c5bfc0dd11" title="Returns true if file exists at location, else returns false.">file_exists</a>(fname)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                std::ifstream ifs(fname.c_str(), std::ios::binary);</div>
@@ -371,7 +390,7 @@ Functions</h2></td></tr>
 
 <p>References <a class="el" href="filesystem_8cxx_source.html#l00025">filesystem::cvmat_header::elem_size</a>.</p>
 
-<p>Referenced by <a class="el" href="bench__compute__features_8cxx_source.html#l00013">main()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00035">BagOfWords::save()</a>.</p>
+<p>Referenced by <a class="el" href="bench__compute__features_8cxx_source.html#l00021">compute_features()</a>, <a class="el" href="compute__sift__simple_8cxx_source.html#l00013">main()</a>, and <a class="el" href="bag__of__words_8cxx_source.html#l00047">BagOfWords::save()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                                                                    {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <a class="code" href="structcvmat__header.html">cvmat_header</a> h;</div>
@@ -415,7 +434,7 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00053">53</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
 
-<p>Referenced by <a class="el" href="bench__bow_8cxx_source.html#l00021">main()</a>.</p>
+<p>Referenced by <a class="el" href="bench__bow_8cxx_source.html#l00024">compute_bow()</a>, and <a class="el" href="compute__bow__simple_8cxx_source.html#l00023">main()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                                                                                                            {</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                uint32_t dim0 = data.size();</div>
@@ -423,6 +442,44 @@ Functions</h2></td></tr>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                ofs.write((<span class="keywordtype">char</span> *)&amp;data[0], <span class="keyword">sizeof</span>(std::pair&lt;uint32_t, float &gt;) * dim0);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                <span class="keywordflow">return</span> (ofs.rdstate() &amp; std::ofstream::failbit) == 0;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="abbd822ce1a5abf780217e390c7aafb13"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool filesystem::write_text </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>fname</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>text</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes a text file to the input file location given the input string. </p>
+<p>Returns true if success, false otherwise. </p>
+
+<p>Definition at line <a class="el" href="filesystem_8cxx_source.html#l00106">106</a> of file <a class="el" href="filesystem_8cxx_source.html">filesystem.cxx</a>.</p>
+
+<p>Referenced by <a class="el" href="matches__page_8cxx_source.html#l00032">MatchesPage::write()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                                                                       {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                std::ofstream ofs(fname, std::ios::trunc);</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                ofs.write(text.c_str(), text.size());</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                <span class="keywordflow">return</span> (ofs.rdstate() &amp; std::ofstream::failbit) == 0;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
