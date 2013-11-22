@@ -1,0 +1,1 @@
+/usr/lib64/ccache/c++    -Wall -O2 -g3 -msse2 -march=native -fno-exceptions -fno-rtti -O3 -DNDEBUG    CMakeFiles/perf_dist_l2.dir/perf_dist_l2.cpp.o  -o perf_dist_l2 -rdynamic libfastann.so -Wl,-rpath,/home/psastras/vocabtree/3rdparty/philbinj-fastann 

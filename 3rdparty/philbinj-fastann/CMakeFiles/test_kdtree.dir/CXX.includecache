@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/fastann.hpp
+rand_point_gen.hpp
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/rand_point_gen.hpp
+
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/rand_point_gen.hpp
+randomkit.h
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/randomkit.h
+
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/randomkit.h
+stddef.h
+-
+
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/test_kdtree.cpp
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
+vector
+-
+stdint.h
+-
+fastann.hpp
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/fastann.hpp
+rand_point_gen.hpp
+/home/psastras/vocabtree/3rdparty/philbinj-fastann/rand_point_gen.hpp
+

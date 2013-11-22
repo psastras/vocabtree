@@ -1,0 +1,1 @@
+mpic++    -Wall -O2 -g3 -msse2 -march=native -O3 -DNDEBUG    CMakeFiles/test_mpi_queue.dir/test_mpi_queue.cpp.o  -o test_mpi_queue  -Lfastcluster  -L../install/Linux/lib  -Ltest_mpi_queue -rdynamic libfastcluster.so -lfastann -Wl,-rpath,fastcluster:/home/psastras/vocabtree/3rdparty/philbinj-fastcluster:../install/Linux/lib:test_mpi_queue 
