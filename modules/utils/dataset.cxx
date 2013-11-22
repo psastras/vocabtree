@@ -23,7 +23,7 @@ std::string Dataset::location(const std::string &relative_path) const {
 }
 
 
-std::vector< std::shared_ptr<const Image> > Dataset::all_images() {
+std::vector< std::shared_ptr<const Image> > Dataset::all_images() const {
 	std::vector< std::shared_ptr< const Image> > images(this->num_images());
 	for (uint64_t i = 0; i < this->num_images(); i++) {
 		images[i] = this->image(i);
@@ -31,7 +31,7 @@ std::vector< std::shared_ptr<const Image> > Dataset::all_images() {
 	return images;
 }
 
-std::vector< std::shared_ptr<const Image> > Dataset::random_images(size_t count) {
+std::vector< std::shared_ptr<const Image> > Dataset::random_images(size_t count) const {
 	std::vector< std::shared_ptr< const Image> > all = this->all_images();
 	std::random_shuffle(all.begin(), all.end());
 	std::vector< std::shared_ptr< const Image> > images(all.begin(), all.begin() + count);
@@ -70,7 +70,7 @@ std::shared_ptr<Image> SimpleDataset::image(uint64_t id) const {
 void SimpleDataset::construct_dataset() {
 	const std::vector<std::string> &image_file_paths = filesystem::list_files(data_directory + "/images/", ".jpg");
 	for (size_t i = 0; i < image_file_paths.size(); i++) {
-		id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type( "/images/" + filesystem::basename(image_file_paths[i], true), i));
+		id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type( image_file_paths[i].substr(data_directory.size(), image_file_paths[i].size() - data_directory.size()), i));
 	}
 }
 

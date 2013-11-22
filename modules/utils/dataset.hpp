@@ -54,10 +54,10 @@ public:
 	virtual bool add_image(const std::shared_ptr<const Image> &image) = 0 ;
 
 	/// Returns a vector of all images in the dataset.
-	std::vector<  std::shared_ptr< const Image> > all_images();
+	std::vector<  std::shared_ptr< const Image> > all_images() const;
 
 	/// Returns a vector of random images in the dataset of size count.
-	std::vector<  std::shared_ptr< const Image> > random_images(size_t count);
+	std::vector<  std::shared_ptr< const Image> > random_images(size_t count) const;
 
 	/// @TODO: Shards the dataset to the new input locations, and returns the sharded datasets
 	std::vector<Dataset> shard(const std::vector<std::string> &new_locations);

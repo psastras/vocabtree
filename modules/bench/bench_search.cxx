@@ -1,8 +1,12 @@
 #include "bench_config.hpp"
 
+#include <fstream>
+
+#include <config.hpp>
 #include <utils/filesystem.hpp>
 #include <utils/numerics.hpp>
 #include <utils/dataset.hpp>
+#include <utils/misc.hpp>
 #include <utils/vision.hpp>
 #include <utils/logger.hpp>
 #include <utils/cycletimer.hpp>
@@ -10,7 +14,12 @@
 #include <search/inverted_index/inverted_index.hpp>
 #include <vis/matches_page.hpp>
 
-
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#include <omp.h>
+#endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
 
 _INITIALIZE_EASYLOGGINGPP
 
@@ -28,7 +37,8 @@ void bench_oxford() {
 	InvertedIndex ii(index_output_file.str());
 
 	double total_time = 0.0;
-	for(uint32_t i=0; i<256; i++) {
+	uint32_t total_iterations = 256;
+	for(uint32_t i=0; i<total_iterations; i++) {
 		double start_time = CycleTimer::currentSeconds();
 		std::shared_ptr<InvertedIndex::MatchResults> matches = 
 		std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(oxford_dataset, nullptr, oxford_dataset.image(i)));	
@@ -43,11 +53,34 @@ void bench_oxford() {
 
 	html_output.write(oxford_dataset.location() + "/results/matches/");
 
+
+	// Write out the timings
+	std::stringstream timings_file_name;
+	timings_file_name << oxford_dataset.location() + "/results/times.index." <<  ii.num_clusters() << ".csv";
+	std::ofstream ofs(timings_file_name.str(), std::ios::app);
+	if(ofs.tellp() == 0) {
+		std::stringstream header;
+		header << "machine\ttime(s)\titerations\tmultithreading\topenmp\tmpi\t" << std::endl;
+		ofs.write(header.str().c_str(), header.str().size());
+	}
+	std::stringstream timing;
+	timing << misc::get_machine_name() << "\t" << total_time << "\t" << total_iterations << "\t" << 
+			  ENABLE_MULTITHREADING << "\t" << ENABLE_OPENMP << 
+			  "\t" << ENABLE_MPI << "\t" << std::endl;
+	ofs.write(timing.str().c_str(), timing.str().size());
+	ofs.close();
+
 }
 
 int main(int argc, char *argv[]) {
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Init(argc, argv);
+#endif
 
 	bench_oxford();
 
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Finalize();
+#endif
 	return 0;
 }

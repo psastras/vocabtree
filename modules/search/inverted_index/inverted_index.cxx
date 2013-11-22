@@ -10,7 +10,6 @@
 
 InvertedIndex::InvertedIndex() : SearchBase() {
 
-
 }
 
 InvertedIndex::InvertedIndex(const std::string &file_name) : SearchBase(file_name) {
@@ -98,7 +97,6 @@ bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainPar
 }
 
 std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
-	std::cout << "Searching for matching images..." << std::endl;
 
 	// const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
 	
@@ -130,7 +128,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
-	for(int64_t i=0; i<candidates.size(); i++) {
+	for(int64_t i=0; i<(int64_t)candidates.size(); i++) {
 		if(!candidates[i]) continue;
 
 		const std::string &bow_descriptors_location = dataset.location(dataset.image(i)->feature_path("bow_descriptors"));
@@ -149,12 +147,16 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	match_result->tfidf_scores.resize(candidate_scores.size());
 	match_result->matches.resize(candidate_scores.size());
 	
-	for(int64_t i=0; i<candidate_scores.size(); i++) {
+	for(int64_t i=0; i<(int64_t)candidate_scores.size(); i++) {
 		match_result->tfidf_scores[i] = candidate_scores[i].first;
 		match_result->matches[i] = candidate_scores[i].second;
 	}
 
 	return std::static_pointer_cast<MatchResultsBase>(match_result);
+}
+
+uint32_t InvertedIndex::num_clusters() const {
+	return idf_weights.size();
 }
 
 std::ostream& operator<< (std::ostream &out, const InvertedIndex::MatchResults &match_results) {

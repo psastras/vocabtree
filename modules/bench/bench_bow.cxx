@@ -15,31 +15,41 @@
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #include <omp.h>
 #endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
 
 _INITIALIZE_EASYLOGGINGPP
 
-int main(int argc, char *argv[]) {
-
-	SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
-	LINFO << oxford_dataset;
-	
-	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
-	train_params->numClusters = s_oxford_num_clusters;
-
-	// cluster sift features
-	BagOfWords bow;
-	std::stringstream vocab_output_file;
-	vocab_output_file << oxford_dataset.location() << "/vocabulary/" << train_params->numClusters << ".vocab";
-	if(filesystem::file_exists(vocab_output_file.str())) {
-		bow.load(vocab_output_file.str());
-	} else {
-		
-		const std::vector<  std::shared_ptr<const Image> > &random_images = oxford_dataset.random_images(1024);
-		bow.train(oxford_dataset, train_params, random_images);		
-		bow.save(vocab_output_file.str());
+void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int num_features) {
+	int rank = MPI::COMM_WORLD.Get_rank();
+	if(rank == 0) {
+		LINFO << dataset;
 	}
+
+	BagOfWords bow;
+	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
+	train_params->numClusters = num_clusters;
+	train_params->numFeatures = num_features;
+
+	std::stringstream vocab_output_file;
+	vocab_output_file << dataset.location() << "/vocabulary/" << train_params->numClusters << ".vocab";
+
+	if(filesystem::file_exists(vocab_output_file.str())) {
+        bow.load(vocab_output_file.str());
+    } else {
+        const std::vector< std::shared_ptr<const Image> > &random_images = dataset.random_images(num_images);
+        bow.train(dataset, train_params, random_images);                
+        bow.save(vocab_output_file.str());
+    }
+
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	if(rank == 0) {
+#endif
+
+	bow.save(vocab_output_file.str());
 	
-	const std::vector<  std::shared_ptr<const Image> > &all_images = oxford_dataset.all_images();
+	const std::vector<  std::shared_ptr<const Image> > &all_images = dataset.all_images();
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	uint32_t num_threads = omp_get_max_threads();
@@ -51,14 +61,13 @@ int main(int argc, char *argv[]) {
 #else
 	const cv::Ptr<cv::DescriptorMatcher> &matcher = vision::construct_descriptor_matcher(bow.vocabulary());
 #endif
-
 	for (int64_t i = 0; i < (int64_t)all_images.size(); i++) {
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 		const cv::Ptr<cv::DescriptorMatcher> &matcher = matchers[omp_get_thread_num()];
 #endif
-		const std::string &sift_descriptor_location = oxford_dataset.location(all_images[i]->feature_path("descriptors"));
-		const std::string &bow_descriptor_location = oxford_dataset.location(all_images[i]->feature_path("bow_descriptors"));
+		const std::string &sift_descriptor_location = dataset.location(all_images[i]->feature_path("descriptors"));
+		const std::string &bow_descriptor_location = dataset.location(all_images[i]->feature_path("bow_descriptors"));
 
 		cv::Mat descriptors, bow_descriptors;
 		if (!filesystem::file_exists(sift_descriptor_location)) continue;
@@ -71,6 +80,29 @@ int main(int argc, char *argv[]) {
 		
 		LINFO << "Wrote " << bow_descriptor_location;
 	}
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	}
+#endif
+}
 
+int main(int argc, char *argv[]) {
+
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Init(argc, argv);
+#endif
+
+	// {
+	// 	SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
+	// 	compute_bow(oxford_dataset, s_oxford_num_clusters, 1024, 0);
+	// }
+
+	{
+		SimpleDataset oxford100k_dataset(s_oxford100k_data_dir, s_oxford100k_database_location);
+		compute_bow(oxford100k_dataset, s_oxford100k_num_clusters, 2048, 0);
+	}
+	
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Finalize();
+#endif
 	return 0;
 }

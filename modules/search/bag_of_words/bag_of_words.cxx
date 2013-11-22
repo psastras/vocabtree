@@ -105,7 +105,8 @@ bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParams
 	}
 	const cv::Mat merged_descriptor = vision::merge_descriptors(all_descriptors, true);
 	
-#if ENABLE_FASTCLUSTER
+#if ENABLE_FASTCLUSTER && ENABLE_MPI
+	
 	int rank = MPI::COMM_WORLD.Get_rank();
 
 	uint32_t D = merged_descriptor.cols;

@@ -24,9 +24,6 @@ int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	MPI::Init(argc, argv);
 	int rank = MPI::COMM_WORLD.Get_rank();
-	int size = MPI::COMM_WORLD.Get_size();
-
-	std::cout << "rank: " << rank << ", size: " << size << std::endl;
 #endif
 
 	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);

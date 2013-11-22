@@ -10,10 +10,19 @@
 
 #include <iostream>
 
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#include <omp.h>
+#endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
+
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
-
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Init(argc, argv);
+#endif
 	const uint32_t num_clusters = s_oxford_num_clusters;
 
 	SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
@@ -34,6 +43,8 @@ int main(int argc, char *argv[]) {
 	filesystem::create_file_directory(index_output_file.str());
 	ii.save(index_output_file.str());
 
-
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Finalize();
+#endif
 	return 0;
 }

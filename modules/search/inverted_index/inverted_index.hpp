@@ -39,6 +39,9 @@ public:
 	/// Saves a trained search structure to the input filepath
 	bool save (const std::string &file_path) const;
 
+	/// Returns the number of clusters used in the inverted index descriptors
+	uint32_t num_clusters() const;
+
 	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
 	/// (it will fail if the example image has missing features).
 	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
