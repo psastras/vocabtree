@@ -8,19 +8,19 @@ Build Instructions
 ===================
 
 Supported OS
-----------
-*Linux
-*Windows
+
+* Linux
+* Windows
 
 Required Dependencies
-----------
-*OpenCV
-*Boost
+
+* OpenCV
+* Boost
 
 Optional Dependencies
-----------
-*OpenMP - required for multithreading support
-*MPI - required for multinode support (ideally should be used with OpenMP)
+
+* OpenMP - required for multithreading support
+* MPI - required for multinode support (ideally should be used with OpenMP)
 
 Building
 ----------
@@ -29,10 +29,10 @@ Create a build directory and then run cmake from that directory pointing to the 
 
 Ex: From the root source directory:
 
-  mkdir build
-  cd build
-  cmake ..
-  make
+    mkdir build
+    cd build
+    cmake ..
+    make
 
 Binaries are located in your build directory under bin.
 
@@ -50,7 +50,7 @@ Documentation
 
 Documentation can be built by running (requires doxygen)
 
-  make doc
+    make doc
 
 Documentation can also be found here:
 
