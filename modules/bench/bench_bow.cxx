@@ -22,7 +22,11 @@
 _INITIALIZE_EASYLOGGINGPP
 
 void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int num_features) {
+#if ENABLE_FASTCLUSTER && ENABLE_MPI
 	int rank = MPI::COMM_WORLD.Get_rank();
+#else
+	int rank = 0;
+#endif
 	if(rank == 0) {
 		LINFO << dataset;
 	}

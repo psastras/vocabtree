@@ -56,7 +56,7 @@ bool BagOfWords::save (const std::string &file_path) const {
 	std::cout << "Done writing bag of words." << std::endl;
 	return true;
 }
-
+#if ENABLE_FASTCLUSTER && ENABLE_MPI
 void load_rows_in_mem(void* p, unsigned l, unsigned r, float* out) {
 	float *fp = (float *)p;
 	memcpy(out, &fp[l * 128] , sizeof(float) * 128 * (r - l));
@@ -72,6 +72,7 @@ fastann::nn_obj<float>* build_nnobj(void* p, float* clusters, unsigned K, unsign
 	fastann::nn_obj<float>* kd_tree = fastann::nn_obj_build_kdtree(clusters, K, D, 8, 512);
 	return kd_tree;
 }
+#endif
 
 bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
 
