@@ -8,7 +8,7 @@
 #include <utils/logger.hpp>
 #include <iostream>
 
-#if (ENABLE_MULTITHREADING && ENABLE_OPENMP) && (!__clang__ || (__clang__ && __has_include(<omp.h>)))
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #include <omp.h>
 #endif
 #if ENABLE_MULTITHREADING && ENABLE_MPI
