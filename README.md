@@ -14,8 +14,8 @@ Supported OS
 
 Required Dependencies
 
-* OpenCV
-* Boost
+* OpenCV (https://github.com/Itseez/opencv)
+* Boost (http://www.boost.org/)
 
 Optional Dependencies
 
