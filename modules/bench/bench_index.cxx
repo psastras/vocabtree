@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#if (ENABLE_MULTITHREADING && ENABLE_OPENMP) && (!__clang__ || (__clang__ && __has_include(<omp.h>)))
 #include <omp.h>
 #endif
 #if ENABLE_MULTITHREADING && ENABLE_MPI

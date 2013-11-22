@@ -192,11 +192,14 @@ namespace vision {
 		cv::SIFT sift_extractor(sift_parameters->max_features, sift_parameters->num_octave_layers,
 				 sift_parameters->contrast_threshold, sift_parameters->edge_threshold, sift_parameters->sigma);
 
+		cv::Mat descriptors_f;
+
 		if(img.size().area() > 0) {
 			
 			std::vector<cv::KeyPoint> keypoint_vec;
 			sift_extractor.detect(img, keypoint_vec);
-			sift_extractor.compute(img, keypoint_vec, descriptors);
+			sift_extractor.compute(img, keypoint_vec, descriptors_f);
+			descriptors_f.convertTo(descriptors, CV_8UC1);
 			keypoints = cv::Mat(keypoint_vec.size(), 2, CV_32FC1);
         
 			for(int i=0; i<(int)keypoint_vec.size(); i++) {
@@ -206,6 +209,8 @@ namespace vision {
 
 			return true;
 		}
+
+		
 
 		return false;
 	}

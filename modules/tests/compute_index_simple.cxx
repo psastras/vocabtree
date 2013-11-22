@@ -10,10 +10,21 @@
 
 #include <iostream>
 
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#include <omp.h>
+#endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
+
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
-
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Init(argc, argv);
+	int rank = MPI::COMM_WORLD.Get_rank();
+	if(rank == 0) {
+#endif
 	const uint32_t num_clusters = 512;
 
 	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
@@ -33,6 +44,9 @@ int main(int argc, char *argv[]) {
 	index_output_file << simple_dataset.location() << "/index/" << num_clusters << ".index";
 	filesystem::create_file_directory(index_output_file.str());
 	ii.save(index_output_file.str());
-
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	}
+	MPI::Finalize();
+#endif
 	return 0;
 }

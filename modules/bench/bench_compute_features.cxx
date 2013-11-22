@@ -8,7 +8,7 @@
 #include <utils/logger.hpp>
 #include <iostream>
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#if (ENABLE_MULTITHREADING && ENABLE_OPENMP) && (!__clang__ || (__clang__ && __has_include(<omp.h>)))
 #include <omp.h>
 #endif
 #if ENABLE_MULTITHREADING && ENABLE_MPI
@@ -51,15 +51,15 @@ int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	MPI::Init(argc, argv);
 #endif
-	// {
-	// 	SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
-	// 	compute_features(oxford_dataset);
-	// }
-
 	{
-		SimpleDataset oxford100k_dataset(s_oxford100k_data_dir, s_oxford100k_database_location);
-		compute_features(oxford100k_dataset);
+		SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
+		compute_features(oxford_dataset);
 	}
+
+	// {
+	// 	SimpleDataset oxford100k_dataset(s_oxford100k_data_dir, s_oxford100k_database_location);
+	// 	compute_features(oxford100k_dataset);
+	// }
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	MPI::Finalize();
 #endif

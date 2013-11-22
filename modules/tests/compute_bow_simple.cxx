@@ -30,9 +30,12 @@ int main(int argc, char *argv[]) {
 	LINFO << simple_dataset;
 
 	BagOfWords bow;
+	
 	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
 	const std::vector<  std::shared_ptr<const Image> > &all_images = simple_dataset.all_images();
+	LINFO << "BEGIN TRAIN!!!!!!!!!!!!!!!!!!!";
 	bow.train(simple_dataset, train_params, all_images);
+	LINFO << "END TRAIN!!!!!!!!!!!!!!!!!!!!";
 
 	
 #if ENABLE_MULTITHREADING && ENABLE_MPI
