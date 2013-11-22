@@ -14,9 +14,8 @@ kmeans(void (*load_rows)(void* p, unsigned l, unsigned r, Float* out),
        unsigned D,
        unsigned K,
        unsigned niters,
-       int root_rank, 
-       char *chkp);
-
+       int root_rank,
+       char *chk_f);
 }
 
 #endif
