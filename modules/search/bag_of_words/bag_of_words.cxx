@@ -1,8 +1,16 @@
+#include <config.hpp>
+
 #include "bag_of_words.hpp"
+
 #include <utils/filesystem.hpp>
 #include <utils/vision.hpp>
 #include <iostream>
 #include <memory>
+
+#if ENABLE_FASTCLUSTER
+#include <fastann/fastann.hpp>
+#include <fastcluster/kmeans.hpp>
+#endif
 BagOfWords::BagOfWords() : SearchBase() {
 
 
@@ -45,6 +53,14 @@ bool BagOfWords::save (const std::string &file_path) const {
 	return true;
 }
 
+void load_rows(void* p, unsigned l, unsigned r, float* out) {
+	std::cout << l << ", " << r << std::endl;
+}
+
+fastann::nn_obj<float>* build_nnobj(void* p, float* clusters, unsigned K, unsigned D) {
+	std::cout << "build nn obj" << std::endl;
+}
+
 bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
 
 	const std::shared_ptr<const TrainParams> &ii_params = std::static_pointer_cast<const TrainParams>(params);
@@ -75,13 +91,23 @@ bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParams
 			all_descriptors.push_back(descriptors);
 		}
 	}
-
 	const cv::Mat merged_descriptor = vision::merge_descriptors(all_descriptors, true);
+
+#if ENABLE_FASTCLUSTER
+	float *clusters;
+	void* build_nnobj_p;
+	 fastcluster::kmeans<float>(load_rows, (void *)&merged_descriptor.data, 
+                                    build_nnobj, build_nnobj_p,
+                                    (float *)clusters, n, merged_descriptor.cols, k, 128, 0, (char *)0);
+	// int status = kmeans_s(load_rows, (void *)&merged_descriptor.data, build_nnobj,
+	//  (void *)build_nnobj_p, (float *)clusters, n, merged_descriptor.cols, k, 128, 0, (char *)0);
+
+#else
 	cv::Mat labels;
 	uint32_t attempts = 1;
 	cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 16, 0.0001);
 	cv::kmeans(merged_descriptor, k, labels, tc, attempts, cv::KMEANS_PP_CENTERS, vocabulary_matrix);
-
+#endif
 	return true;
 }
 

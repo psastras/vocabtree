@@ -7,7 +7,7 @@ find_path( OPENCV_INCLUDE_PATH opencv2/opencv.hpp
 	/opt/local/include
 	/afs/cs.cmu.edu/user/psastras/ladoga/install_warp/include
 	/home/psastras/ladoga/install_warp/include
-	3rdparty/win64/include
+	3rdparty/install/${CMAKE_SYSTEM_NAME}/include
 	DOC "The directory where opencv2/opencv.hpp resides")
 find_library(OPENCV_LIB_PATH opencv_core
 	/usr/lib64
@@ -21,7 +21,7 @@ find_library(OPENCV_LIB_PATH opencv_core
 	/opt/local/lib
 	/afs/cs.cmu.edu/user/psastras/ladoga/install_warp/lib
 	/home/psastras/ladoga/install_warp/lib
-	3rdparty/win64/lib
+	3rdparty/install/${CMAKE_SYSTEM_NAME}/lib
 	)
 get_filename_component(OPENCV_LIB_PATH "${OPENCV_LIB_PATH}"
 					PATH)

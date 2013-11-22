@@ -1,4 +1,7 @@
 html/
 build/
 modules/tests/tests_config.hpp
+modules/bench/bench_config.hpp
 modules/config.hpp
+*.pyc
+scripts/config.py

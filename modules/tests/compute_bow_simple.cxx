@@ -15,10 +15,19 @@
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #include <omp.h>
 #endif
-
+#if ENABLE_MPI
+#include <mpi.h>
+#endif
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
+#if ENABLE_MPI
+	MPI::Init(argc, argv);
+	int rank = MPI::COMM_WORLD.Get_rank();
+	int size = MPI::COMM_WORLD.Get_size();
+
+	std::cout << "rank: " << rank << ", size: " << size << std::endl;
+#endif
 
 	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
 	LINFO << simple_dataset;
@@ -26,7 +35,13 @@ int main(int argc, char *argv[]) {
 	BagOfWords bow;
 	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
 	const std::vector<  std::shared_ptr<const Image> > &all_images = simple_dataset.all_images();
+	std::cout << "Start train" << std::endl;
 	bow.train(simple_dataset, train_params, all_images);
+	std::cout << "Done train" << std::endl;
+#if ENABLE_MPI
+	MPI::Finalize();
+	return 0;
+#endif
 
 	std::stringstream vocab_output_file;
 	vocab_output_file << simple_dataset.location() << "/vocabulary/" << train_params->numClusters << ".vocab";
@@ -62,6 +77,10 @@ int main(int argc, char *argv[]) {
 		
 		LINFO << "Wrote " << bow_descriptor_location;
 	}
+
+#if ENABLE_MPI
+	MPI::Finalize();
+#endif
 
 	return 0;
 }
