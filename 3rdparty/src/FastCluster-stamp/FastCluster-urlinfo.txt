@@ -1,3 +1,0 @@
-repository='external project URL'
-module='http://www.robots.ox.ac.uk/~vgg/software/fastanncluster/fastcluster/philbinj-fastcluster-bf3d361.tar.gz'
-tag=''

@@ -1,7 +1,0 @@
-/home/psastras/vocabtree/3rdparty/philbinj-fastann/CMakeFiles/fastann.dir
-/home/psastras/vocabtree/3rdparty/philbinj-fastann/CMakeFiles/perf.dir
-/home/psastras/vocabtree/3rdparty/philbinj-fastann/CMakeFiles/perf_dist_l2.dir
-/home/psastras/vocabtree/3rdparty/philbinj-fastann/CMakeFiles/perf_kdtree.dir
-/home/psastras/vocabtree/3rdparty/philbinj-fastann/CMakeFiles/test.dir
-/home/psastras/vocabtree/3rdparty/philbinj-fastann/CMakeFiles/test_dist_l2.dir
-/home/psastras/vocabtree/3rdparty/philbinj-fastann/CMakeFiles/test_kdtree.dir

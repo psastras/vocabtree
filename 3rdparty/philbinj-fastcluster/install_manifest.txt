@@ -1,5 +1,0 @@
-/home/psastras/vocabtree/3rdparty/install/Linux/lib/libfastcluster.so
-/home/psastras/vocabtree/3rdparty/install/Linux/include/fastcluster/kmeans.h
-/home/psastras/vocabtree/3rdparty/install/Linux/include/fastcluster/kmeans.hpp
-/home/psastras/vocabtree/3rdparty/install/Linux/include/fastcluster/mpi_queue.hpp
-/home/psastras/vocabtree/3rdparty/install/Linux/include/fastcluster/randomkit.h
