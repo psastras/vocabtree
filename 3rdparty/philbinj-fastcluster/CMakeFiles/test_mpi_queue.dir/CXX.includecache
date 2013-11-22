@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/psastras/vocabtree/3rdparty/philbinj-fastcluster/mpi_queue.hpp
+iosfwd
+-
+vector
+-
+mpi.h
+-
+
+/home/psastras/vocabtree/3rdparty/philbinj-fastcluster/test_mpi_queue.cpp
+cassert
+-
+stdio.h
+-
+mpi_queue.hpp
+/home/psastras/vocabtree/3rdparty/philbinj-fastcluster/mpi_queue.hpp
+
