@@ -50,7 +50,7 @@ void bench_oxford() {
 		}
 		double end_time = CycleTimer::currentSeconds();
 		total_time += (end_time - start_time);
-		html_output.add_match(i, matches->matches, oxford_dataset);
+		
 
 		// validate matches
 		cv::Mat keypoints_0, descriptors_0;
@@ -59,26 +59,29 @@ void bench_oxford() {
 		const std::string &query_descriptors_location = oxford_dataset.location(query_image->feature_path("descriptors"));
 		filesystem::load_cvmat(query_keypoints_location, keypoints_0);
 		filesystem::load_cvmat(query_descriptors_location, descriptors_0);
-		std::vector<bool> validated(num_validate, false);
-
+		std::vector<int> validated(num_validate, 0);
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 		#pragma omp parallel for schedule(dynamic)
 #endif
-		for(uint32_t j=0; j<num_validate; j++) {
+		for(int32_t j=0; j<(int32_t)num_validate; j++) {
 			cv::Mat keypoints_1, descriptors_1;
-			std::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(matches->matches[i]));
+			std::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(matches->matches[j]));
 			const std::string &match_keypoints_location = oxford_dataset.location(match_image->feature_path("keypoints"));
 			const std::string &match_descriptors_location = oxford_dataset.location(match_image->feature_path("descriptors"));
 			filesystem::load_cvmat(match_keypoints_location, keypoints_1);
 			filesystem::load_cvmat(match_descriptors_location, descriptors_1);
 
 			cv::detail::MatchesInfo match_info;
-			vision::geo_verify_h(descriptors_0, keypoints_0, descriptors_1, keypoints_1, match_info);
+			vision::geo_verify_f(descriptors_0, keypoints_0, descriptors_1, keypoints_1, match_info);
 
+			validated[j] = vision::is_good_match(match_info) ? 1 : -1;
 		}
+
+		html_output.add_match(i, matches->matches, oxford_dataset, std::make_shared< std::vector<int> >(validated));
+		html_output.write(oxford_dataset.location() + "/results/matches/");
 	}
 
-	html_output.write(oxford_dataset.location() + "/results/matches/");
+	
 
 
 	// Write out the timings

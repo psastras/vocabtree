@@ -8,7 +8,7 @@
 #define ENABLE_MULTITHREADING @ENABLE_MULTITHREAD@
 
 // needed for sublime clang to work
-#if ENABLE_MULTITHREADING & ENABLE_OPENMP
+#if ENABLE_MULTITHREADING
 	#ifdef __clang__
 		#if __has_include(<omp.h>)
 			#define ENABLE_OPENMP @ENABLE_OPENMP@
