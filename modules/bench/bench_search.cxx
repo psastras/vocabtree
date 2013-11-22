@@ -85,7 +85,7 @@ void bench_oxford() {
 	std::stringstream timings_file_name;
 	timings_file_name << oxford_dataset.location() + "/results/times.index." <<  ii.num_clusters() << ".csv";
 	std::ofstream ofs(timings_file_name.str(), std::ios::app);
-	if(ofs.tellp() == 0) {
+	if((size_t)ofs.tellp() == 0) {
 		std::stringstream header;
 		header << "machine\ttime(s)\titerations\tmultithreading\topenmp\tmpi\t" << std::endl;
 		ofs.write(header.str().c_str(), header.str().size());

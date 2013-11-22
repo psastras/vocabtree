@@ -38,7 +38,7 @@ namespace CycleTimer {
 
   /// Return the current CPU time, in terms of clock ticks.
   /// Time zero is at some arbitrary point in the past.
-  inline __attribute__((always_inline)) SysClock currentTicks() {
+  inline SysClock currentTicks() {
 #if defined(__APPLE__) && !defined(__x86_64__)
     return mach_absolute_time();
 #elif defined(_WIN32)
@@ -61,7 +61,7 @@ namespace CycleTimer {
 #endif
   }
 
-  inline __attribute__((always_inline)) const char* tickUnits() {
+  inline const char* tickUnits() {
 #if defined(__APPLE__) && !defined(__x86_64__)
     return "ns";
 #elif defined(__WIN32__) || defined(__x86_64__)
@@ -72,7 +72,7 @@ namespace CycleTimer {
   }
 
   /// Return the conversion from ticks to seconds.
-  inline __attribute__((always_inline)) double secondsPerTick() {
+  inline double secondsPerTick() {
     static bool initialized = false;
     static double secondsPerTick_val;
     if (initialized) return secondsPerTick_val;
@@ -147,19 +147,19 @@ namespace CycleTimer {
   }
 
   /// Return the conversion from ticks to milliseconds.
-  inline __attribute__((always_inline)) double msPerTick() {
+  inline double msPerTick() {
     return secondsPerTick() * 1000.0;
   }
 
   /// Return the current CPU time, in terms of seconds.
   /// This is slower than currentTicks().  Time zero is at
   /// some arbitrary point in the past.
-  inline __attribute__((always_inline)) double currentSeconds() {
+  inline double currentSeconds() {
     return currentTicks() * secondsPerTick();
   }
 
   /// Return the conversion from seconds to ticks.
-  inline __attribute__((always_inline)) double ticksPerSecond() {
+  inline double ticksPerSecond() {
     return 1.0/secondsPerTick();
   }
 };
