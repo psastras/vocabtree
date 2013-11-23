@@ -63,18 +63,18 @@ bool VocabTree::load (const std::string &file_path) {
   // read in tree
   tree.resize(numberOfNodes);
   for (uint32_t i = 0; i < numberOfNodes; i++) {
-    TreeNode t = tree[i];
-    ifs.read((char *)&t.firstChildIndex, sizeof(uint32_t));
-    ifs.read((char *)&t.index, sizeof(uint32_t));
-    ifs.read((char *)&t.invertedFileLength, sizeof(uint32_t));
-    ifs.read((char *)&t.level, sizeof(uint32_t));
-    ifs.read((char *)&t.levelIndex, sizeof(uint32_t));
+    ifs.read((char *)&tree[i].firstChildIndex, sizeof(uint32_t));
+    ifs.read((char *)&tree[i].index, sizeof(uint32_t));
+    ifs.read((char *)&tree[i].invertedFileLength, sizeof(uint32_t));
+    ifs.read((char *)&tree[i].level, sizeof(uint32_t));
+    ifs.read((char *)&tree[i].levelIndex, sizeof(uint32_t));
 
     // read cv::mat, copied from filesystem.cxx
     cvmat_header h;
     ifs.read((char *)&h, sizeof(cvmat_header));
-    t.mean.create(h.rows, h.cols, h.elem_type);
-    ifs.read((char *)t.mean.ptr(), h.rows * h.cols * h.elem_size);
+    tree[i].mean.create(h.rows, h.cols, h.elem_type);
+    if (h.rows == 0 || h.cols == 0) continue;
+    ifs.read((char *)tree[i].mean.ptr(), h.rows * h.cols * h.elem_size);
   }
 
 	std::cout << "Done reading vocab tree." << std::endl;
@@ -217,8 +217,15 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       }
     }
   }
-  for (size_t i = 0; i < numberOfNodes; i++)
-    weights[i] = log(((float)counts[i]) / ((float)all_ids.size()));
+
+  // create weights according to equation 4: w_i = ln(N / N_i)
+  for (size_t i = 0; i < numberOfNodes; i++) {
+    if (counts[i] == 0)
+      weights[i] = 0;
+    else
+      weights[i] = log(((float)all_ids.size()) / ((float)counts[i]));
+    printf("Node %d, count %d, total %d, size %d, weight %f \n", i, counts[i], all_ids.size(), tree[i].invertedFileLength, weights[i]);
+  }
 
   // now that we have the weights we iterate over all images and adjust the vector by weights, 
   //  then normalizes the vector
@@ -229,14 +236,25 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] *= weights[i];
       length += (float)pow((iterator->second)[i], 2.0);
     }
-    length = sqrt(length);
     // normalizing
+    length = sqrt(length);
     for (size_t i = 0; i < numberOfNodes; i++) 
       (iterator->second)[i] /= length;
   }
 
   for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
     printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
+  }
+  printf("\n\n");
+  uint32_t l = 0, inL = 0;
+  for (uint32_t i = 0; i < numberOfNodes; i++) {
+    printf("Node %d, num %d, weight %f || ", i, tree[i].invertedFileLength, weights[i]);
+    inL++;
+    if (inL >= (uint32_t)pow(split, l)) {
+      l++;
+      inL = 0;
+      printf("\n");
+    }
   }
 
 	return true;
@@ -419,12 +437,16 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   std::vector<matchPair> values;
   for (uint64_t elem : possibleImages) {
     // compute L1 norm (based on paper eq 5)
-    float l1norm = 0;
-    for (uint32_t i = 0; i < numberOfNodes; i++)
-      l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
+    //float l1norm = 0;
+    float score = 0;
+    for (uint32_t i = 0; i < numberOfNodes; i++) {
+      float t = vec[i] - (databaseVectors[elem])[i];
+      score += t*t;
+      //l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
+    }
     //values[elem] = l1norm;
     //values.insert(elem, l1norm));
-    values.push_back(matchPair(elem, l1norm));
+    values.push_back(matchPair(elem, sqrt(score)));
   }
 
 
