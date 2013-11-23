@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
   vt.save(index_output_file.str());
   */
 
-  /*for (uint32_t i = 0; i<3; i++) {
+  for (uint32_t i = 0; i<3; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
       std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
     //LINFO << "Query " << i << ": " << *matches;
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     for (uint64_t id : matches->matches)
       printf("%d ", id);
     printf("\n");
-  }*/
+  }
 
 
   return 0;

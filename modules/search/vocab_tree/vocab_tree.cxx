@@ -7,6 +7,8 @@
 #include <math.h> // for pow
 #include <utility> // std::pair
 
+#include <omp.h>
+
 VocabTree::VocabTree() : SearchBase() {
 
 
@@ -140,8 +142,9 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
 
 	const std::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
 	split = vt_params->split;
-	uint32_t depth = vt_params->depth;
-  numberOfNodes = (uint32_t)pow(split, maxLevel) / (split - 1);
+  //uint32_t depth = vt_params->depth;
+  maxLevel = vt_params->depth;
+  numberOfNodes = (uint32_t)(pow(split, maxLevel) - 1) / (split - 1);
   weights.resize(numberOfNodes);
   tree.resize(numberOfNodes);
   invertedFiles.resize((uint32_t)pow(split, maxLevel-1));
@@ -189,6 +192,9 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   for (size_t i = 0; i < numberOfNodes; i++)
     counts[i] = 0;
 
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#pragma omp parallel for schedule(dynamic)
+#endif
   for (size_t i = 0; i < all_ids.size(); i++) {
     std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     if (image == nullptr) continue;
@@ -205,7 +211,10 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
         counts[j]++;
 
       //databaseVectors.insert(std::make_pair<uint64_t, std::vector<float>>(all_ids[i], result));
-      databaseVectors[all_ids[i]] = result;
+#pragma omp critical
+      {
+        databaseVectors[all_ids[i]] = result;
+      }
     }
   }
   for (size_t i = 0; i < numberOfNodes; i++)
@@ -226,38 +235,64 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] /= length;
   }
 
+  for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
+    printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
+  }
+
 	return true;
 }
 
-void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCriteria tc, 
+void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCriteria tc,
   int attempts, int flags, int currLevel) {
 
+  tree[t].invertedFileLength = descriptors.rows;
   tree[t].level = currLevel;
 
   // handles the leaves
   if (currLevel == maxLevel - 1) {
-    tree[t].firstChildIndex = -1;
+    tree[t].firstChildIndex = 0;
     return;
   }
 
   cv::Mat labels;
   cv::Mat centers;
 
-  cv::kmeans(descriptors, split, labels, tc, attempts, flags, centers);
-
   std::vector<cv::Mat> groups(split);
   for (uint32_t i = 0; i < split; i++)
     groups[i] = cv::Mat();
 
-  for (int i = 0; i < labels.rows; i++) {
-    int index = labels.at<int>(i);
-    groups[index].push_back(descriptors.row(i));
+  printf("t: %d  rows: %d, counts: ", t, descriptors.rows);
+
+  bool enoughToFill = true;
+  if (descriptors.rows >= split) {
+    cv::kmeans(descriptors, split, labels, tc, attempts, flags, centers);
+
+    for (int i = 0; i < labels.rows; i++) {
+      int index = labels.at<int>(i);
+      groups[index].push_back(descriptors.row(i));
+    }
+  }
+  else {
+    // *** THIS SHOULDN'T BE THE CASE, why is kmeans splitting poorly? ****
+    enoughToFill = false;
+    for (int i = 0; i < descriptors.rows; i++)
+      groups[i].push_back(descriptors.row(i));
   }
 
+  for (uint32_t i = 0; i < split; i++)
+    printf("%d, ", groups[i].rows);
+  printf("\n");
+
+  uint32_t totalChildren = pow(split, currLevel);
+  uint32_t maxThreads = omp_get_num_threads();
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP && totalChildren<maxThreads
+#pragma omp parallel for schedule(dynamic)
+#endif
   for (uint32_t i = 0; i < split; i++) {
     uint32_t childLevelIndex = tree[t].levelIndex*split + i;
-    uint32_t childIndex = (uint32_t)(pow(split, tree[t].level) / (split - 1)) + childLevelIndex;
-    tree[childIndex].mean = centers.row(i);
+    uint32_t childIndex = (uint32_t)((pow(split, tree[t].level+1)-1) / (split - 1)) + childLevelIndex;
+    if (enoughToFill)
+      tree[childIndex].mean = centers.row(i);
     tree[childIndex].levelIndex = childLevelIndex;
     tree[childIndex].index = childIndex;
     if (i == 0)
@@ -267,13 +302,13 @@ void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCrit
   }
 }
 
-std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWeight, uint64_t id) {
-  std::unordered_set<uint64_t> dummy;
+std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWeight, int64_t id) {
+  std::unordered_set<uint32_t> dummy;
   return generateVector(descriptors, shouldWeight, dummy, id);
 }
 
 std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWeight, 
-  std::unordered_set<uint64_t> & possibleMatches,  uint64_t id) {
+  std::unordered_set<uint32_t> & possibleMatches, int64_t id) {
 
   std::vector<float> vec(numberOfNodes);
   for (uint32_t i = 0; i < numberOfNodes; i++)
@@ -299,25 +334,30 @@ std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWei
 }
 
 void VocabTree::generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std::vector<float> & counts,
-  std::unordered_set<uint64_t> & possibleMatches, uint64_t id) {
+  std::unordered_set<uint32_t> & possibleMatches, int64_t id) {
 
   counts[nodeIndex]++;
   // if leaf
-  if (tree[nodeIndex].firstChildIndex < 0) {
-    std::unordered_map<uint64_t, uint32_t> invFile = invertedFiles[tree[nodeIndex].levelIndex];
+  if (tree[nodeIndex].firstChildIndex <= 0) {
+    std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[tree[nodeIndex].levelIndex];
+    //printf("|%d|=%d, ", tree[nodeIndex].levelIndex, invFile.size());
     // inserting image id into the inverted file
     if (id >= 0) {
+      //printf("Leaf %d\n", nodeIndex);
+#pragma omp critical
+      {
       if (invFile.find(id) == invFile.end())
         invFile[id] = 1;
       else
         invFile[id]++;
+      }
     }
     // accumulating image id's into possibleMatches
     else {
       // i don't like doing this serial, should find a better method
-      typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
-      for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
-        possibleMatches.insert(iterator->first);
+      //typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
+      //for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
+      possibleMatches.insert(tree[nodeIndex].levelIndex); //iterator->first);
     }
   }
   // if inner node
@@ -326,6 +366,8 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std
     double max = descriptor.dot(tree[maxChild].mean);
     
     for (uint32_t i = 1; i < split; i++) {
+      if (tree[nodeIndex].invertedFileLength == 0)
+        continue;
       uint32_t childIndex = tree[nodeIndex].firstChildIndex + i;
       double dot = descriptor.dot(tree[childIndex].mean);
       if (dot>max) {
@@ -354,32 +396,54 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   cv::Mat descriptors;
   if (!filesystem::load_cvmat(descriptors_location, descriptors)) return nullptr;
 
-  std::unordered_set<uint64_t> possibleMatches;
+  std::unordered_set<uint32_t> possibleMatches;
 
   std::vector<float> vec = generateVector(descriptors, true, possibleMatches);
 
   typedef std::pair<uint64_t, float> matchPair;
-  std::vector<matchPair> values(possibleMatches.size());
-  //for (int i = 0; i < vec.size(); i++) {
-  for (uint64_t elem : possibleMatches) {
-    // compute L1 norm (based on paper eq 5)
-    float l1norm = 0;
-    for (uint32_t i = 0; i < numberOfNodes; i++)
-      l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
-    values.push_back(std::make_pair(elem, l1norm));
-  }
-
   struct myComparer {
     bool operator() (matchPair a, matchPair b) { return a.second < b.second; };
   } comparer;
 
+  std::unordered_set<uint64_t> possibleImages;
+  for (uint32_t elem : possibleMatches) {
+    std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[elem];
+
+    typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
+    for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
+    if (possibleImages.count(iterator->first) == 0)
+      possibleImages.insert(iterator->first);
+  }
+
+  //std::set<matchPair, myComparer> values;
+  std::vector<matchPair> values;
+  for (uint64_t elem : possibleImages) {
+    // compute L1 norm (based on paper eq 5)
+    float l1norm = 0;
+    for (uint32_t i = 0; i < numberOfNodes; i++)
+      l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
+    //values[elem] = l1norm;
+    //values.insert(elem, l1norm));
+    values.push_back(matchPair(elem, l1norm));
+  }
+
+
   std::sort(values.begin(), values.end(), comparer);
 
-  // add in matches, right now just return the top 10%
-  for (int i = 0; i < possibleMatches.size() / 10.0; i++) {
-    match_result->matches.push_back(values[i].first);
-    match_result->tfidf_scores.push_back(values[i].second);
+  printf("%d matches\n", values.size());
+  // add all images in order or match
+  for (matchPair m : values){
+    match_result->matches.push_back(m.first);
+    match_result->tfidf_scores.push_back(m.second);
   }
+
+  // add in matches, just do 2 for now
+  //possibleMatches.size() / 10.0
+  /*for (int i = 0; i < 1; i++) {
+    std::set<matchPair>::iterator top = values.begin();
+    match_result->matches.push_back(top->first);
+    match_result->tfidf_scores.push_back(top->second);
+  }*/
 	//match_result->matches.push_back(0);
 
 	return (std::shared_ptr<MatchResultsBase>)match_result;
