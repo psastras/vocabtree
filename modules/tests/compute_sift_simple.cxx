@@ -18,6 +18,7 @@
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
+	LINFO << "HJ";
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	MPI::Init(argc, argv);
 	int rank = MPI::COMM_WORLD.Get_rank();

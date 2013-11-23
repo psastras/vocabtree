@@ -165,11 +165,11 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
     if (!filesystem::file_exists(descriptors_location)) continue;
 
-    cv::Mat descriptors;
+    cv::Mat descriptors, descriptorsf;
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
       num_features += descriptors.rows;
-
-      all_descriptors.push_back(descriptors);
+	  descriptors.convertTo(descriptorsf, CV_32FC1);
+	  all_descriptors.push_back(descriptorsf);
     }
   }
 
@@ -202,9 +202,10 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
     if (!filesystem::file_exists(descriptors_location)) continue;
 
-    cv::Mat descriptors;
+    cv::Mat descriptors, descriptorsf;
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
-      std::vector<float> result = generateVector(descriptors, false, all_ids[i]);
+		descriptors.convertTo(descriptorsf, CV_32FC1);
+		std::vector<float> result = generateVector(descriptorsf, false, all_ids[i]);
       // accumulate counts
       for (size_t j = 0; j < numberOfNodes; j++)
       if (result[j] > 0)
@@ -218,7 +219,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     }
   }
   for (size_t i = 0; i < numberOfNodes; i++)
-    weights[i] = log(((float)counts[i]) / ((float)all_ids.size()));
+	  weights[i] = counts[i] == 0 ? 0.00001f : log(((float)counts[i]) / ((float)all_ids.size()));
 
   // now that we have the weights we iterate over all images and adjust the vector by weights, 
   //  then normalizes the vector
@@ -229,7 +230,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] *= weights[i];
       length += (float)pow((iterator->second)[i], 2.0);
     }
-    length = sqrt(length);
+	length = sqrt(length);
     // normalizing
     for (size_t i = 0; i < numberOfNodes; i++) 
       (iterator->second)[i] /= length;
@@ -393,12 +394,12 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   const std::string &descriptors_location = dataset.location(example->feature_path("descriptors"));
   if (!filesystem::file_exists(descriptors_location)) return nullptr;
 
-  cv::Mat descriptors;
+  cv::Mat descriptors, descriptorf;
   if (!filesystem::load_cvmat(descriptors_location, descriptors)) return nullptr;
-
+  descriptors.convertTo(descriptorf, CV_32FC1);
   std::unordered_set<uint32_t> possibleMatches;
 
-  std::vector<float> vec = generateVector(descriptors, true, possibleMatches);
+  std::vector<float> vec = generateVector(descriptorf, true, possibleMatches);
 
   typedef std::pair<uint64_t, float> matchPair;
   struct myComparer {
@@ -420,10 +421,14 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   for (uint64_t elem : possibleImages) {
     // compute L1 norm (based on paper eq 5)
     float l1norm = 0;
-    for (uint32_t i = 0; i < numberOfNodes; i++)
-      l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
+	for (uint32_t i = 0; i < numberOfNodes; i++) {
+		l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
+		std::cout << (databaseVectors[elem])[i] << ",";
+	}
+	std::cout << std::endl;
     //values[elem] = l1norm;
     //values.insert(elem, l1norm));
+	std::cout << l1norm << std::endl;
     values.push_back(matchPair(elem, l1norm));
   }
 

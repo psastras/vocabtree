@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
   for (uint32_t i = 0; i<3; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
-      std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
+     std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
     //LINFO << "Query " << i << ": " << *matches;
     printf("Matches for image %d: ", i);
     for (uint64_t id : matches->matches)
