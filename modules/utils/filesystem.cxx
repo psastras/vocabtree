@@ -68,16 +68,28 @@ namespace filesystem {
 		return (ifs.rdstate() & std::ifstream::failbit) == 0;
 	}
 
-	std::vector<std::string> list_files(const std::string &path, const std::string &ext) {
+	std::vector<std::string> list_files(const std::string &path, const std::string &ext, bool recursive) {
 		boost::filesystem::path input_path(path);
 		std::vector<std::string> file_list;
 		if (boost::filesystem::exists(input_path) && boost::filesystem::is_directory(input_path)) {
-			boost::filesystem::directory_iterator end;
-			for (boost::filesystem::directory_iterator it(input_path); it != end; ++it) {
-				if (!boost::filesystem::is_directory(*it)) {
-					if ((ext.length() > 0 && boost::filesystem::extension(*it) == boost::filesystem::path(ext)) ||
-						ext.length() == 0) {
-							file_list.push_back(it->path().string());
+			if(recursive) {
+				boost::filesystem::recursive_directory_iterator end;
+				for (boost::filesystem::recursive_directory_iterator it(input_path); it != end; ++it) {
+					if (!boost::filesystem::is_directory(*it)) {
+						if ((ext.length() > 0 && boost::filesystem::extension(*it) == boost::filesystem::path(ext)) ||
+							ext.length() == 0) {
+								file_list.push_back(it->path().string());
+						}
+					}
+				}
+			} else {
+				boost::filesystem::directory_iterator end;
+				for (boost::filesystem::directory_iterator it(input_path); it != end; ++it) {
+					if (!boost::filesystem::is_directory(*it)) {
+						if ((ext.length() > 0 && boost::filesystem::extension(*it) == boost::filesystem::path(ext)) ||
+							ext.length() == 0) {
+								file_list.push_back(it->path().string());
+						}
 					}
 				}
 			}
@@ -89,5 +101,11 @@ namespace filesystem {
 		if (!include_extension) return boost::filesystem::basename(boost::filesystem::path(path));
 
 		return boost::filesystem::basename(boost::filesystem::path(path)) + boost::filesystem::extension(path);
+	}
+
+	bool write_text(const std::string &fname, const std::string &text) {
+		std::ofstream ofs(fname, std::ios::trunc);
+		ofs.write(text.c_str(), text.size());
+		return (ofs.rdstate() & std::ofstream::failbit) == 0;
 	}
 }

@@ -14,7 +14,7 @@ _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
 
-	const uint32_t num_clusters = 1024;
+	const uint32_t num_clusters = 512;
 
 	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
 	LINFO << simple_dataset;

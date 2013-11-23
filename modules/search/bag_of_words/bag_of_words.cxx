@@ -1,8 +1,20 @@
+#include <config.hpp>
+
 #include "bag_of_words.hpp"
+
 #include <utils/filesystem.hpp>
 #include <utils/vision.hpp>
 #include <iostream>
 #include <memory>
+
+#if ENABLE_FASTCLUSTER
+#include <fastann/fastann.hpp>
+#include <fastcluster/kmeans.hpp>
+#endif
+#if ENABLE_MPI
+#include <mpi.h>
+#endif
+
 BagOfWords::BagOfWords() : SearchBase() {
 
 
@@ -44,6 +56,23 @@ bool BagOfWords::save (const std::string &file_path) const {
 	std::cout << "Done writing bag of words." << std::endl;
 	return true;
 }
+#if ENABLE_FASTCLUSTER && ENABLE_MPI
+void load_rows_in_mem(void* p, unsigned l, unsigned r, float* out) {
+	float *fp = (float *)p;
+	memcpy(out, &fp[l * 128] , sizeof(float) * 128 * (r - l));
+}
+
+void load_rows_out_mem(void* p, unsigned l, unsigned r, float* out) {
+	assert(0);
+	// float *fp = (float *)p;
+	// memcpy(out, &fp[l * 128] , sizeof(float) * 128 * (r - l));
+}
+
+fastann::nn_obj<float>* build_nnobj(void* p, float* clusters, unsigned K, unsigned D) {
+	fastann::nn_obj<float>* kd_tree = fastann::nn_obj_build_kdtree(clusters, K, D, 8, 512);
+	return kd_tree;
+}
+#endif
 
 bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
 
@@ -75,13 +104,39 @@ bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParams
 			all_descriptors.push_back(descriptors);
 		}
 	}
-
 	const cv::Mat merged_descriptor = vision::merge_descriptors(all_descriptors, true);
+	
+#if ENABLE_FASTCLUSTER && ENABLE_MPI
+	
+	int rank = MPI::COMM_WORLD.Get_rank();
+
+	uint32_t D = merged_descriptor.cols;
+	float *dataf = (float *)merged_descriptor.data;
+	vocabulary_matrix = cv::Mat(k, D, CV_32FC1);
+	float *clusters = (float *)vocabulary_matrix.data;
+
+	// initialize the clusters (random at the moment)
+	if(rank == 0) { // initial clusters get broadcast
+		std::vector<uint64_t> indices(num_features);
+		for(size_t i=0; i<indices.size(); i++) {
+			indices[i] = i;
+		}
+		std::random_shuffle(indices.begin(), indices.end());
+		for(size_t i=0; i<k; i++) {
+			memcpy(&clusters[D * i], &dataf[D * indices[i]], sizeof(float) * D);
+		}
+	}
+
+    fastcluster::kmeans<float>(load_rows_in_mem, (void *)merged_descriptor.data, 
+                                    build_nnobj, (void *)merged_descriptor.data,
+                                    (float *)clusters, num_features, D, k, 16, 0, (char *)0);
+	return true;
+#else
 	cv::Mat labels;
 	uint32_t attempts = 1;
 	cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 16, 0.0001);
 	cv::kmeans(merged_descriptor, k, labels, tc, attempts, cv::KMEANS_PP_CENTERS, vocabulary_matrix);
-
+#endif
 	return true;
 }
 

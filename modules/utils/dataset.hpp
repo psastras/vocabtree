@@ -38,7 +38,7 @@ public:
 	virtual bool read (const std::string &db_data_location) = 0;
 
 	/// Given a unique integer ID, returns an Image associated with that ID.
-	virtual std::shared_ptr<Image> image(uint64_t id) 		= 0;
+	virtual std::shared_ptr<Image> image(uint64_t id) const		= 0;
 
 	/// Returns the number of images in the dataset.
 	virtual uint64_t num_images() const = 0;
@@ -51,10 +51,13 @@ public:
 
 	/// Adds the given image to the database, if there is an id collision, will not add the image and 
 	/// return false, otherwise returns true.
-	virtual bool add_image(const std::shared_ptr<const Image> &image) = 0;
+	virtual bool add_image(const std::shared_ptr<const Image> &image) = 0 ;
 
 	/// Returns a vector of all images in the dataset.
-	std::vector<  std::shared_ptr< const Image> > all_images();
+	std::vector<  std::shared_ptr< const Image> > all_images() const;
+
+	/// Returns a vector of random images in the dataset of size count.
+	std::vector<  std::shared_ptr< const Image> > random_images(size_t count) const;
 
 	/// @TODO: Shards the dataset to the new input locations, and returns the sharded datasets
 	std::vector<Dataset> shard(const std::vector<std::string> &new_locations);
@@ -115,7 +118,7 @@ public:
 	bool read(const std::string &db_data_location);
 
 	/// Given a unique integer ID, returns an Image associated with that ID.
-	std::shared_ptr<Image> image(uint64_t id);
+	std::shared_ptr<Image> image(uint64_t id) const;
 
 	/// Adds the given image to the database, if there is an id collision, will not add the image and 
 	/// return false, otherwise returns true.

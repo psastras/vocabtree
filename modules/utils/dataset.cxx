@@ -23,11 +23,18 @@ std::string Dataset::location(const std::string &relative_path) const {
 }
 
 
-std::vector< std::shared_ptr<const Image> > Dataset::all_images() {
+std::vector< std::shared_ptr<const Image> > Dataset::all_images() const {
 	std::vector< std::shared_ptr< const Image> > images(this->num_images());
 	for (uint64_t i = 0; i < this->num_images(); i++) {
 		images[i] = this->image(i);
 	}
+	return images;
+}
+
+std::vector< std::shared_ptr<const Image> > Dataset::random_images(size_t count) const {
+	std::vector< std::shared_ptr< const Image> > all = this->all_images();
+	std::random_shuffle(all.begin(), all.end());
+	std::vector< std::shared_ptr< const Image> > images(all.begin(), all.begin() + count);
 	return images;
 }
 
@@ -53,7 +60,7 @@ SimpleDataset::SimpleDataset(const std::string &base_location, const std::string
 
 SimpleDataset::~SimpleDataset() { }
 
-std::shared_ptr<Image> SimpleDataset::image(uint64_t id) {
+std::shared_ptr<Image> SimpleDataset::image(uint64_t id) const {
 	const std::string &image_path = id_image_map.right.at(id);
 
 	std::shared_ptr<Image> current_image = std::make_shared<SimpleImage>(image_path, id);
@@ -63,7 +70,7 @@ std::shared_ptr<Image> SimpleDataset::image(uint64_t id) {
 void SimpleDataset::construct_dataset() {
 	const std::vector<std::string> &image_file_paths = filesystem::list_files(data_directory + "/images/", ".jpg");
 	for (size_t i = 0; i < image_file_paths.size(); i++) {
-		id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type( "/images/" + filesystem::basename(image_file_paths[i], true), i));
+		id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type( image_file_paths[i].substr(data_directory.size(), image_file_paths[i].size() - data_directory.size()), i));
 	}
 }
 
@@ -121,8 +128,15 @@ SimpleDataset::SimpleImage::SimpleImage(const std::string &path, uint64_t imagei
 }
 
 std::string SimpleDataset::SimpleImage::feature_path(const std::string &feat_name) const {
+	uint32_t level0 = id >> 20;
+	uint32_t level1 = (id - (level0 << 20)) >> 10;
+
 	std::stringstream ss;
-	ss << "/feats/" << feat_name << "/" << std::setw(6) << std::setfill('0') << id << "." << feat_name;
+	ss << "/feats/" << feat_name << "/" << 
+		std::setw(4) << std::setfill('0') << level0 << "/" <<
+		std::setw(4) << std::setfill('0') << level1 << "/" <<
+		std::setw(9) << std::setfill('0') << id << "." << feat_name;
+		
 	return ss.str();
 }
 

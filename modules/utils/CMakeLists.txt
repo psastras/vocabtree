@@ -1,4 +1,4 @@
-SET(utils_SRCS image.cxx filesystem.cxx vision.cxx dataset.cxx numerics.cxx)
+SET(utils_SRCS image.cxx filesystem.cxx vision.cxx dataset.cxx numerics.cxx misc.cxx)
 
 ADD_LIBRARY(utils ${utils_SRCS})
 INCLUDE_DIRECTORIES(utils ${VOCAB_TREE_INCLUDE} ${BOOST_INCLUDE_PATH} ${OPENCV_INCLUDE_PATH})

@@ -20,4 +20,11 @@ namespace numerics {
 		const std::vector<std::pair<uint32_t, float> > &weights1,
 		const std::vector<float> &idfw);
 
+	/// Converts the histogram intersection (min) between two sparse weight vectors, which are premultiplied
+	/// by the relevant entries in idfw.  Sample usage would be weights0 and weights1 to represent
+	/// two BoW vectors, and idfw to represent a vector of inverse document frequencies.
+	float min_hist(const std::vector<std::pair<uint32_t, float> > &weights0, 
+		const std::vector<std::pair<uint32_t, float> > &weights1,
+		const std::vector<float> &idfw);
+
 }
