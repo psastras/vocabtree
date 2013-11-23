@@ -44,14 +44,18 @@ void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int n
     } else {
         const std::vector< std::shared_ptr<const Image> > &random_images = dataset.random_images(num_images);
         bow.train(dataset, train_params, random_images);                
-        bow.save(vocab_output_file.str());
+#if ENABLE_FASTCLUSTER && ENABLE_MPI
+        if(rank == 0) {
+#endif
+         	bow.save(vocab_output_file.str());
+#if ENABLE_FASTCLUSTER && ENABLE_MPI        	
+        }
+#endif
     }
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	if(rank == 0) {
 #endif
-
-	bow.save(vocab_output_file.str());
 	
 	const std::vector<  std::shared_ptr<const Image> > &all_images = dataset.all_images();
 

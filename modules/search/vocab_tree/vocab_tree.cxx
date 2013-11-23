@@ -219,7 +219,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     }
   }
   for (size_t i = 0; i < numberOfNodes; i++)
-	  weights[i] = counts[i] == 0 ? 0.00001f : log(((float)counts[i]) / ((float)all_ids.size()));
+	  weights[i] = counts[i] == 0.f ? 0.00001f : log(((float)counts[i]) / ((float)all_ids.size()));
 
   // now that we have the weights we iterate over all images and adjust the vector by weights, 
   //  then normalizes the vector
@@ -230,7 +230,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] *= weights[i];
       length += (float)pow((iterator->second)[i], 2.0);
     }
-	length = sqrt(length);
+	length = MAX(0.00001f, sqrt(length));
     // normalizing
     for (size_t i = 0; i < numberOfNodes; i++) 
       (iterator->second)[i] /= length;
@@ -326,11 +326,16 @@ std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWei
       vec[i] *= weights[i];
       length += vec[i] * vec[i];
     }
-    length = sqrt(length);
-    for (uint32_t i = 0; i < numberOfNodes; i++)
+    length = MAX(sqrt(length), 0.0001f);
+    for (uint32_t i = 0; i < numberOfNodes; i++) {
       vec[i] /= length;
+    }
   }
-
+   // std::cout << "vec:::[";
+   //   for(int j=0; j<vec.size(); j++) {
+   //    std::cout << vec[j] << ",";
+   //   }
+   //   std::cout << "]" << std::endl;
   return vec;
 }
 
@@ -416,19 +421,28 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
       possibleImages.insert(iterator->first);
   }
 
+  // for(int i=0; i<databaseVectors.size(); i++) {
+  //   std::cout << "[";
+  //    for(int j=0; j<databaseVectors[i].size(); j++) {
+  //     std::cout << databaseVectors[i][j] << ",";
+  //    }
+  //    std::cout << "]" << std::endl;
+  // }
+
   //std::set<matchPair, myComparer> values;
   std::vector<matchPair> values;
   for (uint64_t elem : possibleImages) {
     // compute L1 norm (based on paper eq 5)
+    // std::cout << elem << "::";
     float l1norm = 0;
-	for (uint32_t i = 0; i < numberOfNodes; i++) {
-		l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
-		std::cout << (databaseVectors[elem])[i] << ",";
-	}
-	std::cout << std::endl;
+  	for (uint32_t i = 0; i < numberOfNodes; i++) {
+  		l1norm += fabs(vec[i] * (databaseVectors[elem])[i]);
+  		// std::cout << fabs(vec[i] * (databaseVectors[elem])[i]) << ",";
+  	}
+	   // std::cout << std::endl;
     //values[elem] = l1norm;
     //values.insert(elem, l1norm));
-	std::cout << l1norm << std::endl;
+	  std::cout << "score: " << elem << " --> " <<  l1norm << std::endl;
     values.push_back(matchPair(elem, l1norm));
   }
 
