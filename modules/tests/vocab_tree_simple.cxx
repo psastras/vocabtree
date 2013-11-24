@@ -7,11 +7,11 @@
 #include <utils/dataset.hpp>
 #include <utils/vision.hpp>
 #include <utils/logger.hpp>
-
+#include <vis/matches_page.hpp>
 
 int main(int argc, char *argv[]) {
 
-  SimpleDataset simple_dataset(s_oxford_data_dir, s_oxford_database_location);
+  SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
   //LINFO << simple_dataset;
 
   //std::stringstream vocab_output_file;
@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
 
   VocabTree vt;
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
-  train_params->depth = 2;
+  train_params->depth = 4;
   train_params->split = 4;
-  vt.train(simple_dataset, train_params, simple_dataset.random_images(256));
+  vt.train(simple_dataset, train_params, simple_dataset.all_images());
 
   /*
   std::stringstream index_output_file;
@@ -34,7 +34,8 @@ int main(int argc, char *argv[]) {
   vt.save(index_output_file.str());
   */
 
-  for (uint32_t i = 0; i<3; i++) {
+  MatchesPage html_output;
+  for (uint32_t i = 0; i<6; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
      std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
     //LINFO << "Query " << i << ": " << *matches;
@@ -42,8 +43,11 @@ int main(int argc, char *argv[]) {
     for (uint64_t id : matches->matches)
       printf("%d ", id);
     printf("\n");
+
+     html_output.add_match(i, matches->matches, simple_dataset);
   }
 
 
+    html_output.write(simple_dataset.location() + "/results/matches/");
   return 0;
 }

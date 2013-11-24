@@ -78,10 +78,10 @@ protected:
   std::unordered_map<uint64_t, std::vector<float>> databaseVectors;
 
   /// Recursively builds a tree, starting with 0 and ending with currLevel = maxLevel-1
-  void buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCriteria tc, int attempts, int flags, int currLevel);
+  void buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::TermCriteria &tc, int attempts, int flags, int currLevel);
 
   /// helper function, inserts a dummy possibleMatches
-  std::vector<float> generateVector(cv::Mat descriptors, bool shouldWeight, int64_t id = -1);
+  std::vector<float> generateVector(const cv::Mat &descriptors, bool shouldWeight, int64_t id = -1);
 
   /// To call with an id call without possibleMatches and it will go to the helper function
   /// Takes descriptors for an image and for each descriptor finds the path down the tree generating a vector (describing the path)
@@ -89,13 +89,13 @@ protected:
   /// If  shouldWeight is true will weight each by the weight of the node, should be true for general query and false for construction
   /// If id is set then will insert that id into the invertedFile of each leaf visited, if negative or not set then won't do anything
   /// When id is not set will use insert images into possibleMatches, possibleMatches will not be used if id is set
-  std::vector<float> generateVector(cv::Mat descriptors, bool shouldWeight, std::unordered_set<uint32_t> & possibleMatches, int64_t id = -1);
+  std::vector<float> generateVector(const cv::Mat &descriptors, bool shouldWeight, std::unordered_set<uint32_t> & possibleMatches, int64_t id = -1);
 
   /// Recursive function that recursively goes down the tree from t to find where the single descriptor belongs (stopping at leaf)
   /// On each node increments cound in the counts vector
   /// If id is set (>=0) then adds the image with that id to the leaf
   /// Picks the child to traverse down based on the max dot product
-  void generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std::vector<float> & counts,
+  void generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descriptor, std::vector<float> & counts,
     std::unordered_set<uint32_t> & possibleMatches, int64_t id = -1);
 	
 };

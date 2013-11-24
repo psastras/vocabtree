@@ -182,7 +182,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   const cv::Mat merged_descriptor = vision::merge_descriptors(all_descriptors, true);
   cv::Mat labels;
   uint32_t attempts = 1;
-  cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 16, 0.0001);
+  cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 18, 0.000001);
   // end of stuff from bag of words
 
   tree[0].levelIndex = 0;
@@ -214,8 +214,8 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       std::vector<float> result = generateVector(descriptorsf, false, all_ids[i]);
       // accumulate counts
       for (size_t j = 0; j < numberOfNodes; j++)
-      if (result[j] > 0)
-        counts[j]++;
+        if (result[j] > 0)
+          counts[j]++;
 
       //databaseVectors.insert(std::make_pair<uint64_t, std::vector<float>>(all_ids[i], result));
 #pragma omp critical
@@ -267,7 +267,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   return true;
 }
 
-void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCriteria tc,
+void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::TermCriteria &tc,
   int attempts, int flags, int currLevel) {
 
   tree[t].invertedFileLength = descriptors.rows;
@@ -328,12 +328,12 @@ void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCrit
   }
 }
 
-std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWeight, int64_t id) {
+std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight, int64_t id) {
   std::unordered_set<uint32_t> dummy;
   return generateVector(descriptors, shouldWeight, dummy, id);
 }
 
-std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWeight, 
+std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight, 
   std::unordered_set<uint32_t> & possibleMatches, int64_t id) {
 
   std::vector<float> vec(numberOfNodes);
@@ -364,7 +364,7 @@ std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWei
   return vec;
 }
 
-void VocabTree::generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std::vector<float> & counts,
+void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descriptor, std::vector<float> & counts,
   std::unordered_set<uint32_t> & possibleMatches, int64_t id) {
 
   counts[nodeIndex]++;
@@ -401,6 +401,7 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, cv::Mat descriptor, std
         continue;
       uint32_t childIndex = tree[nodeIndex].firstChildIndex + i;
       double dot = descriptor.dot(tree[childIndex].mean);
+
       if (dot>max) {
         max = dot;
         maxChild = childIndex;
@@ -472,7 +473,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   for (matchPair m : values){
     match_result->matches.push_back(m.first);
     match_result->tfidf_scores.push_back(m.second);
-
+    // std::cout << m.second << std::endl;
   }
 
   // add in matches, just do 2 for now

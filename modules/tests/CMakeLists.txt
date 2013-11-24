@@ -11,7 +11,7 @@ ENDIF()
 
 ADD_EXECUTABLE(vocab_tree_simple vocab_tree_simple.cxx)
 INCLUDE_DIRECTORIES(vocab_tree_simple ${VOCAB_TREE_INCLUDE} ${OPENCV_INCLUDE_PATH})
-TARGET_LINK_LIBRARIES(vocab_tree_simple search utils)
+TARGET_LINK_LIBRARIES(vocab_tree_simple search utils vis)
 
 ADD_EXECUTABLE(compute_sift_simple compute_sift_simple.cxx)
 INCLUDE_DIRECTORIES(compute_sift_simple ${VOCAB_TREE_INCLUDE} ${OPENCV_INCLUDE_PATH})
