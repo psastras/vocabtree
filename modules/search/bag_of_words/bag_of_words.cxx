@@ -135,6 +135,10 @@ bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParams
 	cv::Mat labels;
 	uint32_t attempts = 1;
 	cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 16, 0.0001);
+	if (k > merged_descriptor.rows) { // k > n 
+		std::cerr << "Warning: # clusters > # features, automatically setting #clusters = #features." << std::endl;
+		k = merged_descriptor.rows;
+	}
 	cv::kmeans(merged_descriptor, k, labels, tc, attempts, cv::KMEANS_PP_CENTERS, vocabulary_matrix);
 #endif
 	return true;

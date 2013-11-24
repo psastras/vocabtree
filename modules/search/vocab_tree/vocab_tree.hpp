@@ -20,7 +20,7 @@ public:
 
 	/// Subclass of match results base which also returns scores
 	struct MatchResults : public MatchResultsBase {
-    std::vector<float> tfidf_scores;
+		std::vector<float> tfidf_scores;
 	};
 
 	VocabTree();
@@ -39,6 +39,11 @@ public:
 	/// Given a set of search parameters, a query image, searches for matching images and returns the match
 	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
 
+	/// returns the split size of each node
+	uint32_t tree_splits() const;
+
+	/// returns the depth size of tree
+	uint32_t tree_depth() const;
 protected:
 
   struct TreeNode {
