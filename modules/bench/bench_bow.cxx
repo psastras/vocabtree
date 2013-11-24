@@ -44,14 +44,18 @@ void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int n
     } else {
         const std::vector< std::shared_ptr<const Image> > &random_images = dataset.random_images(num_images);
         bow.train(dataset, train_params, random_images);                
-        bow.save(vocab_output_file.str());
+#if ENABLE_FASTCLUSTER && ENABLE_MPI
+        if(rank == 0) {
+#endif
+         	bow.save(vocab_output_file.str());
+#if ENABLE_FASTCLUSTER && ENABLE_MPI        	
+        }
+#endif
     }
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	if(rank == 0) {
 #endif
-
-	bow.save(vocab_output_file.str());
 	
 	const std::vector<  std::shared_ptr<const Image> > &all_images = dataset.all_images();
 
@@ -73,15 +77,15 @@ void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int n
 		const std::string &sift_descriptor_location = dataset.location(all_images[i]->feature_path("descriptors"));
 		const std::string &bow_descriptor_location = dataset.location(all_images[i]->feature_path("bow_descriptors"));
 
-		cv::Mat descriptors, bow_descriptors;
+		cv::Mat descriptors, bow_descriptors, descriptorsf;
 		if (!filesystem::file_exists(sift_descriptor_location)) continue;
 		if (!filesystem::load_cvmat(sift_descriptor_location, descriptors)) continue;
+		descriptors.convertTo(descriptorsf, CV_32FC1);
 		filesystem::create_file_directory(bow_descriptor_location);
 
-		if (!vision::compute_bow_feature(descriptors, matcher, bow_descriptors, nullptr)) continue;
+		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, nullptr)) continue;
 		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
 		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
-		
 		LINFO << "Wrote " << bow_descriptor_location;
 	}
 #if ENABLE_MULTITHREADING && ENABLE_MPI

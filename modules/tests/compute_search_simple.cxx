@@ -10,10 +10,21 @@
 
 #include <iostream>
 
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#include <omp.h>
+#endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
+
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
-
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Init(argc, argv);
+	int rank = MPI::COMM_WORLD.Get_rank();
+	if(rank == 0) {
+#endif
 	const uint32_t num_clusters = 512;
 
 	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
@@ -28,6 +39,9 @@ int main(int argc, char *argv[]) {
 		std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(simple_dataset, nullptr, simple_dataset.image(i) ));	
 		LINFO << "Query " << i << ": " << *matches;
 	}
-
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	}
+	MPI::Finalize();
+#endif
 	return 0;
 }

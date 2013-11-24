@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[]) {
 
-  SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
+  SimpleDataset simple_dataset(s_oxford_data_dir, s_oxford_database_location);
   //LINFO << simple_dataset;
 
   //std::stringstream vocab_output_file;
@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
 
   VocabTree vt;
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
-  train_params->depth = 4;
+  train_params->depth = 2;
   train_params->split = 4;
-  vt.train(simple_dataset, train_params, simple_dataset.all_images());
+  vt.train(simple_dataset, train_params, simple_dataset.random_images(256));
 
   /*
   std::stringstream index_output_file;
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 
   for (uint32_t i = 0; i<3; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
-      std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
+     std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
     //LINFO << "Query " << i << ": " << *matches;
     printf("Matches for image %d: ", i);
     for (uint64_t id : matches->matches)

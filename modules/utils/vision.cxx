@@ -14,18 +14,21 @@ namespace vision {
 	    matches_info.num_inliers = 0;
 	    matches_info.H = cv::Mat::zeros(cv::Size(3, 3), CV_32FC1);
 	    if(descriptors1.rows < 9 || descriptors0.rows < 9 || descriptors0.cols < 128 || descriptors1.cols < 128) return;
-	    if (descriptors0.depth() == CV_8U) {
-	        indexParams->setAlgorithm(cvflann::FLANN_INDEX_LSH);
-	        searchParams->setAlgorithm(cvflann::FLANN_INDEX_LSH);
-	    }
+	    // if (descriptors0.depth() == CV_8U) {
+	    //     indexParams->setAlgorithm(cvflann::FLANN_INDEX_LSH);
+	    //     searchParams->setAlgorithm(cvflann::FLANN_INDEX_LSH);
+	    // }
 	    try {
 		    cv::FlannBasedMatcher matcher(indexParams, searchParams);
 		    std::vector< std::vector<cv::DMatch> > pair_matches;
 		    // std::cout << "knn match 1" << std::endl;
 		    MatchesSet matches;
 		    // Find 1->2 matches
-		    matcher.knnMatch(descriptors0, descriptors1, pair_matches, 2);
-		    float match_conf_ = 0.3f;
+		    cv::Mat descriptors0f, descriptors1f;
+		    descriptors0.convertTo(descriptors0f, CV_32FC1);
+		    descriptors1.convertTo(descriptors1f, CV_32FC1);
+		    matcher.knnMatch(descriptors0f, descriptors1f, pair_matches, 2);
+		    float match_conf_ = 0.2f;
 		    for (size_t i = 0; i < pair_matches.size(); ++i) {
 		        if (pair_matches[i].size() < 2) continue;
 		        const cv::DMatch& m0 = pair_matches[i][0];
@@ -37,7 +40,7 @@ namespace vision {
 		    }
 
 		    pair_matches.clear();
-		    matcher.knnMatch(descriptors1, descriptors0, pair_matches, 2);
+		    matcher.knnMatch(descriptors1f, descriptors0f, pair_matches, 2);
 		    for (size_t i = 0; i < pair_matches.size(); ++i)
 		    {
 		        if (pair_matches[i].size() < 2)
@@ -69,7 +72,7 @@ namespace vision {
 		        p = cv::Point2f(points1.at<float>(m.trainIdx, 0), points1.at<float>(m.trainIdx, 1));
 		        dst_points.at<cv::Point2f>(0, static_cast<int>(i)) = p;
 		    }
-		    matches_info.H = cv::findFundamentalMat(src_points, dst_points, cv::RANSAC, 2.0, 0.99, matches_info.inliers_mask);
+		    matches_info.H = cv::findFundamentalMat(src_points, dst_points, cv::RANSAC, 3.0, 0.99, matches_info.inliers_mask);
 		    if (matches_info.H.empty())// || std::abs(determinant(matches_info.H)) < std::numeric_limits<double>::epsilon())
 		        return;
 		
@@ -113,7 +116,7 @@ namespace vision {
 		    MatchesSet matches;
 		    // Find 1->2 matches
 		    matcher.knnMatch(descriptors0, descriptors1, pair_matches, 2);
-		    float match_conf_ = 0.3f;
+		    float match_conf_ = 0.2f;
 		    for (size_t i = 0; i < pair_matches.size(); ++i) {
 		        if (pair_matches[i].size() < 2) continue;
 		        const cv::DMatch& m0 = pair_matches[i][0];
@@ -192,11 +195,14 @@ namespace vision {
 		cv::SIFT sift_extractor(sift_parameters->max_features, sift_parameters->num_octave_layers,
 				 sift_parameters->contrast_threshold, sift_parameters->edge_threshold, sift_parameters->sigma);
 
+		cv::Mat descriptors_f;
+
 		if(img.size().area() > 0) {
 			
 			std::vector<cv::KeyPoint> keypoint_vec;
 			sift_extractor.detect(img, keypoint_vec);
-			sift_extractor.compute(img, keypoint_vec, descriptors);
+			sift_extractor.compute(img, keypoint_vec, descriptors_f);
+			descriptors_f.convertTo(descriptors, CV_8UC1);
 			keypoints = cv::Mat(keypoint_vec.size(), 2, CV_32FC1);
         
 			for(int i=0; i<(int)keypoint_vec.size(); i++) {
@@ -206,6 +212,8 @@ namespace vision {
 
 			return true;
 		}
+
+		
 
 		return false;
 	}
@@ -260,5 +268,9 @@ namespace vision {
 		}
 
 		return merged;
+	}
+
+	bool is_good_match(const cv::detail::MatchesInfo &matches_info) {
+		return matches_info.num_inliers >= 16 && matches_info.confidence > 0.7;
 	}
 }

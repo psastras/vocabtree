@@ -96,12 +96,12 @@ bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParams
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
 		if (!filesystem::file_exists(descriptors_location)) continue;
 
-		cv::Mat descriptors;
+		cv::Mat descriptors, descriptorsf;
 		if (filesystem::load_cvmat(descriptors_location, descriptors)) {
 			num_features += descriptors.rows;
 			if (n > 0 && num_features > n) break;
-
-			all_descriptors.push_back(descriptors);
+			descriptors.convertTo(descriptorsf, CV_32FC1);
+			all_descriptors.push_back(descriptorsf);
 		}
 	}
 	const cv::Mat merged_descriptor = vision::merge_descriptors(all_descriptors, true);

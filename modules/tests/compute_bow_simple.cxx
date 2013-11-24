@@ -30,10 +30,10 @@ int main(int argc, char *argv[]) {
 	LINFO << simple_dataset;
 
 	BagOfWords bow;
+	
 	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
 	const std::vector<  std::shared_ptr<const Image> > &all_images = simple_dataset.all_images();
 	bow.train(simple_dataset, train_params, all_images);
-
 	
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	if(rank == 0) {
@@ -62,12 +62,13 @@ int main(int argc, char *argv[]) {
 		const std::string &sift_descriptor_location = simple_dataset.location(all_images[i]->feature_path("descriptors"));
 		const std::string &bow_descriptor_location = simple_dataset.location(all_images[i]->feature_path("bow_descriptors"));
 
-		cv::Mat descriptors, bow_descriptors;
+		cv::Mat descriptors, bow_descriptors, descriptorsf;
 		if (!filesystem::file_exists(sift_descriptor_location)) continue;
 		if (!filesystem::load_cvmat(sift_descriptor_location, descriptors)) continue;
+		descriptors.convertTo(descriptorsf, CV_32FC1);
 		filesystem::create_file_directory(bow_descriptor_location);
 
-		if (!vision::compute_bow_feature(descriptors, matcher, bow_descriptors, nullptr)) continue;
+		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, nullptr)) continue;
 		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
 		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
 		

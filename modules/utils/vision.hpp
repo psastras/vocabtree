@@ -54,4 +54,8 @@ namespace vision {
 	void geo_verify_f(const cv::Mat &descriptors0, const cv::Mat &points0,
 		const cv::Mat &descriptors1, const cv::Mat &points1, cv::detail::MatchesInfo &matches_info,
 		std::vector<uint32_t> *inliers0 = 0, std::vector<uint32_t> *inliers1 = 0);
+
+	/// Returns true if matches_info represents a good match, false if otherwise.  The heuristic is based
+	/// on the total number of inliers and the ratio of inliers to outliers.
+	bool is_good_match(const cv::detail::MatchesInfo &matches_info);
 };

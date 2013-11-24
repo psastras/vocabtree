@@ -22,7 +22,7 @@ struct cvmat_header {
 };
 
 bool VocabTree::load (const std::string &file_path) {
-	std::cout << "Reading vocab tree from " << file_path << "..." << std::endl;
+  std::cout << "Reading vocab tree from " << file_path << "..." << std::endl;
 
   std::ifstream ifs(file_path, std::ios::binary);
   ifs.read((char *)&split, sizeof(uint32_t));
@@ -77,13 +77,13 @@ bool VocabTree::load (const std::string &file_path) {
     ifs.read((char *)tree[i].mean.ptr(), h.rows * h.cols * h.elem_size);
   }
 
-	std::cout << "Done reading vocab tree." << std::endl;
-	
+  std::cout << "Done reading vocab tree." << std::endl;
+  
   return (ifs.rdstate() & std::ifstream::failbit) == 0;
 }
 
 bool VocabTree::save (const std::string &file_path) const {
-	std::cout << "Writing vocab tree to " << file_path << "..." << std::endl;
+  std::cout << "Writing vocab tree to " << file_path << "..." << std::endl;
 
   std::ofstream ofs(file_path, std::ios::binary | std::ios::trunc);
 
@@ -132,7 +132,7 @@ bool VocabTree::save (const std::string &file_path) const {
     ofs.write((char *)t.mean.ptr(), h.rows * h.cols * h.elem_size);
   }
 
-	std::cout << "Done writing vocab tree." << std::endl;
+  std::cout << "Done writing vocab tree." << std::endl;
 
   return (ofs.rdstate() & std::ofstream::failbit) == 0;;
 }
@@ -140,8 +140,8 @@ bool VocabTree::save (const std::string &file_path) const {
 bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, 
   const std::vector< std::shared_ptr<const Image > > &examples) {
 
-	const std::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
-	split = vt_params->split;
+  const std::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
+  split = vt_params->split;
   //uint32_t depth = vt_params->depth;
   maxLevel = vt_params->depth;
   numberOfNodes = (uint32_t)(pow(split, maxLevel) - 1) / (split - 1);
@@ -165,11 +165,12 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
     if (!filesystem::file_exists(descriptors_location)) continue;
 
-    cv::Mat descriptors;
+    cv::Mat descriptors, descriptorsf;
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
+      descriptors.convertTo(descriptorsf, CV_32FC1);
       num_features += descriptors.rows;
 
-      all_descriptors.push_back(descriptors);
+      all_descriptors.push_back(descriptorsf);
     }
   }
 
@@ -202,9 +203,10 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
     if (!filesystem::file_exists(descriptors_location)) continue;
 
-    cv::Mat descriptors;
+    cv::Mat descriptors, descriptorsf;
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
-      std::vector<float> result = generateVector(descriptors, false, all_ids[i]);
+      descriptors.convertTo(descriptorsf, CV_32FC1);
+      std::vector<float> result = generateVector(descriptorsf, false, all_ids[i]);
       // accumulate counts
       for (size_t j = 0; j < numberOfNodes; j++)
       if (result[j] > 0)
@@ -257,7 +259,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     }
   }
 
-	return true;
+  return true;
 }
 
 void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCriteria tc,
@@ -344,8 +346,13 @@ std::vector<float> VocabTree::generateVector(cv::Mat descriptors, bool shouldWei
       length += vec[i] * vec[i];
     }
     length = sqrt(length);
-    for (uint32_t i = 0; i < numberOfNodes; i++)
+    for (uint32_t i = 0; i < numberOfNodes; i++) {
+    if(length == 0)
+      vec[i] = 0;
+    else
       vec[i] /= length;
+    }
+
   }
 
   return vec;
@@ -411,12 +418,12 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   const std::string &descriptors_location = dataset.location(example->feature_path("descriptors"));
   if (!filesystem::file_exists(descriptors_location)) return nullptr;
 
-  cv::Mat descriptors;
+  cv::Mat descriptors, descriptorsf;
   if (!filesystem::load_cvmat(descriptors_location, descriptors)) return nullptr;
 
   std::unordered_set<uint32_t> possibleMatches;
-
-  std::vector<float> vec = generateVector(descriptors, true, possibleMatches);
+  descriptors.convertTo(descriptorsf, CV_32FC1);
+  std::vector<float> vec = generateVector(descriptorsf, true, possibleMatches);
 
   typedef std::pair<uint64_t, float> matchPair;
   struct myComparer {
@@ -442,10 +449,12 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     for (uint32_t i = 0; i < numberOfNodes; i++) {
       float t = vec[i] - (databaseVectors[elem])[i];
       score += t*t;
+      // std::cout << vec[i] << std::endl;
       //l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
     }
     //values[elem] = l1norm;
     //values.insert(elem, l1norm));
+
     values.push_back(matchPair(elem, sqrt(score)));
   }
 
@@ -457,6 +466,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   for (matchPair m : values){
     match_result->matches.push_back(m.first);
     match_result->tfidf_scores.push_back(m.second);
+
   }
 
   // add in matches, just do 2 for now
@@ -466,7 +476,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     match_result->matches.push_back(top->first);
     match_result->tfidf_scores.push_back(top->second);
   }*/
-	//match_result->matches.push_back(0);
+  //match_result->matches.push_back(0);
 
-	return (std::shared_ptr<MatchResultsBase>)match_result;
+  return (std::shared_ptr<MatchResultsBase>)match_result;
 }
