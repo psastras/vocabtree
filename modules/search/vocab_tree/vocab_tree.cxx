@@ -309,8 +309,9 @@ void VocabTree::buildTreeRecursive(uint32_t t, cv::Mat descriptors, cv::TermCrit
   printf("\n");
 
   uint32_t totalChildren = pow(split, currLevel);
-  uint32_t maxThreads = omp_get_num_threads();
+  
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP && totalChildren<maxThreads
+  uint32_t maxThreads = omp_get_num_threads();
 #pragma omp parallel for schedule(dynamic)
 #endif
   for (uint32_t i = 0; i < split; i++) {
