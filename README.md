@@ -61,10 +61,18 @@ http://psastras.github.io/vocabtree/
 
 Sample Usage
 ===================
+
+Compute Features
+-----------------------
+
+Train and Search a Tree
+-----------------------
     // Construct a simple dataset from data located in /home/foo/data/ and store the database at 
     // /home/foo/data/database.bin.  A SimpleDataset is an implementation of a generic dataset which
-    // expects images to be found in /home/foo/data/images/.  You can implement your own dataset class
-    // if necessary by implementing Dataset.
+    // expects images to be found in /home/foo/data/images/.  It also expects sift descriptors to be 
+    // stored in the corresponding SimpleImage::feature_path("descriptor").
+    //
+    // You can implement your own dataset class if necessary by implementing Dataset.
     SimpleDataset simple_dataset("/home/foo/data/", "/home/foo/data/database.bin");
     
     // Train a vocabulary tree on the dataset
