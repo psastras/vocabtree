@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 	int rank = MPI::COMM_WORLD.Get_rank();
 	if(rank == 0) {
 #endif
-	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
+	SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
 	LINFO << simple_dataset;
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)

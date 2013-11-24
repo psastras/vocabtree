@@ -26,13 +26,13 @@ int main(int argc, char *argv[]) {
 	int rank = MPI::COMM_WORLD.Get_rank();
 #endif
 
-	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
+	SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
 	LINFO << simple_dataset;
 
 	BagOfWords bow;
 	
 	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
-	const std::vector<  std::shared_ptr<const Image> > &all_images = simple_dataset.all_images();
+	const std::vector<  std::shared_ptr<const Image> > &all_images = simple_dataset.random_images(128);
 	bow.train(simple_dataset, train_params, all_images);
 	
 #if ENABLE_MULTITHREADING && ENABLE_MPI
