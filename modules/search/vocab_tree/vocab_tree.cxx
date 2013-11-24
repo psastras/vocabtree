@@ -7,7 +7,12 @@
 #include <math.h> // for pow
 #include <utility> // std::pair
 
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #include <omp.h>
+#endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
 
 VocabTree::VocabTree() : SearchBase() {
 
