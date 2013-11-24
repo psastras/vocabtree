@@ -8,15 +8,27 @@
 #include <utils/logger.hpp>
 #include <iostream>
 
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#include <omp.h>
+#endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
+
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
-
+	LINFO << "HJ";
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	MPI::Init(argc, argv);
+	int rank = MPI::COMM_WORLD.Get_rank();
+	if(rank == 0) {
+#endif
 	SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
 	LINFO << simple_dataset;
-//#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-//#pragma omp parallel for schedule(dynamic)
-//#endif
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#pragma omp parallel for schedule(dynamic)
+#endif
 	for (int64_t i = 0; i < simple_dataset.num_images(); i++) {
 
 		std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(simple_dataset.image(i));
@@ -41,6 +53,9 @@ int main(int argc, char *argv[]) {
 		filesystem::write_cvmat(keypoints_location, keypoints);
 		filesystem::write_cvmat(descriptors_location, descriptors);
 	}
-
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+	}
+	MPI::Finalize();
+#endif
 	return 0;
 }
