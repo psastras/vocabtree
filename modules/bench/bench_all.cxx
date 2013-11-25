@@ -55,20 +55,17 @@ void compute_features(Dataset &dataset) {
 	}
 }
 
-void compute_bow_features(Dataset &dataset, BagOfWords &bow, uint32_t num_clusters) {
-	std::stringstream vocab_output_file;
-	vocab_output_file << dataset.location() << "/vocabulary/" << num_clusters << ".vocab";
-	bow.load(vocab_output_file.str());
+void compute_bow_features(Dataset &dataset, std::shared_ptr<BagOfWords> bow, uint32_t num_clusters) {
 	const std::vector<  std::shared_ptr<const Image> > &all_images = dataset.all_images();
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	uint32_t num_threads = omp_get_max_threads();
 	std::vector< cv::Ptr<cv::DescriptorMatcher> > matchers;
 	for (uint32_t i = 0; i < num_threads; i++) {
-		matchers.push_back(vision::construct_descriptor_matcher(bow.vocabulary()));
+		matchers.push_back(vision::construct_descriptor_matcher(bow->vocabulary()));
 	}
 #pragma omp parallel for schedule(dynamic)
 #else
-	const cv::Ptr<cv::DescriptorMatcher> &matcher = vision::construct_descriptor_matcher(bow.vocabulary());
+	const cv::Ptr<cv::DescriptorMatcher> &matcher = vision::construct_descriptor_matcher(bow->vocabulary());
 #endif
 	for (int64_t i = 0; i < (int64_t)all_images.size(); i++) {
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
@@ -91,7 +88,7 @@ void compute_bow_features(Dataset &dataset, BagOfWords &bow, uint32_t num_cluste
 	}
 }
 
-VocabTree train_tree(Dataset &dataset, uint32_t num_images, uint32_t split, uint32_t depth) {
+std::shared_ptr<VocabTree> train_tree(Dataset &dataset, uint32_t num_images, uint32_t split, uint32_t depth) {
 	VocabTree vt;
 	std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
 	train_params->depth = depth;
@@ -101,10 +98,10 @@ VocabTree train_tree(Dataset &dataset, uint32_t num_images, uint32_t split, uint
 	std::stringstream vocab_output_file;
 	vocab_output_file << dataset.location() << "/tree/" << split << "." << depth << ".vocab";
 	vt.save(vocab_output_file.str());
-	return vt;
+	return std::make_shared<VocabTree>(vt);
 }
 
-BagOfWords train_bow(Dataset &dataset, uint32_t num_images, uint32_t num_clusters) {
+std::shared_ptr<BagOfWords> train_bow(Dataset &dataset, uint32_t num_images, uint32_t num_clusters) {
 	BagOfWords bow;
 	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
 	train_params->numClusters = num_clusters;
@@ -113,25 +110,23 @@ BagOfWords train_bow(Dataset &dataset, uint32_t num_images, uint32_t num_cluster
 	std::stringstream vocab_output_file;
 	vocab_output_file << dataset.location() << "/vocabulary/" << train_params->numClusters << ".vocab";
 	bow.save(vocab_output_file.str());
-	return bow;
+	return  std::make_shared<BagOfWords>(bow);
 }
 
-InvertedIndex train_index(Dataset &dataset, BagOfWords &bow) {
-	std::shared_ptr<BagOfWords> bow_ptr = std::make_shared<BagOfWords>(bow);
-
+std::shared_ptr<InvertedIndex> train_index(Dataset &dataset, std::shared_ptr<BagOfWords> bow) {
 	InvertedIndex ii;
 	std::shared_ptr<InvertedIndex::TrainParams> train_params = std::make_shared<InvertedIndex::TrainParams>();
-	train_params->bag_of_words = bow_ptr;
+	train_params->bag_of_words = bow;
 	ii.train(dataset, train_params, dataset.all_images());
 
-	return ii;
+	return std::make_shared<InvertedIndex>(ii);
 }
 
 void benchmark_dataset(Dataset &dataset) {
 	compute_features(dataset); // compute sift features
 
 	// parameters
-	uint32_t num_images = 3;
+	uint32_t num_images = 128;
 
 	uint32_t bow_clusters[] = { 256, 3125, 46656 };
 	std::pair<uint32_t, uint32_t> tree_branches[] = { 
@@ -141,25 +136,25 @@ void benchmark_dataset(Dataset &dataset) {
 
 	std::stringstream timings_file_name;
 	timings_file_name << dataset.location() + "/results/times.index.json";
+	filesystem::create_file_directory(timings_file_name.str());
 	std::ofstream ofs(timings_file_name.str(), std::ios::app);
-
 	// o letsdoit
 	for(size_t i=0; i<3; i++) {
 		LINFO << "Training bag of words";
 		double start_time_bow = CycleTimer::currentSeconds();
-		BagOfWords &bow = train_bow(dataset, num_images, bow_clusters[i]);
+		std::shared_ptr<BagOfWords> bow = train_bow(dataset, num_images, bow_clusters[i]);
 		double end_time_bow = CycleTimer::currentSeconds();
 		{
 			std::stringstream timing;
 			timing << "{ " <<
-				"'machine' : '" << misc::get_machine_name() << "', " <<
-				"'operation' : '" << "bow_train" << "', " <<
-				"'bow_numclusters' : " << bow.num_clusters() << ", " <<
-				"'db_size' : " << dataset.num_images() << ", " <<
-				"'time' : " << end_time_bow - start_time_bow << ", " <<
-				"'multithreading' : " << ENABLE_MULTITHREADING << ", " <<
-				"'openmp' : " << ENABLE_OPENMP << ", " <<
-				"'mpi' : " << ENABLE_MPI << ", " <<
+				"\"machine\" : \"" << misc::get_machine_name() << "\", " <<
+				"\"operation\" : \"" << "bow_train" << "\", " <<
+				"\"bow_numclusters\" : " << bow->num_clusters() << ", " <<
+				"\"db_size\" : " << dataset.num_images() << ", " <<
+				"\"time\" : " << end_time_bow - start_time_bow << ", " <<
+				"\"multithreading\" : " << ENABLE_MULTITHREADING << ", " <<
+				"\"openmp\" : " << ENABLE_OPENMP << ", " <<
+				"\"mpi\" : " << ENABLE_MPI << ", " <<
 				"}" << std::endl;
 			ofs.write(timing.str().c_str(), timing.str().size());
 			ofs.flush();
@@ -172,14 +167,14 @@ void benchmark_dataset(Dataset &dataset) {
 		{
 			std::stringstream timing;
 			timing << "{ " <<
-				"'machine' : '" << misc::get_machine_name() << "', " <<
-				"'operation' : '" << "bow_features" << "', " <<
-				"'bow_numclusters' : " << bow.num_clusters() << ", " <<
-				"'db_size' : " << dataset.num_images() << ", " <<
-				"'time' : " << end_time_bowfeatures - start_time_bowfeatures << ", " <<
-				"'multithreading' : " << ENABLE_MULTITHREADING << ", " <<
-				"'openmp' : " << ENABLE_OPENMP << ", " <<
-				"'mpi' : " << ENABLE_MPI << ", " <<
+				"\"machine\" : \"" << misc::get_machine_name() << "\", " <<
+				"\"operation\" : \"" << "bow_features" << "\", " <<
+				"\"bow_numclusters\" : " << bow->num_clusters() << ", " <<
+				"\"db_size\" : " << dataset.num_images() << ", " <<
+				"\"time\" : " << end_time_bowfeatures - start_time_bowfeatures << ", " <<
+				"\"multithreading\" : " << ENABLE_MULTITHREADING << ", " <<
+				"\"openmp\" : " << ENABLE_OPENMP << ", " <<
+				"\"mpi\" : " << ENABLE_MPI << ", " <<
 				"}" << std::endl;
 			ofs.write(timing.str().c_str(), timing.str().size());
 			ofs.flush();
@@ -187,41 +182,43 @@ void benchmark_dataset(Dataset &dataset) {
 
 		LINFO << "Computing index";
 		double start_time_index = CycleTimer::currentSeconds();
-		InvertedIndex &ii = train_index(dataset, bow);
+		std::shared_ptr<InvertedIndex> ii = train_index(dataset, bow);
 		double end_time_index = CycleTimer::currentSeconds();
 		{
 			std::stringstream timing;
 			timing << "{ " <<
-				"'machine' : '" << misc::get_machine_name() << "', " <<
-				"'operation' : '" << "index_train" << "', " <<
-				"'index_numclusters' : " << ii.num_clusters() << ", " <<
-				"'db_size' : " << dataset.num_images() << ", " <<
-				"'time' : " << end_time_index - start_time_index << ", " <<
-				"'multithreading' : " << ENABLE_MULTITHREADING << ", " <<
-				"'openmp' : " << ENABLE_OPENMP << ", " <<
-				"'mpi' : " << ENABLE_MPI << ", " <<
+				"\"machine\" : \"" << misc::get_machine_name() << "\", " <<
+				"\"operation\" : \"" << "index_train" << "\", " <<
+				"\"index_numclusters\" : " << ii->num_clusters() << ", " <<
+				"\"db_size\" : " << dataset.num_images() << ", " <<
+				"\"time\" : " << end_time_index - start_time_index << ", " <<
+				"\"multithreading\" : " << ENABLE_MULTITHREADING << ", " <<
+				"\"openmp\" : " << ENABLE_OPENMP << ", " <<
+				"\"mpi\" : " << ENABLE_MPI << ", " <<
 				"}" << std::endl;
 			ofs.write(timing.str().c_str(), timing.str().size());
+			ofs.flush();
 		}
 
 		LINFO << "Training tree";
 		double start_time_tree = CycleTimer::currentSeconds();
-		VocabTree &vt = train_tree(dataset, num_images, tree_branches[i].first, tree_branches[i].second);
+		std::shared_ptr<VocabTree> vt = train_tree(dataset, num_images, tree_branches[i].first, tree_branches[i].second);
 		double end_time_tree = CycleTimer::currentSeconds();
 		{
 			std::stringstream timing;
 			timing << "{ " <<
-				"'machine' : '" << misc::get_machine_name() << "', " <<
-				"'operation' : '" << "tree_train" << "', " <<
-				"'tree_depth' : " << vt.tree_depth() << ", " <<
-				"'tree_split' : " << vt.tree_splits() << ", " <<
-				"'db_size' : " << dataset.num_images() << ", " <<
-				"'time' : " << end_time_tree - start_time_tree << ", " <<
-				"'multithreading' : " << ENABLE_MULTITHREADING << ", " <<
-				"'openmp' : " << ENABLE_OPENMP << ", " <<
-				"'mpi' : " << ENABLE_MPI << ", " <<
+				"\"machine\" : \"" << misc::get_machine_name() << "\", " <<
+				"\"operation\" : \"" << "tree_train" << "\", " <<
+				"\"tree_depth\" : " << vt->tree_depth() << ", " <<
+				"\"tree_split\" : " << vt->tree_splits() << ", " <<
+				"\"db_size\" : " << dataset.num_images() << ", " <<
+				"\"time\" : " << end_time_tree - start_time_tree << ", " <<
+				"\"multithreading\" : " << ENABLE_MULTITHREADING << ", " <<
+				"\"openmp\" : " << ENABLE_OPENMP << ", " <<
+				"\"mpi\" : " << ENABLE_MPI << ", " <<
 				"}" << std::endl;
 			ofs.write(timing.str().c_str(), timing.str().size());
+			ofs.flush();
 		}
 
 		uint32_t num_validate = 10;
@@ -238,7 +235,7 @@ void benchmark_dataset(Dataset &dataset) {
 
 				std::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
 				std::shared_ptr<InvertedIndex::MatchResults> matches_index =
-					std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(dataset, nullptr, query_image));
+					std::static_pointer_cast<InvertedIndex::MatchResults>(ii->search(dataset, nullptr, query_image));
 				if (matches_index == nullptr) {
 					LERROR << "Error while running search.";
 					continue;
@@ -276,26 +273,27 @@ void benchmark_dataset(Dataset &dataset) {
 				html_output_index.add_match(i, matches_index->matches, dataset, std::make_shared< std::vector<int> >(validated));
 
 				std::stringstream outfilestr;
-				outfilestr << dataset.location() << "/results/matches/index." << bow.num_clusters() << "." << vt.tree_splits();
+				outfilestr << dataset.location() << "/results/matches/index." << bow->num_clusters();
 				html_output_index.write(outfilestr.str());
 			}
 
 			// Write out the timings
 			std::stringstream timing;
 			timing << "{ " <<
-				"'machine' : '" << misc::get_machine_name() << "', " <<
-				"'operation' : '" << "index_search" << "', " <<
-				"'index_numclusters' : " << ii.num_clusters() << ", " <<
-				"'db_size' : " << dataset.num_images() << ", " <<
-				"'time' : " << total_time << ", " <<
-				"'iterations' : " << total_iterations << ", " <<
-				"'correct' : " << total_correct << ", " <<
-				"'tested' : " << total_tested << ", " <<
-				"'multithreading' : " << ENABLE_MULTITHREADING << ", " <<
-				"'openmp' : " << ENABLE_OPENMP << ", " <<
-				"'mpi' : " << ENABLE_MPI << ", " <<
+				"\"machine\" : \"" << misc::get_machine_name() << "\", " <<
+				"\"operation\" : \"" << "index_search" << "\", " <<
+				"\"index_numclusters\" : " << ii->num_clusters() << ", " <<
+				"\"db_size\" : " << dataset.num_images() << ", " <<
+				"\"time\" : " << total_time << ", " <<
+				"\"iterations\" : " << total_iterations << ", " <<
+				"\"correct\" : " << total_correct << ", " <<
+				"\"tested\" : " << total_tested << ", " <<
+				"\"multithreading\" : " << ENABLE_MULTITHREADING << ", " <<
+				"\"openmp\" : " << ENABLE_OPENMP << ", " <<
+				"\"mpi\" : " << ENABLE_MPI << ", " <<
 				"}" << std::endl;
 			ofs.write(timing.str().c_str(), timing.str().size());
+			ofs.flush();
 		}
 
 		LINFO << "Running tree search";
@@ -309,7 +307,7 @@ void benchmark_dataset(Dataset &dataset) {
 
 				std::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
 				std::shared_ptr<InvertedIndex::MatchResults> matches_index =
-					std::static_pointer_cast<InvertedIndex::MatchResults>(vt.search(dataset, nullptr, query_image));
+					std::static_pointer_cast<InvertedIndex::MatchResults>(vt->search(dataset, nullptr, query_image));
 				if (matches_index == nullptr) {
 					LERROR << "Error while running search.";
 					continue;
@@ -347,27 +345,28 @@ void benchmark_dataset(Dataset &dataset) {
 				html_output_tree.add_match(i, matches_index->matches, dataset, std::make_shared< std::vector<int> >(validated));
 				
 				std::stringstream outfilestr;
-				outfilestr << dataset.location() << "/results/matches/tree." << vt.tree_depth() << "." << vt.tree_splits();
+				outfilestr << dataset.location() << "/results/matches/tree." << vt->tree_depth() << "." << vt->tree_splits();
 				html_output_tree.write(outfilestr.str());
 			}
 
 			// Write out the timings
 			std::stringstream timing;
 			timing << "{ " <<
-				"'machine' : '" << misc::get_machine_name() << "', " <<
-				"'operation' : '" << "tree_search" << "', " <<
-				"'tree_depth' : " << vt.tree_depth() << ", " <<
-				"'tree_split' : " << vt.tree_splits() << ", " <<
-				"'db_size' : " << dataset.num_images() << ", " <<
-				"'time' : " << total_time << ", " <<
-				"'iterations' : " << total_iterations << ", " <<
-				"'correct' : " << total_correct << ", " <<
-				"'tested' : " << total_tested << ", " <<
-				"'multithreading' : " << ENABLE_MULTITHREADING << ", " <<
-				"'openmp' : " << ENABLE_OPENMP << ", " <<
-				"'mpi' : " << ENABLE_MPI << ", " <<
+				"\"machine\" : \"" << misc::get_machine_name() << "\", " <<
+				"\"operation\" : \"" << "tree_search" << "\", " <<
+				"\"tree_depth\" : " << vt->tree_depth() << ", " <<
+				"\"tree_split\" : " << vt->tree_splits() << ", " <<
+				"\"db_size\" : " << dataset.num_images() << ", " <<
+				"\"time\" : " << total_time << ", " <<
+				"\"iterations\" : " << total_iterations << ", " <<
+				"\"correct\" : " << total_correct << ", " <<
+				"\"tested\" : " << total_tested << ", " <<
+				"\"multithreading\" : " << ENABLE_MULTITHREADING << ", " <<
+				"\"openmp\" : " << ENABLE_OPENMP << ", " <<
+				"\"mpi\" : " << ENABLE_MPI << ", " <<
 				"}" << std::endl;
 			ofs.write(timing.str().c_str(), timing.str().size());
+			ofs.flush();
 		}
 	
 	}
@@ -382,11 +381,13 @@ int main(int argc, char *argv[]) {
 #endif
 
 	SimpleDataset datasets[] = {
-		SimpleDataset(s_simple_data_dir, s_simple_database_location),
-		//SimpleDataset(s_oxfordmini_data_dir, s_oxfordmini_database_location)
+		
+		SimpleDataset(s_oxfordmini_data_dir, s_oxfordmini_database_location),
+		SimpleDataset(s_holidays_data_dir, s_holidays_database_location),
+		SimpleDataset(s_oxford_data_dir, s_oxford_database_location)
 	};
 
-	for (size_t i = 0; i < 1; i++) {
+	for (size_t i = 0; i < 3; i++) {
 		LINFO << datasets[i];
 		benchmark_dataset(datasets[i]);
 	}

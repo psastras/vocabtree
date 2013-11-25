@@ -17,3 +17,6 @@ const static int s_oxford100k_num_clusters					= 65536;
 
 const static std::string s_oxfordmini_data_dir 				= "@CMAKE_SOURCE_DIR@/data/oxfordmini/";
 const static std::string s_oxfordmini_database_location 	= "@CMAKE_SOURCE_DIR@/data/oxfordmini/db_oxfordmini.bin";
+
+const static std::string s_holidays_data_dir 				= "@CMAKE_SOURCE_DIR@/data/holidays/";
+const static std::string s_holidays_database_location	 	= "@CMAKE_SOURCE_DIR@/data/holidays/db_holidays.bin";

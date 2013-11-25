@@ -231,7 +231,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       weights[i] = 0;
     else
       weights[i] = log(((float)all_ids.size()) / ((float)counts[i]));
-   // printf("Node %d, count %d, total %d, size %d, weight %f \n", i, counts[i], all_ids.size(), tree[i].invertedFileLength, weights[i]);
+    // printf("Node %d, count %d, total %d, size %d, weight %f \n", i, counts[i], all_ids.size(), tree[i].invertedFileLength, weights[i]);
   }
 
   // now that we have the weights we iterate over all images and adjust the vector by weights, 
@@ -249,18 +249,18 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] /= length;
   }
 
-  //for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
-  //    printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
-  //}
-  //printf("\n\n");
+  for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
+    // printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
+  }
+  // printf("\n\n");
   uint32_t l = 0, inL = 0;
   for (uint32_t i = 0; i < numberOfNodes; i++) {
-    //printf("Node %d, num %d, weight %f || ", i, tree[i].invertedFileLength, weights[i]);
+    // printf("Node %d, num %d, weight %f || ", i, tree[i].invertedFileLength, weights[i]);
     inL++;
     if (inL >= (uint32_t)pow(split, l)) {
       l++;
       inL = 0;
-     // printf("\n");
+      // printf("\n");
     }
   }
 
@@ -286,7 +286,7 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
   for (uint32_t i = 0; i < split; i++)
     groups[i] = cv::Mat();
 
-  //printf("t: %d  rows: %d, counts: ", t, descriptors.rows);
+  // printf("t: %d  rows: %d, counts: ", t, descriptors.rows);
 
   bool enoughToFill = true;
   if (descriptors.rows >= split) {
@@ -304,9 +304,9 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
       groups[i].push_back(descriptors.row(i));
   }
 
-  //for (uint32_t i = 0; i < split; i++)
-  //  printf("%d, ", groups[i].rows);
-  //printf("\n");
+  // for (uint32_t i = 0; i < split; i++)
+  //   printf("%d, ", groups[i].rows);
+  // printf("\n");
 
   uint32_t totalChildren = pow(split, currLevel);
   
@@ -393,22 +393,20 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
   }
   // if inner node
   else {
-	 
     uint32_t maxChild = tree[nodeIndex].firstChildIndex;
-	//std::cout << descriptor.rows << " x " << descriptor.cols << " :: " << tree[maxChild].mean.rows << " x " << tree[maxChild].mean.cols << std::endl;
-	double max = (descriptor.size().area() == 0 || tree[maxChild].mean.size().area() == 0) ? 0 : descriptor.dot(tree[maxChild].mean);
+    double max = descriptor.dot(tree[maxChild].mean);
+    
     for (uint32_t i = 1; i < split; i++) {
       if (tree[nodeIndex].invertedFileLength == 0)
         continue;
       uint32_t childIndex = tree[nodeIndex].firstChildIndex + i;
-	  double dot = (descriptor.size().area() == 0 || tree[nodeIndex].mean.size().area() == 0) ? 0 : descriptor.dot(tree[childIndex].mean);
+      double dot = descriptor.dot(tree[childIndex].mean);
 
       if (dot>max) {
         max = dot;
         maxChild = childIndex;
       }
     }
-	
     generateVectorHelper(maxChild, descriptor, counts, possibleMatches, id);
   }
 }
@@ -470,7 +468,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
 
   std::sort(values.begin(), values.end(), comparer);
 
-  //printf("%d matches\n", values.size());
+  // printf("%d matches\n", values.size());
   // add all images in order or match
   for (matchPair m : values){
     match_result->matches.push_back(m.first);
