@@ -1,10 +1,11 @@
 <map id="/home/psastras/vocabtree/modules/tests/vocab_tree_simple.cxx" name="/home/psastras/vocabtree/modules/tests/vocab_tree_simple.cxx">
 <area shape="rect" id="node2" href="$tests__config_8hpp.html" title="tests_config.hpp" alt="" coords="5,117,123,144"/>
-<area shape="rect" id="node4" href="$vocab__tree_8hpp.html" title="search/vocab_tree/vocab\l_tree.hpp" alt="" coords="219,110,387,151"/>
-<area shape="rect" id="node19" href="$filesystem_8hpp.html" title="utils/filesystem.hpp" alt="" coords="738,365,872,392"/>
-<area shape="rect" id="node20" href="$numerics_8hpp.html" title="utils/numerics.hpp" alt="" coords="585,208,713,235"/>
-<area shape="rect" id="node9" href="$dataset_8hpp.html" title="utils/dataset.hpp" alt="" coords="359,291,477,317"/>
-<area shape="rect" id="node21" href="$vision_8hpp.html" title="utils/vision.hpp" alt="" coords="821,291,931,317"/>
-<area shape="rect" id="node5" href="$search__base_8hpp.html" title="search/search_base\l/search_base.hpp" alt="" coords="349,201,488,242"/>
-<area shape="rect" id="node6" href="$image_8hpp.html" title="utils/image.hpp" alt="" coords="81,365,191,392"/>
+<area shape="rect" id="node4" href="$vocab__tree_8hpp.html" title="search/vocab_tree/vocab\l_tree.hpp" alt="" coords="425,110,593,151"/>
+<area shape="rect" id="node19" href="$filesystem_8hpp.html" title="utils/filesystem.hpp" alt="" coords="905,365,1039,392"/>
+<area shape="rect" id="node20" href="$numerics_8hpp.html" title="utils/numerics.hpp" alt="" coords="752,208,880,235"/>
+<area shape="rect" id="node9" href="$dataset_8hpp.html" title="utils/dataset.hpp" alt="" coords="283,291,401,317"/>
+<area shape="rect" id="node21" href="$vision_8hpp.html" title="utils/vision.hpp" alt="" coords="1036,291,1145,317"/>
+<area shape="rect" id="node24" href="$matches__page_8hpp.html" title="vis/matches_page.hpp" alt="" coords="97,208,249,235"/>
+<area shape="rect" id="node5" href="$search__base_8hpp.html" title="search/search_base\l/search_base.hpp" alt="" coords="589,201,728,242"/>
+<area shape="rect" id="node6" href="$image_8hpp.html" title="utils/image.hpp" alt="" coords="534,365,644,392"/>
 </map>

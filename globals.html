@@ -64,6 +64,7 @@
       <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
+      <li><a href="#index_t"><span>t</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -88,6 +89,9 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>bench_oxford()
 : <a class="el" href="bench__search_8cxx.html#af3dc289af53b5a3c157c750c71a4c8ee">bench_search.cxx</a>
 </li>
+<li>benchmark_dataset()
+: <a class="el" href="bench__all_8cxx.html#a5b90f9a18ea62986f9a54f37b92c0ae9">bench_all.cxx</a>
+</li>
 </ul>
 
 
@@ -95,8 +99,12 @@ $(document).ready(function(){initNavTree('globals.html','');});
 <li>compute_bow()
 : <a class="el" href="bench__bow_8cxx.html#aaef33d9504e05c52d54fdae577c151a1">bench_bow.cxx</a>
 </li>
+<li>compute_bow_features()
+: <a class="el" href="bench__all_8cxx.html#a80f719179d28279bc6c42046c30708b1">bench_all.cxx</a>
+</li>
 <li>compute_features()
-: <a class="el" href="bench__compute__features_8cxx.html#a6695a0bf072ce49a81eab304c26faed1">bench_compute_features.cxx</a>
+: <a class="el" href="bench__all_8cxx.html#a3a6f8aa09e8f684372e9d14409ddf538">bench_all.cxx</a>
+, <a class="el" href="bench__compute__features_8cxx.html#a6695a0bf072ce49a81eab304c26faed1">bench_compute_features.cxx</a>
 </li>
 </ul>
 
@@ -119,7 +127,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
 <li>main()
-: <a class="el" href="bench__bow_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">bench_bow.cxx</a>
+: <a class="el" href="bench__all_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">bench_all.cxx</a>
 , <a class="el" href="vocab__tree__simple_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">vocab_tree_simple.cxx</a>
 , <a class="el" href="compute__sift__simple_8cxx.html#a9306418341be659f27ec30656afed137">compute_sift_simple.cxx</a>
 , <a class="el" href="compute__search__simple_8cxx.html#a9306418341be659f27ec30656afed137">compute_search_simple.cxx</a>
@@ -128,6 +136,7 @@ $(document).ready(function(){initNavTree('globals.html','');});
 , <a class="el" href="bench__search_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">bench_search.cxx</a>
 , <a class="el" href="bench__index_8cxx.html#a9306418341be659f27ec30656afed137">bench_index.cxx</a>
 , <a class="el" href="bench__compute__features_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">bench_compute_features.cxx</a>
+, <a class="el" href="bench__bow_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">bench_bow.cxx</a>
 </li>
 </ul>
 
@@ -143,34 +152,67 @@ $(document).ready(function(){initNavTree('globals.html','');});
 
 
 <h3><a class="anchor" id="index_s"></a>- s -</h3><ul>
+<li>s_holidays_data_dir
+: <a class="el" href="bench__config_8hpp.html#a3bc1495a8e2c478adba9388454d5e2d8">bench_config.hpp</a>
+</li>
+<li>s_holidays_database_location
+: <a class="el" href="bench__config_8hpp.html#a4cd0852972b48063bd342d5357611d48">bench_config.hpp</a>
+</li>
 <li>s_oxford100k_data_dir
-: <a class="el" href="bench__config_8hpp.html#aa6b7aac551614e1fd8789df60b1a79b0">bench_config.hpp</a>
+: <a class="el" href="tests__config_8hpp.html#aa6b7aac551614e1fd8789df60b1a79b0">tests_config.hpp</a>
+, <a class="el" href="bench__config_8hpp.html#aa6b7aac551614e1fd8789df60b1a79b0">bench_config.hpp</a>
 </li>
 <li>s_oxford100k_database_location
 : <a class="el" href="bench__config_8hpp.html#a1f90b0536a23b34ae8c47f3ee6b71380">bench_config.hpp</a>
+, <a class="el" href="tests__config_8hpp.html#a1f90b0536a23b34ae8c47f3ee6b71380">tests_config.hpp</a>
 </li>
 <li>s_oxford100k_num_clusters
-: <a class="el" href="bench__config_8hpp.html#aa42dfa9789d16e6e04ff8ba43bf4409f">bench_config.hpp</a>
+: <a class="el" href="tests__config_8hpp.html#aa42dfa9789d16e6e04ff8ba43bf4409f">tests_config.hpp</a>
+, <a class="el" href="bench__config_8hpp.html#aa42dfa9789d16e6e04ff8ba43bf4409f">bench_config.hpp</a>
 </li>
 <li>s_oxford_data_dir
 : <a class="el" href="bench__config_8hpp.html#ad4586555313d552b4964123380619bb5">bench_config.hpp</a>
+, <a class="el" href="tests__config_8hpp.html#ad4586555313d552b4964123380619bb5">tests_config.hpp</a>
 </li>
 <li>s_oxford_database_location
 : <a class="el" href="bench__config_8hpp.html#a2aef84bbc6278d85b52d4f816cd42d25">bench_config.hpp</a>
+, <a class="el" href="tests__config_8hpp.html#a2aef84bbc6278d85b52d4f816cd42d25">tests_config.hpp</a>
 </li>
 <li>s_oxford_num_clusters
 : <a class="el" href="bench__config_8hpp.html#a29c324f9a17607ef391b42a41d3530be">bench_config.hpp</a>
+, <a class="el" href="tests__config_8hpp.html#a29c324f9a17607ef391b42a41d3530be">tests_config.hpp</a>
+</li>
+<li>s_oxfordmini_data_dir
+: <a class="el" href="tests__config_8hpp.html#a61079cf0451cb4181d177267d64abc80">tests_config.hpp</a>
+, <a class="el" href="bench__config_8hpp.html#a61079cf0451cb4181d177267d64abc80">bench_config.hpp</a>
+</li>
+<li>s_oxfordmini_database_location
+: <a class="el" href="tests__config_8hpp.html#a119a1bf96e1713bea52ea5498d856f6d">tests_config.hpp</a>
+, <a class="el" href="bench__config_8hpp.html#a119a1bf96e1713bea52ea5498d856f6d">bench_config.hpp</a>
 </li>
 <li>s_simple_data_dir
-: <a class="el" href="tests__config_8hpp.html#a6ff0631ad2217266ff8368896e165864">tests_config.hpp</a>
-, <a class="el" href="bench__config_8hpp.html#a6ff0631ad2217266ff8368896e165864">bench_config.hpp</a>
+: <a class="el" href="bench__config_8hpp.html#a6ff0631ad2217266ff8368896e165864">bench_config.hpp</a>
+, <a class="el" href="tests__config_8hpp.html#a6ff0631ad2217266ff8368896e165864">tests_config.hpp</a>
 </li>
 <li>s_simple_database_location
-: <a class="el" href="tests__config_8hpp.html#a746cb2c32aa93b02c1f0e3ff6415d559">tests_config.hpp</a>
-, <a class="el" href="bench__config_8hpp.html#a746cb2c32aa93b02c1f0e3ff6415d559">bench_config.hpp</a>
+: <a class="el" href="bench__config_8hpp.html#a746cb2c32aa93b02c1f0e3ff6415d559">bench_config.hpp</a>
+, <a class="el" href="tests__config_8hpp.html#a746cb2c32aa93b02c1f0e3ff6415d559">tests_config.hpp</a>
 </li>
 <li>s_stylesheet_name
 : <a class="el" href="matches__page_8cxx.html#a4118bc2c6d1eda0386db89e89f8990dd">matches_page.cxx</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
+<li>train_bow()
+: <a class="el" href="bench__all_8cxx.html#a1f9e3958b5892fa473863636ec4a4d73">bench_all.cxx</a>
+</li>
+<li>train_index()
+: <a class="el" href="bench__all_8cxx.html#a6d73d104a66d4771c652285e211e1fae">bench_all.cxx</a>
+</li>
+<li>train_tree()
+: <a class="el" href="bench__all_8cxx.html#aa851044cf03e3d2b90e81686f7354cbd">bench_all.cxx</a>
 </li>
 </ul>
 </div><!-- contents -->

@@ -1,6 +1,73 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <tagfile>
   <compound kind="file">
+    <name>bench_all.cxx</name>
+    <path>/home/psastras/vocabtree/modules/bench/</path>
+    <filename>bench__all_8cxx</filename>
+    <includes id="bench__config_8hpp" name="bench_config.hpp" local="yes" imported="no">bench_config.hpp</includes>
+    <includes id="config_8hpp" name="config.hpp" local="no" imported="no">config.hpp</includes>
+    <includes id="filesystem_8hpp" name="filesystem.hpp" local="no" imported="no">utils/filesystem.hpp</includes>
+    <includes id="numerics_8hpp" name="numerics.hpp" local="no" imported="no">utils/numerics.hpp</includes>
+    <includes id="dataset_8hpp" name="dataset.hpp" local="no" imported="no">utils/dataset.hpp</includes>
+    <includes id="misc_8hpp" name="misc.hpp" local="no" imported="no">utils/misc.hpp</includes>
+    <includes id="vision_8hpp" name="vision.hpp" local="no" imported="no">utils/vision.hpp</includes>
+    <includes id="image_8hpp" name="image.hpp" local="no" imported="no">utils/image.hpp</includes>
+    <includes id="cycletimer_8hpp" name="cycletimer.hpp" local="no" imported="no">utils/cycletimer.hpp</includes>
+    <includes id="bag__of__words_8hpp" name="bag_of_words.hpp" local="no" imported="no">search/bag_of_words/bag_of_words.hpp</includes>
+    <includes id="inverted__index_8hpp" name="inverted_index.hpp" local="no" imported="no">search/inverted_index/inverted_index.hpp</includes>
+    <includes id="vocab__tree_8hpp" name="vocab_tree.hpp" local="no" imported="no">search/vocab_tree/vocab_tree.hpp</includes>
+    <includes id="matches__page_8hpp" name="matches_page.hpp" local="no" imported="no">vis/matches_page.hpp</includes>
+    <member kind="function">
+      <type>_INITIALIZE_EASYLOGGINGPP void</type>
+      <name>compute_features</name>
+      <anchorfile>bench__all_8cxx.html</anchorfile>
+      <anchor>a3a6f8aa09e8f684372e9d14409ddf538</anchor>
+      <arglist>(Dataset &amp;dataset)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>compute_bow_features</name>
+      <anchorfile>bench__all_8cxx.html</anchorfile>
+      <anchor>a80f719179d28279bc6c42046c30708b1</anchor>
+      <arglist>(Dataset &amp;dataset, std::shared_ptr&lt; BagOfWords &gt; bow, uint32_t num_clusters)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::shared_ptr&lt; VocabTree &gt;</type>
+      <name>train_tree</name>
+      <anchorfile>bench__all_8cxx.html</anchorfile>
+      <anchor>aa851044cf03e3d2b90e81686f7354cbd</anchor>
+      <arglist>(Dataset &amp;dataset, uint32_t num_images, uint32_t split, uint32_t depth)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::shared_ptr&lt; BagOfWords &gt;</type>
+      <name>train_bow</name>
+      <anchorfile>bench__all_8cxx.html</anchorfile>
+      <anchor>a1f9e3958b5892fa473863636ec4a4d73</anchor>
+      <arglist>(Dataset &amp;dataset, uint32_t num_images, uint32_t num_clusters)</arglist>
+    </member>
+    <member kind="function">
+      <type>std::shared_ptr&lt; InvertedIndex &gt;</type>
+      <name>train_index</name>
+      <anchorfile>bench__all_8cxx.html</anchorfile>
+      <anchor>a6d73d104a66d4771c652285e211e1fae</anchor>
+      <arglist>(Dataset &amp;dataset, std::shared_ptr&lt; BagOfWords &gt; bow)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>benchmark_dataset</name>
+      <anchorfile>bench__all_8cxx.html</anchorfile>
+      <anchor>a5b90f9a18ea62986f9a54f37b92c0ae9</anchor>
+      <arglist>(Dataset &amp;dataset)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>bench__all_8cxx.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>bench_bow.cxx</name>
     <path>/home/psastras/vocabtree/modules/bench/</path>
     <filename>bench__bow_8cxx</filename>
@@ -110,6 +177,34 @@
       <anchor>aa42dfa9789d16e6e04ff8ba43bf4409f</anchor>
       <arglist></arglist>
     </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxfordmini_data_dir</name>
+      <anchorfile>bench__config_8hpp.html</anchorfile>
+      <anchor>a61079cf0451cb4181d177267d64abc80</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxfordmini_database_location</name>
+      <anchorfile>bench__config_8hpp.html</anchorfile>
+      <anchor>a119a1bf96e1713bea52ea5498d856f6d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_holidays_data_dir</name>
+      <anchorfile>bench__config_8hpp.html</anchorfile>
+      <anchor>a3bc1495a8e2c478adba9388454d5e2d8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_holidays_database_location</name>
+      <anchorfile>bench__config_8hpp.html</anchorfile>
+      <anchor>a4cd0852972b48063bd342d5357611d48</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>bench_index.cxx</name>
@@ -141,6 +236,7 @@
     <includes id="dataset_8hpp" name="dataset.hpp" local="no" imported="no">utils/dataset.hpp</includes>
     <includes id="misc_8hpp" name="misc.hpp" local="no" imported="no">utils/misc.hpp</includes>
     <includes id="vision_8hpp" name="vision.hpp" local="no" imported="no">utils/vision.hpp</includes>
+    <includes id="image_8hpp" name="image.hpp" local="no" imported="no">utils/image.hpp</includes>
     <includes id="cycletimer_8hpp" name="cycletimer.hpp" local="no" imported="no">utils/cycletimer.hpp</includes>
     <includes id="bag__of__words_8hpp" name="bag_of_words.hpp" local="no" imported="no">search/bag_of_words/bag_of_words.hpp</includes>
     <includes id="inverted__index_8hpp" name="inverted_index.hpp" local="no" imported="no">search/inverted_index/inverted_index.hpp</includes>
@@ -166,13 +262,6 @@
     <filename>config_8hpp</filename>
     <member kind="define">
       <type>#define</type>
-      <name>ENABLE_OPENMP</name>
-      <anchorfile>config_8hpp.html</anchorfile>
-      <anchor>afbd965123c7137962cdc7571c17cbe20</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
       <name>ENABLE_MPI</name>
       <anchorfile>config_8hpp.html</anchorfile>
       <anchor>aa84164aed4ba3c6c236edde52de3930b</anchor>
@@ -190,6 +279,13 @@
       <name>ENABLE_MULTITHREADING</name>
       <anchorfile>config_8hpp.html</anchorfile>
       <anchor>a112b344dd251bdf62eba2d1cbcc97f31</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>ENABLE_OPENMP</name>
+      <anchorfile>config_8hpp.html</anchorfile>
+      <anchor>afbd965123c7137962cdc7571c17cbe20</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -375,6 +471,62 @@
       <anchor>a746cb2c32aa93b02c1f0e3ff6415d559</anchor>
       <arglist></arglist>
     </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxford_data_dir</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>ad4586555313d552b4964123380619bb5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxford_database_location</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>a2aef84bbc6278d85b52d4f816cd42d25</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const int</type>
+      <name>s_oxford_num_clusters</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>a29c324f9a17607ef391b42a41d3530be</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxfordmini_data_dir</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>a61079cf0451cb4181d177267d64abc80</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxfordmini_database_location</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>a119a1bf96e1713bea52ea5498d856f6d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxford100k_data_dir</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>aa6b7aac551614e1fd8789df60b1a79b0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const std::string</type>
+      <name>s_oxford100k_database_location</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>a1f90b0536a23b34ae8c47f3ee6b71380</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" static="yes">
+      <type>static const int</type>
+      <name>s_oxford100k_num_clusters</name>
+      <anchorfile>tests__config_8hpp.html</anchorfile>
+      <anchor>aa42dfa9789d16e6e04ff8ba43bf4409f</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>vocab_tree_simple.cxx</name>
@@ -386,6 +538,7 @@
     <includes id="numerics_8hpp" name="numerics.hpp" local="no" imported="no">utils/numerics.hpp</includes>
     <includes id="dataset_8hpp" name="dataset.hpp" local="no" imported="no">utils/dataset.hpp</includes>
     <includes id="vision_8hpp" name="vision.hpp" local="no" imported="no">utils/vision.hpp</includes>
+    <includes id="matches__page_8hpp" name="matches_page.hpp" local="no" imported="no">vis/matches_page.hpp</includes>
     <member kind="function">
       <type>int</type>
       <name>main</name>
@@ -683,6 +836,13 @@
       <anchorfile>namespacevision.html</anchorfile>
       <anchor>a2f9f606d615708aad6f4f7002498b647</anchor>
       <arglist>(std::vector&lt; cv::Mat &gt; &amp;descriptors, bool release_original=true)</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>is_good_match</name>
+      <anchorfile>namespacevision.html</anchorfile>
+      <anchor>a69221dfb25d64088d6b576ab2463ab74</anchor>
+      <arglist>(const cv::detail::MatchesInfo &amp;matches_info)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -1142,8 +1302,8 @@
       <type></type>
       <name>MatchesPage</name>
       <anchorfile>classMatchesPage.html</anchorfile>
-      <anchor>a0810ed60f423e7a4f8ba20d5fb0dab49</anchor>
-      <arglist>(uint32_t max_matches_per_page=24, uint32_t max_images_per_match=24)</arglist>
+      <anchor>a88d5e20360d4c345e5f81bfa2bf275e9</anchor>
+      <arglist>(uint32_t max_matches_per_page=16, uint32_t max_images_per_match=16)</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -1156,8 +1316,8 @@
       <type>void</type>
       <name>add_match</name>
       <anchorfile>classMatchesPage.html</anchorfile>
-      <anchor>a61b145226ca470cac19791c87a7a0043</anchor>
-      <arglist>(uint32_t query_id, std::vector&lt; uint64_t &gt; &amp;match_ids, const Dataset &amp;dataset)</arglist>
+      <anchor>a701caedfb7a1f46a2e710ac8d8cd31a5</anchor>
+      <arglist>(uint32_t query_id, std::vector&lt; uint64_t &gt; &amp;match_ids, const Dataset &amp;dataset, std::shared_ptr&lt; std::vector&lt; int &gt; &gt; validated=nullptr)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -1419,33 +1579,47 @@
       <anchor>a5f2e1e4f74178cf901a55f5ab8464933</anchor>
       <arglist>(Dataset &amp;dataset, const std::shared_ptr&lt; const SearchParamsBase &gt; &amp;params, const std::shared_ptr&lt; const Image &gt; &amp;example)</arglist>
     </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>tree_splits</name>
+      <anchorfile>classVocabTree.html</anchorfile>
+      <anchor>ad03781b2b2aabae3d2c1adc6b1cc27bb</anchor>
+      <arglist>() const </arglist>
+    </member>
+    <member kind="function">
+      <type>uint32_t</type>
+      <name>tree_depth</name>
+      <anchorfile>classVocabTree.html</anchorfile>
+      <anchor>ab9fcdee663231eee8fe39491653c3ebb</anchor>
+      <arglist>() const </arglist>
+    </member>
     <member kind="function" protection="protected">
       <type>void</type>
       <name>buildTreeRecursive</name>
       <anchorfile>classVocabTree.html</anchorfile>
-      <anchor>ab86813ba8b18714887d608a92040ee2b</anchor>
-      <arglist>(uint32_t t, cv::Mat descriptors, cv::TermCriteria tc, int attempts, int flags, int currLevel)</arglist>
+      <anchor>af0f6f4da15b2e8569198a5a490de35f8</anchor>
+      <arglist>(uint32_t t, const cv::Mat &amp;descriptors, cv::TermCriteria &amp;tc, int attempts, int flags, int currLevel)</arglist>
     </member>
     <member kind="function" protection="protected">
       <type>std::vector&lt; float &gt;</type>
       <name>generateVector</name>
       <anchorfile>classVocabTree.html</anchorfile>
-      <anchor>a433a9b794078f3c746b20f186ea426c7</anchor>
-      <arglist>(cv::Mat descriptors, bool shouldWeight, uint64_t id=-1)</arglist>
+      <anchor>aca3d3fedbda379a45bf95a63d217ce80</anchor>
+      <arglist>(const cv::Mat &amp;descriptors, bool shouldWeight, int64_t id=-1)</arglist>
     </member>
     <member kind="function" protection="protected">
       <type>std::vector&lt; float &gt;</type>
       <name>generateVector</name>
       <anchorfile>classVocabTree.html</anchorfile>
-      <anchor>a3f65cceb03d2996d389e6205d7494529</anchor>
-      <arglist>(cv::Mat descriptors, bool shouldWeight, std::unordered_set&lt; uint64_t &gt; &amp;possibleMatches, uint64_t id=-1)</arglist>
+      <anchor>acf2a16833429a3d19aef18f157f906fc</anchor>
+      <arglist>(const cv::Mat &amp;descriptors, bool shouldWeight, std::unordered_set&lt; uint32_t &gt; &amp;possibleMatches, int64_t id=-1)</arglist>
     </member>
     <member kind="function" protection="protected">
       <type>void</type>
       <name>generateVectorHelper</name>
       <anchorfile>classVocabTree.html</anchorfile>
-      <anchor>ad110addea52236bf60250b915338c79f</anchor>
-      <arglist>(uint32_t nodeIndex, cv::Mat descriptor, std::vector&lt; float &gt; &amp;counts, std::unordered_set&lt; uint64_t &gt; &amp;possibleMatches, uint64_t id=-1)</arglist>
+      <anchor>aaf5841ebc34bd4986235e357a716681f</anchor>
+      <arglist>(uint32_t nodeIndex, const cv::Mat &amp;descriptor, std::vector&lt; float &gt; &amp;counts, std::unordered_set&lt; uint32_t &gt; &amp;possibleMatches, int64_t id=-1)</arglist>
     </member>
     <member kind="variable" protection="protected">
       <type>uint32_t</type>
@@ -1683,6 +1857,7 @@
     <name>/home/psastras/vocabtree/modules/bench</name>
     <path>/home/psastras/vocabtree/modules/bench/</path>
     <filename>dir_590cdc53477aa77bc1d1d60b81d129aa.html</filename>
+    <file>bench_all.cxx</file>
     <file>bench_bow.cxx</file>
     <file>bench_compute_features.cxx</file>
     <file>bench_config.hpp</file>

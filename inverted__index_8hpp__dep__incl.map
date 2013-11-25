@@ -1,7 +1,8 @@
 <map id="/home/psastras/vocabtree/modules/search/inverted_index/inverted_index.hpp" name="/home/psastras/vocabtree/modules/search/inverted_index/inverted_index.hpp">
-<area shape="rect" id="node2" href="$bench__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_index.cxx" alt="" coords="5,117,221,158"/>
-<area shape="rect" id="node3" href="$bench__search_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_search.cxx" alt="" coords="245,117,469,158"/>
-<area shape="rect" id="node4" href="$inverted__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="493,109,667,165"/>
-<area shape="rect" id="node5" href="$compute__index__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_index_simple.cxx" alt="" coords="691,109,864,165"/>
-<area shape="rect" id="node6" href="$compute__search__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_search_simple.cxx" alt="" coords="888,109,1061,165"/>
+<area shape="rect" id="node2" href="$bench__all_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_all.cxx" alt="" coords="5,117,203,158"/>
+<area shape="rect" id="node3" href="$bench__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_index.cxx" alt="" coords="228,117,444,158"/>
+<area shape="rect" id="node4" href="$bench__search_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_search.cxx" alt="" coords="468,117,692,158"/>
+<area shape="rect" id="node5" href="$inverted__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="716,109,889,165"/>
+<area shape="rect" id="node6" href="$compute__index__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_index_simple.cxx" alt="" coords="913,109,1087,165"/>
+<area shape="rect" id="node7" href="$compute__search__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_search_simple.cxx" alt="" coords="1111,109,1284,165"/>
 </map>

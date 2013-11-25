@@ -77,11 +77,11 @@ $(document).ready(function(){initNavTree('vocab__tree__simple_8cxx_source.html',
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="dataset_8hpp.html">utils/dataset.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="vision_8hpp.html">utils/vision.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;utils/logger.hpp&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="matches__page_8hpp.html">vis/matches_page.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="code" href="vocab__tree__simple_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">   12</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="bench__bow_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[]) {</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="code" href="vocab__tree__simple_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">   12</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="bench__all_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[]) {</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <a class="code" href="classSimpleDataset.html" title="SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG images in a s...">SimpleDataset</a> simple_dataset(<a class="code" href="bench__config_8hpp.html#a6ff0631ad2217266ff8368896e165864" title="This header is automatically generated.">s_simple_data_dir</a>, <a class="code" href="bench__config_8hpp.html#a746cb2c32aa93b02c1f0e3ff6415d559">s_simple_database_location</a>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;  <a class="code" href="classSimpleDataset.html" title="SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG images in a s...">SimpleDataset</a> simple_dataset(<a class="code" href="bench__config_8hpp.html#a61079cf0451cb4181d177267d64abc80">s_oxfordmini_data_dir</a>, <a class="code" href="bench__config_8hpp.html#a119a1bf96e1713bea52ea5498d856f6d">s_oxfordmini_database_location</a>);</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;  <span class="comment">//LINFO &lt;&lt; simple_dataset;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="comment">//std::stringstream vocab_output_file;</span></div>
@@ -93,8 +93,8 @@ $(document).ready(function(){initNavTree('vocab__tree__simple_8cxx_source.html',
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <a class="code" href="classVocabTree.html">VocabTree</a> vt;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  std::shared_ptr&lt;VocabTree::TrainParams&gt; train_params = std::make_shared&lt;VocabTree::TrainParams&gt;();</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  train_params-&gt;depth = 4;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  train_params-&gt;<a class="code" href="classVocabTree.html#a6ab3b90e1675f17341675ca1419aad7d">split</a> = 4;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  vt.<a class="code" href="classVocabTree.html#aaf9c57f3d8924489f1f627ac146b792c" title="Given a set of training parameters, list of images, trains.">train</a>(simple_dataset, train_params, simple_dataset.<a class="code" href="classDataset.html#aade5bdeb81e85b7f9e1b10e53320a979" title="Returns a vector of all images in the dataset.">all_images</a>());</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  train_params-&gt;<a class="code" href="classVocabTree.html#a6ab3b90e1675f17341675ca1419aad7d" title="stores the amount of splits used to generate tree">split</a> = 4;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  vt.<a class="code" href="classVocabTree.html#aaf9c57f3d8924489f1f627ac146b792c" title="Given a set of training parameters, list of images, trains.">train</a>(simple_dataset, train_params, simple_dataset.<a class="code" href="classDataset.html#a91c2c23a825bb557c24cb893d474f93e" title="Returns a vector of random images in the dataset of size count.">random_images</a>(128));</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="comment">/*</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">  std::stringstream index_output_file;</span></div>
@@ -104,19 +104,23 @@ $(document).ready(function(){initNavTree('vocab__tree__simple_8cxx_source.html',
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">  vt.save(index_output_file.str());</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">  */</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="comment">/*for (uint32_t i = 0; i&lt;3; i++) {</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">    std::shared_ptr&lt;VocabTree::MatchResults&gt; matches =</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">      std::static_pointer_cast&lt;VocabTree::MatchResults&gt;(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">    //LINFO &lt;&lt; &quot;Query &quot; &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; *matches;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">    printf(&quot;Matches for image %d: &quot;, i);</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="comment">    for (uint64_t id : matches-&gt;matches)</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">      printf(&quot;%d &quot;, id);</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">    printf(&quot;\n&quot;);</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">  }*/</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <a class="code" href="classMatchesPage.html" title="MatchesPage class keeps track of query images and their matches, and outputs an html page containing ...">MatchesPage</a> html_output;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keywordflow">for</span> (uint32_t i = 0; i&lt;256; i++) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::shared_ptr&lt;VocabTree::MatchResults&gt; matches =</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;     std::static_pointer_cast&lt;<a class="code" href="structVocabTree_1_1MatchResults.html" title="Subclass of match results base which also returns scores.">VocabTree::MatchResults</a>&gt;(vt.<a class="code" href="classVocabTree.html#a5f2e1e4f74178cf901a55f5ab8464933" title="Given a set of search parameters, a query image, searches for matching images and returns the match...">search</a>(simple_dataset, <span class="keyword">nullptr</span>, simple_dataset.<a class="code" href="classSimpleDataset.html#a74ccac82fe0034cab5684d137d093a12" title="Given a unique integer ID, returns an Image associated with that ID.">image</a>(i)));</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="comment">//LINFO &lt;&lt; &quot;Query &quot; &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; *matches;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    printf(<span class="stringliteral">&quot;Matches for image %d: &quot;</span>, i);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">for</span> (uint64_t <span class="keywordtype">id</span> : matches-&gt;matches)</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      printf(<span class="stringliteral">&quot;%d &quot;</span>, <span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    printf(<span class="stringliteral">&quot;\n&quot;</span>);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;}</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;     html_output.<a class="code" href="classMatchesPage.html#a701caedfb7a1f46a2e710ac8d8cd31a5" title="Adds a match to the html_strings variable which will be written as html on write().">add_match</a>(i, matches-&gt;matches, simple_dataset);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  }</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    html_output.<a class="code" href="classMatchesPage.html#a6899a6eba95103363da7a6fc9f5c2ae9" title="Writes out all the html match mages to the input specified folder.">write</a>(simple_dataset.<a class="code" href="classDataset.html#a1be6c736cec176a950234ea610abf3e5" title="Returns the absolute path of the data directory.">location</a>() + <span class="stringliteral">&quot;/results/matches/&quot;</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

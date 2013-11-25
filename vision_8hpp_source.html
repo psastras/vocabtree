@@ -124,7 +124,11 @@ $(document).ready(function(){initNavTree('vision_8hpp_source.html','');});
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment"></span>        <span class="keywordtype">void</span> <a class="code" href="namespacevision.html#a42f0c2d422ec0fdf6aafd4cb8873d857" title="Computes a fundamental matrix between the input pairs of points and descriptors and returns the resul...">geo_verify_f</a>(<span class="keyword">const</span> cv::Mat &amp;descriptors0, <span class="keyword">const</span> cv::Mat &amp;points0,</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                <span class="keyword">const</span> cv::Mat &amp;descriptors1, <span class="keyword">const</span> cv::Mat &amp;points1, cv::detail::MatchesInfo &amp;matches_info,</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                std::vector&lt;uint32_t&gt; *inliers0 = 0, std::vector&lt;uint32_t&gt; *inliers1 = 0);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment"></span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">        /// Returns true if matches_info represents a good match, false if otherwise.  The heuristic is based</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">        /// on the total number of inliers and the ratio of inliers to outliers.</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment"></span>        <span class="keywordtype">bool</span> <a class="code" href="namespacevision.html#a69221dfb25d64088d6b576ab2463ab74" title="Returns true if matches_info represents a good match, false if otherwise.">is_good_match</a>(<span class="keyword">const</span> cv::detail::MatchesInfo &amp;matches_info);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

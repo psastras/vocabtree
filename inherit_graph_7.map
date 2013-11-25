@@ -2,5 +2,5 @@
 <area shape="rect" id="node1" href="$structSearchParamsBase.html" title="Structure to hold input search parameters (ex. #matches, threshold, number neighbors to consider..." alt="" coords="5,56,144,83"/>
 <area shape="rect" id="node2" href="$structBagOfWords_1_1SearchParams.html" title="Subclass of train params base which specifies inverted index training parameters." alt="" coords="194,5,385,32"/>
 <area shape="rect" id="node3" href="$structInvertedIndex_1_1SearchParams.html" title="Subclass of train params base which specifies inverted index training parameters." alt="" coords="192,56,387,83"/>
-<area shape="rect" id="node4" href="$structVocabTree_1_1SearchParams.html" title="VocabTree::SearchParams" alt="" coords="200,107,379,133"/>
+<area shape="rect" id="node4" href="$structVocabTree_1_1SearchParams.html" title="Subclass of train params base which specifies Vocab Tree training parameters." alt="" coords="200,107,379,133"/>
 </map>

@@ -73,10 +73,24 @@ $(document).ready(function(){initNavTree('config_8hpp_source.html','');});
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment">/// This header is automatically generated.  Do not modify.</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="code" href="config_8hpp.html#afbd965123c7137962cdc7571c17cbe20">    6</a></span>&#160;<span class="preprocessor">#define ENABLE_OPENMP 1</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="config_8hpp.html#aa84164aed4ba3c6c236edde52de3930b">    7</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ENABLE_MPI 1</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="config_8hpp.html#aba7e819167483168eea1ce997d177563">    8</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ENABLE_FASTCLUSTER 1</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="code" href="config_8hpp.html#a112b344dd251bdf62eba2d1cbcc97f31">    9</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ENABLE_MULTITHREADING 1</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno"><a class="code" href="config_8hpp.html#aa84164aed4ba3c6c236edde52de3930b">    6</a></span>&#160;<span class="preprocessor">#define ENABLE_MPI 0</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="config_8hpp.html#aba7e819167483168eea1ce997d177563">    7</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ENABLE_FASTCLUSTER 0</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="config_8hpp.html#a112b344dd251bdf62eba2d1cbcc97f31">    8</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define ENABLE_MULTITHREADING 1</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// needed for sublime clang to work</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#if ENABLE_MULTITHREADING</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor"></span><span class="preprocessor">        #ifdef __clang__</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor"></span><span class="preprocessor">                #if __has_include(&lt;omp.h&gt;)</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span><span class="preprocessor">                        #define ENABLE_OPENMP 1</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span><span class="preprocessor">                #else</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor"></span><span class="preprocessor">                        #define ENABLE_OPENMP 0</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span><span class="preprocessor">                #endif</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor"></span><span class="preprocessor">        #else</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="config_8hpp.html#afbd965123c7137962cdc7571c17cbe20">   19</a></span>&#160;<span class="preprocessor"></span><span class="preprocessor">                #define ENABLE_OPENMP 1</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor"></span><span class="preprocessor">        #endif</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor"></span><span class="preprocessor">        #define ENABLE_OPENMP 0</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

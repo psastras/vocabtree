@@ -78,42 +78,57 @@ $(document).ready(function(){initNavTree('compute__sift__simple_8cxx_source.html
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;utils/logger.hpp&gt;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;_INITIALIZE_EASYLOGGINGPP</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="compute__sift__simple_8cxx.html#a9306418341be659f27ec30656afed137">   13</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="bench__bow_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[]) {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;        <a class="code" href="classSimpleDataset.html" title="SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG images in a s...">SimpleDataset</a> simple_dataset(<a class="code" href="bench__config_8hpp.html#a6ff0631ad2217266ff8368896e165864" title="This header is automatically generated.">s_simple_data_dir</a>, <a class="code" href="bench__config_8hpp.html#a746cb2c32aa93b02c1f0e3ff6415d559">s_simple_database_location</a>);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        LINFO &lt;&lt; simple_dataset;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">//#if ENABLE_MULTITHREADING &amp;&amp; ENABLE_OPENMP</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">//#pragma omp parallel for schedule(dynamic)</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//#endif</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordflow">for</span> (int64_t i = 0; i &lt; simple_dataset.num_images(); i++) {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                std::shared_ptr&lt;SimpleDataset::SimpleImage&gt; image = std::static_pointer_cast&lt;<a class="code" href="classSimpleDataset_1_1SimpleImage.html" title="SimpleImage class used with the SimpleDataset class.">SimpleDataset::SimpleImage</a>&gt;(simple_dataset.image(i));</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                <span class="keywordflow">if</span> (image == <span class="keyword">nullptr</span>) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;                <span class="keyword">const</span> std::string &amp;keypoints_location = simple_dataset.<a class="code" href="classSimpleDataset_1_1SimpleImage.html#ac5fc639e05e14ff7a2eec79af79ea221" title="Returns the image location relative to the database data directory.">location</a>(image-&gt;feature_path(<span class="stringliteral">&quot;keypoints&quot;</span>));</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                <span class="keyword">const</span> std::string &amp;descriptors_location = simple_dataset.location(image-&gt;feature_path(<span class="stringliteral">&quot;descriptors&quot;</span>));</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;                <span class="comment">// if (filesystem::file_exists(keypoints_location) &amp;&amp; filesystem::file_exists(descriptors_location)) continue;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                <span class="keyword">const</span> std::string &amp;image_location = simple_dataset.location(image-&gt;location());</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                <span class="keywordflow">if</span> (!<a class="code" href="namespacefilesystem.html#a1d10e228c7c784ffc2e9c3c5bfc0dd11" title="Returns true if file exists at location, else returns false.">filesystem::file_exists</a>(image_location)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                cv::Mat keypoints, descriptors;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                <span class="keywordflow">if</span> (!<a class="code" href="namespacevision.html#af32568481574bcf43057392bd9126b5c" title="Given a grayscale image, img, and SIFT extraction parameters computes sparse sift features...">vision::compute_sparse_sift_feature</a>(im, <span class="keyword">nullptr</span>, keypoints, descriptors)) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <a class="code" href="namespacefilesystem.html#a7df468aa6576b318ff9c3f97cfa93312" title="Recursively creates all directories if needed up to the specified file.">filesystem::create_file_directory</a>(keypoints_location);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <a class="code" href="namespacefilesystem.html#a7df468aa6576b318ff9c3f97cfa93312" title="Recursively creates all directories if needed up to the specified file.">filesystem::create_file_directory</a>(descriptors_location);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <a class="code" href="namespacefilesystem.html#a8ae14fa16e3fe587215befb8df837678" title="Writes a cv::Mat structure to the specified location.">filesystem::write_cvmat</a>(keypoints_location, keypoints);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <a class="code" href="namespacefilesystem.html#a8ae14fa16e3fe587215befb8df837678" title="Writes a cv::Mat structure to the specified location.">filesystem::write_cvmat</a>(descriptors_location, descriptors);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#if ENABLE_MULTITHREADING &amp;&amp; ENABLE_OPENMP</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;omp.h&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#if ENABLE_MULTITHREADING &amp;&amp; ENABLE_MPI</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;_INITIALIZE_EASYLOGGINGPP</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="compute__sift__simple_8cxx.html#a9306418341be659f27ec30656afed137">   20</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="bench__all_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[]) {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        LINFO &lt;&lt; <span class="stringliteral">&quot;HJ&quot;</span>;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#if ENABLE_MULTITHREADING &amp;&amp; ENABLE_MPI</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor"></span>        MPI::Init(argc, argv);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordtype">int</span> rank = MPI::COMM_WORLD.Get_rank();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordflow">if</span>(rank == 0) {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor"></span>        <a class="code" href="classSimpleDataset.html" title="SimpleDataset is a sample implementation of a Dataset, where the data is stored as JPEG images in a s...">SimpleDataset</a> simple_dataset(<a class="code" href="bench__config_8hpp.html#a61079cf0451cb4181d177267d64abc80">s_oxfordmini_data_dir</a>, <a class="code" href="bench__config_8hpp.html#a119a1bf96e1713bea52ea5498d856f6d">s_oxfordmini_database_location</a>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        LINFO &lt;&lt; simple_dataset;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#if ENABLE_MULTITHREADING &amp;&amp; ENABLE_OPENMP</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#pragma omp parallel for schedule(dynamic)</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor"></span>        <span class="keywordflow">for</span> (int64_t i = 0; i &lt; simple_dataset.num_images(); i++) {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                std::shared_ptr&lt;SimpleDataset::SimpleImage&gt; image = std::static_pointer_cast&lt;<a class="code" href="classSimpleDataset_1_1SimpleImage.html" title="SimpleImage class used with the SimpleDataset class.">SimpleDataset::SimpleImage</a>&gt;(simple_dataset.image(i));</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                <span class="keywordflow">if</span> (image == <span class="keyword">nullptr</span>) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <span class="keyword">const</span> std::string &amp;keypoints_location = simple_dataset.<a class="code" href="classSimpleDataset_1_1SimpleImage.html#ac5fc639e05e14ff7a2eec79af79ea221" title="Returns the image location relative to the database data directory.">location</a>(image-&gt;feature_path(<span class="stringliteral">&quot;keypoints&quot;</span>));</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <span class="keyword">const</span> std::string &amp;descriptors_location = simple_dataset.location(image-&gt;feature_path(<span class="stringliteral">&quot;descriptors&quot;</span>));</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                <span class="comment">// if (filesystem::file_exists(keypoints_location) &amp;&amp; filesystem::file_exists(descriptors_location)) continue;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <span class="keyword">const</span> std::string &amp;image_location = simple_dataset.location(image-&gt;location());</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span> (!<a class="code" href="namespacefilesystem.html#a1d10e228c7c784ffc2e9c3c5bfc0dd11" title="Returns true if file exists at location, else returns false.">filesystem::file_exists</a>(image_location)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                cv::Mat keypoints, descriptors;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <span class="keywordflow">if</span> (!<a class="code" href="namespacevision.html#af32568481574bcf43057392bd9126b5c" title="Given a grayscale image, img, and SIFT extraction parameters computes sparse sift features...">vision::compute_sparse_sift_feature</a>(im, <span class="keyword">nullptr</span>, keypoints, descriptors)) <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <a class="code" href="namespacefilesystem.html#a7df468aa6576b318ff9c3f97cfa93312" title="Recursively creates all directories if needed up to the specified file.">filesystem::create_file_directory</a>(keypoints_location);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <a class="code" href="namespacefilesystem.html#a7df468aa6576b318ff9c3f97cfa93312" title="Recursively creates all directories if needed up to the specified file.">filesystem::create_file_directory</a>(descriptors_location);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <a class="code" href="namespacefilesystem.html#a8ae14fa16e3fe587215befb8df837678" title="Writes a cv::Mat structure to the specified location.">filesystem::write_cvmat</a>(keypoints_location, keypoints);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <a class="code" href="namespacefilesystem.html#a8ae14fa16e3fe587215befb8df837678" title="Writes a cv::Mat structure to the specified location.">filesystem::write_cvmat</a>(descriptors_location, descriptors);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#if ENABLE_MULTITHREADING &amp;&amp; ENABLE_MPI</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor"></span>        }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        MPI::Finalize();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor"></span>        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
