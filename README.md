@@ -75,26 +75,40 @@ Compute Features
 
 SimpleDataset simple_dataset("/home/foo/data/", "/home/foo/data/database.bin");
 for (int64_t i = 0; i < simple_dataset.num_images(); i++) {
+
+	// retrieve image i from the dataset
 	std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(
 		simple_dataset.image(i));
-	if (image == nullptr) continue;
+		
+	if (image == nullptr) continue; // image failed to load
 	
-	const std::string &keypoints_location = simple_dataset.location(image->feature_path("keypoints"));
-	const std::string &descriptors_location = simple_dataset.location(image->feature_path("descriptors"));
-	if (filesystem::file_exists(keypoints_location) && filesystem::file_exists(descriptors_location)) continue;
+	const std::string &keypoints_location = simple_dataset.location(
+		image->feature_path("keypoints"));
+	const std::string &descriptors_location = simple_dataset.location(
+		image->feature_path("descriptors"));
 	
+	// if feature already exists, skip
+	if (filesystem::file_exists(keypoints_location) && 
+		filesystem::file_exists(descriptors_location)) continue;
+	
+	// get image location on disk
 	const std::string &image_location = simple_dataset.location(image->location());
 	
+	// if image doesn't exist, skip
 	if (!filesystem::file_exists(image_location)) continue;
 	
+	// read in the image into im
 	cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);
 	
+	// compute sparse sift keypoints and descriptors
 	cv::Mat keypoints, descriptors;
 	if (!vision::compute_sparse_sift_feature(im, nullptr, keypoints, descriptors)) continue;
 	
+	// create directories if missing
 	filesystem::create_file_directory(keypoints_location);
 	filesystem::create_file_directory(descriptors_location);
 	
+	// write out the keypoints and descriptors
 	filesystem::write_cvmat(keypoints_location, keypoints);
 	filesystem::write_cvmat(descriptors_location, descriptors);
 }
