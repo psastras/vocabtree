@@ -77,8 +77,8 @@ SimpleDataset simple_dataset("/home/foo/data/", "/home/foo/data/database.bin");
 for (int64_t i = 0; i < simple_dataset.num_images(); i++) {
 
 	// retrieve image i from the dataset
-	std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(
-		simple_dataset.image(i));
+	std::shared_ptr<SimpleDataset::SimpleImage> image = 
+		std::static_pointer_cast<SimpleDataset::SimpleImage>(simple_dataset.image(i));
 		
 	if (image == nullptr) continue; // image failed to load
 	
@@ -131,7 +131,8 @@ Train and Search a Tree
     
     // Search for image zero in the dataset
     std::shared_ptr<VocabTree::MatchResults> matches =
-        std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(0)));
+        std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr,
+        	simple_dataset.image(0)));
     
     // Print out the matches to image zero
     for (uint64_t id : matches->matches)
