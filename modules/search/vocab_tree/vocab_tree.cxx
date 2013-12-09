@@ -176,6 +176,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       num_features += descriptors.rows;
 
       all_descriptors.push_back(descriptorsf);
+      //all_descriptors.push_back(descriptors);
     }
   }
 
@@ -191,7 +192,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
 
   databaseVectors.reserve(all_ids.size());
 
-  // now generate data on the reference images - descriptors go down tree, add images to inverted lists at leaves, 
+  // generate data on the reference images - descriptors go down tree, add images to inverted lists at leaves, 
   //   and generate di vector for image
   // Also stores counts for how many images pass through each node to calculate weights
   std::vector<uint32_t> counts(numberOfNodes);
@@ -214,8 +215,11 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       std::vector<float> result = generateVector(descriptorsf, false, all_ids[i]);
       // accumulate counts
       for (size_t j = 0; j < numberOfNodes; j++)
-        if (result[j] > 0)
-          counts[j]++;
+      if (result[j] > 0)
+#pragma omp critical
+      {
+        counts[j]++;
+      }
 
       //databaseVectors.insert(std::make_pair<uint64_t, std::vector<float>>(all_ids[i], result));
 #pragma omp critical
@@ -226,6 +230,9 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   }
 
   // create weights according to equation 4: w_i = ln(N / N_i)
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#pragma omp parallel for schedule(dynamic)
+#endif
   for (size_t i = 0; i < numberOfNodes; i++) {
     if (counts[i] == 0)
       weights[i] = 0;
@@ -290,12 +297,15 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
 
   bool enoughToFill = true;
   if (descriptors.rows >= split) {
+#if ENABLE_FASTCLUSTER && ENABLE_MPI && currLevel==0
+#else
     cv::kmeans(descriptors, split, labels, tc, attempts, flags, centers);
 
     for (int i = 0; i < labels.rows; i++) {
       int index = labels.at<int>(i);
       groups[index].push_back(descriptors.row(i));
     }
+#endif
   }
   else {
     // *** THIS SHOULDN'T BE THE CASE, why is kmeans splitting poorly? ****
@@ -308,10 +318,12 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
   //   printf("%d, ", groups[i].rows);
   // printf("\n");
 
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
   uint32_t totalChildren = pow(split, currLevel);
+  uint32_t maxThreads = omp_get_num_threads();
+#endif
   
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP && totalChildren<maxThreads
-  uint32_t maxThreads = omp_get_num_threads();
 #pragma omp parallel for schedule(dynamic)
 #endif
   for (uint32_t i = 0; i < split; i++) {
