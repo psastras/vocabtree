@@ -797,7 +797,12 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     values.push_back(matchPair(elem, sqrt(score)));
   }
 
-  // aggregate everything into 0
+  int keep = 10;
+  std::sort(values.begin(), values.end(), comparer);
+  std::vector<matchPair>::iterator it = values.begin();
+  values.erase(it+keep, values.end());
+
+  // aggregate everything into node 0
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int rank = MPI::COMM_WORLD.Get_rank();
   int procs = MPI::COMM_WORLD.Get_size();
@@ -816,6 +821,10 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
       Comm::Recv(&score, 1, MPI_FLOAT, MPI_ANY_SOURCE, MPI_ANY_TAG, &status);
       values.push_back(matchPair(status.MPI_TAG-1, score));
     }
+
+    std::sort(values.begin(), values.end(), comparer);
+    it = values.begin();
+    values.erase(it+keep, values.end());
   }
   else {
     Request sizeRequests[leaves];
@@ -827,9 +836,8 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
       Comm::Send(&p.second, 1, MPI_FLOAT, 0, p.first+1);
     Request::Waitall(leaves, &sizeRequests[0]);
   }
-#endif
 
-  std::sort(values.begin(), values.end(), comparer);
+#endif
 
   // printf("%d matches\n", values.size());
   // add all images in order or match
