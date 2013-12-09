@@ -9,9 +9,21 @@
 #include <utils/logger.hpp>
 #include <vis/matches_page.hpp>
 
-int main(int argc, char *argv[]) {
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#include <omp.h>
+#endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
 
-  SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
+int main(int argc, char *argv[]) {
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  MPI::Init(argc, argv);
+#endif
+
+  SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
+  //SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
+
   //LINFO << simple_dataset;
 
   //std::stringstream vocab_output_file;
@@ -24,7 +36,8 @@ int main(int argc, char *argv[]) {
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
   train_params->depth = 4;
   train_params->split = 4;
-  vt.train(simple_dataset, train_params, simple_dataset.random_images(128));
+  vt.train(simple_dataset, train_params, simple_dataset.all_images());
+  //vt.train(simple_dataset, train_params, simple_dataset.random_images(12));
 
   /*
   std::stringstream index_output_file;
@@ -48,6 +61,11 @@ int main(int argc, char *argv[]) {
   }
 
 
-    html_output.write(simple_dataset.location() + "/results/matches/");
+  html_output.write(simple_dataset.location() + "/results/matches/");
+
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  MPI::Finalize();
+#endif
+
   return 0;
 }
