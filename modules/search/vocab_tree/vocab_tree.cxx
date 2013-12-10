@@ -293,7 +293,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   Status status;
   int index;
   while (recieved < recieveReqCount) {
-    index = Request::Waitany(recieveRequests.count(), &recieveRequests[0], &status);
+    index = Request::Waitany(recieveRequests.size(), &recieveRequests[0], &status);
     if(status.MPI_TAG%2 == 0) { // make new request
       int t = status.MPI_TAG / 2;
       tree[t].mean.create(1, cols, elemType);
@@ -337,6 +337,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
       descriptors.convertTo(descriptorsf, CV_32FC1);
       std::vector<float> result = generateVector(descriptorsf, false, all_ids[i]);
+
       // accumulate counts
       for (size_t j = 0; j < numberOfNodes; j++)
       if (result[j] > 0)
@@ -409,20 +410,20 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] /= length;
   }
 
-  for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
-    // printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
+  /*for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
+     //printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
   }
-  // printf("\n\n");
+   printf("\n\n");
   uint32_t l = 0, inL = 0;
   for (uint32_t i = 0; i < numberOfNodes; i++) {
-    // printf("Node %d, num %d, weight %f || ", i, tree[i].invertedFileLength, weights[i]);
+     printf("Node %d, ifl %d, count %d, weight %f || ", i, tree[i].invertedFileLength, counts[i], weights[i]);
     inL++;
     if (inL >= (uint32_t)pow(split, l)) {
       l++;
       inL = 0;
-      // printf("\n");
+      printf("\n");
     }
-  }
+  }*/
 
 
   struct Temp_pair {
@@ -454,7 +455,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     Request sizeRequests[leaves];
     Temp_pair tmpPair;
     for (int i = 0; i < leaves; i++) {
-      int fileSize = invertedFiles[i].count();
+      int fileSize = invertedFiles[i].size();
       sizeRequests[i] = Comm::Isend(&fileSize, 1, MPI_INT, 0, leaves);
 
       for (auto & p : invertedFiles[i]) {
@@ -485,7 +486,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     }
   }
   else {
-    int count = databaseVectors.count();
+    int count = databaseVectors.size();
     Comm::Send(&count, 1, MPI_INT, 0, 0);
     for (auto & p : databaseVectors)
       Comm::Send(&(p.second[0]), numberOfNodes, MPI_FLOAT, 0, p.first + 1);
@@ -517,8 +518,9 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
 
 #if !(ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode)
   std::vector<cv::Mat> groups(split);
-  for (uint32_t i = 0; i < split; i++)
-    groups[i] = cv::Mat();
+  std::vector< std::vector<cv::Mat> > unjoinedGroups(split);
+  //for (uint32_t i = 0; i < split; i++)
+    //groups[i] = cv::Mat();//cv::Mat(0, descriptors.cols, descriptors.type);
 #else
   std::vector<std::vector<uint32_t> > groups(split);
 #endif
@@ -530,9 +532,10 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
     int numIndices = indices.size();
     // gather desired descriptors
 #if ENABLE_MULTITHREADING && ENABLE_MPI && (rank!=maxNode || numIndices>0)
-    cv::Mat compiledDescriptors;
+  std::vector<cv::Mat> listDescriptors;
     for (uint32_t : indices)
-      compiledDescriptors.push_back(descriptors.row(i));
+      listDescriptors.push_back(descriptors.row(i));
+    cv::Mat compiledDescriptors = vision::merge_descriptors(listDescriptors, true);
 
     // can we do this like bag_of_words does using mpi for the first node?
     cv::kmeans(compiledDescriptors, split, labels, tc, attempts, flags, centers);
@@ -545,7 +548,10 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
 #if ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode
       groups[index].push_back(indices[index]);
 #else
-      groups[index].push_back(descriptors.row(i));
+      //if (groups[index].cols != descriptors.cols)
+        //printf("COL MISMATCH\n");
+      //groups[index].push_back(descriptors.row(i));
+      unjoinedGroups[index].push_back(descriptors.row(i));
 #endif
     }
   }
@@ -556,16 +562,23 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
 #if ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode
       groups[i].push_back(indices[i]);
 #else
-      groups[i].push_back(descriptors.row(i));
+      //groups[i].push_back(descriptors.row(i));
+      unjoinedGroups[i].push_back(descriptors.row(i));
 #endif
   }
 
-  indices.clear(); // this is only important for the case where mpi has data in the indices, but won't be calling
+#if !(ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode)
+ for (int i = 0; i<split; i++) {
+    if (unjoinedGroups[i].size() > 0)
+      /***** This will give memory problems and crash *****/
+      groups[i] = vision::merge_descriptors(unjoinedGroups[i], false); 
+  }
+#endif
+
+  if (indices.size() > 0)
+    indices.clear(); // this is only important for the case where mpi has data in the indices, but won't be calling
       // more mpi nodes, so it will want indices to be clear
 
-  // for (uint32_t i = 0; i < split; i++)
-  //   printf("%d, ", groups[i].rows);
-  // printf("\n");
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
   uint32_t totalChildren = pow(split, currLevel);
@@ -726,12 +739,15 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
   // if inner node
   else {
     uint32_t maxChild = tree[nodeIndex].firstChildIndex;
-    double max = descriptor.dot(tree[maxChild].mean);
+    double max = tree[maxChild].mean.dims == 0 ? 0 : descriptor.dot(tree[maxChild].mean);
+    //double max = descriptor.dot(tree[maxChild].mean);
     
     for (uint32_t i = 1; i < split; i++) {
       if (tree[nodeIndex].invertedFileLength == 0)
         continue;
       uint32_t childIndex = tree[nodeIndex].firstChildIndex + i;
+      if (tree[childIndex].mean.dims == 0)
+        continue;
       double dot = descriptor.dot(tree[childIndex].mean);
 
       if (dot>max) {
@@ -799,8 +815,10 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
 
   int keep = 10;
   std::sort(values.begin(), values.end(), comparer);
-  std::vector<matchPair>::iterator it = values.begin();
-  values.erase(it+keep, values.end());
+  if (values.size() > keep) {
+    std::vector<matchPair>::iterator it = values.begin();
+    values.erase(it + keep, values.end());
+  }
 
   // aggregate everything into node 0
 #if ENABLE_MULTITHREADING && ENABLE_MPI
@@ -829,7 +847,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   else {
     Request sizeRequests[leaves];
     Temp_pair tmpPair;
-    int tmpCount = values.count();
+    int tmpCount = values.size();
     sizeRequests[i] = Comm::Isend(&tmpCount, 1, MPI_INT, 0, 0);
 
     for (matchPair p : values)
