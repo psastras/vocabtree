@@ -1,4 +1,6 @@
 #include "tests_config.hpp"
+#include <config.hpp>
+
 #include <search/vocab_tree/vocab_tree.hpp>
 #include <iostream>
 
@@ -15,14 +17,13 @@
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 #include <mpi.h>
 #endif
-
 int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-  MPI::Init(argc, argv);
+  MPI_Init(&argc, &argv);
 #endif
 
-  SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
-  //SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
+  //SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
+  SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
 
   //LINFO << simple_dataset;
 
@@ -36,8 +37,8 @@ int main(int argc, char *argv[]) {
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
   train_params->depth = 4;
   train_params->split = 4;
-  vt.train(simple_dataset, train_params, simple_dataset.all_images());
-  //vt.train(simple_dataset, train_params, simple_dataset.random_images(12));
+  //vt.train(simple_dataset, train_params, simple_dataset.all_images());
+  vt.train(simple_dataset, train_params, simple_dataset.random_images(100));
 
   /*
   std::stringstream index_output_file;
@@ -48,7 +49,7 @@ int main(int argc, char *argv[]) {
   */
 
   MatchesPage html_output;
-  for (uint32_t i = 0; i<256; i++) {
+  for (uint32_t i = 0; i<50; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
      std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
     //LINFO << "Query " << i << ": " << *matches;
@@ -64,7 +65,13 @@ int main(int argc, char *argv[]) {
   html_output.write(simple_dataset.location() + "/results/matches/");
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-  MPI::Finalize();
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  printf("\nRank: %d\n", rank);
+
+  MPI_Finalize();
+#else
+  printf("NONONONONONONONONONONONONONONONONO\n\n");
 #endif
 
   return 0;
