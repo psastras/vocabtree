@@ -641,7 +641,7 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
   return generateVector(descriptors, shouldWeight, dummy, id);
 }
 
-std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight, 
+std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight,
   std::unordered_set<uint32_t> & possibleMatches, int64_t id) {
 
   std::vector<float> vec(numberOfNodes);
@@ -655,24 +655,29 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for
 #endif
-  for (int r = rank; r < descriptors.rows; r+=procs) {
+  for (int r = (id>=0? 0:rank); r < descriptors.rows; r+=(id>0?1:procs)) {
 #else
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#pragma omp parallel for
+#endif
   for (int r = 0; r < descriptors.rows; r++) {
 #endif
     generateVectorHelper(0, descriptors.row(r), vec, possibleMatches, id);
   }
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-  for(int i=0; i<procs; i++)
-  if (i != rank)
-    Comm::Send(&vec[0], numberOfNodes, MPI_FLOAT, i, 0);
+  if(id<0) {
+    for(int i=0; i<procs; i++)
+    if (i != rank)
+      Comm::Send(&vec[0], numberOfNodes, MPI_FLOAT, i, 0);
 
-  std::vector<float> otherVec(numberOfNodes);
-  for (int i = 0; i<procs; i++)
-  if (i != rank) {
-    Comm::Recv(&otherVec[0], numberOfNodes, MPI_FLOAT, MPI_ANY_SOURCE, 0);
-    for (int j = 0; j < numberOfNodes; j++)
-      vec[i] += otherVec[j];
+    std::vector<float> otherVec(numberOfNodes);
+    for (int i = 0; i<procs; i++)
+    if (i != rank) {
+      Comm::Recv(&otherVec[0], numberOfNodes, MPI_FLOAT, MPI_ANY_SOURCE, 0);
+      for (int j = 0; j < numberOfNodes; j++)
+        vec[i] += otherVec[j];
+    }
   }
 #endif
 
@@ -840,6 +845,8 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
       values.push_back(matchPair(status.MPI_TAG-1, score));
     }
 
+    // this may result in duplicate entries
+    // will have to decide if that's a problem and if its worth fixing
     std::sort(values.begin(), values.end(), comparer);
     it = values.begin();
     values.erase(it+keep, values.end());
