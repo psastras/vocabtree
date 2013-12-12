@@ -86,8 +86,7 @@ protected:
   /// The arguments of indices, maxNode, and ratio are only used for multinode mpi. In this case descriptors will always contain all the descriptors
   /// and indices will index into it. Nodes will be able to send additional work to the nodes [rank:maxNode], so if maxNode=rank then can't 
   /// delegate any more work to processors. Ratio is the ideal number of descriptors per processor, computed before hand and carried down
-  void buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::TermCriteria &tc, int attempts, int flags, int currLevel, 
-    std::vector<uint32_t> indices, uint32_t maxNode, float_t ratio);
+  void buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::TermCriteria &tc, int attempts, int flags, int currLevel);
 
   /// helper function, inserts a dummy possibleMatches
   std::vector<float> generateVector(const cv::Mat &descriptors, bool shouldWeight, int64_t id = -1);

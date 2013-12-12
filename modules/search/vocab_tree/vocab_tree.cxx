@@ -148,6 +148,7 @@ bool VocabTree::save (const std::string &file_path) const {
 
 bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params,
   const std::vector< std::shared_ptr<const Image > > &examples) {
+  printf("Starting to build tree...\n");
 
   const std::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
   split = vt_params->split;
@@ -165,9 +166,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   }
 
   // don't shuffle if using mpi because need to pass along image id's in the same order on all nodes
-#if !(ENABLE_MULTITHREADING && ENABLE_MPI)
   std::random_shuffle(all_ids.begin(), all_ids.end());
-#endif
 
   std::vector<cv::Mat> all_descriptors;
   uint64_t num_features = 0;
@@ -184,7 +183,6 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       num_features += descriptors.rows;
 
       all_descriptors.push_back(descriptorsf);
-      //all_descriptors.push_back(descriptors);
     }
   }
 
@@ -194,75 +192,20 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 18, 0.000001);
   // end of stuff from bag of words
 
-  uint32_t startNode = 0;
-  uint32_t startLevel = 0;
-  uint32_t levelIndex = 0;
-  float_t ratio = 0;
-
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int rank, procs;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procs);
-  uint32_t minNode, maxNode;
-  int descriptorCount;
-  std::vector<uint32_t> indices;
-  ratio = ((float_t)merged_descriptor.rows) / procs;
-
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#pragma omp parallel for
 #endif
-  for(int i=0; i<numberOfNodes; i++)
-    tree[i].index = -1;
 
-  if (rank == 0) {
-    minNode = 0;
-    maxNode = procs - 1;
-    descriptorCount = merged_descriptor.rows;
-    indices.resize(descriptorCount);
-
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#pragma omp parallel for
-#endif
-    for(uint32_t i=0; i<descriptorCount; i++)
-      indices[i] = i;
-  }
-  else {
-    // get: which node to work on, number of descriptors, descriptors (indices), current level, maxNode (that can send work to), and levelIndex
-    // write to startNode, startLevel, and levelIndex
-    // read in mean
-    MPI_Request requests[6];
-    MPI_Request headerReq;
-
-    MPI_Irecv(&startNode, 1, MPI_INT, MPI_ANY_SOURCE, index_tag, MPI_COMM_WORLD, &requests[0]);
-    MPI_Irecv(&levelIndex, 1, MPI_INT, MPI_ANY_SOURCE, levelIndex_tag, MPI_COMM_WORLD, &requests[1]);
-
-    // send mean_vector
-    cvmat_header h;
-    MPI_Irecv(&h, sizeof(cvmat_header), MPI_BYTE, MPI_ANY_SOURCE, meanHeader_tag, MPI_COMM_WORLD, &headerReq);
-
-    MPI_Irecv(&maxNode, 1, MPI_INT, MPI_ANY_SOURCE, maxNode_tag, MPI_COMM_WORLD, &requests[2]);
-    MPI_Irecv(&startLevel, 1, MPI_INT, MPI_ANY_SOURCE, level_tag, MPI_COMM_WORLD, &requests[3]);
-
-    int indicesCount;
-    MPI_Recv(&indicesCount, 1, MPI_INT, MPI_ANY_SOURCE, indicesCount_tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    indices.resize(indicesCount);
-    MPI_Irecv(&(indices[0]), indicesCount, MPI_INT, MPI_ANY_SOURCE, indices_tag, MPI_COMM_WORLD, &requests[4]);
-
-    MPI_Wait(&headerReq, MPI_STATUSES_IGNORE);
-    tree[startNode].mean.create(h.rows, h.cols, h.elem_type);
-    MPI_Irecv((char *)tree[startNode].mean.ptr(), h.rows * h.cols * h.elem_size, MPI_BYTE, MPI_ANY_SOURCE, mean_tag, MPI_COMM_WORLD, &requests[5]);
-
-    MPI_Waitall(6, requests, MPI_STATUSES_IGNORE);
-  }
-
-#else
-  std::vector<uint32_t> indices(0);
-  uint32_t maxNode = 0;
-#endif
+  uint32_t startNode = 0;
+  uint32_t startLevel = 0;
+  uint32_t levelIndex = 0;
 
   tree[startNode].levelIndex = levelIndex;
   tree[startNode].index = startNode;
-  buildTreeRecursive(startNode, merged_descriptor, tc, attempts, cv::KMEANS_PP_CENTERS, startLevel, indices, maxNode, ratio);
+  buildTreeRecursive(startNode, merged_descriptor, tc, attempts, cv::KMEANS_PP_CENTERS, startLevel);
+  printf("%d Built tree structure...\n", rank);
 
   databaseVectors.reserve(all_ids.size());
 
@@ -272,50 +215,114 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   MPI_Barrier(MPI_COMM_WORLD); // all nodes should build their part of the tree
 
   int cols = merged_descriptor.cols;
-  uint64_t elemSize = merged_descriptor.elemSize;
+  uint64_t elemSize = merged_descriptor.elemSize();
   int32_t elemType = merged_descriptor.type();
+  printf("[%d] cols: %d, size: %d, type: %d\n", rank, cols, elemSize, elemType);
 
-  std::vector<MPI_Request> sentRequests;
-  std::vector<MPI_Request> recieveRequests;
+  printf(" %d here\n", rank);
+  if (rank == 0)
+    printf("master\n");
+  else
+    printf("slave");
 
-  for (int i = 0; i < numberOfNodes; i++) {
-    // if this compute node has data on this tree node then the index will be >=0
-    if (tree[i].index >= 0) { // send data out
-      for (int j = 0; j < procs; j++) {
-        if (j == rank) continue;
-        MPI_Request request;
-        sentRequests.push_back(request);
-        sentRequests.push_back(request);
-        MPI_Isend(&tree[i], sizeof(TreeNode), MPI_BYTE, j, 2 * i, MPI_COMM_WORLD, &sentRequests[sentRequests.size()-2]);
-        MPI_Isend((char *)tree[i].mean.ptr(), cols*elemSize, MPI_BYTE, j, 2 * i + 1, MPI_COMM_WORLD, &sentRequests[sentRequests.size() - 1]);
+  if (rank == 0) {
+    printf("Sending...\n"); 
+    std::vector<MPI_Request> sentRequests(procs - 1);
+    int c = 0;
+    for (int p = 1; p < procs; p++){
+      MPI_Send(&tree[1], sizeof(TreeNode)*(numberOfNodes - 1), MPI_BYTE, p, 1874239473, MPI_COMM_WORLD);
+      //MPI_Isend(&tree[1], sizeof(TreeNode)*(numberOfNodes - 1), MPI_BYTE, p, 1874239473, MPI_COMM_WORLD, &sentRequests[p - 1]);
+      //MPI_Isend((char *)(tree[i].mean.ptr()), cols*elemSize, MPI_BYTE, p, 2 * i + 1, MPI_COMM_WORLD, &sentRequests[c++]);
+    }
+    //MPI_Waitall(procs-1, &sentRequests[0], MPI_STATUSES_IGNORE);
+    /*std::vector<MPI_Request> sentRequests((procs-1)*(numberOfNodes-1));
+    int c = 0;
+    for (int i = 1; i < numberOfNodes; i++)
+    for (int p = 1; p < procs; p++){
+      MPI_Isend(&tree[i], sizeof(TreeNode), MPI_BYTE, p, i, MPI_COMM_WORLD, &sentRequests[c++]);
+      //MPI_Isend((char *)(tree[i].mean.ptr()), cols*elemSize, MPI_BYTE, p, 2 * i + 1, MPI_COMM_WORLD, &sentRequests[c++]);
+    }
+    MPI_Waitall(c, &sentRequests[0], MPI_STATUSES_IGNORE); */
+
+
+    /*cv::Mat tempMat;
+    for (int i = 1; i < numberOfNodes; i++)
+      tempMat.push_back(tree[i].mean);
+    printf("ready to send %dx%d", tempMat.rows, tempMat.cols);
+    std::vector<MPI_Request> requests((procs - 1));
+    for (int p = 1; p < procs; p++)
+      MPI_Isend((char *)tempMat.ptr(), cols*elemSize*(numberOfNodes), MPI_BYTE, p, 0, MPI_COMM_WORLD, &requests[p-1]);
+    MPI_Waitall(requests.size(), &requests[0], MPI_STATUSES_IGNORE);*/
+    /*c = 0;
+    for (int i = 1; i < numberOfNodes; i++)
+    for (int p = 1; p < procs; p++){
+      MPI_Isend((char *)tree[i].mean.ptr(), cols*elemSize, MPI_BYTE, p, i, MPI_COMM_WORLD, &sentRequests[c++]);
+    }
+    MPI_Waitall(c, &sentRequests[0], MPI_STATUSES_IGNORE);*/
+
+    int t = 42;
+    MPI_Recv(&t, 1, MPI_INT, 1, 100000, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    printf("confirmed %d\n", t);
+  }
+  else {
+    printf("Recieving %d nodes %d byte each; %d total...\n", numberOfNodes - 1, sizeof(TreeNode), sizeof(TreeNode)*(numberOfNodes - 1));
+    std::vector<TreeNode> temp(numberOfNodes);
+    MPI_Recv(&temp[1], sizeof(TreeNode)*(numberOfNodes - 1), MPI_BYTE, 0, 1874239473, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+    /*std::vector<MPI_Request> requests(numberOfNodes - 1);
+    for (int i = 1; i < numberOfNodes; i++) {
+      MPI_Irecv(&tree[i], sizeof(TreeNode), MPI_BYTE, 0, i, MPI_COMM_WORLD, &requests[i-1]);
+    }
+    MPI_Waitall(requests.size(), &requests[0], MPI_STATUSES_IGNORE);*/
+
+    /*cv::Mat tempMat(numberOfNodes - 1, cols, elemType);
+    MPI_Recv((char *)tempMat.ptr(), cols*elemSize*(numberOfNodes), MPI_BYTE, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    for (int i = 1; i < numberOfNodes; i++)
+      tree[i].mean = tempMat.row(i-1);*/
+    /*int index;
+    MPI_Status status;
+    for (int i = 0; i < 2*(numberOfNodes - 1); i++) {
+      MPI_Waitany(requests.size(), &requests[0], &index, &status);
+      if (status.MPI_TAG % 2 == 0) {
+        tree[status.MPI_TAG / 2].mean.create(1, cols, elemType);
+        MPI_Irecv((char *)tree[status.MPI_TAG / 2].mean.ptr(), cols*elemSize, MPI_BYTE, 0, status.MPI_TAG + 1, MPI_COMM_WORLD, &requests[index]);
+      }
+      else
+        requests.erase(requests.begin() + index);
+    }*/
+    
+    /*for (int i = 1; i < numberOfNodes; i++) {
+      tree[i].mean.create(1, cols, elemType);
+      MPI_Irecv((char *)(tree[i].mean.ptr()), cols*elemSize, MPI_BYTE, 0, i, MPI_COMM_WORLD, &requests[i-1]);
+    }
+    MPI_Waitall(requests.size(), &requests[0], MPI_STATUSES_IGNORE);*/
+    int t = 42;
+    MPI_Send(&t, 1, MPI_INT, 0, 100000, MPI_COMM_WORLD);
+  }
+
+  printf("  %d HERE!!\n", rank);
+
+  if (rank == 0) {
+    for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
+      //printf("Size of inv file %d: %d\n", i, invertedFiles[i].sizbe());
+    }
+    printf("\n\n");
+    uint32_t l = 0, inL = 0;
+    for (uint32_t i = 0; i < numberOfNodes; i++) {
+      printf("Node %d, len %d, w %f | ", i, tree[i].invertedFileLength, weights[i]);
+      inL++;
+      if (inL >= (uint32_t)pow(split, l)) {
+        l++;
+        inL = 0;
+        printf("\n");
       }
     }
-    else { // recieve data
-      MPI_Request request;
-      recieveRequests.push_back(request);
-      MPI_Irecv(&tree[i], sizeof(TreeNode), MPI_BYTE, MPI_ANY_SOURCE, 2 * i, MPI_COMM_WORLD, &recieveRequests[recieveRequests.size() - 2]);
-    }
   }
+  return true;
 
-  int recieved = 0; // keeps track of how many nodes have been read, including mean matrix data
-  MPI_Status status;
-  int index;
-  while (recieved < recieveRequests.size()) {
-  MPI_Waitany(recieveRequests.size(), &recieveRequests[0], &index, &status);
-    if(status.MPI_TAG%2 == 0) { // make new request
-      int t = status.MPI_TAG / 2;
-      tree[t].mean.create(1, cols, elemType);
-      MPI_Irecv((char *)tree[t].mean.ptr(), cols*elemSize, MPI_BYTE, MPI_ANY_SOURCE, status.MPI_TAG+1, MPI_COMM_WORLD, &recieveRequests[recieved]);
-    }
-    else
-      recieved++;
-  }
-
-  MPI_Waitall(sentRequests.size(), &sentRequests[0], MPI_STATUSES_IGNORE);
-  MPI_Barrier(MPI_COMM_WORLD); 
-
+  //MPI_Barrier(MPI_COMM_WORLD); 
 #endif
-
+  
   // generate data on the reference images - descriptors go down tree, add images to inverted lists at leaves, 
   //   and generate di vector for image
   // Also stores counts for how many images pass through each node to calculate weights
@@ -323,18 +330,20 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   for (size_t i = 0; i < numberOfNodes; i++)
     counts[i] = 0;
 
-
+  /*
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int imagesPerProc = ceil(((float)all_ids.size()) / procs);
 #else
   int imagesPerProc = all_ids.size();
   int rank = 0;
 #endif
+  */
+  int imagesPerProc = all_ids.size();
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
-  for (size_t i = rank*imagesPerProc; i < std::min((int)all_ids.size(), (rank + 1)*imagesPerProc); i++) {
+  for (int i = rank*imagesPerProc; i < std::min((int)all_ids.size(), (rank + 1)*imagesPerProc); i++) {
     std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     if (image == nullptr) continue;
 
@@ -362,7 +371,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     }
   }
 
-
+  /*
   // mpi synchronize counts
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int c = 0;
@@ -391,12 +400,12 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   for (int j = 0; j < counts.size(); j++)
     counts[j] += addOthers[j];
 #endif
-
+    */
   // create weights according to equation 4: w_i = ln(N / N_i)
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
-  for (size_t i = 0; i < numberOfNodes; i++) {
+  for (int i = 0; i < numberOfNodes; i++) {
     if (counts[i] == 0)
       weights[i] = 0;
     else
@@ -419,20 +428,22 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] /= length;
   }
 
-  /*for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
-     //printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
-  }
-   printf("\n\n");
-  uint32_t l = 0, inL = 0;
-  for (uint32_t i = 0; i < numberOfNodes; i++) {
-     printf("Node %d, ifl %d, count %d, weight %f || ", i, tree[i].invertedFileLength, counts[i], weights[i]);
-    inL++;
-    if (inL >= (uint32_t)pow(split, l)) {
-      l++;
-      inL = 0;
-      printf("\n");
+  if (rank == 0) {
+    for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
+      //printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
     }
-  }*/
+    printf("\n\n");
+    uint32_t l = 0, inL = 0;
+    for (uint32_t i = 0; i < numberOfNodes; i++) {
+      printf("Node %d, ifl %d, count %d, weight %f || ", i, tree[i].invertedFileLength, counts[i], weights[i]);
+      inL++;
+      if (inL >= (uint32_t)pow(split, l)) {
+        l++;
+        inL = 0;
+        printf("\n");
+      }
+    }
+  }
 
 
   struct Temp_pair {
@@ -441,6 +452,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   };
 
   // synchronize leaf and vector information, everything send to node 0
+  /*
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   MPI_Barrier(MPI_COMM_WORLD); 
   // get leaf sets
@@ -502,93 +514,72 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       MPI_Send(&(p.second[0]), numberOfNodes, MPI_FLOAT, 0, p.first + 1, MPI_COMM_WORLD);
   }
 #endif
-
+  */
   return true;
 }
 
 
 void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::TermCriteria &tc,
-  int attempts, int flags, int currLevel, std::vector<uint32_t> indices, uint32_t maxNode, float_t ratio) {
+  int attempts, int flags, int currLevel) {
+  
+  tree[t].invertedFileLength = descriptors.rows;
+  tree[t].level = currLevel;
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  if (rank != 0) {
+    tree[0].firstChildIndex = 1;
+    return;
+  }
 #endif
-
-  tree[t].invertedFileLength = descriptors.rows;
-  tree[t].level = currLevel;
 
   // handles the leaves
   if (currLevel == maxLevel - 1) {
     tree[t].firstChildIndex = 0;
     return;
   }
-
   cv::Mat labels;
   cv::Mat centers;
-
-#if !(ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode)
+  
   std::vector<cv::Mat> groups(split);
   std::vector< std::vector<cv::Mat> > unjoinedGroups(split);
   //for (uint32_t i = 0; i < split; i++)
     //groups[i] = cv::Mat();//cv::Mat(0, descriptors.cols, descriptors.type);
-#else
-  std::vector<std::vector<uint32_t> > groups(split);
-#endif
+
 
   // printf("t: %d  rows: %d, counts: ", t, descriptors.rows);
 
   bool enoughToFill = true;
   if (descriptors.rows >= split) {
-    int numIndices = indices.size();
     // gather desired descriptors
-#if ENABLE_MULTITHREADING && ENABLE_MPI && (rank!=maxNode || numIndices>0)
-  std::vector<cv::Mat> listDescriptors;
-    for (uint32_t : indices)
-      listDescriptors.push_back(descriptors.row(i));
-    cv::Mat compiledDescriptors = vision::merge_descriptors(listDescriptors, true);
-
-    // can we do this like bag_of_words does using mpi for the first node?
-    cv::kmeans(compiledDescriptors, split, labels, tc, attempts, flags, centers);
-#else
     cv::kmeans(descriptors, split, labels, tc, attempts, flags, centers);
-#endif
 
     for (int i = 0; i < labels.rows; i++) {
       int index = labels.at<int>(i);
-#if ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode
-      groups[index].push_back(indices[index]);
-#else
+
       //if (groups[index].cols != descriptors.cols)
         //printf("COL MISMATCH\n");
       //groups[index].push_back(descriptors.row(i));
       unjoinedGroups[index].push_back(descriptors.row(i));
-#endif
+
     }
   }
   else {
     // *** THIS SHOULDN'T BE THE CASE, why is kmeans splitting poorly? ****
     enoughToFill = false;
-    for (int i = 0; i < descriptors.rows; i++)
-#if ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode
-      groups[i].push_back(indices[i]);
-#else
+    for (int i = 0; i < descriptors.rows; i++) {
       //groups[i].push_back(descriptors.row(i));
       unjoinedGroups[i].push_back(descriptors.row(i));
-#endif
+    }
+
   }
 
-#if !(ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode)
  for (int i = 0; i<split; i++) {
     if (unjoinedGroups[i].size() > 0)
       /***** This will give memory problems and crash for large inputs *****/
       groups[i] = vision::merge_descriptors(unjoinedGroups[i], false); 
   }
-#endif
-
-  if (indices.size() > 0)
-    indices.clear(); // this is only important for the case where mpi has data in the indices, but won't be calling
-      // more mpi nodes, so it will want indices to be clear
 
 
 /*#if ENABLE_MULTITHREADING && ENABLE_OPENMP
@@ -597,54 +588,21 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
 #endif*/
   
   // only do omp parallel if not splitting the work to other children
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP /*&& totalChildren<maxThreads*/ && !(ENABLE_MULTITHREADING && ENABLE_MPI && rank!=maxNode)
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP /*&& totalChildren<maxThreads*/ // && !(ENABLE_MULTITHREADING && ENABLE_MPI)
 #pragma omp parallel for schedule(dynamic)
 #endif
-  for (uint32_t i = 0; i < split; i++) {
+  for (int32_t i = 0; i < split; i++) {
     uint32_t childLevelIndex = tree[t].levelIndex*split + i;
     uint32_t childIndex = (uint32_t)((pow(split, tree[t].level + 1) - 1) / (split - 1)) + childLevelIndex;
     if (i == 0)
       tree[t].firstChildIndex = childIndex;
 
-#if ENABLE_MULTITHREADING && ENABLE_MPI &&rank != maxNode
-      // calculate destination, will give them all nodes to max
-      // I'm assuming that the groups are ordered from highest to lowest, that's what the kmeans appears to do
-      int numNodes = std::max(1, round(((float)groups[i].size()) / ratio));
-      int newNode = maxNode - numNodes + 1;
-      // send out messages
-      MPI_Request requests[8];
-      MPI_Isend(&childIndex, 1, MPI_INT, newNode, index_tag, MPI_COMM_WORLD, &requests[0]);
-      MPI_Isend(&childLevelIndex, 1, MPI_INT, newNode, levelIndex_tag, MPI_COMM_WORLD, &requests[1]);
-      int indicesCount = groups[i].size();
-      MPI_Isend(&indicesCount, 1, MPI_INT, newNode, indicesCount_tag, MPI_COMM_WORLD, &requests[2]);
-      MPI_Isend(&(groups[i][0]), indicesCount, MPI_INT, newNode, indices_tag, MPI_COMM_WORLD, &requests[3]);
-
-      // send mean_vector
-      cvmat_header h;
-      h.elem_size = centers.row(i).elemSize();
-      h.elem_type = centers.row(i).type();
-      h.rows = centers.row(i).rows;
-      h.cols = centers.row(i).cols;
-      MPI_Isend(&h, sizeof(cvmat_header), MPI_BYTE, newNode, meanHeader_tag, MPI_COMM_WORLD, &requests[4]);
-      MPI_Isend((char *)centers.row(i).ptr(), h.rows * h.cols * h.elem_size, MPI_BYTE, newNode, mean_tag, MPI_COMM_WORLD, &requests[5]);
-
-      MPI_Isend(&maxNode, 1, MPI_INT, newNode, maxNode_tag, MPI_COMM_WORLD, &requests[6]);
-      int t = currLevel + 1;
-      MPI_Isend(&t, 1, MPI_INT, newNode, level_tag, MPI_COMM_WORLD, &requests[7]);
-
-      MPI_Waitall(8, requests, MPI_STATUSES_IGNORE);
-
-      // update maxNode
-      maxNode = newNode - 1;
-    }
-#else
     if (enoughToFill)
       tree[childIndex].mean = centers.row(i);
     tree[childIndex].levelIndex = childLevelIndex;
     tree[childIndex].index = childIndex;
 
-    buildTreeRecursive(childIndex, groups[i], tc, attempts, flags, currLevel + 1, indices, maxNode, ratio);
-#endif
+    buildTreeRecursive(childIndex, groups[i], tc, attempts, flags, currLevel + 1);
   }
 }
 
@@ -659,7 +617,7 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
   std::vector<float> vec(numberOfNodes);
   for (uint32_t i = 0; i < numberOfNodes; i++)
     vec[i] = 0;
-
+  
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int rank, procs;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -678,6 +636,7 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
     generateVectorHelper(0, descriptors.row(r), vec, possibleMatches, id);
   }
 
+  /*
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   if(id<0) {
     for(int i=0; i<procs; i++)
@@ -693,14 +652,11 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
     }
   }
 #endif
-
+  */
   // if shouldWeight is true then weight all values in the vector and normalize
   if (shouldWeight) {
     float length = 0; // for normalizing
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#pragma omp parallel for
-#endif
-    for (uint32_t i = 0; i < numberOfNodes; i++) {
+    for (int32_t i = 0; i < numberOfNodes; i++) {
       vec[i] *= weights[i];
       length += vec[i] * vec[i];
     }
@@ -708,11 +664,11 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for
 #endif
-    for (uint32_t i = 0; i < numberOfNodes; i++) {
-    if(length == 0)
-      vec[i] = 0;
-    else
-      vec[i] /= length;
+    for (int32_t i = 0; i < numberOfNodes; i++) {
+      if(length == 0)
+        vec[i] = 0;
+      else
+        vec[i] /= length;
     }
 
   }
@@ -798,6 +754,13 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   descriptors.convertTo(descriptorsf, CV_32FC1);
   std::vector<float> vec = generateVector(descriptorsf, true, possibleMatches);
 
+  /*int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  printf("P %d: ", rank);
+  for (float f:vec)
+    printf("%f, ", f);
+  printf("\n\n");*/
+
   typedef std::pair<uint64_t, float> matchPair;
   struct myComparer {
     bool operator() (matchPair a, matchPair b) { return a.second < b.second; };
@@ -870,8 +833,9 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
 
     for (matchPair p : values)
       MPI_Send(&p.second, 1, MPI_FLOAT, 0, p.first+1, MPI_COMM_WORLD);
+
+    values.clear();
   }
-  printf("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEe!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n\n");
 #endif
 
   // printf("%d matches\n", values.size());
@@ -881,15 +845,6 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     match_result->tfidf_scores.push_back(m.second);
     // std::cout << m.second << std::endl;
   }
-
-  // add in matches, just do 2 for now
-  //possibleMatches.size() / 10.0
-  /*for (int i = 0; i < 1; i++) {
-    std::set<matchPair>::iterator top = values.begin();
-    match_result->matches.push_back(top->first);
-    match_result->tfidf_scores.push_back(top->second);
-  }*/
-  //match_result->matches.push_back(0);
 
   return (std::shared_ptr<MatchResultsBase>)match_result;
 }

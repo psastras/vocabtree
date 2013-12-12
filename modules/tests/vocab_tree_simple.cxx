@@ -17,9 +17,16 @@
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 #include <mpi.h>
 #endif
+
+
 int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   MPI_Init(&argc, &argv);
+  int rank, procs;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &procs);
+  printf("Rank: %d\n", rank);
+
 #endif
 
   //SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
@@ -30,45 +37,79 @@ int main(int argc, char *argv[]) {
   //std::stringstream vocab_output_file;
   //vocab_output_file << simple_dataset.location() << "/vocab/" << train_params->split << "-" 
     //<< train_params->depth << ".vocab";
-
-  //std::shared_ptr<VocabTree> bow = std::make_shared<VocabTree>(vocab_output_file.str());
+  
+  /*struct Temp {
+    int asdf;
+    uint64_t t;
+  };
+  if (rank == 0) {
+    Temp t;
+    t.asdf = 2;
+    t.t = 100001234912734912;
+    MPI_Request r;
+    MPI_Isend(&t, sizeof(Temp), MPI_BYTE, 1, 0, MPI_COMM_WORLD, &r);
+    MPI_Waitall(1, &r, MPI_STATUSES_IGNORE);
+    printf("Send t\n");
+  }
+  else {
+    Temp t;
+    MPI_Request r;
+    MPI_Irecv(&t, sizeof(Temp), MPI_BYTE, 0, 0, MPI_COMM_WORLD, &r);
+    MPI_Wait(&r, MPI_STATUS_IGNORE);
+    printf("Got: %d, %d\n", t.asdf, t.t);
+  }*/
 
   VocabTree vt;
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
-  train_params->depth = 4;
-  train_params->split = 4;
+  train_params->depth = 3;
+  train_params->split = 3;
   //vt.train(simple_dataset, train_params, simple_dataset.all_images());
-  vt.train(simple_dataset, train_params, simple_dataset.random_images(100));
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  // have to synchronize what images the nodes build with
+  int numImages = 50;
+  std::vector<std::shared_ptr<const Image> > images(numImages);
+  if(rank==0) {
+    images = simple_dataset.random_images(numImages);
+    std::vector<MPI_Request> requests(numImages*(procs - 1));
+    std::vector<uint64_t> ids(numImages);
+    for (int i = 0; i < numImages; i++) {
+      ids[i] = images[i]->id;
+      for (int p = 1; p < procs; p++)
+        MPI_Isend(&ids[i], 1, MPI_LONG_LONG, p, i, MPI_COMM_WORLD, &requests[numImages*(p - 1) + i]);
+    }
+    MPI_Waitall(requests.size(), &requests[0], MPI_STATUSES_IGNORE);
+  }
+  else {
+    uint64_t id;
+    for (int i = 0; i < numImages; i++) {
+      MPI_Recv(&id, 1, MPI_LONG_LONG, 0, i, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      images[i] = simple_dataset.image(id);
+    }
 
-  /*
-  std::stringstream index_output_file;
-  index_output_file << simple_dataset.location() << "/vocab/" << train_params->split << "-"
-    << train_params->depth << ".vtree";
-  filesystem::create_file_directory(index_output_file.str());
-  vt.save(index_output_file.str());
-  */
+  }
+#else
+  std::vector<std::shared_ptr<const Image> > images = simple_dataset.random_images(50);
+#endif
+  vt.train(simple_dataset, train_params, images);
+  printf("\n%d Finished Building Tree\n\n", rank);
 
-  MatchesPage html_output;
-  for (uint32_t i = 0; i<50; i++) {
+  /*MatchesPage html_output;
+  for (uint32_t i = 0; i < 5; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
-     std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, simple_dataset.image(i)));
+      std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, images[i]));
     //LINFO << "Query " << i << ": " << *matches;
     printf("Matches for image %d: ", i);
     for (uint64_t id : matches->matches)
       printf("%d ", id);
     printf("\n");
 
-     html_output.add_match(i, matches->matches, simple_dataset);
+    html_output.add_match(i, matches->matches, simple_dataset);
   }
 
-
-  html_output.write(simple_dataset.location() + "/results/matches/");
+  html_output.write(simple_dataset.location() + "/results/matches/");*/
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-  int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  printf("\nRank: %d\n", rank);
-
+  MPI_Barrier(MPI_COMM_WORLD);
   MPI_Finalize();
 #else
   printf("NONONONONONONONONONONONONONONONONO\n\n");
