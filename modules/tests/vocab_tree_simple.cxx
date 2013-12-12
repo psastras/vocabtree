@@ -63,7 +63,6 @@ int main(int argc, char *argv[]) {
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
   train_params->depth = 3;
   train_params->split = 3;
-  //vt.train(simple_dataset, train_params, simple_dataset.all_images());
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   // have to synchronize what images the nodes build with
   int numImages = 50;
@@ -85,18 +84,21 @@ int main(int argc, char *argv[]) {
       MPI_Recv(&id, 1, MPI_LONG_LONG, 0, i, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
       images[i] = simple_dataset.image(id);
     }
-
   }
 #else
   std::vector<std::shared_ptr<const Image> > images = simple_dataset.random_images(50);
 #endif
   vt.train(simple_dataset, train_params, images);
-  printf("\n%d Finished Building Tree\n\n", rank);
+  //printf("\n%d Finished Building Tree\n\n", rank);
 
-  /*MatchesPage html_output;
+  std::shared_ptr<VocabTree::SearchParams> searchParams = std::make_shared<VocabTree::SearchParams>();
+  searchParams->amountToReturn = 10;
+
+  MatchesPage html_output;
+  //if (rank==0)
   for (uint32_t i = 0; i < 5; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
-      std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, nullptr, images[i]));
+      std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, searchParams, images[i]));
     //LINFO << "Query " << i << ": " << *matches;
     printf("Matches for image %d: ", i);
     for (uint64_t id : matches->matches)
@@ -106,7 +108,7 @@ int main(int argc, char *argv[]) {
     html_output.add_match(i, matches->matches, simple_dataset);
   }
 
-  html_output.write(simple_dataset.location() + "/results/matches/");*/
+  html_output.write(simple_dataset.location() + "/results/matches/");
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   MPI_Barrier(MPI_COMM_WORLD);

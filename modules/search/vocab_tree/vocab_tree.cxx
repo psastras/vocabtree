@@ -9,6 +9,8 @@
 #include <math.h> // for pow
 #include <utility> // std::pair
 
+#define ENABLE_MULTINODE_TRAIN 0
+
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #include <omp.h>
 #endif
@@ -148,7 +150,14 @@ bool VocabTree::save (const std::string &file_path) const {
 
 bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params,
   const std::vector< std::shared_ptr<const Image > > &examples) {
-  printf("Starting to build tree...\n");
+  //printf("Starting to build tree...\n");
+
+  int rank = 0;
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  int procs;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &procs);
+#endif
 
   const std::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
   split = vt_params->split;
@@ -192,12 +201,6 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 18, 0.000001);
   // end of stuff from bag of words
 
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-  int rank, procs;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  MPI_Comm_size(MPI_COMM_WORLD, &procs);
-#endif
-
   uint32_t startNode = 0;
   uint32_t startLevel = 0;
   uint32_t levelIndex = 0;
@@ -205,13 +208,13 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   tree[startNode].levelIndex = levelIndex;
   tree[startNode].index = startNode;
   buildTreeRecursive(startNode, merged_descriptor, tc, attempts, cv::KMEANS_PP_CENTERS, startLevel);
-  printf("%d Built tree structure...\n", rank);
+  //printf("%d Built tree structure...\n", rank);
 
   databaseVectors.reserve(all_ids.size());
 
   // for mpi: synchronize all trees
   // even tags are for the node structs, odds are for mean data
-#if ENABLE_MULTITHREADING && ENABLE_MPI
+#if ENABLE_MULTITHREADING && ENABLE_MPI && ENABLE_MULTINODE_TRAIN
   MPI_Barrier(MPI_COMM_WORLD); // all nodes should build their part of the tree
 
   int cols = merged_descriptor.cols;
@@ -330,15 +333,12 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   for (size_t i = 0; i < numberOfNodes; i++)
     counts[i] = 0;
 
-  /*
-#if ENABLE_MULTITHREADING && ENABLE_MPI
+  
+#if ENABLE_MULTITHREADING && ENABLE_MPI && ENABLE_MULTINODE_TRAIN
   int imagesPerProc = ceil(((float)all_ids.size()) / procs);
 #else
   int imagesPerProc = all_ids.size();
-  int rank = 0;
 #endif
-  */
-  int imagesPerProc = all_ids.size();
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
@@ -371,9 +371,9 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     }
   }
 
-  /*
+  
   // mpi synchronize counts
-#if ENABLE_MULTITHREADING && ENABLE_MPI
+#if ENABLE_MULTITHREADING && ENABLE_MPI && ENABLE_MULTINODE_TRAIN
   int c = 0;
   std::vector<MPI_Request> requests(procs - 1);
   //MPI_Request requests[procs-1];
@@ -400,7 +400,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   for (int j = 0; j < counts.size(); j++)
     counts[j] += addOthers[j];
 #endif
-    */
+    
   // create weights according to equation 4: w_i = ln(N / N_i)
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
@@ -428,7 +428,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       (iterator->second)[i] /= length;
   }
 
-  if (rank == 0) {
+  /*if (rank == 0) {
     for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
       //printf("Size of inv file %d: %d\n", i, invertedFiles[i].size());
     }
@@ -443,17 +443,15 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
         printf("\n");
       }
     }
-  }
+  }*/
 
-
+  // synchronize leaf and vector information, everything send to node 0
+  
+#if ENABLE_MULTITHREADING && ENABLE_MPI && ENABLE_MULTINODE_TRAIN
   struct Temp_pair {
     uint64_t key;
     uint32_t val;
   };
-
-  // synchronize leaf and vector information, everything send to node 0
-  /*
-#if ENABLE_MULTITHREADING && ENABLE_MPI
   MPI_Barrier(MPI_COMM_WORLD); 
   // get leaf sets
   int leaves = invertedFiles.size();
@@ -514,7 +512,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       MPI_Send(&(p.second[0]), numberOfNodes, MPI_FLOAT, 0, p.first + 1, MPI_COMM_WORLD);
   }
 #endif
-  */
+  
   return true;
 }
 
@@ -525,7 +523,7 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
   tree[t].invertedFileLength = descriptors.rows;
   tree[t].level = currLevel;
 
-#if ENABLE_MULTITHREADING && ENABLE_MPI
+#if ENABLE_MULTITHREADING && ENABLE_MPI && ENABLE_MULTINODE_TRAIN
   int rank;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   if (rank != 0) {
@@ -617,15 +615,18 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
   std::vector<float> vec(numberOfNodes);
   for (uint32_t i = 0; i < numberOfNodes; i++)
     vec[i] = 0;
-  
+
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int rank, procs;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procs);
+#endif
 
+#if ENABLE_MULTITHREADING && ENABLE_MPI
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for
 #endif
+  // run over multiple nodes only if called by search, not train
   for (int r = (id>=0? 0:rank); r < descriptors.rows; r+=(id>0?1:procs)) {
 #else
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
@@ -633,28 +634,58 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
 #endif
   for (int r = 0; r < descriptors.rows; r++) {
 #endif
+    //printf("%d ", r);
     generateVectorHelper(0, descriptors.row(r), vec, possibleMatches, id);
   }
 
-  /*
+  /*printf("my vector: ");
+  for (int i = 0; i < numberOfNodes; i++)
+    printf("%f ", vec[i]);
+  printf("\n");*/
+  
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   if(id<0) {
+    /*printf("[%d] my vector: ", rank);
+    for (int i = 0; i < numberOfNodes; i++)
+      printf("%f ", vec[i]);
+    printf("\n");*/
+
+    std::vector<MPI_Request> requests(procs - 1);
+    int c = 0;
     for(int i=0; i<procs; i++)
     if (i != rank)
-      MPI_Send(&vec[0], numberOfNodes, MPI_FLOAT, i, 0, MPI_COMM_WORLD);
+      MPI_Isend(&vec[0], numberOfNodes, MPI_FLOAT, i, 0, MPI_COMM_WORLD, &requests[c++]);
 
     std::vector<float> otherVec(numberOfNodes);
+    std::vector<float> sumOthers(numberOfNodes);
+    for (int i = 0; i < numberOfNodes; i++)
+      sumOthers[i] = 0;
+
     for (int i = 0; i<procs; i++)
     if (i != rank) {
       MPI_Recv(&otherVec[0], numberOfNodes, MPI_FLOAT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
       for (int j = 0; j < numberOfNodes; j++)
-        vec[i] += otherVec[j];
+        sumOthers[j] += otherVec[j];
     }
+
+    MPI_Waitall(procs - 1, &requests[0], MPI_STATUSES_IGNORE);
+    for (int i = 0; i < numberOfNodes; i++)
+      vec[i] += sumOthers[i];
+
+    /*printf("[%d] new vector: ", rank);
+    for (int i = 0; i < numberOfNodes; i++)
+      printf("%f ", vec[i]);
+    printf("\n");*/
   }
 #endif
-  */
+  
   // if shouldWeight is true then weight all values in the vector and normalize
   if (shouldWeight) {
+    printf("WEIGHTS: ");
+    for (int i = 0; i < numberOfNodes; i++)
+      printf("%f ", weights[i]);
+    printf("\n");
+
     float length = 0; // for normalizing
     for (int32_t i = 0; i < numberOfNodes; i++) {
       vec[i] *= weights[i];
@@ -715,7 +746,7 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
     uint32_t maxChild = tree[nodeIndex].firstChildIndex;
     double max = tree[maxChild].mean.dims == 0 ? 0 : descriptor.dot(tree[maxChild].mean);
     //double max = descriptor.dot(tree[maxChild].mean);
-    
+
     for (uint32_t i = 1; i < split; i++) {
       if (tree[nodeIndex].invertedFileLength == 0)
         continue;
@@ -752,14 +783,10 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
 
   std::unordered_set<uint32_t> possibleMatches;
   descriptors.convertTo(descriptorsf, CV_32FC1);
-  std::vector<float> vec = generateVector(descriptorsf, true, possibleMatches);
 
-  /*int rank;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  printf("P %d: ", rank);
-  for (float f:vec)
-    printf("%f, ", f);
-  printf("\n\n");*/
+  printf("--Generating vector...\n");
+  std::vector<float> vec = generateVector(descriptorsf, true, possibleMatches);
+  printf("--Generated vector\n");
 
   typedef std::pair<uint64_t, float> matchPair;
   struct myComparer {
@@ -794,12 +821,17 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     values.push_back(matchPair(elem, sqrt(score)));
   }
 
-  int keep = 10;
   std::sort(values.begin(), values.end(), comparer);
-  if (values.size() > keep) {
+  if (values.size() > ii_params->amountToReturn) {
     std::vector<matchPair>::iterator it = values.begin();
-    values.erase(it + keep, values.end());
+    values.erase(it + ii_params->amountToReturn, values.end());
   }
+
+  /*int rank, procs;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &procs);
+  if (rank != 0)
+    values.clear();*/
 
   // aggregate everything into node 0
 #if ENABLE_MULTITHREADING && ENABLE_MPI
@@ -825,7 +857,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     // this may result in duplicate entries
     // will have to decide if that's a problem and if its worth fixing
     std::sort(values.begin(), values.end(), comparer);
-    values.erase(values.begin() + keep, values.end());
+    values.erase(values.begin() + ii_params->amountToReturn, values.end());
   }
   else {
     int tmpCount = values.size();
