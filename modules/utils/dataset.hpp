@@ -141,7 +141,7 @@ public:
 private:
 	
 	/// Constructs the dataset an fills in the image id map.
-	numerics::sparse_vector_t load_bow_feature_cache(uint64_t id);
+	numerics::sparse_vector_t load_bow_feature_cache(uint64_t id) const;
 
 	void construct_dataset();
 

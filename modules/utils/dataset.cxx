@@ -165,7 +165,7 @@ numerics::sparse_vector_t SimpleDataset::load_bow_feature(uint64_t id) const {
 	}
 }
 
-numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) {
+numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) const {
 	numerics::sparse_vector_t bow_descriptors;
 	uint32_t level0 = id >> 20;
 	uint32_t level1 = (id - (level0 << 20)) >> 10;
