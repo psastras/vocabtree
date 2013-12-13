@@ -64,13 +64,14 @@ SimpleDataset::SimpleDataset(const std::string &base_location, const std::string
 		this->construct_dataset();
 		this->write(db_data_location);
 	}
-
+#if !(_MSC_VER && !__INTEL_COMPILER)
 	bow_feature_cache = nullptr;
 	if(cache_size > 0) {
 		bow_feature_cache = std::make_shared<bow_feature_cache_t>(
 			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
 			 cache_size);
 	}
+#endif
 }
 
 SimpleDataset::~SimpleDataset() { }
