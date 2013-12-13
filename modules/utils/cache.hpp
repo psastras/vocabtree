@@ -45,6 +45,12 @@ class SingleCache {
     _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
   } 
 
+  template<typename U = V> typename std::enable_if<!B, U>::type operator()(const std::vector<K> &k) { 
+    for(size_t i=0; i<k.size(); i++) {
+      
+    }
+  } 
+
   // Locking version
   template<typename U = V> typename std::enable_if<B, U>::type operator()(const K& k) { 
     double startlookup = CycleTimer::currentSeconds();
@@ -245,20 +251,21 @@ std::ostream& operator<< (std::ostream &out, const MultiRingPriorityCache<K, V, 
   return out;
 }
 
-// typedef MultiRingPriorityCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_feature_cache_t;
-typedef MultiCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_feature_cache_t;
+typedef MultiRingPriorityCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_ring_priority_cache_t;
+typedef MultiRingCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_ring_cache_t;
+typedef MultiCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_multi_cache_t;
 
 #endif
 
 
-// template < bool B, typename K, typename V, template <typename...> class SET > 
-// std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V, SET> &c) {
-//   out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
-//     << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
-//     << " ]";
-//   return out;
-// }
+template < bool B, typename K, typename V, template <typename...> class SET > 
+std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V, SET> &c) {
+  out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
+    << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
+    << " ]";
+  return out;
+}
 
 
 
-//typedef SingleCache<true, uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_feature_cache_t;
+typedef SingleCache<true, uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_single_cache_t;

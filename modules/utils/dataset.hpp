@@ -8,6 +8,8 @@
 #include <sstream>
 #include <iomanip>
 
+typedef bow_ring_priority_cache_t bow_feature_cache_t;
+
 /// The Dataset class is an abstract wrapper describing a dataset.  A dataset consiste of the actual
 /// data, plus a way to convert the images, or frames of a video into an integer index.  The dataset
 /// should at minimum provide an easy way to map image paths to unique integers.  For a sample implementation

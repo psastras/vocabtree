@@ -1,5 +1,6 @@
 
 find_path( BOOST_INCLUDE_PATH boost/config.hpp
+	/home/psastras/share/include
 	/code/local/include
 	/usr/include
 	/usr/local/include
@@ -10,6 +11,7 @@ find_path( BOOST_INCLUDE_PATH boost/config.hpp
 	/usr/local/Cellar/boost/1.53.0/include
 	DOC "The directory where boost/config.hpp resides")
 set(BOOST_SEARCH_PATHS /code/local/lib
+	/home/psastras/share/lib
 	/usr/lib64 
 	/usr/lib 
 	/usr/local/lib64 

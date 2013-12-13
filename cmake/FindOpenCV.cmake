@@ -1,4 +1,5 @@
 find_path( OPENCV_INCLUDE_PATH opencv2/opencv.hpp
+	/home/psastras/share/include
 	/usr/include
 	/code/local/include
 	/usr/local/include
@@ -10,6 +11,7 @@ find_path( OPENCV_INCLUDE_PATH opencv2/opencv.hpp
 	3rdparty/install/${CMAKE_SYSTEM_NAME}/include
 	DOC "The directory where opencv2/opencv.hpp resides")
 find_library(OPENCV_LIB_PATH opencv_core
+	/home/psastras/share/lib
 	/usr/lib64
 	/usr/lib
 	/usr/local/lib64
