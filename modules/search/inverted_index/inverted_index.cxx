@@ -103,7 +103,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
 
 	const numerics::sparse_vector_t &example_bow_descriptors = dataset.load_bow_feature(
-		dataset.location(example->feature_path("bow_descriptors"))
+		example->id
 	);
 
 	std::vector<std::pair<uint64_t, uint64_t> > candidates(dataset.num_images(), std::pair<uint64_t, uint64_t>(0, 0));
@@ -133,7 +133,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	for(int64_t i=0; i<num_candidates; i++) {
 
 		const numerics::sparse_vector_t &bow_descriptors = dataset.load_bow_feature(
-				dataset.location(dataset.image(candidates[i].second)->feature_path("bow_descriptors"))
+				candidates[i].second
 			);
 
 		float sim = numerics::min_hist(example_bow_descriptors, bow_descriptors, idf_weights);

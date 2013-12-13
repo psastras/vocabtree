@@ -64,7 +64,7 @@ public:
 	/// @TODO: Shards the dataset to the new input locations, and returns the sharded datasets
 	std::vector<Dataset> shard(const std::vector<std::string> &new_locations);
 
-	virtual numerics::sparse_vector_t load_bow_feature(const std::string &feat_name) const = 0;
+	virtual numerics::sparse_vector_t load_bow_feature(uint64_t id) const = 0;
 
 protected:
 	std::string	data_directory;  /// Holds the absolute path of the data.
@@ -132,14 +132,14 @@ public:
 	uint64_t num_images() const;
 
 	/// Returns the corresponding feature path given a feature name (ex. "sift").
-	numerics::sparse_vector_t load_bow_feature(const std::string &location) const;
+	numerics::sparse_vector_t load_bow_feature(uint64_t id) const;
 
 	std::shared_ptr<bow_feature_cache_t> cache();
 
 private:
 	
 	/// Constructs the dataset an fills in the image id map.
-	static numerics::sparse_vector_t load_bow_feature_cache(const std::string &location);
+	numerics::sparse_vector_t load_bow_feature_cache(uint64_t id);
 
 	void construct_dataset();
 
