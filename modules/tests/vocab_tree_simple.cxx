@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
   VocabTree vt;
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
   train_params->depth = 3;
-  train_params->split = 3;
+  train_params->split = 8;
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   // have to synchronize what images the nodes build with
   int numImages = 50;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
     }
   }
 #else
-  std::vector<std::shared_ptr<const Image> > images = simple_dataset.random_images(50);
+  std::vector<std::shared_ptr<const Image> > images = simple_dataset.random_images(200);
 #endif
   vt.train(simple_dataset, train_params, images);
   //printf("\n%d Finished Building Tree\n\n", rank);
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 
   MatchesPage html_output;
   //if (rank==0)
-  for (uint32_t i = 0; i < 5; i++) {
+  for (uint32_t i = 0; i < 20; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
       std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, searchParams, images[i]));
     //LINFO << "Query " << i << ": " << *matches;
@@ -113,8 +113,6 @@ int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   MPI_Barrier(MPI_COMM_WORLD);
   MPI_Finalize();
-#else
-  printf("NONONONONONONONONONONONONONONONONO\n\n");
 #endif
 
   return 0;
