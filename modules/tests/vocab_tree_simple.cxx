@@ -61,8 +61,8 @@ int main(int argc, char *argv[]) {
 
   VocabTree vt;
   std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
-  train_params->depth = 3;
-  train_params->split = 8;
+  train_params->depth = 6;
+  train_params->split = 10;
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   // have to synchronize what images the nodes build with
   int numImages = 50;
@@ -92,6 +92,7 @@ int main(int argc, char *argv[]) {
   //printf("\n%d Finished Building Tree\n\n", rank);
 
   std::shared_ptr<VocabTree::SearchParams> searchParams = std::make_shared<VocabTree::SearchParams>();
+
   searchParams->amountToReturn = 10;
 
   MatchesPage html_output;
@@ -99,16 +100,15 @@ int main(int argc, char *argv[]) {
   for (uint32_t i = 0; i < 20; i++) {
     std::shared_ptr<VocabTree::MatchResults> matches =
       std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, searchParams, images[i]));
+    if(matches == nullptr) continue;
     //LINFO << "Query " << i << ": " << *matches;
     printf("Matches for image %d: ", i);
     for (uint64_t id : matches->matches)
       printf("%d ", id);
     printf("\n");
 
-    html_output.add_match(i, matches->matches, simple_dataset);
+    html_output.add_match(images[i]->id, matches->matches, simple_dataset);
   }
-
-  std::cout << "dsfgsdfgoidhfsg" << std::endl;
 
   html_output.write(simple_dataset.location() + "/results/matches/");
 

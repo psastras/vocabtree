@@ -823,9 +823,9 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   std::unordered_set<uint32_t> possibleMatches;
   descriptors.convertTo(descriptorsf, CV_32FC1);
 
-  //printf("--Generating vector...\n");
+  // printf("--Generating vector...\n");
   std::vector<float> vec = generateVector(descriptorsf, true, possibleMatches);
-  //printf("--Generated vector\n");
+  // printf("--Generated vector\n");
 
   typedef std::pair<uint64_t, float> matchPair;
   struct myComparer {

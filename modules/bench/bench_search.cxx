@@ -28,9 +28,9 @@ void bench_oxford() {
 
 	MatchesPage html_output;
 	
-	const uint32_t num_clusters = s_oxford100k_num_clusters;
+	const uint32_t num_clusters = s_oxfordmini_num_clusters;
 
-	SimpleDataset oxford_dataset(s_oxford100k_data_dir, s_oxford100k_database_location, 256);
+	SimpleDataset oxford_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location, 256);
 	LINFO << oxford_dataset;
 
 	std::stringstream index_output_file;

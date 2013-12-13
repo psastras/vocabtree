@@ -40,7 +40,7 @@ public:
 
 	/// Given a set of search parameters, list of query images, searches for matching images and returns the result
 	/// matches.
-	std::vector< std::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
+	virtual std::vector< std::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
 															 const std::vector< std::shared_ptr<const Image > > &examples);
 
 	/// Loads a trained search structure from the input filepath
@@ -52,7 +52,8 @@ public:
 protected:
 
 	/// Given a set of search parameters, a query images, searches for matching images and returns the match
-	virtual std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) = 0;
+	virtual std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params,
+	 const std::shared_ptr<const Image > &example) = 0;
 
 private:
 	
