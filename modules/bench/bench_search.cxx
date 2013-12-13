@@ -28,19 +28,24 @@ void bench_oxford() {
 
 	MatchesPage html_output;
 	
-	const uint32_t num_clusters = s_oxford_num_clusters;
+	const uint32_t num_clusters = s_oxford100k_num_clusters;
 
-	SimpleDataset oxford_dataset(s_oxford_data_dir, s_oxford_database_location);
+	SimpleDataset oxford_dataset(s_oxford100k_data_dir, s_oxford100k_database_location, 256);
 	LINFO << oxford_dataset;
 
 	std::stringstream index_output_file;
 	index_output_file << oxford_dataset.location() << "/index/" << num_clusters << ".index";
 	InvertedIndex ii(index_output_file.str());
 
+
+
 	double total_time = 0.0;
 	uint32_t num_validate = 16;
 	uint32_t total_iterations = 256;
+	// const std::vector<std::shared_ptr<const Image> > &rand_images = oxford_dataset.random_images(256);
 	for(uint32_t i=0; i<total_iterations; i++) {
+		// std::cout << "Running search " << i << std::endl;
+		std::cout << *oxford_dataset.cache() << std::endl;
 		double start_time = CycleTimer::currentSeconds();
 		std::shared_ptr<InvertedIndex::MatchResults> matches = 
 		std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(oxford_dataset, nullptr, oxford_dataset.image(i)));	
@@ -51,7 +56,6 @@ void bench_oxford() {
 		double end_time = CycleTimer::currentSeconds();
 		total_time += (end_time - start_time);
 		
-
 		// validate matches
 		cv::Mat keypoints_0, descriptors_0;
 		std::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(i));

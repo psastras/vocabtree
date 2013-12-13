@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <opencv2/opencv.hpp>
 
+#include "numerics.hpp"
+
 /// Abstract class representing an image.  Implementing classes must provide a way to 
 /// load images and construct image paths for loading features.  See tests and benchmarks
 /// for example implementations of Image.
@@ -20,7 +22,9 @@ public:
 
 	/// Returns the image location relative to the database data directory.
 	virtual std::string location() const = 0;
-
+protected:
+	// std::function<std::vector<char>(const std::string &feat_name)> load_function;
 private:
 	
 };
+
