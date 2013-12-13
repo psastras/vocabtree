@@ -102,42 +102,42 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	
 	std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
 
-	const std::string &example_bow_descriptors_location = dataset.location(example->feature_path("bow_descriptors"));
-	if(!filesystem::file_exists(example_bow_descriptors_location)) {
-		std::cerr << "No file at load " << example_bow_descriptors_location << std::endl;
-		return nullptr;
-	}
-	numerics::sparse_vector_t example_bow_descriptors;
-	if(!filesystem::load_sparse_vector(example_bow_descriptors_location, example_bow_descriptors))  {
-		std::cerr << "Failed to load " << example_bow_descriptors_location << std::endl;
-		return nullptr;
-	}
+	const numerics::sparse_vector_t &example_bow_descriptors = dataset.load_bow_feature(
+		example->id
+	);
 
-	std::vector<uint64_t> candidates(dataset.num_images(), 0);
-	uint64_t num_candidates = 0;
+	std::vector<std::pair<uint64_t, uint64_t> > candidates(dataset.num_images(), std::pair<uint64_t, uint64_t>(0, 0));
+	uint64_t num_candidates = 0; // number of matches > 0
 	for(size_t i=0; i<example_bow_descriptors.size(); i++) {
 		uint32_t cluster = example_bow_descriptors[i].first;
 		for(size_t j=0; j<inverted_index[cluster].size(); j++) {
-			if(!candidates[inverted_index[cluster][j]])
-				candidates[inverted_index[cluster][j]] = ++num_candidates;
+			uint64_t id = inverted_index[cluster][j];
+			if(!candidates[id].first) {
+				candidates[id].second = id;
+				++num_candidates;
+			}
+			candidates[id].first++;
+			
 		}
 	}
+
+	std::sort(candidates.begin(), candidates.end());
+	std::reverse(candidates.begin(), candidates.end());
+	num_candidates = MIN(num_candidates, 256);
 
 	std::vector< std::pair<float, uint64_t> > candidate_scores(num_candidates);
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
-	for(int64_t i=0; i<(int64_t)candidates.size(); i++) {
-		if(!candidates[i]) continue;
+	for(int64_t i=0; i<num_candidates; i++) {
 
-		const std::string &bow_descriptors_location = dataset.location(dataset.image(i)->feature_path("bow_descriptors"));
-		if (!filesystem::file_exists(bow_descriptors_location)) continue;
-		numerics::sparse_vector_t bow_descriptors;
-		if(!filesystem::load_sparse_vector(bow_descriptors_location, bow_descriptors)) continue;
+		const numerics::sparse_vector_t &bow_descriptors = dataset.load_bow_feature(
+				candidates[i].second
+			);
 
 		float sim = numerics::min_hist(example_bow_descriptors, bow_descriptors, idf_weights);
-		candidate_scores[candidates[i]-1] = std::pair<float, uint64_t>(sim, i);
+		candidate_scores[i] = std::pair<float, uint64_t>(sim, candidates[i].second);
 	}
 
 	std::sort(candidate_scores.begin(), candidate_scores.end(), 

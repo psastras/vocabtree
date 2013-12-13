@@ -1,6 +1,8 @@
 #pragma once
 
 #include "image.hpp"
+#include "cache.hpp"
+
 #include <memory>
 #include <boost/bimap.hpp>
 #include <sstream>
@@ -62,6 +64,8 @@ public:
 	/// @TODO: Shards the dataset to the new input locations, and returns the sharded datasets
 	std::vector<Dataset> shard(const std::vector<std::string> &new_locations);
 
+	virtual numerics::sparse_vector_t load_bow_feature(uint64_t id) const = 0;
+
 protected:
 	std::string	data_directory;  /// Holds the absolute path of the data.
 };
@@ -98,11 +102,11 @@ public:
 	/// Creates a simple dataset from the images in base_location/images.  It is recommended
 	/// to then call write(...) to save the dataset so that it does not have to traverse the HDD
 	/// everytime we load the dataset.
-	SimpleDataset(const std::string &base_location);
+	SimpleDataset(const std::string &base_location, size_t cache_size = 0);
 	
 	/// If a dataset file is location at db_data_location, will load that file from.  Otherwise,
 	/// this will create the dataset from base_location/images and call write(db_data_location).
-	SimpleDataset(const std::string &base_location, const std::string &db_data_location);
+	SimpleDataset(const std::string &base_location, const std::string &db_data_location, size_t cache_size = 0);
 	~SimpleDataset();
 
 	/// Writes the SimpleDataset out to the specified file.  If the containing directory does not 
@@ -127,11 +131,19 @@ public:
 	/// Returns the number of images in the dataset.
 	uint64_t num_images() const;
 
+	/// Returns the corresponding feature path given a feature name (ex. "sift").
+	numerics::sparse_vector_t load_bow_feature(uint64_t id) const;
+
+	std::shared_ptr<bow_feature_cache_t> cache();
+
 private:
 	
 	/// Constructs the dataset an fills in the image id map.
+	numerics::sparse_vector_t load_bow_feature_cache(uint64_t id);
+
 	void construct_dataset();
 
 	boost::bimap<std::string, uint64_t> id_image_map; /// Map which holds the image path and id
+	std::shared_ptr<bow_feature_cache_t> bow_feature_cache;
 
 };

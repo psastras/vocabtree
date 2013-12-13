@@ -43,19 +43,32 @@ std::ostream& operator<< (std::ostream &out, const Dataset &dataset) {
 	return out;
 }
 
-SimpleDataset::SimpleDataset(const std::string &base_location) : Dataset(base_location) { 
+SimpleDataset::SimpleDataset(const std::string &base_location, size_t cache_size) : Dataset(base_location) { 
 	this->construct_dataset();
+	bow_feature_cache = nullptr;
+	if(cache_size > 0) {
+		bow_feature_cache = std::make_shared<bow_feature_cache_t>(
+			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
+			 cache_size);
+	}
 }
 
-SimpleDataset::SimpleDataset(const std::string &base_location, const std::string &db_data_location) 
+SimpleDataset::SimpleDataset(const std::string &base_location, const std::string &db_data_location, size_t cache_size) 
 	: Dataset(base_location, db_data_location) {
-		if (filesystem::file_exists(db_data_location)) {
-			this->read(db_data_location);
-		}
-		else {
-			this->construct_dataset();
-			this->write(db_data_location);
-		}
+	if (filesystem::file_exists(db_data_location)) {
+		this->read(db_data_location);
+	}
+	else {
+		this->construct_dataset();
+		this->write(db_data_location);
+	}
+
+	bow_feature_cache = nullptr;
+	if(cache_size > 0) {
+		bow_feature_cache = std::make_shared<bow_feature_cache_t>(
+			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
+			 cache_size);
+	}
 }
 
 SimpleDataset::~SimpleDataset() { }
@@ -144,9 +157,45 @@ std::string SimpleDataset::SimpleImage::location() const {
 	return image_path;
 }
 
+numerics::sparse_vector_t SimpleDataset::load_bow_feature(uint64_t id) const {
+	if(bow_feature_cache) {
+		return (*bow_feature_cache)(id);
+	} else {
+		return load_bow_feature_cache(id);
+	}
+}
+
+numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) {
+	numerics::sparse_vector_t bow_descriptors;
+	uint32_t level0 = id >> 20;
+	uint32_t level1 = (id - (level0 << 20)) >> 10;
+	std::stringstream ss;
+	ss <<  this->location() << "/feats/" << "bow_descriptors" << "/" << 
+	std::setw(4) << std::setfill('0') << level0 << "/" <<
+	std::setw(4) << std::setfill('0') << level1 << "/" <<
+	std::setw(9) << std::setfill('0') << id << "." << "bow_descriptors";
+	std::string location = ss.str();
+	if (!filesystem::file_exists(location)) return bow_descriptors;	
+	filesystem::load_sparse_vector(location, bow_descriptors);
+	return bow_descriptors;
+}
+
 bool SimpleDataset::add_image(const std::shared_ptr<const Image> &image) {
 	if (id_image_map.right.find(image->id) != id_image_map.right.end()) return false;
 	const std::shared_ptr<const SimpleDataset::SimpleImage> simage = std::static_pointer_cast<const SimpleDataset::SimpleImage>(image);
 	id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type(simage->location(), simage->id));
 	return true;
 }
+
+std::shared_ptr<bow_feature_cache_t> SimpleDataset::cache() {
+	return bow_feature_cache;
+}
+
+// std::vector<char> Dataset::load_data(const std::string &filename) {
+// 	std::ifstream input(filename, std::ios::binary);
+//     // copies all data into buffer
+//     std::vector<char> buffer((
+//             std::istreambuf_iterator<char>(input)), 
+//             (std::istreambuf_iterator<char>()));
+//     return buffer;
+// }
