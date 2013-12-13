@@ -8,7 +8,9 @@
 #include <sstream>
 #include <iomanip>
 
+#if !(_MSC_VER && !__INTEL_COMPILER)
 typedef bow_ring_priority_cache_t bow_feature_cache_t;
+#endif
 
 /// The Dataset class is an abstract wrapper describing a dataset.  A dataset consiste of the actual
 /// data, plus a way to convert the images, or frames of a video into an integer index.  The dataset
@@ -136,7 +138,9 @@ public:
 	/// Returns the corresponding feature path given a feature name (ex. "sift").
 	numerics::sparse_vector_t load_bow_feature(uint64_t id) const;
 
+#if !(_MSC_VER && !__INTEL_COMPILER)
 	std::shared_ptr<bow_feature_cache_t> cache();
+#endif
 
 private:
 	
@@ -146,6 +150,8 @@ private:
 	void construct_dataset();
 
 	boost::bimap<std::string, uint64_t> id_image_map; /// Map which holds the image path and id
+#if !(_MSC_VER && !__INTEL_COMPILER)
 	std::shared_ptr<bow_feature_cache_t> bow_feature_cache;
+#endif
 
 };

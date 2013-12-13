@@ -1,5 +1,7 @@
 #pragma once
 
+#if !(_MSC_VER && !__INTEL_COMPILER)
+
 #include <boost/bimap.hpp> 
 #include <boost/bimap/list_of.hpp> 
 #include <boost/bimap/set_of.hpp> 
@@ -317,3 +319,5 @@ std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V, SET> &c)
 }
 
 typedef SingleCache<true, uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_single_cache_t;
+
+#endif

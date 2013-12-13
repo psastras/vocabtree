@@ -45,12 +45,14 @@ std::ostream& operator<< (std::ostream &out, const Dataset &dataset) {
 
 SimpleDataset::SimpleDataset(const std::string &base_location, size_t cache_size) : Dataset(base_location) { 
 	this->construct_dataset();
+#if !(_MSC_VER && !__INTEL_COMPILER)
 	bow_feature_cache = nullptr;
 	if(cache_size > 0) {
 		bow_feature_cache = std::make_shared<bow_feature_cache_t>(
 			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
 			 cache_size);
 	}
+#endif
 }
 
 SimpleDataset::SimpleDataset(const std::string &base_location, const std::string &db_data_location, size_t cache_size) 
@@ -158,11 +160,15 @@ std::string SimpleDataset::SimpleImage::location() const {
 }
 
 numerics::sparse_vector_t SimpleDataset::load_bow_feature(uint64_t id) const {
+#if !(_MSC_VER && !__INTEL_COMPILER)
 	if(bow_feature_cache) {
 		return (*bow_feature_cache)(id);
 	} else {
+#endif
 		return load_bow_feature_cache(id);
+#if !(_MSC_VER && !__INTEL_COMPILER)
 	}
+#endif
 }
 
 numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) const {
@@ -187,9 +193,11 @@ bool SimpleDataset::add_image(const std::shared_ptr<const Image> &image) {
 	return true;
 }
 
+#if !(_MSC_VER && !__INTEL_COMPILER)
 std::shared_ptr<bow_feature_cache_t> SimpleDataset::cache() {
 	return bow_feature_cache;
 }
+#endif
 
 // std::vector<char> Dataset::load_data(const std::string &filename) {
 // 	std::ifstream input(filename, std::ios::binary);
