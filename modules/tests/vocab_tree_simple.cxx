@@ -108,6 +108,8 @@ int main(int argc, char *argv[]) {
     html_output.add_match(i, matches->matches, simple_dataset);
   }
 
+  std::cout << "dsfgsdfgoidhfsg" << std::endl;
+
   html_output.write(simple_dataset.location() + "/results/matches/");
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI

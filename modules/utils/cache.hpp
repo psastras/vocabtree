@@ -13,6 +13,27 @@
 #include <omp.h>
 #endif
 
+/// This header file implements multiple versions of an LRU cache.
+///
+/// SingleCache is the basic cache implementation, where all threads
+/// are expected to access a single cache.
+///
+/// MultiCache implements 1 SingleCache for each thread, avoiding the 
+/// need for locking in each of the Caches.
+///
+/// MultiRingCache implements 1 SingleCache for each thread, however, each
+/// cache is responsible for a sequential set of key values (instead of
+/// each cache being responsible for a thread) arranged in a ring.
+/// However, each SingleCache must be lock protected, since multiple threads 
+/// may map their keys to the same cache.
+///
+/// MultiRingPriorityCache implements the same thing as the MultiRingCache
+/// except there are no locks within each SingleCache.  Instead the lock
+/// exists within the ring such that a thread will try to choose the cache
+/// that has been assigned to the key value if possible, otherwise it will just
+/// query the next non locked cache.
+
+
 /// Defines an LRU cache.
 /// If B is true, this class is thread safe, else it is not thread safe.
 /// K is the key type, V is the value type, and SET is the SET storage type, ex. boost::bimap::set_of
@@ -45,10 +66,12 @@ class SingleCache {
     _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
   } 
 
-  template<typename U = V> typename std::enable_if<!B, U>::type operator()(const std::vector<K> &k) { 
+  template<typename U = std::vector<V> > typename std::enable_if<!B, U>::type operator()(const std::vector<K> &k) { 
+    U u(k.size());
     for(size_t i=0; i<k.size(); i++) {
-      
+      u[i] = (*this)(k);
     }
+    return u;
   } 
 
   // Locking version
@@ -72,12 +95,21 @@ class SingleCache {
     #pragma omp critical
     _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
     return v;
+  }
+
+  template<typename U = std::vector<V> > typename std::enable_if<B, U>::type operator()(const std::vector<K> &k) { 
+    U u(k.size());
+    for(size_t i=0; i<k.size(); i++) {
+      u[i] = (*this)(k);
+    }
+    return u;
   } 
 
-  uint64_t hits() const { return cache_hits; }
-  uint64_t misses() const { return cache_misses; }
-  uint64_t capacity() const { return _capacity; }
-  uint64_t num_lookups() const { return cache_misses + cache_hits; }
+  uint64_t hits()             const { return cache_hits; }
+  uint64_t misses()           const { return cache_misses; }
+  uint64_t capacity()         const { return _capacity; }
+  uint64_t num_lookups()      const { return cache_misses + cache_hits; }
+  double total_lookup_time()  const { return _lookup_time_total; }
   
  private: 
   void insert(const K& k, const V& v) { 
@@ -190,6 +222,7 @@ class MultiRingPriorityCache {
  
   // Obtain value of the cached function for k 
   V operator()(const K& k) { 
+    double startlookup = CycleTimer::currentSeconds();
     for(size_t i = 0; i<omp_get_max_threads(); i++) {
       size_t cache_idx = ((size_t)(k / _single_capacity)+i) % omp_get_max_threads();
       int lock_acquired = omp_test_lock(&_locks[cache_idx]);
@@ -204,6 +237,9 @@ class MultiRingPriorityCache {
     omp_set_lock(&_locks[cache_idx]);
     V v = _caches[cache_idx](k);
     omp_unset_lock(&_locks[cache_idx]);
+
+    #pragma omp critical
+    _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
     return v;
   } 
 
@@ -212,10 +248,23 @@ class MultiRingPriorityCache {
     for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i].hits();
     return total_hits;
   }
+  
   uint64_t misses() const { 
     int total_misses = 0;
     for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i].misses();
     return total_misses;
+  }
+
+  uint64_t num_lookups() const { 
+    int total_lookups = 0;
+    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i].num_lookups();
+    return total_lookups;
+  }
+
+  double total_lookup_time()const { 
+    double lookup_time = 0;
+    for(size_t i=0; i<_caches.size(); i++) lookup_time += _caches[i].total_lookup_time();
+    return lookup_time;
   }
 
   uint64_t capacity() const { return _capacity; }
@@ -225,6 +274,7 @@ class MultiRingPriorityCache {
   std::vector<omp_lock_t> _locks;
   const std::function<V(const K&)> _fn; 
   const size_t _capacity, _single_capacity; 
+  double _lookup_time_total;
 }; 
 
 template < typename K, typename V, template <typename...> class SET > 
@@ -265,7 +315,5 @@ std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V, SET> &c)
     << " ]";
   return out;
 }
-
-
 
 typedef SingleCache<true, uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_single_cache_t;
