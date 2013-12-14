@@ -145,7 +145,7 @@ bool VocabTree::save (const std::string &file_path) const {
 
   std::cout << "Done writing vocab tree." << std::endl;
 
-  return (ofs.rdstate() & std::ofstream::failbit) == 0;;
+  return (ofs.rdstate() & std::ofstream::failbit) == 0;
 }
 
 bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params,
@@ -157,13 +157,17 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   int procs;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procs);
-
-  const std::string file_path = "finishedVocab.tree";
+  
+  const std::string &tree_root_location = dataset.location("tree/");
+  filesystem::create_file_directory(tree_root_location);
+  std::stringstream ss;
+  ss << tree_root_location << "tree." << split << "." << maxLevel << ".bin";
+  const std::string &tree_location = ss.str();
 
   int t;
   if (rank != 0) {
     MPI_Recv(&t, 1, MPI_INT, 0, 42, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    bool success = VocabTree::load(file_path);
+    bool success = VocabTree::load(tree_location);
     printf("Node %d read from file path %d\n\n", rank, success);
     return success;
   }
@@ -429,6 +433,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   typedef std::unordered_map<uint64_t, std::vector<float>>::iterator it_type;
   for (it_type iterator = databaseVectors.begin(); iterator != databaseVectors.end(); iterator++) {
     float length = 0; // hopefully shouldn't overflow from adding doubles
+    //std::vector<float> datavec = (iterator->second);
     for (size_t i = 0; i < numberOfNodes; i++) {
       (iterator->second)[i] *= weights[i];
       length += (float)pow((iterator->second)[i], 2.0);
@@ -437,10 +442,35 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     length = sqrt(length);
     for (size_t i = 0; i < numberOfNodes; i++) 
       (iterator->second)[i] /= length;
+
+    // write out vector to database
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(iterator->first));
+    const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
+
+    filesystem::create_file_directory(datavec_location);
+
+    std::ofstream ofs(datavec_location.c_str(), std::ios::binary | std::ios::trunc);
+    ofs.write((char *)&(iterator->second)[0], numberOfNodes*sizeof(float));
+    if ((ofs.rdstate() & std::ofstream::failbit) != 0)
+      std::cout << "Failed to write data for " << iterator->first << " to " << datavec_location << std::endl;
+
+    /*if (!filesystem::file_exists(datavec_location)) { printf("COULDN'T FIND FILE\n\n"); continue; };
+    std::vector<float> dbVec(numberOfNodes);
+    std::ifstream ifs(datavec_location.c_str(), std::ios::binary);
+    ifs.read((char *)&dbVec[0], numberOfNodes*sizeof(float));
+    if ((ifs.rdstate() & std::ifstream::failbit) != 0) { printf("FAILLLLLLLLLL\n\n"); continue; }
+
+    printf("Original: ");
+    for (int i = 0; i < numberOfNodes; i++)
+      printf("%f ", datavec[i]);
+    printf("\nSaved: ");
+    for (int i = 0; i < numberOfNodes; i++)
+      printf("%f ", dbVec[i]);
+    printf("\n\n");*/
   }
 
 
-  uint32_t l = 0, inL = 0;
+  /*uint32_t l = 0, inL = 0;
   for (uint32_t i = 0; i < numberOfNodes; i++) {
     printf("Node %d, ifl %d, count %d, weight %f Desc (%d):\n ", i, tree[i].invertedFileLength, counts[i], weights[i], tree[i].mean.cols);
     for (int j = 0; j < tree[i].mean.cols && j<8; j++)
@@ -452,7 +482,19 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       inL = 0;
       printf("-----------------------------------------\n\n");
     }
-  }
+  }*/
+
+
+  /*const std::string &tree_root_location = dataset.location("tree/");
+  std::stringstream ss;
+  //ss << "C:/Users/Conrad/Documents/15-869_Visual_Computing_Systems/Final_Project/vocabtree/data/oxfordmini/tree." << split << "." << maxLevel << ".bin";
+  ss << tree_root_location << "tree." << split << "." << maxLevel << ".bin";
+  const std::string &tree_location = ss.str();
+  filesystem::create_file_directory(tree_root_location);
+  if (VocabTree::save(tree_location))
+    printf("Wrote successfully\n");
+  else
+    printf("Failed write\n");*/
 
   // synchronize leaf and vector information, everything send to node 0
   
@@ -525,7 +567,8 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   // will only be here if node 0
   // save file and tell other nodes they can read the file
-  VocabTree::save(file_path);
+  if(!VocabTree::save(tree_location))
+    return false;
   printf("Node 0 wrote to file path\n\n");
 
   std::vector<MPI_Request> requests(procs - 1);
@@ -848,8 +891,19 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     // compute L1 norm (based on paper eq 5)
     //float l1norm = 0;
     float score = 0;
+
+    // load datavec from disk
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(elem));
+    const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
+
+    if (!filesystem::file_exists(datavec_location)) continue;
+    std::vector<float> dbVec(numberOfNodes);
+    std::ifstream ifs(datavec_location.c_str(), std::ios::binary);
+    ifs.read((char *)&dbVec[0], numberOfNodes*sizeof(float));
+    if ((ifs.rdstate() & std::ifstream::failbit) != 0) continue;
+
     for (uint32_t i = 0; i < numberOfNodes; i++) {
-      float t = vec[i] - (databaseVectors[elem])[i];
+      float t = vec[i] - dbVec[i];
       score += t*t;
       // std::cout << vec[i] << std::endl;
       //l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
@@ -920,6 +974,28 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   return (std::shared_ptr<MatchResultsBase>)match_result;
 }
 
+std::vector< std::shared_ptr<MatchResultsBase> > VocabTree::search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
+  const std::vector< std::shared_ptr<const Image > > &examples) {
+
+  std::vector< std::shared_ptr<MatchResultsBase> > results(examples.size());
+  /*
+  int numThreads = 1;
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+//#pragma omp parallel for
+  numThreads = omp_get_max_threads();
+#endif
+  */
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+  //#pragma omp parallel for
+#endif
+  for (int i = 0; i < examples.size(); i++) {
+    std::shared_ptr<MatchResultsBase> imResults = search(dataset, params, examples[i]);
+    results[i] = imResults;
+  }
+
+  return results;
+}
+  
 uint32_t VocabTree::tree_splits() const {
 	return split;
 }

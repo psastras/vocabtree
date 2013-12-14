@@ -37,7 +37,13 @@ public:
 	bool save (const std::string &file_path) const;
 
 	/// Given a set of search parameters, a query image, searches for matching images and returns the match
-	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
+	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
+    const std::shared_ptr<const Image > &example);
+
+  /// Given a set of search parameters, list of query images, searches for matching images and returns the result
+  /// matches.
+  virtual std::vector< std::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
+    const std::vector< std::shared_ptr<const Image > > &examples);
 
 	/// returns the split size of each node
 	uint32_t tree_splits() const;
