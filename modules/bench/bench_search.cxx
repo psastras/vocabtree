@@ -26,9 +26,14 @@ _INITIALIZE_EASYLOGGINGPP
 
 void bench_oxford() {
 
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+#endif
+
 	MatchesPage html_output;
 	
-	const uint32_t num_clusters = s_oxfordmini_num_clusters;
+  const uint32_t num_clusters = 512;// s_oxfordmini_num_clusters;
 
 	SimpleDataset oxford_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location, 256);
 	LINFO << oxford_dataset;
@@ -52,10 +57,17 @@ void bench_oxford() {
 		if(matches == nullptr) {
 			LERROR << "Error while running search.";
 			continue;
-		}
+    }
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+    if (rank != 0)
+      continue;
+#endif
+
 		double end_time = CycleTimer::currentSeconds();
-		total_time += (end_time - start_time);
-		std::cout << *oxford_dataset.cache() << std::endl;
+    total_time += (end_time - start_time);
+#if !(_MSC_VER && !__INTEL_COMPILER)
+    std::cout << *oxford_dataset.cache() << std::endl;
+#endif
 		// validate matches
 		cv::Mat keypoints_0, descriptors_0;
 		std::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(i));
@@ -63,7 +75,8 @@ void bench_oxford() {
 		const std::string &query_descriptors_location = oxford_dataset.location(query_image->feature_path("descriptors"));
 		filesystem::load_cvmat(query_keypoints_location, keypoints_0);
 		filesystem::load_cvmat(query_descriptors_location, descriptors_0);
-		std::vector<int> validated(num_validate, 0);
+
+    std::vector<int> validated(num_validate, 0);  
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 		#pragma omp parallel for schedule(dynamic)
 #endif
@@ -110,16 +123,13 @@ void bench_oxford() {
 
 int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-	MPI::Init(argc, argv);
-	int rank = MPI::COMM_WORLD.Get_rank();
-	if(rank == 0) {
+  MPI_Init(&argc, &argv);
 #endif
 
 	bench_oxford();
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-	}
-	MPI::Finalize();
+	MPI_Finalize();
 #endif
 	return 0;
 }

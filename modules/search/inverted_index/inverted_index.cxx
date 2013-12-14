@@ -39,7 +39,8 @@ bool InvertedIndex::load (const std::string &file_path) {
 		uint64_t num_entries;
 		ifs.read((char *)&num_entries, sizeof(uint64_t));
 		inverted_index[i].resize(num_entries);
-		ifs.read((char *)&inverted_index[i][0], sizeof(uint64_t) * num_entries);
+    if (num_entries != 0)
+		  ifs.read((char *)&inverted_index[i][0], sizeof(uint64_t) * num_entries);
 	}
 
 	std::cout << "Done reading inverted index." << std::endl;
@@ -59,7 +60,8 @@ bool InvertedIndex::save (const std::string &file_path) const {
 	for(uint32_t i=0; i<num_clusters; i++) {
 		uint64_t num_entries = inverted_index[i].size();
 		ofs.write((const char *)&num_entries, sizeof(uint64_t));
-		ofs.write((const char *)&inverted_index[i][0], sizeof(uint64_t) * num_entries);
+    if (num_entries != 0)
+		  ofs.write((const char *)&inverted_index[i][0], sizeof(uint64_t) * num_entries);
 	}
 
 	std::cout << "Done writing inverted index." << std::endl;
@@ -143,18 +145,21 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	
 	num_candidates = MIN(num_candidates, ii_params->cutoff_idx);
 
+  if (num_candidates == 0)
+    return match_result;
+
   std::vector< std::pair<float, uint64_t> > candidate_scores(num_candidates);
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int rank, procs;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &procs);
+
   /// number of candidates each node has
-  int myCandidates = floor((float)num_candidates / procs); 
+  int candidatesPerProc = (int)(((float)num_candidates) / ((float)procs)) + 1;
+  int leftover = num_candidates%candidatesPerProc;
   /// actual number of candidates a node has, will only be different for last node if num_candidates % procs !=0
-  int actualCand = myCandidates;
-  if (rank == procs - 1 && num_candidates%procs != 0)
-    actualCand = num_candidates%procs;// num_candidates - ((procs - 1)*myCandidates);
+  int myCandidates = (rank==procs-1)?leftover : candidatesPerProc;
 #endif
 
 
@@ -162,7 +167,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 #pragma omp parallel for schedule(dynamic)
 #endif
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-  for (int64_t i = rank*myCandidates; i<(rank*myCandidates + actualCand); i++) {
+  for (int64_t i = rank*candidatesPerProc; i<(rank*candidatesPerProc + myCandidates); i++) {
 #else
 	for(int64_t i=0; i<num_candidates; i++) {
 #endif
@@ -181,19 +186,22 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
     // recieve all candidates from other nodes
     std::vector<MPI_Request> requests(procs - 1);
     for (int p = 1; p < procs; p++) {
-      int num = myCandidates;
-      if (p == procs - 1 && num_candidates%procs != 0)
-        num = num_candidates%procs;// num_candidates - ((procs - 1)*myCandidates);
-      MPI_Irecv(&candidate_scores[p*myCandidates], (sizeof(float)+sizeof(uint64_t))*num, MPI_BYTE, p, p, MPI_COMM_WORLD, &requests[p - 1]);
+      int num = (p == procs - 1) ? leftover : candidatesPerProc;
+      //if (p == procs - 1 && num_candidates%procs != 0)
+        //num = num_candidates - ((procs - 1)*candidatesPerProc);
+      MPI_Irecv(&candidate_scores[p*candidatesPerProc], (sizeof(float)+sizeof(uint64_t))*num, MPI_BYTE, p, p, MPI_COMM_WORLD, &requests[p - 1]);
     }
     MPI_Waitall(requests.size(), &requests[0], MPI_STATUSES_IGNORE);
   }
   else {
     // send candidate information to root, return empty
-    MPI_Send(&candidate_scores[rank*myCandidates], (sizeof(float)+sizeof(uint64_t))*actualCand, 
+    MPI_Send(&candidate_scores[rank*candidatesPerProc], (sizeof(float)+sizeof(uint64_t))*myCandidates,
       MPI_BYTE, 0, rank, MPI_COMM_WORLD);
-    return std::static_pointer_cast<MatchResultsBase>(match_result); // will be empty
   }
+
+  MPI_Barrier(MPI_COMM_WORLD);
+  if (rank != 0)
+    return std::static_pointer_cast<MatchResultsBase>(match_result); // will be empty
 #endif
 
 	std::sort(candidate_scores.begin(), candidate_scores.end(), 
