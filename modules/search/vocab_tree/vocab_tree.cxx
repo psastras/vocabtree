@@ -44,7 +44,7 @@ bool VocabTree::load (const std::string &file_path) {
   ifs.read((char *)&weights[0], sizeof(float)*numberOfNodes);
 
   // load image data
-  uint32_t imageCount;
+  /*uint32_t imageCount;
   ifs.read((char *)&imageCount, sizeof(uint32_t));
   for (uint32_t i = 0; i < imageCount; i++) {
     uint64_t imageId;
@@ -52,7 +52,7 @@ bool VocabTree::load (const std::string &file_path) {
     ifs.read((char *)&imageId, sizeof(uint64_t));
     ifs.read((char *)&vec[0], sizeof(float)*numberOfNodes);
     databaseVectors[imageId] = vec;
-  }
+  }*/
 
   // load inveted files
   uint32_t invertedFileCount;
@@ -105,12 +105,12 @@ bool VocabTree::save (const std::string &file_path) const {
   ofs.write((const char *)&weights[0], sizeof(float)*numberOfNodes); // weights
 
   // write out databaseVectors
-  uint32_t imageCount = databaseVectors.size();
+  /*uint32_t imageCount = databaseVectors.size();
   ofs.write((const char *)&imageCount, sizeof(uint32_t));
   for (auto& pair : databaseVectors) {
     ofs.write((const char *)&pair.first, sizeof(uint64_t));
     ofs.write((const char *)&(pair.second)[0], sizeof(float)*numberOfNodes); 
-  }
+  }*/
 
   // write out inverted files
   uint32_t numInvertedFiles = invertedFiles.size();
@@ -224,8 +224,6 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   tree[startNode].index = startNode;
   buildTreeRecursive(startNode, merged_descriptor, tc, attempts, cv::KMEANS_PP_CENTERS, startLevel);
   //printf("%d Built tree structure...\n", rank);
-
-  databaseVectors.reserve(all_ids.size());
 
   // for mpi: synchronize all trees
   // even tags are for the node structs, odds are for mean data
@@ -352,13 +350,12 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
 #if ENABLE_MULTITHREADING && ENABLE_MPI && ENABLE_MULTINODE_TRAIN
   int imagesPerProc = ceil(((float)all_ids.size()) / procs);
 #else
-  int imagesPerProc = all_ids.size();
+  //int imagesPerProc = all_ids.size();
 #endif
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#pragma omp parallel for schedule(dynamic)
-#endif
-  for (int i = rank*imagesPerProc; i < std::min((int)all_ids.size(), (rank + 1)*imagesPerProc); i++) {
+  // have to reload all descriptors, do once here instead of twice in the next 2 loops
+  all_descriptors.clear();
+  for (int i = 0; i < all_ids.size(); i++) {
     std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     if (image == nullptr) continue;
 
@@ -368,21 +365,25 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     cv::Mat descriptors, descriptorsf;
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
       descriptors.convertTo(descriptorsf, CV_32FC1);
-      std::vector<float> result = generateVector(descriptorsf, false, all_ids[i]);
+      num_features += descriptors.rows;
 
-      // accumulate counts
-      for (size_t j = 0; j < numberOfNodes; j++)
-      if (result[j] > 0)
-#pragma omp critical
-      {
-        counts[j]++;
-      }
+      all_descriptors.push_back(descriptorsf);
+    }
+  }
 
-      //databaseVectors.insert(std::make_pair<uint64_t, std::vector<float>>(all_ids[i], result));
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#pragma omp parallel for schedule(dynamic)
+#endif
+  //for (int i = rank*imagesPerProc; i < std::min((int)all_ids.size(), (rank + 1)*imagesPerProc); i++) {
+  for (int i = 0; i < all_ids.size(); i++) {
+    std::vector<float> result = generateVector(all_descriptors[i], false, true, false, all_ids[i]);
+
+    // accumulate counts
+    for (size_t j = 0; j < numberOfNodes; j++)
+    if (result[j] > 0)
 #pragma omp critical
-      {
-        databaseVectors[all_ids[i]] = result;
-      }
+    {
+      counts[j]++;
     }
   }
 
@@ -428,31 +429,31 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     // printf("Node %d, count %d, total %d, size %d, weight %f \n", i, counts[i], all_ids.size(), tree[i].invertedFileLength, weights[i]);
   }
 
-  // now that we have the weights we iterate over all images and adjust the vector by weights, 
-  //  then normalizes the vector
-  typedef std::unordered_map<uint64_t, std::vector<float>>::iterator it_type;
-  for (it_type iterator = databaseVectors.begin(); iterator != databaseVectors.end(); iterator++) {
+  // generate datavectors, normalize, then write to disk
+  for (int i = 0; i < all_ids.size(); i++) {
+
+    std::vector<float> dataVec = generateVector(all_descriptors[i], true, true, false, all_ids[i]);
     float length = 0; // hopefully shouldn't overflow from adding doubles
     //std::vector<float> datavec = (iterator->second);
     for (size_t i = 0; i < numberOfNodes; i++) {
-      (iterator->second)[i] *= weights[i];
-      length += (float)pow((iterator->second)[i], 2.0);
+      //(iterator->second)[i] *= weights[i];
+      length += (float)pow(dataVec[i], 2.0);
     }
     // normalizing
     length = sqrt(length);
     for (size_t i = 0; i < numberOfNodes; i++) 
-      (iterator->second)[i] /= length;
+      dataVec[i] /= length;
 
     // write out vector to database
-    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(iterator->first));
+    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
 
     filesystem::create_file_directory(datavec_location);
 
     std::ofstream ofs(datavec_location.c_str(), std::ios::binary | std::ios::trunc);
-    ofs.write((char *)&(iterator->second)[0], numberOfNodes*sizeof(float));
+    ofs.write((char *)&dataVec[0], numberOfNodes*sizeof(float));
     if ((ofs.rdstate() & std::ofstream::failbit) != 0)
-      std::cout << "Failed to write data for " << iterator->first << " to " << datavec_location << std::endl;
+      std::cout << "Failed to write data for " << all_ids[i] << " to " << datavec_location << std::endl;
 
     /*if (!filesystem::file_exists(datavec_location)) { printf("COULDN'T FIND FILE\n\n"); continue; };
     std::vector<float> dbVec(numberOfNodes);
@@ -469,6 +470,8 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     printf("\n\n");*/
   }
 
+  for (int i = 0; i < invertedFiles.size(); i++)
+    printf("Size %d: %d\n", i, invertedFiles[i].size());
 
   /*uint32_t l = 0, inL = 0;
   for (uint32_t i = 0; i < numberOfNodes; i++) {
@@ -483,18 +486,6 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       printf("-----------------------------------------\n\n");
     }
   }*/
-
-
-  /*const std::string &tree_root_location = dataset.location("tree/");
-  std::stringstream ss;
-  //ss << "C:/Users/Conrad/Documents/15-869_Visual_Computing_Systems/Final_Project/vocabtree/data/oxfordmini/tree." << split << "." << maxLevel << ".bin";
-  ss << tree_root_location << "tree." << split << "." << maxLevel << ".bin";
-  const std::string &tree_location = ss.str();
-  filesystem::create_file_directory(tree_root_location);
-  if (VocabTree::save(tree_location))
-    printf("Wrote successfully\n");
-  else
-    printf("Failed write\n");*/
 
   // synchronize leaf and vector information, everything send to node 0
   
@@ -678,12 +669,12 @@ void VocabTree::buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::T
   }
 }
 
-std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight, int64_t id) {
+std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight, bool building, bool multinode, int64_t id) {
   std::unordered_set<uint32_t> dummy;
-  return generateVector(descriptors, shouldWeight, dummy, id);
+  return generateVector(descriptors, shouldWeight, building, multinode, dummy, id);
 }
 
-std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight,
+std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool shouldWeight, bool building, bool multinode,
   std::unordered_set<uint32_t> & possibleMatches, int64_t id) {
 
   std::vector<float> vec(numberOfNodes);
@@ -701,7 +692,7 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
 #pragma omp parallel for
 #endif
   // run over multiple nodes only if called by search, not train
-  for (int r = (id>=0? 0:rank); r < descriptors.rows; r+=(id>0?1:procs)) {
+  for (int r = (multinode? rank:0); r < descriptors.rows; r+=(multinode?procs:1)) {
 #else
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for
@@ -709,7 +700,7 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
   for (int r = 0; r < descriptors.rows; r++) {
 #endif
     //printf("%d ", r);
-    generateVectorHelper(0, descriptors.row(r), vec, possibleMatches, id);
+    generateVectorHelper(0, descriptors.row(r), vec, possibleMatches, building, id);
   }
 
   /*printf("my vector: ");
@@ -718,7 +709,7 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
   printf("\n");*/
   
 #if ENABLE_MULTITHREADING && ENABLE_MPI
-  if(id<0) {
+  if(multinode) {
     /*printf("[%d] my vector: ", rank);
     for (int i = 0; i < numberOfNodes; i++)
       printf("%f ", vec[i]);
@@ -782,7 +773,7 @@ std::vector<float> VocabTree::generateVector(const cv::Mat &descriptors, bool sh
 }
 
 void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descriptor, std::vector<float> & counts,
-  std::unordered_set<uint32_t> & possibleMatches, int64_t id) {
+  std::unordered_set<uint32_t> & possibleMatches, bool building, int64_t id) {
 
 #pragma omp critical
     {
@@ -805,7 +796,7 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
       }
     }
     // accumulating image id's into possibleMatches
-    else {
+    else if(!building){
       // i don't like doing this serial, should find a better method
       //typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
       //for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
@@ -842,7 +833,7 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
         maxChild = childIndex;
       }
     }
-    generateVectorHelper(maxChild, descriptor, counts, possibleMatches, id);
+    generateVectorHelper(maxChild, descriptor, counts, possibleMatches, building, id);
   }
 }
 
@@ -867,7 +858,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
   descriptors.convertTo(descriptorsf, CV_32FC1);
 
   // printf("--Generating vector...\n");
-  std::vector<float> vec = generateVector(descriptorsf, true, possibleMatches);
+  std::vector<float> vec = generateVector(descriptorsf, true, false, true, possibleMatches);
   // printf("--Generated vector\n");
 
   typedef std::pair<uint64_t, float> matchPair;

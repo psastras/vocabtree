@@ -86,7 +86,7 @@ protected:
 
   /// Stores the database vectors for all images in the database - d_i in the paper
   /// Indexes by the image id
-  std::unordered_map<uint64_t, std::vector<float>> databaseVectors;
+  //std::unordered_map<uint64_t, std::vector<float>> databaseVectors;
 
   /// Recursively builds a tree, starting with 0 and ending with currLevel = maxLevel-1
   /// The arguments of indices, maxNode, and ratio are only used for multinode mpi. In this case descriptors will always contain all the descriptors
@@ -95,21 +95,23 @@ protected:
   void buildTreeRecursive(uint32_t t, const cv::Mat &descriptors, cv::TermCriteria &tc, int attempts, int flags, int currLevel);
 
   /// helper function, inserts a dummy possibleMatches
-  std::vector<float> generateVector(const cv::Mat &descriptors, bool shouldWeight, int64_t id = -1);
+  std::vector<float> generateVector(const cv::Mat &descriptors, bool shouldWeight, bool building, bool multinode, int64_t id = -1);
 
   /// To call with an id call without possibleMatches and it will go to the helper function
   /// Takes descriptors for an image and for each descriptor finds the path down the tree generating a vector (describing the path)
   /// Adds up all vectors (one from each descriptor) to return the vector of counts for each node
   /// If  shouldWeight is true will weight each by the weight of the node, should be true for general query and false for construction
   /// If id is set then will insert that id into the invertedFile of each leaf visited, if negative or not set then won't do anything
-  /// When id is not set will use insert images into possibleMatches, possibleMatches will not be used if id is set
-  std::vector<float> generateVector(const cv::Mat &descriptors, bool shouldWeight, std::unordered_set<uint32_t> & possibleMatches, int64_t id = -1);
+  /// When building is false will use insert images into possibleMatches, possibleMatches will not be used if building is false
+  /// If multinode is true then all the descriptors will be run over multiple nodes
+  std::vector<float> generateVector(const cv::Mat &descriptors, bool shouldWeight, bool building, bool multinode,
+    std::unordered_set<uint32_t> & possibleMatches, int64_t id = -1);
 
   /// Recursive function that recursively goes down the tree from t to find where the single descriptor belongs (stopping at leaf)
   /// On each node increments cound in the counts vector
   /// If id is set (>=0) then adds the image with that id to the leaf
   /// Picks the child to traverse down based on the max dot product
   void generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descriptor, std::vector<float> & counts,
-    std::unordered_set<uint32_t> & possibleMatches, int64_t id = -1);
+    std::unordered_set<uint32_t> & possibleMatches, bool building, int64_t id = -1);
 	
 };
