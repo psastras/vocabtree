@@ -6,6 +6,7 @@
 #include <utils/dataset.hpp>
 #include <utils/vision.hpp>
 #include <utils/logger.hpp>
+#include <utils/misc.hpp>
 #include <iostream>
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP

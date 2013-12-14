@@ -3,6 +3,7 @@
 #include <config.hpp>
 
 #include <utils/filesystem.hpp>
+#include <utils/misc.hpp>
 #include <utils/numerics.hpp>
 
 #include <iostream>
@@ -115,6 +116,8 @@ std::vector< std::shared_ptr<MatchResultsBase> > match_results(examples.size());
 std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
 	const std::shared_ptr<const Image > &example) {
 	
+	SCOPED_TIMER
+
 	const std::shared_ptr<const SearchParams> &ii_params = params == nullptr ?
 		std::make_shared<const SearchParams>()
 		: std::static_pointer_cast<const SearchParams>(params);
@@ -172,9 +175,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	for(int64_t i=0; i<num_candidates; i++) {
 #endif
 
-		const numerics::sparse_vector_t &bow_descriptors = dataset.load_bow_feature(
-				candidates[i].second
-			);
+		const numerics::sparse_vector_t &bow_descriptors = dataset.load_bow_feature(candidates[i].second);
 
 		float sim = numerics::min_hist(example_bow_descriptors, bow_descriptors, idf_weights);
 		candidate_scores[i] = std::pair<float, uint64_t>(sim, candidates[i].second);
@@ -215,6 +216,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 		match_result->tfidf_scores[i] = candidate_scores[i].first;
 		match_result->matches[i] = candidate_scores[i].second;
 	}
+
 
 	return std::static_pointer_cast<MatchResultsBase>(match_result);
 }

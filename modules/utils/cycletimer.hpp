@@ -21,6 +21,10 @@
 #  include <sys/time.h>
 #endif
 
+/// Scoped time
+
+
+
 
 /// This uses the cycle counter of the processor.  Different
 /// processors in the system will have different values for this.  If

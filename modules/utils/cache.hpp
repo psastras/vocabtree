@@ -8,6 +8,7 @@
 #include <boost/function.hpp> 
 
 #include "config.hpp"
+#include "misc.hpp"
 #include "numerics.hpp"
 #include "cycletimer.hpp"
 
@@ -53,6 +54,7 @@ class SingleCache {
  
   // Non locking version
   template<typename U = V> typename std::enable_if<!B, U>::type operator()(const K& k) { 
+    SCOPED_TIMER
     double startlookup = CycleTimer::currentSeconds();
     const typename container_type::left_iterator it = _container.left.find(k); 
     if (it == _container.left.end()) {      
@@ -78,7 +80,7 @@ class SingleCache {
 
   // Locking version
   template<typename U = V> typename std::enable_if<B, U>::type operator()(const K& k) { 
-    // double startlookup = CycleTimer::currentSeconds();
+    SCOPED_TIMER
     V v;
     #pragma omp critical
     {
@@ -93,9 +95,6 @@ class SingleCache {
         v = it->second;
       }
     }
-
-    // #pragma omp critical
-    // _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
     return v;
   }
 
@@ -236,6 +235,7 @@ class MultiRingPriorityCache {
  
   // Obtain value of the cached function for k 
   V operator()(const K& k) { 
+    SCOPED_TIMER
     // double startlookup = CycleTimer::currentSeconds();
     for(size_t i = 0; i<omp_get_max_threads(); i++) {
       size_t cache_idx = ((size_t)(k / _single_capacity)+i) % omp_get_max_threads();

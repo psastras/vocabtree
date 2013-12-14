@@ -32,3 +32,41 @@ namespace misc {
         return machine_name;
     }
 }
+
+PerfTracker* PerfTracker::s_instance = 0;
+
+PerfTracker::PerfTracker() {
+
+}
+
+PerfTracker::~PerfTracker() {
+    
+}
+
+PerfTracker &PerfTracker::instance() {
+    if(!s_instance) s_instance = new PerfTracker();
+    return *s_instance;
+}
+
+void PerfTracker::add_time(const std::string &func, double time) {
+    #pragma omp critical
+    {
+        _times[func].first += time;
+        _times[func].second++;
+    }
+}
+
+std::map<std::string, std::pair<double, uint64_t> > &PerfTracker::times() {
+    return _times;
+}
+
+std::ostream& operator<< (std::ostream &out, PerfTracker &pt) {
+  std::cout << "Performance Report" << std::endl;
+  std::cout << "Function Name\tTotal Time\tNumber of Calls\tAverage Time" << std::endl;
+  std::cout << "==================================================" << std::endl;
+  for(std::map<std::string, std::pair<double, uint64_t> >::iterator it = pt.times().begin(); it != pt.times().end(); ++it) {
+    std::cout << it->first << "\t" << it->second.first << "\t" <<
+     it->second.second << "\t" << it->second.first / (double)it->second.second << std::endl;
+  }
+  return out;
+}

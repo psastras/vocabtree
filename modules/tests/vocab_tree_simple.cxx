@@ -18,6 +18,7 @@
 #include <mpi.h>
 #endif
 
+_INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
