@@ -113,7 +113,9 @@ std::vector< std::shared_ptr<MatchResultsBase> > match_results(examples.size());
 std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
 	const std::shared_ptr<const Image > &example) {
 
-	const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
+	const std::shared_ptr<const SearchParams> &ii_params = params == nullptr ?
+		std::make_shared<const SearchParams>()
+		: std::static_pointer_cast<const SearchParams>(params);
 	
 	std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
 
@@ -138,6 +140,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 
 	std::sort(candidates.begin(), candidates.end());
 	std::reverse(candidates.begin(), candidates.end());
+	
 	num_candidates = MIN(num_candidates, ii_params->cutoff_idx);
 
   std::vector< std::pair<float, uint64_t> > candidate_scores(num_candidates);
