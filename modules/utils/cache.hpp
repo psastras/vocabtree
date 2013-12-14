@@ -143,6 +143,7 @@ class MultiCache {
  
   // Obtain value of the cached function for k 
   V operator()(const K& k) { 
+    SCOPED_TIMER
     return _caches[omp_get_thread_num()](k);
   } 
 
@@ -181,6 +182,7 @@ class MultiRingCache {
  
   // Obtain value of the cached function for k 
   V operator()(const K& k) { 
+    SCOPED_TIMER
     return _caches[(size_t)(k / _single_capacity) % omp_get_max_threads()](k);
   } 
 
@@ -319,6 +321,10 @@ typedef MultiRingPriorityCache<uint64_t, numerics::sparse_vector_t, boost::bimap
 typedef MultiRingCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_ring_cache_t;
 typedef MultiCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_multi_cache_t;
 
+typedef MultiRingPriorityCache<uint64_t,  std::vector<float>, boost::bimaps::set_of> vec_ring_priority_cache_t;
+typedef MultiRingCache<uint64_t,  std::vector<float>, boost::bimaps::set_of> vec_ring_cache_t;
+typedef MultiCache<uint64_t, std::vector<float>, boost::bimaps::set_of> vec_multi_cache_t;
+
 #endif
 
 
@@ -331,5 +337,6 @@ std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V, SET> &c)
 }
 
 typedef SingleCache<true, uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_single_cache_t;
+typedef SingleCache<true, uint64_t, std::vector<float>, boost::bimaps::set_of> vec_single_cache_t;
 
 #endif

@@ -172,7 +172,7 @@ numerics::sparse_vector_t SimpleDataset::load_bow_feature(uint64_t id) const {
 #endif
 }
 
-numerics::sparse_vector_t SimpleDataset::load_vec_feature(uint64_t id) const {
+std::vector<float> SimpleDataset::load_vec_feature(uint64_t id) const {
 #if !(_MSC_VER && !__INTEL_COMPILER)
 	if(vec_feature_cache) {
 		return (*vec_feature_cache)(id);
@@ -197,6 +197,21 @@ numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) con
 	if (!filesystem::file_exists(location)) return bow_descriptors;	
 	filesystem::load_sparse_vector(location, bow_descriptors);
 	return bow_descriptors;
+}
+
+std::vector<float> SimpleDataset::load_vec_feature_cache(uint64_t id) const {
+	std::vector<float> vec_feature;
+	uint32_t level0 = id >> 20;
+	uint32_t level1 = (id - (level0 << 20)) >> 10;
+	std::stringstream ss;
+	ss <<  this->location() << "/feats/" << "datavec" << "/" << 
+	std::setw(4) << std::setfill('0') << level0 << "/" <<
+	std::setw(4) << std::setfill('0') << level1 << "/" <<
+	std::setw(9) << std::setfill('0') << id << "." << "datavec";
+	std::string location = ss.str();
+	if (!filesystem::file_exists(location)) return vec_feature;	
+	filesystem::load_vector(location, vec_feature);
+	return vec_feature;
 }
 
 bool SimpleDataset::add_image(const std::shared_ptr<const Image> &image) {

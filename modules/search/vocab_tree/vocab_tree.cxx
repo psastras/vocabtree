@@ -234,16 +234,16 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   int cols = merged_descriptor.cols;
   uint64_t elemSize = merged_descriptor.elemSize();
   int32_t elemType = merged_descriptor.type();
-  printf("[%d] cols: %d, size: %d, type: %d\n", rank, cols, elemSize, elemType);
+  // printf("[%d] cols: %d, size: %d, type: %d\n", rank, cols, elemSize, elemType);
 
-  printf(" %d here\n", rank);
-  if (rank == 0)
-    printf("master\n");
-  else
-    printf("slave");
+  // printf(" %d here\n", rank);
+  // if (rank == 0)
+  //   printf("master\n");
+  // else
+  //   printf("slave");
 
   if (rank == 0) {
-    printf("Sending...\n"); 
+    // printf("Sending...\n"); 
     std::vector<MPI_Request> sentRequests(procs - 1);
     int c = 0;
     for (int p = 1; p < procs; p++){
@@ -317,21 +317,21 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     MPI_Send(&t, 1, MPI_INT, 0, 100000, MPI_COMM_WORLD);
   }
 
-  printf("  %d HERE!!\n", rank);
+  // printf("  %d HERE!!\n", rank);
 
   if (rank == 0) {
     for (uint32_t i = 0; i < (uint32_t)pow(split, maxLevel - 1); i++) {
       //printf("Size of inv file %d: %d\n", i, invertedFiles[i].sizbe());
     }
-    printf("\n\n");
+    // printf("\n\n");
     uint32_t l = 0, inL = 0;
     for (uint32_t i = 0; i < numberOfNodes; i++) {
-      printf("Node %d, len %d, w %f | ", i, tree[i].invertedFileLength, weights[i]);
+      // printf("Node %d, len %d, w %f | ", i, tree[i].invertedFileLength, weights[i]);
       inL++;
       if (inL >= (uint32_t)pow(split, l)) {
         l++;
         inL = 0;
-        printf("\n");
+        // printf("\n");
       }
     }
   }
@@ -448,13 +448,16 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     // write out vector to database
     std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
-
     filesystem::create_file_directory(datavec_location);
+    if(!filesystem::write_vector(datavec_location, dataVec)) {
+       std::cerr << "Failed to write data for " << all_ids[i] << " to " << datavec_location << std::endl;
+    }
+    
 
-    std::ofstream ofs(datavec_location.c_str(), std::ios::binary | std::ios::trunc);
-    ofs.write((char *)&dataVec[0], numberOfNodes*sizeof(float));
-    if ((ofs.rdstate() & std::ofstream::failbit) != 0)
-      std::cout << "Failed to write data for " << all_ids[i] << " to " << datavec_location << std::endl;
+    // std::ofstream ofs(datavec_location.c_str(), std::ios::binary | std::ios::trunc);
+    // ofs.write((char *)&dataVec[0], numberOfNodes*sizeof(float));
+    // if ((ofs.rdstate() & std::ofstream::failbit) != 0)
+    //   std::cout << "Failed to write data for " << all_ids[i] << " to " << datavec_location << std::endl;
 
     /*if (!filesystem::file_exists(datavec_location)) { printf("COULDN'T FIND FILE\n\n"); continue; };
     std::vector<float> dbVec(numberOfNodes);
@@ -471,8 +474,8 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
     printf("\n\n");*/
   }
 
-  for (int i = 0; i < invertedFiles.size(); i++)
-    printf("Size %d: %d\n", i, invertedFiles[i].size());
+  // for (int i = 0; i < invertedFiles.size(); i++)
+  //   printf("Size %d: %d\n", i, invertedFiles[i].size());
 
   /*uint32_t l = 0, inL = 0;
   for (uint32_t i = 0; i < numberOfNodes; i++) {
@@ -561,7 +564,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   // save file and tell other nodes they can read the file
   if(!VocabTree::save(tree_location))
     return false;
-  printf("Node 0 wrote to file path\n\n");
+  // printf("Node 0 wrote to file path\n\n");
 
   std::vector<MPI_Request> requests(procs - 1);
   int asdf = 42;
@@ -887,13 +890,15 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
 
     // load datavec from disk
     std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(elem));
-    const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
+    // const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
 
-    if (!filesystem::file_exists(datavec_location)) continue;
-    std::vector<float> dbVec(numberOfNodes);
-    std::ifstream ifs(datavec_location.c_str(), std::ios::binary);
-    ifs.read((char *)&dbVec[0], numberOfNodes*sizeof(float));
-    if ((ifs.rdstate() & std::ifstream::failbit) != 0) continue;
+    // if (!filesystem::file_exists(datavec_location)) continue;
+    // std::vector<float> dbVec(numberOfNodes);
+    // std::ifstream ifs(datavec_location.c_str(), std::ios::binary);
+    // ifs.read((char *)&dbVec[0], numberOfNodes*sizeof(float));
+    // if ((ifs.rdstate() & std::ifstream::failbit) != 0) continue;
+
+    std::vector<float> dbVec = dataset.load_vec_feature(elem);
 
     for (uint32_t i = 0; i < numberOfNodes; i++) {
       float t = vec[i] - dbVec[i];

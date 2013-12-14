@@ -110,18 +110,23 @@ namespace filesystem {
 	}
 
 	bool write_vector(const std::string &fname, const std::vector<float> &data) {
-    create_file_directory(fname);
+	    // create_file_directory(fname);
 
-    std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);
-    ofs.write((char *)&data[0], data.size()*sizeof(float));
-    return (ofs.rdstate() & std::ofstream::failbit) == 0;
+	    std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);
+	   	uint32_t dim0 = data.size();
+		ofs.write((char *)&dim0, sizeof(uint32_t));
+	    ofs.write((char *)&data[0], data.size()*sizeof(float));
+	    return (ofs.rdstate() & std::ofstream::failbit) == 0;
 	}
 
   bool load_vector(const std::string &fname, std::vector<float> &data) {
-    if (!file_exists(fname)) return false;
+	if (!file_exists(fname)) return false;
 
-    std::ifstream ifs(fname.c_str(), std::ios::binary);
-    ifs.read((char *)&data[0], data.size()*sizeof(float));
-    return (ifs.rdstate() & std::ifstream::failbit) == 0;
-	}
+	std::ifstream ifs(fname.c_str(), std::ios::binary);
+	uint32_t dim0;
+	ifs.read((char *)&dim0, sizeof(uint32_t));
+	data.resize(dim0);
+	ifs.read((char *)&data[0], data.size()*sizeof(float));
+	return (ifs.rdstate() & std::ifstream::failbit) == 0;
+}
 }
