@@ -110,10 +110,18 @@ namespace filesystem {
 	}
 
 	bool write_vector(const std::string &fname, const std::vector<float> &data) {
+    create_file_directory(fname);
 
+    std::ofstream ofs(fname.c_str(), std::ios::binary | std::ios::trunc);
+    ofs.write((char *)&data[0], data.size()*sizeof(float));
+    return (ofs.rdstate() & std::ofstream::failbit) == 0;
 	}
 
-	bool load_vector(const std::string &fname, std::vector<float> &data) {
+  bool load_vector(const std::string &fname, std::vector<float> &data) {
+    if (!file_exists(fname)) return false;
 
+    std::ifstream ifs(fname.c_str(), std::ios::binary);
+    ifs.read((char *)&data[0], data.size()*sizeof(float));
+    return (ifs.rdstate() & std::ifstream::failbit) == 0;
 	}
 }
