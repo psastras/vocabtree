@@ -8,6 +8,10 @@
 #include <iostream>
 #include <fstream>
 
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+#include <mpi.h>
+#endif
+
 InvertedIndex::InvertedIndex() : SearchBase() {
 
 }
@@ -136,12 +140,29 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 	std::reverse(candidates.begin(), candidates.end());
 	num_candidates = MIN(num_candidates, ii_params->cutoff_idx);
 
-	std::vector< std::pair<float, uint64_t> > candidate_scores(num_candidates);
+  std::vector< std::pair<float, uint64_t> > candidate_scores(num_candidates);
+
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  int rank, procs;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &procs);
+  /// number of candidates each node has
+  int myCandidates = floor((float)num_candidates / procs); 
+  /// actual number of candidates a node has, will only be different for last node if num_candidates % procs !=0
+  int actualCand = myCandidates;
+  if (rank == procs - 1 && num_candidates%procs != 0)
+    actualCand = num_candidates%procs;// num_candidates - ((procs - 1)*myCandidates);
+#endif
+
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  for (int64_t i = rank*myCandidates; i<(rank*myCandidates + actualCand); i++) {
+#else
 	for(int64_t i=0; i<num_candidates; i++) {
+#endif
 
 		const numerics::sparse_vector_t &bow_descriptors = dataset.load_bow_feature(
 				candidates[i].second
@@ -151,7 +172,26 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 		candidate_scores[i] = std::pair<float, uint64_t>(sim, candidates[i].second);
 	}
 
-	// todo: aggregate all results into node zero.
+	// aggregate all results into node zero.
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  if (rank == 0) {
+    // recieve all candidates from other nodes
+    std::vector<MPI_Request> requests(procs - 1);
+    for (int p = 1; p < procs; p++) {
+      int num = myCandidates;
+      if (p == procs - 1 && num_candidates%procs != 0)
+        num = num_candidates%procs;// num_candidates - ((procs - 1)*myCandidates);
+      MPI_Irecv(&candidate_scores[p*myCandidates], (sizeof(float)+sizeof(uint64_t))*num, MPI_BYTE, p, p, MPI_COMM_WORLD, &requests[p - 1]);
+    }
+    MPI_Waitall(requests.size(), &requests[0], MPI_STATUSES_IGNORE);
+  }
+  else {
+    // send candidate information to root, return empty
+    MPI_Send(&candidate_scores[rank*myCandidates], (sizeof(float)+sizeof(uint64_t))*actualCand, 
+      MPI_BYTE, 0, rank, MPI_COMM_WORLD);
+    return std::static_pointer_cast<MatchResultsBase>(match_result); // will be empty
+  }
+#endif
 
 	std::sort(candidate_scores.begin(), candidate_scores.end(), 
           boost::bind(&std::pair<float, uint64_t>::first, _1) >
