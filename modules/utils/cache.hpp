@@ -196,6 +196,18 @@ class MultiRingCache {
     return total_misses;
   }
 
+  uint64_t num_lookups() const { 
+    int total_lookups = 0;
+    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i].num_lookups();
+    return total_lookups;
+  }
+
+  double total_lookup_time()const { 
+    double lookup_time = 0;
+    for(size_t i=0; i<_caches.size(); i++) lookup_time += _caches[i].total_lookup_time();
+    return lookup_time;
+  }
+
   uint64_t capacity() const { return _capacity; }
   
  private: 
@@ -264,16 +276,16 @@ class MultiRingPriorityCache {
   }
 
   double total_lookup_time()const { 
-    double lookup_time = 0;
-    for(size_t i=0; i<_caches.size(); i++) lookup_time += _caches[i].total_lookup_time();
-    return lookup_time;
+    return _lookup_time_total;
   }
 
   uint64_t capacity() const { return _capacity; }
   
  private: 
+
   std::vector<SingleCache<false, K, V, SET>> _caches;
   std::vector<omp_lock_t> _locks;
+  
   const std::function<V(const K&)> _fn; 
   const size_t _capacity, _single_capacity; 
   double _lookup_time_total;

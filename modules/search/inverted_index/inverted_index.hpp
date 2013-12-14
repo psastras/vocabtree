@@ -17,7 +17,7 @@ public:
 
 	/// Subclass of train params base which specifies inverted index training parameters.
 	struct SearchParams : public SearchParamsBase {
-		
+		uint64_t cutoff_idx = 256; /// number of top matches to consider
 	};
 
 	/// Subclass of match results base which also returns scores
@@ -45,6 +45,11 @@ public:
 	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
 	/// (it will fail if the example image has missing features).
 	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
+	
+	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
+	/// (it will fail if the example image has missing features).
+	std::vector< std::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
+															 const std::vector< std::shared_ptr<const Image > > &examples);
 
 protected:
 	

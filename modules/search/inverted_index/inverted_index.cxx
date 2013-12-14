@@ -96,9 +96,20 @@ bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainPar
 	return true;
 }
 
-std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
+std::vector< std::shared_ptr<MatchResultsBase> > InvertedIndex::search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
+															 const std::vector< std::shared_ptr<const Image > > &examples) {
+std::vector< std::shared_ptr<MatchResultsBase> > match_results(examples.size());
+	#pragma omp parallel for schedule(dynamic)
+	for(int64_t i=0; i<(int64_t)examples.size(); i++) {
+		match_results[i] = this->search(dataset, params, examples[i]);
+	}
+	return match_results;
+}
 
-	// const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
+std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
+	const std::shared_ptr<const Image > &example) {
+
+	const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
 	
 	std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
 
@@ -123,7 +134,7 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 
 	std::sort(candidates.begin(), candidates.end());
 	std::reverse(candidates.begin(), candidates.end());
-	num_candidates = MIN(num_candidates, 256);
+	num_candidates = MIN(num_candidates, ii_params->cutoff_idx);
 
 	std::vector< std::pair<float, uint64_t> > candidate_scores(num_candidates);
 
@@ -139,6 +150,8 @@ std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const 
 		float sim = numerics::min_hist(example_bow_descriptors, bow_descriptors, idf_weights);
 		candidate_scores[i] = std::pair<float, uint64_t>(sim, candidates[i].second);
 	}
+
+	// todo: aggregate all results into node zero.
 
 	std::sort(candidate_scores.begin(), candidate_scores.end(), 
           boost::bind(&std::pair<float, uint64_t>::first, _1) >
