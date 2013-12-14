@@ -25,7 +25,7 @@
 _INITIALIZE_EASYLOGGINGPP
 
 
-void validate_results(Dataset &dataset, std::shared_ptr<const SimpleDataset::SimpleImage> &query_image, std::shared_ptr<InvertedIndex::MatchResults> &matches,
+void validate_results(Dataset &dataset, PTR_LIB::shared_ptr<const SimpleDataset::SimpleImage> &query_image, PTR_LIB::shared_ptr<InvertedIndex::MatchResults> &matches,
 		MatchesPage &html_output) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
     if (rank != 0)
@@ -43,7 +43,7 @@ void validate_results(Dataset &dataset, std::shared_ptr<const SimpleDataset::Sim
 #endif
 	for(int32_t j=0; j<(int32_t)num_validate; j++) {
 		cv::Mat keypoints_1, descriptors_1;
-		std::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(matches->matches[j]));
+		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(matches->matches[j]));
 		const std::string &match_keypoints_location = dataset.location(match_image->feature_path("keypoints"));
 		const std::string &match_descriptors_location = dataset.location(match_image->feature_path("descriptors"));
 		filesystem::load_cvmat(match_keypoints_location, keypoints_1);
@@ -55,7 +55,7 @@ void validate_results(Dataset &dataset, std::shared_ptr<const SimpleDataset::Sim
 		validated[j] = vision::is_good_match(match_info) ? 1 : -1;
 	}
 
-	html_output.add_match(query_image->id, matches->matches, dataset, std::make_shared< std::vector<int> >(validated));
+	html_output.add_match(query_image->id, matches->matches, dataset, PTR_LIB::make_shared< std::vector<int> >(validated));
 	html_output.write(dataset.location() + "/results/matches/");
 }
 
@@ -71,12 +71,12 @@ void bench_dataset(SearchBase &searcher, Dataset &dataset) {
 	MatchesPage html_output;
 	
 
-	const std::vector<std::shared_ptr<const Image> > &rand_images = dataset.random_images(num_searches);
+	const std::vector<PTR_LIB::shared_ptr<const Image> > &rand_images = dataset.random_images(num_searches);
 	for(uint32_t i=0; i<num_searches; i++) {
 		
-		std::shared_ptr<const SimpleDataset::SimpleImage> query_image =  std::static_pointer_cast<const SimpleDataset::SimpleImage>(rand_images[i]);
+		PTR_LIB::shared_ptr<const SimpleDataset::SimpleImage> query_image =  std::static_pointer_cast<const SimpleDataset::SimpleImage>(rand_images[i]);
 
-		std::shared_ptr<InvertedIndex::MatchResults> matches = 
+		PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches = 
 			std::static_pointer_cast<InvertedIndex::MatchResults>(searcher.search(dataset, nullptr, query_image));
 
 		if(matches == nullptr) {

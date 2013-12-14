@@ -32,7 +32,7 @@ void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int n
 	}
 
 	BagOfWords bow;
-	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
+	PTR_LIB::shared_ptr<BagOfWords::TrainParams> train_params = PTR_LIB::make_shared<BagOfWords::TrainParams>();
 	train_params->numClusters = num_clusters;
 	train_params->numFeatures = num_features;
 
@@ -42,7 +42,7 @@ void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int n
 	if(filesystem::file_exists(vocab_output_file.str())) {
         bow.load(vocab_output_file.str());
     } else {
-        const std::vector< std::shared_ptr<const Image> > &random_images = dataset.random_images(num_images);
+        const std::vector< PTR_LIB::shared_ptr<const Image> > &random_images = dataset.random_images(num_images);
         bow.train(dataset, train_params, random_images);                
 #if ENABLE_FASTCLUSTER && ENABLE_MPI
         if(rank == 0) {
@@ -57,7 +57,7 @@ void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int n
 	if(rank == 0) {
 #endif
 	
-	const std::vector<  std::shared_ptr<const Image> > &all_images = dataset.all_images();
+	const std::vector<  PTR_LIB::shared_ptr<const Image> > &all_images = dataset.all_images();
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	uint32_t num_threads = omp_get_max_threads();

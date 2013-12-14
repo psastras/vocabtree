@@ -70,10 +70,10 @@ bool InvertedIndex::save (const std::string &file_path) const {
 	return (ofs.rdstate() & std::ofstream::failbit) == 0;
 }
 
-bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
-	const std::shared_ptr<const TrainParams> &ii_params = std::static_pointer_cast<const TrainParams>(params);
+bool InvertedIndex::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainParamsBase> &params, const std::vector< PTR_LIB::shared_ptr<const Image > > &examples) {
+	const PTR_LIB::shared_ptr<const TrainParams> &ii_params = std::static_pointer_cast<const TrainParams>(params);
 	
-	const std::shared_ptr<BagOfWords> &bag_of_words = ii_params->bag_of_words;
+	const PTR_LIB::shared_ptr<BagOfWords> &bag_of_words = ii_params->bag_of_words;
 	
 	if(bag_of_words == nullptr) return false;
 
@@ -81,7 +81,7 @@ bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainPar
 	idf_weights.resize(bag_of_words->num_clusters(), 0.f);
 
 	for (size_t i = 0; i < examples.size(); i++) {
-		const std::shared_ptr<const Image> &image = examples[i];
+		const PTR_LIB::shared_ptr<const Image> &image = examples[i];
 		const std::string &bow_descriptors_location = dataset.location(image->feature_path("bow_descriptors"));
 
 		if (!filesystem::file_exists(bow_descriptors_location)) continue;
@@ -103,9 +103,9 @@ bool InvertedIndex::train(Dataset &dataset, const std::shared_ptr<const TrainPar
 	return true;
 }
 
-std::vector< std::shared_ptr<MatchResultsBase> > InvertedIndex::search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
-															 const std::vector< std::shared_ptr<const Image > > &examples) {
-std::vector< std::shared_ptr<MatchResultsBase> > match_results(examples.size());
+std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > InvertedIndex::search(Dataset &dataset, const PTR_LIB::shared_ptr<SearchParamsBase> &params,
+															 const std::vector< PTR_LIB::shared_ptr<const Image > > &examples) {
+std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > match_results(examples.size());
 	#pragma omp parallel for schedule(dynamic)
 	for(int64_t i=0; i<(int64_t)examples.size(); i++) {
 		match_results[i] = this->search(dataset, params, examples[i]);
@@ -113,16 +113,16 @@ std::vector< std::shared_ptr<MatchResultsBase> > match_results(examples.size());
 	return match_results;
 }
 
-std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
-	const std::shared_ptr<const Image > &example) {
+PTR_LIB::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params, 
+	const PTR_LIB::shared_ptr<const Image > &example) {
 	
 	SCOPED_TIMER
 
-	const std::shared_ptr<const SearchParams> &ii_params = params == nullptr ?
-		std::make_shared<const SearchParams>()
+	const PTR_LIB::shared_ptr<const SearchParams> &ii_params = params == nullptr ?
+		PTR_LIB::make_shared<const SearchParams>()
 		: std::static_pointer_cast<const SearchParams>(params);
 	
-	std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
+	PTR_LIB::shared_ptr<MatchResults> match_result = PTR_LIB::make_shared<MatchResults>();
 
 	const numerics::sparse_vector_t &example_bow_descriptors = dataset.load_bow_feature(
 		example->id

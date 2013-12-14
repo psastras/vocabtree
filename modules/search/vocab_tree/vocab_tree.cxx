@@ -149,8 +149,8 @@ bool VocabTree::save (const std::string &file_path) const {
   return (ofs.rdstate() & std::ofstream::failbit) == 0;
 }
 
-bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params,
-  const std::vector< std::shared_ptr<const Image > > &examples) {
+bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainParamsBase> &params,
+  const std::vector< PTR_LIB::shared_ptr<const Image > > &examples) {
   //printf("Starting to build tree...\n");
 
   int rank = 0;
@@ -175,7 +175,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
 #endif
 
 
-  const std::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
+  const PTR_LIB::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
   split = vt_params->split;
   //uint32_t depth = vt_params->depth;
   maxLevel = vt_params->depth;
@@ -196,7 +196,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   std::vector<cv::Mat> all_descriptors;
   uint64_t num_features = 0;
   for (size_t i = 0; i < all_ids.size(); i++) {
-    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
+    PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     if (image == nullptr) continue;
 
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
@@ -357,7 +357,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
   // have to reload all descriptors, do once here instead of twice in the next 2 loops
   all_descriptors.clear();
   for (int i = 0; i < all_ids.size(); i++) {
-    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
+    PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     if (image == nullptr) continue;
 
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
@@ -446,7 +446,7 @@ bool VocabTree::train(Dataset &dataset, const std::shared_ptr<const TrainParamsB
       dataVec[i] /= length;
 
     // write out vector to database
-    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
+    PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
     filesystem::create_file_directory(datavec_location);
     if(!filesystem::write_vector(datavec_location, dataVec)) {
@@ -842,14 +842,14 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
 }
 
 
-std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params,
-  const std::shared_ptr<const Image > &example) {
+PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params,
+  const PTR_LIB::shared_ptr<const Image > &example) {
 
   SCOPED_TIMER
 
-  const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
+  const PTR_LIB::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
 
-  std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();
+  PTR_LIB::shared_ptr<MatchResults> match_result = PTR_LIB::make_shared<MatchResults>();
 
   // get descriptors for example
   if (example == nullptr) return nullptr;
@@ -889,7 +889,7 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     float score = 0;
 
     // load datavec from disk
-    std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(elem));
+    PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(elem));
     // const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
 
     // if (!filesystem::file_exists(datavec_location)) continue;
@@ -969,13 +969,13 @@ std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std:
     // std::cout << m.second << std::endl;
   }
 
-  return (std::shared_ptr<MatchResultsBase>)match_result;
+  return (PTR_LIB::shared_ptr<MatchResultsBase>)match_result;
 }
 
-std::vector< std::shared_ptr<MatchResultsBase> > VocabTree::search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
-  const std::vector< std::shared_ptr<const Image > > &examples) {
+std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > VocabTree::search(Dataset &dataset, const PTR_LIB::shared_ptr<SearchParamsBase> &params,
+  const std::vector< PTR_LIB::shared_ptr<const Image > > &examples) {
 
-  std::vector< std::shared_ptr<MatchResultsBase> > results(examples.size());
+  std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > results(examples.size());
   /*
   int numThreads = 1;
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
@@ -987,7 +987,7 @@ std::vector< std::shared_ptr<MatchResultsBase> > VocabTree::search(Dataset &data
   //#pragma omp parallel for
 #endif
   for (int i = 0; i < examples.size(); i++) {
-    std::shared_ptr<MatchResultsBase> imResults = search(dataset, params, examples[i]);
+    PTR_LIB::shared_ptr<MatchResultsBase> imResults = search(dataset, params, examples[i]);
     results[i] = imResults;
   }
 

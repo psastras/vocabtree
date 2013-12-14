@@ -46,10 +46,10 @@ void bench_oxford() {
 	double total_time = 0.0;
 	uint32_t num_validate = 16;
 	uint32_t total_iterations = 256;
-	// const std::vector<std::shared_ptr<const Image> > &rand_images = oxford_dataset.random_images(256);
+	// const std::vector<PTR_LIB::shared_ptr<const Image> > &rand_images = oxford_dataset.random_images(256);
 	for(uint32_t i=0; i<total_iterations; i++) {
 		std::cout << PerfTracker::instance() << std::endl;
-		std::shared_ptr<InvertedIndex::MatchResults> matches = 
+		PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches = 
 			std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(oxford_dataset, nullptr, oxford_dataset.image(i)));
 
 		if(matches == nullptr) {
@@ -62,7 +62,7 @@ void bench_oxford() {
 #endif
 		// validate matches
 		cv::Mat keypoints_0, descriptors_0;
-		std::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(i));
+		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(i));
 		const std::string &query_keypoints_location = oxford_dataset.location(query_image->feature_path("keypoints"));
 		const std::string &query_descriptors_location = oxford_dataset.location(query_image->feature_path("descriptors"));
 		filesystem::load_cvmat(query_keypoints_location, keypoints_0);
@@ -74,7 +74,7 @@ void bench_oxford() {
 #endif
 		for(int32_t j=0; j<(int32_t)num_validate; j++) {
 			cv::Mat keypoints_1, descriptors_1;
-			std::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(matches->matches[j]));
+			PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(oxford_dataset.image(matches->matches[j]));
 			const std::string &match_keypoints_location = oxford_dataset.location(match_image->feature_path("keypoints"));
 			const std::string &match_descriptors_location = oxford_dataset.location(match_image->feature_path("descriptors"));
 			filesystem::load_cvmat(match_keypoints_location, keypoints_1);
@@ -86,7 +86,7 @@ void bench_oxford() {
 			validated[j] = vision::is_good_match(match_info) ? 1 : -1;
 		}
 
-		html_output.add_match(i, matches->matches, oxford_dataset, std::make_shared< std::vector<int> >(validated));
+		html_output.add_match(i, matches->matches, oxford_dataset, PTR_LIB::make_shared< std::vector<int> >(validated));
 		html_output.write(oxford_dataset.location() + "/results/matches/");
 	}
 

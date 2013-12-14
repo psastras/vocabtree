@@ -17,13 +17,13 @@ MatchesPage::~MatchesPage() {
 }
 
 void MatchesPage::add_match(uint32_t query_id, std::vector<uint64_t> &match_ids, const Dataset &dataset,
-	std::shared_ptr< std::vector<int> > validated) {
+	PTR_LIB::shared_ptr< std::vector<int> > validated) {
 
 	std::stringstream html_string;
 	html_string << "<table><tr>";
 	html_string << "<td><img src='" << dataset.location(dataset.image(query_id)->location()) << "' /></td><td> </td>";
 	for(size_t i=0; i< MIN(match_ids.size(), max_images_per_match_); i++) {
-		std::shared_ptr<Image> image =	dataset.image(match_ids[i]);
+		PTR_LIB::shared_ptr<Image> image =	dataset.image(match_ids[i]);
 		const std::string &impath = dataset.location(image->location());
 		if(validated == nullptr || i >= validated->size()) {
 			html_string << "<td><img src='" << impath << "' /></td>";

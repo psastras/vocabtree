@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
 
 	BagOfWords bow;
 	
-	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
-	const std::vector<  std::shared_ptr<const Image> > &all_images = simple_dataset.random_images(128);
+	PTR_LIB::shared_ptr<BagOfWords::TrainParams> train_params = PTR_LIB::make_shared<BagOfWords::TrainParams>();
+	const std::vector<  PTR_LIB::shared_ptr<const Image> > &all_images = simple_dataset.random_images(128);
 	bow.train(simple_dataset, train_params, all_images);
 	
 #if ENABLE_MULTITHREADING && ENABLE_MPI

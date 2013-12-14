@@ -12,7 +12,7 @@ public:
 
 	/// Subclass of train params base which specifies inverted index training parameters.
 	struct TrainParams : public TrainParamsBase {
-		std::shared_ptr<BagOfWords> bag_of_words;  /// bag of words to index on
+		PTR_LIB::shared_ptr<BagOfWords> bag_of_words;  /// bag of words to index on
 	};
 
 	/// Subclass of train params base which specifies inverted index training parameters.
@@ -30,8 +30,8 @@ public:
 
 	/// Given a set of training parameters, list of images, trains.  Returns true if successful, false
 	/// if not successful.
-	bool train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params,
-		 		const std::vector< std::shared_ptr<const Image > > &examples);
+	bool train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainParamsBase> &params,
+		 		const std::vector< PTR_LIB::shared_ptr<const Image > > &examples);
 
 	/// Loads a trained search structure from the input filepath
 	bool load (const std::string &file_path);
@@ -44,12 +44,12 @@ public:
 
 	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
 	/// (it will fail if the example image has missing features).
-	std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example);
+	PTR_LIB::shared_ptr<MatchResultsBase> search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params, const PTR_LIB::shared_ptr<const Image > &example);
 	
 	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
 	/// (it will fail if the example image has missing features).
-	std::vector< std::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params,
-															 const std::vector< std::shared_ptr<const Image > > &examples);
+	std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const PTR_LIB::shared_ptr<SearchParamsBase> &params,
+															 const std::vector< PTR_LIB::shared_ptr<const Image > > &examples);
 
 protected:
 	

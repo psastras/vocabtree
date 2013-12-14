@@ -4,6 +4,8 @@
 #include <opencv2/stitching.hpp>
 #include <memory>
 
+#include "config.hpp"
+
 /// Provides useful wrappers around many OpenCV functions as well
 /// as some simple vision - based routines.
 namespace vision {
@@ -24,14 +26,14 @@ namespace vision {
 	/// Given a grayscale image, img, and SIFT extraction parameters computes sparse sift features.  If 
 	/// params is a nullptr, we use the default settings for SIFTParams.  Returns true if successful,
 	/// false otherwise.
-	bool compute_sparse_sift_feature(const cv::Mat &img, const std::shared_ptr<const SIFTParams> &params ,
+	bool compute_sparse_sift_feature(const cv::Mat &img, const PTR_LIB::shared_ptr<const SIFTParams> &params ,
 		cv::Mat &keypoints, cv::Mat &descriptors);
 
 	/// Given a set of image descriptors, a descriptor matcher computes the the cluster match based on the matcher
 	/// of each descriptor and returns the histogram of clusters.  If cluster_indices is not null, it will also
 	/// return the cluster assignment of each descriptor vector.  Returns true if successful, false otherwise.
 	bool compute_bow_feature(const cv::Mat& descriptors, const cv::Ptr<cv::DescriptorMatcher> &matcher,
-			cv::Mat& bow_descriptors, std::shared_ptr< std::vector<std::vector<uint32_t> > > cluster_indices);
+			cv::Mat& bow_descriptors, PTR_LIB::shared_ptr< std::vector<std::vector<uint32_t> > > cluster_indices);
 
 	/// Given a vocabulary constructs a FLANN based matcher needed to compute Bag of Words (BoW) features.  Expects
 	/// the vocabulary to be in the same format as computed in the search module.

@@ -74,9 +74,9 @@ fastann::nn_obj<float>* build_nnobj(void* p, float* clusters, unsigned K, unsign
 }
 #endif
 
-bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParamsBase> &params, const std::vector< std::shared_ptr<const Image > > &examples) {
+bool BagOfWords::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainParamsBase> &params, const std::vector< PTR_LIB::shared_ptr<const Image > > &examples) {
 
-	const std::shared_ptr<const TrainParams> &ii_params = std::static_pointer_cast<const TrainParams>(params);
+	const PTR_LIB::shared_ptr<const TrainParams> &ii_params = std::static_pointer_cast<const TrainParams>(params);
 	
 	uint32_t k = ii_params->numClusters;
 	uint32_t n = ii_params->numFeatures;
@@ -90,7 +90,7 @@ bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParams
 	std::vector<cv::Mat> all_descriptors;
 	uint64_t num_features = 0;
 	for (size_t i = 0; i < all_ids.size(); i++) {
-		std::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
+		PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
 		if (image == nullptr) continue;
 
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
@@ -144,7 +144,7 @@ bool BagOfWords::train(Dataset &dataset, const std::shared_ptr<const TrainParams
 	return true;
 }
 
-std::shared_ptr<MatchResultsBase> BagOfWords::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, const std::shared_ptr<const Image > &example) {
+PTR_LIB::shared_ptr<MatchResultsBase> BagOfWords::search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params, const PTR_LIB::shared_ptr<const Image > &example) {
 	assert(0);
 	return nullptr;
 }
