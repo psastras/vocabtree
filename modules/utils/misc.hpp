@@ -4,6 +4,7 @@
 #include "logger.hpp"
 #include "cycletimer.hpp"
 #include <boost/current_function.hpp> 
+#include <boost/shared_ptr.hpp>
 
 #define SCOPED_TIMER \
 	ScopedTimer __s(BOOST_CURRENT_FUNCTION);
