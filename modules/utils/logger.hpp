@@ -1499,7 +1499,7 @@ public:
         setAll(ConfigurationType::ToFile, "true");
         setAll(ConfigurationType::ToStandardOutput, "true");
         setAll(ConfigurationType::MillisecondsWidth, "3");
-        setAll(ConfigurationType::PerformanceTracking, "false");
+        setAll(ConfigurationType::PerformanceTracking, "true");
         setAll(easyloggingpp::ConfigurationType::RollOutSize, "0");
         setAll(ConfigurationType::Format, "%datetime %level  [%logger] %log");
         set(Level::Debug, ConfigurationType::Format, "%datetime %level [%logger] [%user@%host] [%func] [%loc] %log");
@@ -1748,7 +1748,7 @@ public:
         dateFormatMap_.setDefault("");
         dateFormatSpecifierMap_.setDefault("");
         millisecondsWidthMap_.setDefault(3);
-        performanceTrackingMap_.setDefault(false);
+        performanceTrackingMap_.setDefault(true);
         fileStreamMap_.setDefault(NULL);
         formatFlagMap_.setDefault(0x0);
         rollOutSizeMap_.setDefault(0);

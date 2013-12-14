@@ -78,7 +78,7 @@ class SingleCache {
 
   // Locking version
   template<typename U = V> typename std::enable_if<B, U>::type operator()(const K& k) { 
-    double startlookup = CycleTimer::currentSeconds();
+    // double startlookup = CycleTimer::currentSeconds();
     V v;
     #pragma omp critical
     {
@@ -94,8 +94,8 @@ class SingleCache {
       }
     }
 
-    #pragma omp critical
-    _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
+    // #pragma omp critical
+    // _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
     return v;
   }
 
@@ -236,7 +236,7 @@ class MultiRingPriorityCache {
  
   // Obtain value of the cached function for k 
   V operator()(const K& k) { 
-    double startlookup = CycleTimer::currentSeconds();
+    // double startlookup = CycleTimer::currentSeconds();
     for(size_t i = 0; i<omp_get_max_threads(); i++) {
       size_t cache_idx = ((size_t)(k / _single_capacity)+i) % omp_get_max_threads();
       int lock_acquired = omp_test_lock(&_locks[cache_idx]);
@@ -252,8 +252,8 @@ class MultiRingPriorityCache {
     V v = _caches[cache_idx](k);
     omp_unset_lock(&_locks[cache_idx]);
 
-    #pragma omp critical
-    _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
+    // #pragma omp critical
+    // _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
     return v;
   } 
 
