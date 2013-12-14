@@ -114,7 +114,7 @@ std::vector< std::shared_ptr<MatchResultsBase> > match_results(examples.size());
 
 std::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params, 
 	const std::shared_ptr<const Image > &example) {
-
+	
 	const std::shared_ptr<const SearchParams> &ii_params = params == nullptr ?
 		std::make_shared<const SearchParams>()
 		: std::static_pointer_cast<const SearchParams>(params);
