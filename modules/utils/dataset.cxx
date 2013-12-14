@@ -172,6 +172,18 @@ numerics::sparse_vector_t SimpleDataset::load_bow_feature(uint64_t id) const {
 #endif
 }
 
+numerics::sparse_vector_t SimpleDataset::load_vec_feature(uint64_t id) const {
+#if !(_MSC_VER && !__INTEL_COMPILER)
+	if(vec_feature_cache) {
+		return (*vec_feature_cache)(id);
+	} else {
+#endif
+		return load_vec_feature_cache(id);
+#if !(_MSC_VER && !__INTEL_COMPILER)
+	}
+#endif
+}
+
 numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) const {
 	numerics::sparse_vector_t bow_descriptors;
 	uint32_t level0 = id >> 20;

@@ -29,4 +29,9 @@ namespace filesystem {
 	/// Writes a text file to the input file location given the input string.  Returns true if success,
 	/// false otherwise.
 	bool write_text(const std::string &fname, const std::string &text);
+
+	/// Writes the vector to the specified location. 
+	bool write_vector(const std::string &fname, const std::vector<float> &data);
+	/// Loads vector BoW feature from the specified location.  
+	bool load_vector(const std::string &fname, std::vector<float> &data);
 };

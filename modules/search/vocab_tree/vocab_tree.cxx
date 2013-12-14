@@ -3,6 +3,7 @@
 
 #include <utils/filesystem.hpp>
 #include <utils/vision.hpp>
+#include <utils/misc.hpp>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -841,7 +842,8 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
 std::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params,
   const std::shared_ptr<const Image > &example) {
 
-  std::cout << "Searching for matching images..." << std::endl;
+  SCOPED_TIMER
+
   const std::shared_ptr<const SearchParams> &ii_params = std::static_pointer_cast<const SearchParams>(params);
 
   std::shared_ptr<MatchResults> match_result = std::make_shared<MatchResults>();

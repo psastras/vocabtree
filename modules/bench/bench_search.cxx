@@ -43,8 +43,6 @@ void bench_oxford() {
 	index_output_file << oxford_dataset.location() << "/index/" << num_clusters << ".index";
 	InvertedIndex ii(index_output_file.str());
 
-
-
 	double total_time = 0.0;
 	uint32_t num_validate = 16;
 	uint32_t total_iterations = 256;

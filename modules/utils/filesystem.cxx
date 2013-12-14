@@ -108,4 +108,12 @@ namespace filesystem {
 		ofs.write(text.c_str(), text.size());
 		return (ofs.rdstate() & std::ofstream::failbit) == 0;
 	}
+
+	bool write_vector(const std::string &fname, const std::vector<float> &data) {
+
+	}
+
+	bool load_vector(const std::string &fname, std::vector<float> &data) {
+
+	}
 }
