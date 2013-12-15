@@ -1,8 +1,8 @@
+#include <config.hpp>
+
 #include "bench_config.hpp"
 
 #include <fstream>
-
-#include <config.hpp>
 #include <utils/filesystem.hpp>
 #include <utils/numerics.hpp>
 #include <utils/dataset.hpp>

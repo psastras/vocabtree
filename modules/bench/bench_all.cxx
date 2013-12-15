@@ -1,8 +1,7 @@
+#include <config.hpp>
 #include "bench_config.hpp"
 
 #include <fstream>
-
-#include <config.hpp>
 #include <utils/filesystem.hpp>
 #include <utils/numerics.hpp>
 #include <utils/dataset.hpp>
@@ -16,12 +15,7 @@
 #include <search/vocab_tree/vocab_tree.hpp>
 #include <vis/matches_page.hpp>
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-#endif
+
 
 _INITIALIZE_EASYLOGGINGPP
 

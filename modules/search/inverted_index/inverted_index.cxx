@@ -1,17 +1,14 @@
+#include <config.hpp>
+
 #include "inverted_index.hpp"
 
 #include <config.hpp>
-
 #include <utils/filesystem.hpp>
 #include <utils/misc.hpp>
 #include <utils/numerics.hpp>
 
 #include <iostream>
 #include <fstream>
-
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-#endif
 
 InvertedIndex::InvertedIndex() : SearchBase() {
 

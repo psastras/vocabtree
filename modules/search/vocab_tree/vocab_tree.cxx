@@ -1,6 +1,12 @@
-#include "vocab_tree.hpp"
 #include <config.hpp>
 
+#define ENABLE_MULTINODE_TRAIN 0
+
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+enum { index_tag, levelIndex_tag, meanHeader_tag, mean_tag, indicesCount_tag, indices_tag, level_tag, maxNode_tag };
+#endif
+
+#include "vocab_tree.hpp"
 #include <utils/filesystem.hpp>
 #include <utils/vision.hpp>
 #include <utils/misc.hpp>
@@ -10,16 +16,7 @@
 #include <math.h> // for pow
 #include <utility> // std::pair
 
-#define ENABLE_MULTINODE_TRAIN 0
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-// define enums for message tags: 
-enum { index_tag, levelIndex_tag, meanHeader_tag, mean_tag, indicesCount_tag, indices_tag, level_tag, maxNode_tag };
-#endif
 
 VocabTree::VocabTree() : SearchBase() {
 

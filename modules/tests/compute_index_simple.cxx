@@ -1,3 +1,4 @@
+#include <config.hpp>
 #include "tests_config.hpp"
 
 #include <utils/filesystem.hpp>
@@ -9,13 +10,6 @@
 #include <search/inverted_index/inverted_index.hpp>
 
 #include <iostream>
-
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-#endif
 
 _INITIALIZE_EASYLOGGINGPP
 

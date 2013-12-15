@@ -1,6 +1,5 @@
-#include "tests_config.hpp"
 #include <config.hpp>
-
+#include "tests_config.hpp"
 #include <search/vocab_tree/vocab_tree.hpp>
 #include <iostream>
 
@@ -11,12 +10,6 @@
 #include <utils/logger.hpp>
 #include <vis/matches_page.hpp>
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-#endif
 
 _INITIALIZE_EASYLOGGINGPP
 

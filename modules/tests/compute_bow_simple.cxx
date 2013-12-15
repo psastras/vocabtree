@@ -1,6 +1,7 @@
+#include <config.hpp>
 #include "tests_config.hpp"
 
-#include <config.hpp>
+
 
 #include <utils/filesystem.hpp>
 #include <utils/numerics.hpp>
@@ -12,12 +13,6 @@
 #include <iostream>
 #include <sstream>
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-#endif
 _INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char *argv[]) {

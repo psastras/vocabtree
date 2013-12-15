@@ -1,7 +1,6 @@
-#include "bench_config.hpp"
-
 #include <config.hpp>
 
+#include "bench_config.hpp"
 #include <utils/filesystem.hpp>
 #include <utils/dataset.hpp>
 #include <utils/vision.hpp>
@@ -9,13 +8,6 @@
 #include <utils/misc.hpp>
 #include <search/bag_of_words/bag_of_words.hpp>
 #include <iostream>
-
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-#endif
 
 _INITIALIZE_EASYLOGGINGPP
 

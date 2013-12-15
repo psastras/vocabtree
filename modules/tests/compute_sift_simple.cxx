@@ -1,3 +1,4 @@
+#include <config.hpp>
 #include "tests_config.hpp"
 
 #include <config.hpp>
@@ -7,13 +8,6 @@
 #include <utils/vision.hpp>
 #include <utils/logger.hpp>
 #include <iostream>
-
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
-#if ENABLE_MULTITHREADING && ENABLE_MPI
-#include <mpi.h>
-#endif
 
 _INITIALIZE_EASYLOGGINGPP
 

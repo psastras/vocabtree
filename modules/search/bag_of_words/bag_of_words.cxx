@@ -7,13 +7,7 @@
 #include <iostream>
 #include <memory>
 
-#if ENABLE_FASTCLUSTER
-#include <fastann/fastann.hpp>
-#include <fastcluster/kmeans.hpp>
-#endif
-#if ENABLE_MPI
-#include <mpi.h>
-#endif
+
 
 BagOfWords::BagOfWords() : SearchBase() {
 
