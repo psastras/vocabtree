@@ -40,10 +40,10 @@
 /// Defines an LRU cache.
 /// If B is true, this class is thread safe, else it is not thread safe.
 /// K is the key type, V is the value type, and SET is the SET storage type, ex. boost::bimap::set_of
-template <bool B, typename K, typename V, template <typename...> class SET> 
+template <bool B, typename K, typename V> 
 class SingleCache { 
  public: 
-  typedef boost::bimaps::bimap<SET<K>, boost::bimaps::list_of<V> > container_type; 
+  typedef boost::bimaps::bimap<boost::bimaps::set_of<K>, boost::bimaps::list_of<V> > container_type; 
  
   // Constuctor specifies the cached function and 
   // the maximum number of records to be stored. 
@@ -131,13 +131,13 @@ class SingleCache {
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 /// Implements a SingleCache for each OpenMP thread.
-template <typename K, typename V, template <typename...> class SET> 
+template <typename K, typename V> 
 class MultiCache { 
  public: 
 
   MultiCache(const std::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
     for(int i=0; i < omp_get_max_threads(); i++){
-      _caches.push_back(SingleCache<false, K, V, SET>(f, c / omp_get_max_threads()));
+      _caches.push_back(SingleCache<false, K, V>(f, c / omp_get_max_threads()));
     }   
   } 
  
@@ -162,7 +162,7 @@ class MultiCache {
   
  private: 
 
-  std::vector<SingleCache<false, K, V, SET>> _caches;
+  std::vector<SingleCache<false, K, V>> _caches;
   const std::function<V(const K&)> _fn; 
   const size_t _capacity; 
 }; 
@@ -170,13 +170,13 @@ class MultiCache {
 /// Implements a SingleCache for each OpenMP thread, where each cache is responsible
 /// for sequential ranges of items, this requires that K has modulo operator % and a relation operator <.
 /// This is essentially a bunch of caches arranged in a ring topology.
-template <typename K, typename V, template <typename...> class SET> 
+template <typename K, typename V> 
 class MultiRingCache { 
  public: 
 
   MultiRingCache(const std::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c), _single_capacity(c / omp_get_max_threads()) { 
     for(int i=0; i < omp_get_max_threads(); i++){
-      _caches.push_back(SingleCache<true, K, V, SET>(f, _single_capacity));
+      _caches.push_back(SingleCache<true, K, V>(f, _single_capacity));
     }   
   } 
  
@@ -212,7 +212,7 @@ class MultiRingCache {
   uint64_t capacity() const { return _capacity; }
   
  private: 
-  std::vector<SingleCache<true, K, V, SET>> _caches;
+  std::vector<SingleCache<true, K, V>> _caches;
   const std::function<V(const K&)> _fn; 
   const size_t _capacity, _single_capacity; 
 }; 
@@ -221,7 +221,7 @@ class MultiRingCache {
 /// Implements a SingleCache for each OpenMP thread, where each cache is responsible
 /// for sequential ranges of items, this requires that K has modulo operator % and a relation operator <.
 /// This is essentially a bunch of caches arranged in a ring topology.
-template <typename K, typename V, template <typename...> class SET> 
+template <typename K, typename V> 
 class MultiRingPriorityCache { 
  public: 
 
@@ -230,7 +230,7 @@ class MultiRingPriorityCache {
     
     _locks.resize(omp_get_max_threads());
     for(int i=0; i < omp_get_max_threads(); i++){
-      _caches.push_back(SingleCache<false, K, V, SET>(f, _single_capacity));
+      _caches.push_back(SingleCache<false, K, V>(f, _single_capacity));
       omp_init_lock(&_locks[i]);
     }   
   } 
@@ -285,7 +285,7 @@ class MultiRingPriorityCache {
   
  private: 
 
-  std::vector<SingleCache<false, K, V, SET>> _caches;
+  std::vector<SingleCache<false, K, V> > _caches;
   std::vector<omp_lock_t> _locks;
   
   const std::function<V(const K&)> _fn; 
@@ -293,50 +293,50 @@ class MultiRingPriorityCache {
   double _lookup_time_total;
 }; 
 
-template < typename K, typename V, template <typename...> class SET > 
-std::ostream& operator<< (std::ostream &out, const MultiCache<K, V, SET> &c) {
+template < typename K, typename V> 
+std::ostream& operator<< (std::ostream &out, const MultiCache<K, V> &c) {
   out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
     << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
     << " ]";
   return out;
 }
 
-template < typename K, typename V, template <typename...> class SET > 
-std::ostream& operator<< (std::ostream &out, const MultiRingCache<K, V, SET> &c) {
+template < typename K, typename V> 
+std::ostream& operator<< (std::ostream &out, const MultiRingCache<K, V> &c) {
   out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
     << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
     << " ]";
   return out;
 }
 
-template < typename K, typename V, template <typename...> class SET > 
-std::ostream& operator<< (std::ostream &out, const MultiRingPriorityCache<K, V, SET> &c) {
+template < typename K, typename V> 
+std::ostream& operator<< (std::ostream &out, const MultiRingPriorityCache<K, V> &c) {
   out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
     << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
     << " ]";
   return out;
 }
 
-typedef MultiRingPriorityCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_ring_priority_cache_t;
-typedef MultiRingCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_ring_cache_t;
-typedef MultiCache<uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_multi_cache_t;
+typedef MultiRingPriorityCache<uint64_t, numerics::sparse_vector_t> bow_ring_priority_cache_t;
+typedef MultiRingCache<uint64_t, numerics::sparse_vector_t> bow_ring_cache_t;
+typedef MultiCache<uint64_t, numerics::sparse_vector_t> bow_multi_cache_t;
 
-typedef MultiRingPriorityCache<uint64_t,  std::vector<float>, boost::bimaps::set_of> vec_ring_priority_cache_t;
-typedef MultiRingCache<uint64_t,  std::vector<float>, boost::bimaps::set_of> vec_ring_cache_t;
-typedef MultiCache<uint64_t, std::vector<float>, boost::bimaps::set_of> vec_multi_cache_t;
+typedef MultiRingPriorityCache<uint64_t,  std::vector<float>> vec_ring_priority_cache_t;
+typedef MultiRingCache<uint64_t,  std::vector<float>> vec_ring_cache_t;
+typedef MultiCache<uint64_t, std::vector<float>> vec_multi_cache_t;
 
 #endif
 
 
-template < bool B, typename K, typename V, template <typename...> class SET > 
-std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V, SET> &c) {
+template < bool B, typename K, typename V> 
+std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V> &c) {
   out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
     << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
     << " ]";
   return out;
 }
 
-typedef SingleCache<true, uint64_t, numerics::sparse_vector_t, boost::bimaps::set_of> bow_single_cache_t;
-typedef SingleCache<true, uint64_t, std::vector<float>, boost::bimaps::set_of> vec_single_cache_t;
+typedef SingleCache<true, uint64_t, numerics::sparse_vector_t> bow_single_cache_t;
+typedef SingleCache<true, uint64_t, std::vector<float>> vec_single_cache_t;
 
 #endif
