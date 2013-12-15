@@ -905,40 +905,22 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
       break;
   }
 
-  //for (uint32_t elem : possibleMatches) {
-  /*for (std::unordered_set<uint32_t>::iterator it = possibleMatches.begin(); it != possibleMatches.end(); it++) {
-    std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[*it];
 
-    typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
-    for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
-    if (possibleImages.count(iterator->first) == 0)
-      possibleImages.insert(iterator->first);
-  }*/
-
-  //std::set<matchPair, myComparer> values;
   std::vector<matchPair> values;
 
-  //for (uint64_t elem : possibleImages) {
   for (std::unordered_set<uint64_t>::iterator it = possibleImages.begin(); it != possibleImages.end(); it++) {
     uint64_t imID = *it;
-    // compute L1 norm (based on paper eq 5)
-    //float l1norm = 0;
     float score = 0;
 
     // load datavec from disk
     PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(imID));
-    // const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
 
     std::vector<float> dbVec = dataset.load_vec_feature(imID);
 
     for (uint32_t i = 0; i < numberOfNodes; i++) {
       float t = vec[i] - dbVec[i];
       score += t*t;
-      // std::cout << vec[i] << std::endl;
-      //l1norm += abs(vec[i] * (databaseVectors[elem])[i]);
     }
-    //values[elem] = l1norm;
-    //values.insert(elem, l1norm));
 
     values.push_back(matchPair(imID, sqrt(score)));
   }
