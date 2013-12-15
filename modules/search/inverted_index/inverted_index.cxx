@@ -75,7 +75,7 @@ bool InvertedIndex::train(Dataset &dataset, const PTR_LIB::shared_ptr<const Trai
 	
 	const PTR_LIB::shared_ptr<BagOfWords> &bag_of_words = ii_params->bag_of_words;
 	
-	if(bag_of_words == 0) return false;
+	if(!bag_of_words) return false;
 
 	inverted_index.resize(bag_of_words->num_clusters());
 	idf_weights.resize(bag_of_words->num_clusters(), 0.f);
@@ -118,7 +118,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, co
 	
 	SCOPED_TIMER
 
-	const PTR_LIB::shared_ptr<const SearchParams> &ii_params = params == 0 ?
+	const PTR_LIB::shared_ptr<const SearchParams> &ii_params = (!params) ?
 		PTR_LIB::make_shared<const SearchParams>()
 		: std::static_pointer_cast<const SearchParams>(params);
 	
