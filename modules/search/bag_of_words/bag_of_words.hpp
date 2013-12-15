@@ -11,8 +11,10 @@ public:
 
 	/// Subclass of train params base which specifies inverted index training parameters.
 	struct TrainParams : public TrainParamsBase {
-		uint32_t numClusters = 512; // k number of clusters
-		uint32_t numFeatures = 0; // number of features to cluster
+		TrainParams(uint32_t numClusters = 512, uint32_t numFeatures = 0) :
+			numClusters(numClusters), numFeatures(numFeatures) { }
+		uint32_t numClusters; // k number of clusters
+		uint32_t numFeatures; // number of features to cluster
 	};
 
 	/// Subclass of train params base which specifies inverted index training parameters.
