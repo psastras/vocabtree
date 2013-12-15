@@ -14,6 +14,7 @@ _INITIALIZE_EASYLOGGINGPP
 void compute_features(const SimpleDataset &dataset, BagOfWords &bow) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	int rank, procs;
+	std::cout << rank << " of " << procs << std::endl;
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &procs);
 	uint64_t images_per_node = (dataset.num_images() / procs) + 1;
@@ -103,19 +104,19 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	{
-		SimpleDataset dataset(s_paul_data_dir, s_paul_database_location);
-		BagOfWords bow;
-		std::stringstream vocab_output_file;
-		vocab_output_file << dataset.location() << "/vocabulary/" << s_paul_num_clusters << ".vocab";
-		if(filesystem::file_exists(vocab_output_file.str())) {
-			bow.load(vocab_output_file.str());	
-			compute_features(dataset, bow);
-		} 
-		else { 
-			std::cerr << "No vocabulary found.";
-		}
-	}
+	// {
+	// 	SimpleDataset dataset(s_paul_data_dir, s_paul_database_location);
+	// 	BagOfWords bow;
+	// 	std::stringstream vocab_output_file;
+	// 	vocab_output_file << dataset.location() << "/vocabulary/" << s_paul_num_clusters << ".vocab";
+	// 	if(filesystem::file_exists(vocab_output_file.str())) {
+	// 		bow.load(vocab_output_file.str());	
+	// 		compute_features(dataset, bow);
+	// 	} 
+	// 	else { 
+	// 		std::cerr << "No vocabulary found.";
+	// 	}
+	// }
 
 
 	// {

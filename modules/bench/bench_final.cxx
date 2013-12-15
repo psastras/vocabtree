@@ -37,14 +37,14 @@ PTR_LIB::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output, std::o
     if (rank != 0)
       return;
 #endif
-	/*cv::Mat keypoints_0, descriptors_0;
+	cv::Mat keypoints_0, descriptors_0;
 	const std::string &query_keypoints_location = dataset.location(query_image->feature_path("keypoints"));
 	const std::string &query_descriptors_location = dataset.location(query_image->feature_path("descriptors"));
 	filesystem::load_cvmat(query_keypoints_location, keypoints_0);
-	filesystem::load_cvmat(query_descriptors_location, descriptors_0);*/
+	filesystem::load_cvmat(query_descriptors_location, descriptors_0);
 	uint32_t num_validate = 16;
   std::vector<int> validated(num_validate, 0); 
-  uint32_t number_valid = 0;/*
+  uint32_t number_valid = 0;
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	#pragma omp parallel for schedule(dynamic)
 #endif
@@ -62,7 +62,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output, std::o
 		validated[j] = vision::is_good_match(match_info) ? 1 : -1;
     if(validated[j] == 1)
       number_valid++;
-	}*/
+	}
   valid_out << number_valid << " / " << num_validate << std::endl;
   
 
@@ -133,8 +133,8 @@ int main(int argc, char *argv[]) {
   filesystem::create_file_directory(output_loc + "/foo.txt");
 
   SimpleDataset train_dataset(data_dir, database_location, 0);
-  size_t cache_sizes[] = { 256, 512 };
-  int numSizes = 2;
+  size_t cache_sizes[] = {0};///{ 256, 512 };
+  int numSizes = 1;
 
   if (vTree) {
     VocabTree vt;
