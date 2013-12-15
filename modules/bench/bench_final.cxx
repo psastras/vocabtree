@@ -13,6 +13,8 @@
 #include <utils/cycletimer.hpp>
 #include <search/bag_of_words/bag_of_words.hpp>
 #include <search/inverted_index/inverted_index.hpp>
+#include <search/vocab_tree/vocab_tree.hpp>
+#include <search/search_base/search_base.hpp>
 #include <vis/matches_page.hpp>
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
@@ -25,8 +27,9 @@
 _INITIALIZE_EASYLOGGINGPP
 
 
-void validate_results(Dataset &dataset, std::shared_ptr<const SimpleDataset::SimpleImage> &query_image, std::shared_ptr<InvertedIndex::MatchResults> &matches,
-		MatchesPage &html_output) {
+void validate_results(Dataset &dataset, std::shared_ptr<const SimpleDataset::SimpleImage> &query_image, 
+  std::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output) {
+
 #if ENABLE_MULTITHREADING && ENABLE_MPI
     if (rank != 0)
       return;
@@ -59,7 +62,7 @@ void validate_results(Dataset &dataset, std::shared_ptr<const SimpleDataset::Sim
 	html_output.write(dataset.location() + "/results/matches/");
 }
 
-void bench_dataset(SearchBase &searcher, Dataset &dataset) {
+void bench_dataset(SearchBase &searcher, Dataset &dataset, const std::shared_ptr<SearchParamsBase> &params) {
 	uint32_t num_searches = 256;
 
 
@@ -76,8 +79,7 @@ void bench_dataset(SearchBase &searcher, Dataset &dataset) {
 		
 		std::shared_ptr<const SimpleDataset::SimpleImage> query_image =  std::static_pointer_cast<const SimpleDataset::SimpleImage>(rand_images[i]);
 
-		std::shared_ptr<InvertedIndex::MatchResults> matches = 
-			std::static_pointer_cast<InvertedIndex::MatchResults>(searcher.search(dataset, nullptr, query_image));
+    std::shared_ptr<MatchResultsBase> matches = searcher.search(dataset, params, query_image);
 
 		if(matches == nullptr) {
 			LERROR << "Error while running search.";
@@ -93,23 +95,59 @@ int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   MPI_Init(&argc, &argv);
 #endif
-		
-	SimpleDataset oxford_train_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location, 0);
-	const uint32_t num_clusters = s_oxfordmini_num_clusters;
-	index_output_file << oxford_dataset.location() << "/index/" << num_clusters << ".index";
-	InvertedIndex ii(index_output_file.str());
 
-	size_t cache_sizes[] = {128, 256};
-	for(int i=0; i<2; i++) {
-		size_t cache_size = cache_sizes[i];
+  // expects arguments of the form: int [int] data_directory database_location output_location
+  if (argc != 5 && argc != 7) {
+    std::cout << "usage: " << argv[0] << " num_clusters/split [depth numberTrainImages] data_directory database_location output_location\n";
+    return 0;
+  }
+  int vTree = (argc > 5);
+  vTree *= 2  ;
+  const std::string data_dir = argv[2 + vTree];
+  const std::string database_location = argv[3 + vTree];
+  const std::string output_loc = argv[4 + vTree];
 
-		SimpleDataset oxford_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location, cache_size);
-		LINFO << oxford_dataset;
+  SimpleDataset train_dataset(data_dir, database_location, 0);
+  size_t cache_sizes[] = { 128, 256 };
+  int numSizes = 2;
 
-		std::stringstream index_output_file;
+  if (vTree) {
+    VocabTree vt;
+    std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
+    train_params->depth = atoi(argv[2]);
+    train_params->split = atoi(argv[1]);
+    int numImages = atoi(argv[3]);
 
-		bench_dataset(ii, oxford_dataset);
-	}
+    std::shared_ptr<VocabTree::SearchParams> searchParams = std::make_shared<VocabTree::SearchParams>();
+
+    searchParams->amountToReturn = 10;
+
+    vt.train(train_dataset, train_params, train_dataset.random_images(numImages));
+
+    for (int i = 0; i < numSizes; i++) {
+      size_t cache_size = cache_sizes[i];
+
+      SimpleDataset dataset(data_dir, database_location, cache_size);
+      LINFO << dataset;
+
+      bench_dataset(vt, dataset, searchParams);
+    }
+  }
+  else {
+    int num_clusters = atoi(argv[1]);
+    std::stringstream index_output_file;
+    index_output_file << train_dataset.location() << "/index/" << num_clusters << ".index";
+    InvertedIndex ii(index_output_file.str());
+
+    for (int i = 0; i < numSizes; i++) {
+      size_t cache_size = cache_sizes[i];
+
+      SimpleDataset dataset(data_dir, database_location, cache_size);
+      LINFO << dataset;
+
+      bench_dataset(ii, dataset, nullptr);
+    }
+  }
 
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI

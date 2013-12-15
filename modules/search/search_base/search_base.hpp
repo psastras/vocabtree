@@ -49,11 +49,11 @@ public:
 	/// Saves a trained search structure to the input filepath
 	virtual bool save (const std::string &file_path) const = 0;
 
-protected:
-
 	/// Given a set of search parameters, a query images, searches for matching images and returns the match
 	virtual std::shared_ptr<MatchResultsBase> search(Dataset &dataset, const std::shared_ptr<const SearchParamsBase> &params,
-	 const std::shared_ptr<const Image > &example) = 0;
+    const std::shared_ptr<const Image > &example) = 0;
+
+protected:
 
 private:
 	
