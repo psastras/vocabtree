@@ -49,6 +49,9 @@ SimpleDataset::SimpleDataset(const std::string &base_location, size_t cache_size
 		bow_feature_cache = PTR_LIB::make_shared<bow_feature_cache_t>(
 			boost::function<numerics::sparse_vector_t(uint64_t)>(boost::bind(&SimpleDataset::load_bow_feature_cache, this, _1)),
 			 cache_size);
+		vec_feature_cache = PTR_LIB::make_shared<vec_feature_cache_t>(
+			boost::function< std::vector<float>(uint64_t) >(boost::bind(&SimpleDataset::load_vec_feature_cache, this, _1)),
+			 cache_size);
 	}
 }
 
@@ -64,6 +67,10 @@ SimpleDataset::SimpleDataset(const std::string &base_location, const std::string
 	if(cache_size > 0) {
 		bow_feature_cache = PTR_LIB::make_shared<bow_feature_cache_t>(
 			boost::function<numerics::sparse_vector_t(uint64_t)>(boost::bind(&SimpleDataset::load_bow_feature_cache, this, _1)),
+			 cache_size);
+
+		vec_feature_cache = PTR_LIB::make_shared<vec_feature_cache_t>(
+			boost::function< std::vector<float>(uint64_t) >(boost::bind(&SimpleDataset::load_vec_feature_cache, this, _1)),
 			 cache_size);
 	}
 }
@@ -186,6 +193,9 @@ numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) con
 }
 
 std::vector<float> SimpleDataset::load_vec_feature_cache(uint64_t id) const {
+	
+	SCOPED_TIMER
+
 	std::vector<float> vec_feature;
 	uint32_t level0 = id >> 20;
 	uint32_t level1 = (id - (level0 << 20)) >> 10;

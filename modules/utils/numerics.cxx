@@ -1,5 +1,5 @@
 #include "numerics.hpp"
-
+#include "misc.hpp"
 namespace numerics {
 
 	std::vector< std::pair<uint32_t, float> > sparsify(const cv::Mat &dense) {
@@ -13,6 +13,9 @@ namespace numerics {
 	float cos_sim(const std::vector<std::pair<uint32_t, float> > &weights0, 
 		const std::vector<std::pair<uint32_t, float> > &weights1,
 		const std::vector<float> &idfw) {
+		
+		SCOPED_TIMER
+
 		float ab = 0.f, a2 = 0.f, b2 = 0.f;
 		for(size_t i=0, j=0; i < weights0.size() || j < weights1.size();) {
 			if(i < weights0.size() && j < weights1.size()) {
@@ -48,6 +51,9 @@ namespace numerics {
 	float min_hist(const std::vector<std::pair<uint32_t, float> > &weights0, 
 		const std::vector<std::pair<uint32_t, float> > &weights1,
 		const std::vector<float> &idfw) {
+		
+		SCOPED_TIMER
+
 		float a = 0.f, b = 0.f, ab = 0.f;
 		for(size_t k=0; k<weights0.size(); k++) {
 			a += weights0[k].second*idfw[weights0[k].first];

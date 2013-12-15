@@ -56,6 +56,10 @@ void PerfTracker::add_time(const std::string &func, double time) {
     }
 }
 
+void PerfTracker::clear() {
+    this->_times.clear();
+}
+
 bool PerfTracker::save(const std::string &file_path) {
   std::ofstream ofs(file_path.c_str(), std::ios::trunc);
 
