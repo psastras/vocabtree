@@ -99,6 +99,8 @@ void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shar
 int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   MPI_Init(&argc, &argv);
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 #endif
 
   // expects arguments of the form: int [int] data_directory database_location output_location
@@ -110,10 +112,19 @@ int main(int argc, char *argv[]) {
   vTree *= 2  ;
   const std::string data_dir = argv[2 + vTree];
   const std::string database_location = argv[3 + vTree];
-  const std::string output_loc = argv[4 + vTree];
-  const std::string machine_out_loc = output_loc + "/info.machine";
+  const std::string output_loc = argv[4 + vTree]; 
+  
+  std::stringstream ss;
+  ss << "";
+#if ENABLE_MULTITHREADING && ENABLE_MPI
+  ss << ".N"<<rank;
+#endif
 
-  const std::string valid_out_loc = output_loc + "/validated.txt";
+  const std::string nodeID = ss.str();
+
+  const std::string machine_out_loc = output_loc + "/info" + nodeID + ".machine";
+
+  const std::string valid_out_loc = output_loc + "/validated" + nodeID + ".txt";
   std::ofstream valid_out(valid_out_loc.c_str(), std::ios::trunc);
 
   filesystem::create_file_directory(output_loc + "/foo.txt");
@@ -134,7 +145,7 @@ int main(int argc, char *argv[]) {
     searchParams->amountToReturn = 10;
 
     vt.train(train_dataset, train_params, train_dataset.random_images(numImages));
-    PerfTracker::instance().save(output_loc + "/perf.train");
+    PerfTracker::instance().save(output_loc + "/perf" + nodeID + ".train");
     PerfTracker::instance().clear();
 
     for (int i = 0; i < numSizes; i++) {
@@ -146,7 +157,7 @@ int main(int argc, char *argv[]) {
       bench_dataset(vt, dataset, searchParams, valid_out);
 
       std::stringstream perfloc;
-      perfloc << output_loc << "/perf." << cache_size;
+      perfloc << output_loc << "/perf" << nodeID << "." << cache_size;
 
       PerfTracker::instance().save(perfloc.str());
       PerfTracker::instance().clear();
@@ -168,7 +179,7 @@ int main(int argc, char *argv[]) {
 
 
       std::stringstream perfloc;
-      perfloc << output_loc << "/perf." << cache_size;
+      perfloc << output_loc << "/perf" << nodeID << "." << cache_size;
 
       PerfTracker::instance().save(perfloc.str());
       PerfTracker::instance().clear();
