@@ -17,7 +17,9 @@ public:
 
 	/// Subclass of train params base which specifies inverted index training parameters.
 	struct SearchParams : public SearchParamsBase {
-		uint64_t cutoff_idx = 256; /// number of top matches to consider
+		SearchParams(uint64_t cutoff_idx = 256) : cutoff_idx(cutoff_idx) { }
+
+		uint64_t cutoff_idx; /// number of top matches to consider
 	};
 
 	/// Subclass of match results base which also returns scores
@@ -42,11 +44,11 @@ public:
 	/// Returns the number of clusters used in the inverted index descriptors
 	uint32_t num_clusters() const;
 
-	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
+	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is 0, then the search failed 
 	/// (it will fail if the example image has missing features).
 	PTR_LIB::shared_ptr<MatchResultsBase> search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params, const PTR_LIB::shared_ptr<const Image > &example);
 	
-	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is nullptr, then the search failed 
+	/// Given a set of search parameters, a query image, searches for matching images and returns the match.  If the match is 0, then the search failed 
 	/// (it will fail if the example image has missing features).
 	std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const PTR_LIB::shared_ptr<SearchParamsBase> &params,
 															 const std::vector< PTR_LIB::shared_ptr<const Image > > &examples);

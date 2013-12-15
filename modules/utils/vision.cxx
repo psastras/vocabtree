@@ -188,7 +188,7 @@ namespace vision {
 		cv::Mat &keypoints, cv::Mat &descriptors) {
 		PTR_LIB::shared_ptr<const SIFTParams> sift_parameters;
 		
-		if(params == nullptr) {
+		if(!params) {
 			sift_parameters = PTR_LIB::make_shared<const SIFTParams>();
 		}
 
@@ -226,7 +226,7 @@ namespace vision {
 	    std::vector<cv::DMatch> matches;
 	    matcher->match(descriptors, matches);
 
-	    if(cluster_indices != nullptr) {
+	    if(cluster_indices != 0) {
 			cluster_indices->clear();
 			cluster_indices->resize(clusterCount);
 	    }
@@ -239,7 +239,7 @@ namespace vision {
 	        int trainIdx = matches[i].trainIdx; 
 
 	        dptr[trainIdx] = dptr[trainIdx] + 1.f;
-	        if(cluster_indices != nullptr) {
+	        if(cluster_indices != 0) {
 	            (*cluster_indices)[trainIdx].push_back( queryIdx );
 	        }
 	    }

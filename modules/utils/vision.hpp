@@ -16,15 +16,22 @@ namespace vision {
 	/// SIFT implementation.  See the OpenCV documentation for
 	/// more details.
 	struct SIFTParams {
-		int max_features 			= 0;	/// Max number of features to retrieve (0 keeps all features).
-		int num_octave_layers 		= 3;	/// Number of octave layers in the pyramid to compute.
-		double contrast_threshold 	= 0.04; /// Contrast threshold, lower -> more features, but less stable.
-		double edge_threshold 		= 11;   /// Edge threshold, higher -> more features, but less stable.
-		double sigma 				= 1.6;  /// Smoothing kernel size, higher -> more smoothing, fewer features.
+		SIFTParams(int max_features = 0, int num_octave_layers = 3, 
+			double contrast_threshold = 0.04, double edge_threshold = 11, 
+			double sigma = 1.6) : max_features(max_features), num_octave_layers(num_octave_layers),
+			contrast_threshold(contrast_threshold), edge_threshold(edge_threshold), sigma(sigma) {
+
+			}
+
+		int max_features ;	/// Max number of features to retrieve (0 keeps all features).
+		int num_octave_layers;	/// Number of octave layers in the pyramid to compute.
+		double contrast_threshold; /// Contrast threshold, lower -> more features, but less stable.
+		double edge_threshold;   /// Edge threshold, higher -> more features, but less stable.
+		double sigma;  /// Smoothing kernel size, higher -> more smoothing, fewer features.
 	};
 
 	/// Given a grayscale image, img, and SIFT extraction parameters computes sparse sift features.  If 
-	/// params is a nullptr, we use the default settings for SIFTParams.  Returns true if successful,
+	/// params is a 0, we use the default settings for SIFTParams.  Returns true if successful,
 	/// false otherwise.
 	bool compute_sparse_sift_feature(const cv::Mat &img, const PTR_LIB::shared_ptr<const SIFTParams> &params ,
 		cv::Mat &keypoints, cv::Mat &descriptors);

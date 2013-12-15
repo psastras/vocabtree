@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 		descriptors.convertTo(descriptorsf, CV_32FC1);
 		filesystem::create_file_directory(bow_descriptor_location);
 
-		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, nullptr)) continue;
+		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, 0)) continue;
 		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
 		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
 		

@@ -197,7 +197,7 @@ bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPar
   uint64_t num_features = 0;
   for (size_t i = 0; i < all_ids.size(); i++) {
     PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
-    if (image == nullptr) continue;
+    if (image == 0) continue;
 
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
     if (!filesystem::file_exists(descriptors_location)) continue;
@@ -358,7 +358,7 @@ bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPar
   all_descriptors.clear();
   for (int i = 0; i < all_ids.size(); i++) {
     PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
-    if (image == nullptr) continue;
+    if (image == 0) continue;
 
     const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
     if (!filesystem::file_exists(descriptors_location)) continue;
@@ -852,12 +852,12 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
   PTR_LIB::shared_ptr<MatchResults> match_result = PTR_LIB::make_shared<MatchResults>();
 
   // get descriptors for example
-  if (example == nullptr) return nullptr;
+  if (example == 0) return nullptr;
   const std::string &descriptors_location = dataset.location(example->feature_path("descriptors"));
-  if (!filesystem::file_exists(descriptors_location)) return nullptr;
+  if (!filesystem::file_exists(descriptors_location)) return 0;
 
   cv::Mat descriptors, descriptorsf;
-  if (!filesystem::load_cvmat(descriptors_location, descriptors)) return nullptr;
+  if (!filesystem::load_cvmat(descriptors_location, descriptors)) return 0;
 
   std::unordered_set<uint32_t> possibleMatches;
   descriptors.convertTo(descriptorsf, CV_32FC1);

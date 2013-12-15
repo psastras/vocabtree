@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
   /*for (uint32_t i = 0; i < 20; i++) {
     PTR_LIB::shared_ptr<VocabTree::MatchResults> matches =
       std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, searchParams, images[i]));
-    if(matches == nullptr) continue;
+    if(matches == 0) continue;
     //LINFO << "Query " << i << ": " << *matches;
     printf("Matches for image %d: ", i);
     for (uint64_t id : matches->matches)

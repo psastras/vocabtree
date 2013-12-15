@@ -91,7 +91,7 @@ bool BagOfWords::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPa
 	uint64_t num_features = 0;
 	for (size_t i = 0; i < all_ids.size(); i++) {
 		PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
-		if (image == nullptr) continue;
+		if (image == 0) continue;
 
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
 		if (!filesystem::file_exists(descriptors_location)) continue;
@@ -146,7 +146,7 @@ bool BagOfWords::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPa
 
 PTR_LIB::shared_ptr<MatchResultsBase> BagOfWords::search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params, const PTR_LIB::shared_ptr<const Image > &example) {
 	assert(0);
-	return nullptr;
+	return 0;
 }
 
 cv::Mat BagOfWords::vocabulary() const {

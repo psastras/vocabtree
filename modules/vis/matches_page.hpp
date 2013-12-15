@@ -22,7 +22,7 @@ public:
 	/// than the size of match_ids, in which case it is assumed to correspond to beginning of
 	/// match_ids.
 	void add_match(uint32_t query_id, std::vector<uint64_t> &match_ids, const Dataset &dataset,
-		PTR_LIB::shared_ptr< std::vector<int> > validated = nullptr);
+		PTR_LIB::shared_ptr< std::vector<int> > validated = 0);
 
 	/// Writes out all the html match mages to the input specified folder.  The first page 
 	/// will look something like folder/matches_00000.html.

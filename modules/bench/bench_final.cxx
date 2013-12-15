@@ -77,9 +77,9 @@ void bench_dataset(SearchBase &searcher, Dataset &dataset) {
 		PTR_LIB::shared_ptr<const SimpleDataset::SimpleImage> query_image =  std::static_pointer_cast<const SimpleDataset::SimpleImage>(rand_images[i]);
 
 		PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches = 
-			std::static_pointer_cast<InvertedIndex::MatchResults>(searcher.search(dataset, nullptr, query_image));
+			std::static_pointer_cast<InvertedIndex::MatchResults>(searcher.search(dataset, 0, query_image));
 
-		if(matches == nullptr) {
+		if(matches == 0) {
 			LERROR << "Error while running search.";
 			continue;
    		 }
