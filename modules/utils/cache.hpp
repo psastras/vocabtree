@@ -47,7 +47,7 @@ class SingleCache {
  
   // Constuctor specifies the cached function and 
   // the maximum number of records to be stored. 
-  SingleCache(const std::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
+  SingleCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
     cache_hits = 0; 
     cache_misses = 0;
   } 
@@ -120,7 +120,7 @@ class SingleCache {
     _container.insert(typename container_type::value_type(k,v)); 
   } 
  
-  const std::function<V(const K&)> _fn; 
+  const boost::function<V(const K&)> _fn; 
   const size_t _capacity; 
   container_type _container; 
 
@@ -135,7 +135,7 @@ template <typename K, typename V>
 class MultiCache { 
  public: 
 
-  MultiCache(const std::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
+  MultiCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
     for(int i=0; i < omp_get_max_threads(); i++){
       _caches.push_back(SingleCache<false, K, V>(f, c / omp_get_max_threads()));
     }   
@@ -163,7 +163,7 @@ class MultiCache {
  private: 
 
   std::vector<SingleCache<false, K, V>> _caches;
-  const std::function<V(const K&)> _fn; 
+  const boost::function<V(const K&)> _fn; 
   const size_t _capacity; 
 }; 
 
@@ -174,7 +174,7 @@ template <typename K, typename V>
 class MultiRingCache { 
  public: 
 
-  MultiRingCache(const std::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c), _single_capacity(c / omp_get_max_threads()) { 
+  MultiRingCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c), _single_capacity(c / omp_get_max_threads()) { 
     for(int i=0; i < omp_get_max_threads(); i++){
       _caches.push_back(SingleCache<true, K, V>(f, _single_capacity));
     }   
@@ -213,7 +213,7 @@ class MultiRingCache {
   
  private: 
   std::vector<SingleCache<true, K, V>> _caches;
-  const std::function<V(const K&)> _fn; 
+  const boost::function<V(const K&)> _fn; 
   const size_t _capacity, _single_capacity; 
 }; 
 
@@ -225,7 +225,7 @@ template <typename K, typename V>
 class MultiRingPriorityCache { 
  public: 
 
-  MultiRingPriorityCache(const std::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c), 
+  MultiRingPriorityCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c), 
     _single_capacity(c / omp_get_max_threads()) { 
     
     _locks.resize(omp_get_max_threads());
@@ -288,7 +288,7 @@ class MultiRingPriorityCache {
   std::vector<SingleCache<false, K, V> > _caches;
   std::vector<omp_lock_t> _locks;
   
-  const std::function<V(const K&)> _fn; 
+  const boost::function<V(const K&)> _fn; 
   const size_t _capacity, _single_capacity; 
   double _lookup_time_total;
 }; 

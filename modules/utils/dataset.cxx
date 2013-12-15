@@ -48,7 +48,7 @@ SimpleDataset::SimpleDataset(const std::string &base_location, size_t cache_size
 #if !(_MSC_VER && !__INTEL_COMPILER)
 	if(cache_size > 0) {
 		bow_feature_cache = PTR_LIB::make_shared<bow_feature_cache_t>(
-			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
+			boost::function<numerics::sparse_vector_t(uint64_t)>(boost::bind(&SimpleDataset::load_bow_feature_cache, this, _1)),
 			 cache_size);
 	}
 #endif
@@ -66,7 +66,7 @@ SimpleDataset::SimpleDataset(const std::string &base_location, const std::string
 #if !(_MSC_VER && !__INTEL_COMPILER)
 	if(cache_size > 0) {
 		bow_feature_cache = PTR_LIB::make_shared<bow_feature_cache_t>(
-			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
+			boost::function<numerics::sparse_vector_t(uint64_t)>(boost::bind(&SimpleDataset::load_bow_feature_cache, this, _1)),
 			 cache_size);
 	}
 #endif
