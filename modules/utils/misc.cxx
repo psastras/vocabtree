@@ -56,16 +56,24 @@ void PerfTracker::add_time(const std::string &func, double time) {
     }
 }
 
+bool PerfTracker::save(const std::string &file_path) {
+  std::ofstream ofs(file_path.c_str(), std::ios::trunc);
+
+  ofs << *s_instance;
+
+  return (ofs.rdstate() & std::ofstream::failbit) == 0;
+}
+
 std::map<std::string, std::pair<double, uint64_t> > &PerfTracker::times() {
     return _times;
 }
 
 std::ostream& operator<< (std::ostream &out, PerfTracker &pt) {
-  std::cout << "Performance Report" << std::endl;
-  std::cout << "Function Name\tTotal Time\tNumber of Calls\tAverage Time" << std::endl;
-  std::cout << "==================================================" << std::endl;
+  out << "Performance Report" << std::endl;
+  out << "Function Name\tTotal Time\tNumber of Calls\tAverage Time" << std::endl;
+  out << "==================================================" << std::endl;
   for(std::map<std::string, std::pair<double, uint64_t> >::iterator it = pt.times().begin(); it != pt.times().end(); ++it) {
-    std::cout << it->first << "\t" << it->second.first << "\t" <<
+    out << it->first << "\t" << it->second.first << "\t" <<
      it->second.second << "\t" << it->second.first / (double)it->second.second << std::endl;
   }
   return out;

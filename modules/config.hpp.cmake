@@ -2,6 +2,7 @@
 
 /// This header is automatically generated.  Do not modify.
 
+#define NOMINMAX
 
 #define ENABLE_MPI @ENABLE_MPI@
 #define ENABLE_FASTCLUSTER @ENABLE_FASTCLUSTER@

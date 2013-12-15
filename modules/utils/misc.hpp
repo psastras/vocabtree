@@ -15,6 +15,7 @@ class PerfTracker {
 		static PerfTracker &instance();
 		void add_time(const std::string &func, double time);
 		std::map<std::string, std::pair<double, uint64_t> > &times();
+    bool save(const std::string &file_path);
 		
 	private:
 		PerfTracker();
