@@ -96,6 +96,7 @@ int main(int argc, char *argv[]) {
   PTR_LIB::shared_ptr<VocabTree::SearchParams> searchParams = PTR_LIB::make_shared<VocabTree::SearchParams>();
 
   searchParams->amountToReturn = 10;
+  searchParams->cutoff = 10;
 
   MatchesPage html_output;
   //if (rank==0)

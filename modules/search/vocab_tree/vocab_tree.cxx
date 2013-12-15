@@ -881,18 +881,43 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
   // } comparer;
 
   std::unordered_set<uint64_t> possibleImages;
-  //for (uint32_t elem : possibleMatches) {
+
+  /// Problem: this indexes by the score so it will sort by the score, but if there are 2 equal scores this will dump one of the indexes. 
+  /// Hopefully shouldn't matter
+  std::map<float, uint32_t> scored_leaves;
   for (std::unordered_set<uint32_t>::iterator it = possibleMatches.begin(); it != possibleMatches.end(); it++) {
+    uint32_t index = *it;
+    float value = vec[numberOfNodes - invertedFiles.size() + index];
+    scored_leaves[value] = index;
+  }
+
+  int c = 0;
+  for (std::map<float, uint32_t>::reverse_iterator it = scored_leaves.rbegin(); it != scored_leaves.rend(); it++) {
+    std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[it->second];
+
+    typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
+    for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
+    if (possibleImages.count(iterator->first) == 0)
+      possibleImages.insert(iterator->first);
+
+    c++;
+    if (c >= ii_params->cutoff)
+      break;
+  }
+
+  //for (uint32_t elem : possibleMatches) {
+  /*for (std::unordered_set<uint32_t>::iterator it = possibleMatches.begin(); it != possibleMatches.end(); it++) {
     std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[*it];
 
     typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
     for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
     if (possibleImages.count(iterator->first) == 0)
       possibleImages.insert(iterator->first);
-  }
+  }*/
 
   //std::set<matchPair, myComparer> values;
   std::vector<matchPair> values;
+
   //for (uint64_t elem : possibleImages) {
   for (std::unordered_set<uint64_t>::iterator it = possibleImages.begin(); it != possibleImages.end(); it++) {
     uint64_t imID = *it;
@@ -903,12 +928,6 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     // load datavec from disk
     PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(imID));
     // const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
-
-    // if (!filesystem::file_exists(datavec_location)) continue;
-    // std::vector<float> dbVec(numberOfNodes);
-    // std::ifstream ifs(datavec_location.c_str(), std::ios::binary);
-    // ifs.read((char *)&dbVec[0], numberOfNodes*sizeof(float));
-    // if ((ifs.rdstate() & std::ifstream::failbit) != 0) continue;
 
     std::vector<float> dbVec = dataset.load_vec_feature(imID);
 
@@ -932,12 +951,6 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     std::vector<matchPair>::iterator it = values.begin();
     values.erase(it + ii_params->amountToReturn, values.end());
   }
-
-  /*int rank, procs;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  MPI_Comm_size(MPI_COMM_WORLD, &procs);
-  if (rank != 0)
-    values.clear();*/
 
   // aggregate everything into node 0
 #if ENABLE_MULTITHREADING && ENABLE_MPI
