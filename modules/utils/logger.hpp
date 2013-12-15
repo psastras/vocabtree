@@ -460,7 +460,7 @@ public:
         //
         // Others
         //
-        NULL_POINTER                  ("nullptr"),
+        NULL_POINTER                  ("0"),
         FORMAT_SPECIFIER_ESCAPE_CHAR  ('E'),
         MAX_LOG_PER_CONTAINER         (100),
         MAX_LOG_PER_COUNTER           (100000),
@@ -3400,82 +3400,82 @@ public:
     class ConfigurationsReader : private internal::StaticClass {
     public:
         static inline bool enabled(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->enabled(level_);
         }
 
         static inline bool enabled(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->enabled(level_);
         }
 
         static inline bool toFile(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->toFile(level_);
         }
 
         static inline bool toFile(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->toFile(level_);
         }
 
         static inline const std::string& filename(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->filename(level_);
         }
 
         static inline const std::string& filename(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->filename(level_);
         }
 
         static inline bool toStandardOutput(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->toStandardOutput(level_);
         }
 
         static inline bool toStandardOutput(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->toStandardOutput(level_);
         }
 
         static inline const std::string& logFormat(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->logFormat(level_);
         }
 
         static inline const std::string& logFormat(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->logFormat(level_);
         }
 
         static inline int millisecondsWidth(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->millisecondsWidth(level_);
         }
 
         static inline int millisecondsWidth(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->millisecondsWidth(level_);
         }
 
         static inline bool performanceTracking(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->performanceTracking(level_);
         }
 
         static inline bool performanceTracking(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->performanceTracking(level_);
         }
 
         static inline std::size_t logRollOutSize(Logger* logger_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(logger_ != NULL, "Invalid Logger provided - 0");
             return constConf(logger_)->rollOutSize(level_);
         }
 
         static inline std::size_t logRollOutSize(internal::TypedConfigurations* conf_, unsigned int level_ = Level::All) {
-            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - nullptr");
+            __EASYLOGGINGPP_ASSERT(conf_ != NULL, "Invalid TypedConfigurations provided - 0");
             return conf_->rollOutSize(level_);
         }
 

@@ -61,13 +61,13 @@ int main(int argc, char *argv[]) {
   }*/
 
   VocabTree vt;
-  std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
+  PTR_LIB::shared_ptr<VocabTree::TrainParams> train_params = PTR_LIB::make_shared<VocabTree::TrainParams>();
   train_params->depth = 3;
   train_params->split = 8;
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   // have to synchronize what images the nodes build with
   int numImages = 50;
-  std::vector<std::shared_ptr<const Image> > images(numImages);
+  std::vector<PTR_LIB::shared_ptr<const Image> > images(numImages);
   if(rank==0) {
     images = simple_dataset.random_images(numImages);
     std::vector<MPI_Request> requests(numImages*(procs - 1));
@@ -87,21 +87,21 @@ int main(int argc, char *argv[]) {
     }
   }
 #else
-  std::vector<std::shared_ptr<const Image> > images = simple_dataset.random_images(200);
+  std::vector<PTR_LIB::shared_ptr<const Image> > images = simple_dataset.random_images(200);
 #endif
   vt.train(simple_dataset, train_params, images);
   //printf("\n%d Finished Building Tree\n\n", rank);
 
-  std::shared_ptr<VocabTree::SearchParams> searchParams = std::make_shared<VocabTree::SearchParams>();
+  PTR_LIB::shared_ptr<VocabTree::SearchParams> searchParams = PTR_LIB::make_shared<VocabTree::SearchParams>();
 
   searchParams->amountToReturn = 10;
 
   MatchesPage html_output;
   //if (rank==0)
   /*for (uint32_t i = 0; i < 20; i++) {
-    std::shared_ptr<VocabTree::MatchResults> matches =
+    PTR_LIB::shared_ptr<VocabTree::MatchResults> matches =
       std::static_pointer_cast<VocabTree::MatchResults>(vt.search(simple_dataset, searchParams, images[i]));
-    if(matches == nullptr) continue;
+    if(matches == 0) continue;
     //LINFO << "Query " << i << ": " << *matches;
     printf("Matches for image %d: ", i);
     for (uint64_t id : matches->matches)
@@ -110,8 +110,8 @@ int main(int argc, char *argv[]) {
 
     html_output.add_match(images[i]->id, matches->matches, simple_dataset);
     }*/
-  std::vector< std::shared_ptr<const Image> > imToTest(images.begin(), images.begin() + 20);
-  std::vector< std::shared_ptr<MatchResultsBase> > matches = vt.search(simple_dataset, searchParams, imToTest);
+  std::vector< PTR_LIB::shared_ptr<const Image> > imToTest(images.begin(), images.begin() + 20);
+  std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > matches = vt.search(simple_dataset, searchParams, imToTest);
   for (uint32_t i = 0; i < imToTest.size(); i++)
     html_output.add_match(images[i]->id, matches[i]->matches, simple_dataset);
 

@@ -31,8 +31,8 @@ int main(int argc, char *argv[]) {
 
 	BagOfWords bow;
 	
-	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
-	const std::vector<  std::shared_ptr<const Image> > &all_images = simple_dataset.random_images(128);
+	PTR_LIB::shared_ptr<BagOfWords::TrainParams> train_params = PTR_LIB::make_shared<BagOfWords::TrainParams>();
+	const std::vector<  PTR_LIB::shared_ptr<const Image> > &all_images = simple_dataset.random_images(128);
 	bow.train(simple_dataset, train_params, all_images);
 	
 #if ENABLE_MULTITHREADING && ENABLE_MPI
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 		descriptors.convertTo(descriptorsf, CV_32FC1);
 		filesystem::create_file_directory(bow_descriptor_location);
 
-		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, nullptr)) continue;
+		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, 0)) continue;
 		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
 		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
 		

@@ -184,12 +184,12 @@ namespace vision {
 	    }
 	}
 	
-	bool compute_sparse_sift_feature(const cv::Mat &img, const std::shared_ptr<const SIFTParams> &params ,
+	bool compute_sparse_sift_feature(const cv::Mat &img, const PTR_LIB::shared_ptr<const SIFTParams> &params ,
 		cv::Mat &keypoints, cv::Mat &descriptors) {
-		std::shared_ptr<const SIFTParams> sift_parameters;
+		PTR_LIB::shared_ptr<const SIFTParams> sift_parameters;
 		
-		if(params == nullptr) {
-			sift_parameters = std::make_shared<const SIFTParams>();
+		if(!params) {
+			sift_parameters = PTR_LIB::make_shared<const SIFTParams>();
 		}
 
 		cv::SIFT sift_extractor(sift_parameters->max_features, sift_parameters->num_octave_layers,
@@ -219,14 +219,14 @@ namespace vision {
 	}
 
 	bool compute_bow_feature(const cv::Mat& descriptors, const cv::Ptr<cv::DescriptorMatcher> &matcher,
-			cv::Mat& bow_descriptors, std::shared_ptr< std::vector<std::vector<uint32_t> > > cluster_indices) {
+			cv::Mat& bow_descriptors, PTR_LIB::shared_ptr< std::vector<std::vector<uint32_t> > > cluster_indices) {
 
 		int clusterCount = matcher->getTrainDescriptors()[0].rows;
 
 	    std::vector<cv::DMatch> matches;
 	    matcher->match(descriptors, matches);
 
-	    if(cluster_indices != nullptr) {
+	    if(cluster_indices != 0) {
 			cluster_indices->clear();
 			cluster_indices->resize(clusterCount);
 	    }
@@ -239,7 +239,7 @@ namespace vision {
 	        int trainIdx = matches[i].trainIdx; 
 
 	        dptr[trainIdx] = dptr[trainIdx] + 1.f;
-	        if(cluster_indices != nullptr) {
+	        if(cluster_indices != 0) {
 	            (*cluster_indices)[trainIdx].push_back( queryIdx );
 	        }
 	    }

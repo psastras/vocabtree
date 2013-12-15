@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
 	InvertedIndex ii(index_output_file.str());
 
 	for(uint32_t i=0; i<3; i++) {
-		std::shared_ptr<InvertedIndex::MatchResults> matches = 
-		std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(simple_dataset, nullptr, simple_dataset.image(i) ));	
+		PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches = 
+		std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(simple_dataset, 0, simple_dataset.image(i) ));	
 		LINFO << "Query " << i << ": " << *matches;
 	}
 #if ENABLE_MULTITHREADING && ENABLE_MPI

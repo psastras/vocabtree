@@ -17,15 +17,15 @@ MatchesPage::~MatchesPage() {
 }
 
 void MatchesPage::add_match(uint32_t query_id, std::vector<uint64_t> &match_ids, const Dataset &dataset,
-	std::shared_ptr< std::vector<int> > validated) {
+	PTR_LIB::shared_ptr< std::vector<int> > validated) {
 
 	std::stringstream html_string;
 	html_string << "<table><tr>";
 	html_string << "<td><img src='" << dataset.location(dataset.image(query_id)->location()) << "' /></td><td> </td>";
 	for(size_t i=0; i< MIN(match_ids.size(), max_images_per_match_); i++) {
-		std::shared_ptr<Image> image =	dataset.image(match_ids[i]);
+		PTR_LIB::shared_ptr<Image> image =	dataset.image(match_ids[i]);
 		const std::string &impath = dataset.location(image->location());
-		if(validated == nullptr || i >= validated->size()) {
+		if(validated == 0 || i >= validated->size()) {
 			html_string << "<td><img src='" << impath << "' /></td>";
 		} else {
 			std::stringstream borderstr;
@@ -68,53 +68,52 @@ std::string MatchesPage::pagename(uint32_t cur_page) const {
 }
 
 std::string MatchesPage::stylesheet() const {
-	std::string stylesheet_str = R"( 
+	std::string stylesheet_str = ""
+		"body {"
+		"	margin: 0px;"
+		"	color : #fcfcfc;"
+		"	background: #111;"
+		"	font-size: 14px;"
+		"	font-family: sans-serif;"
+		"}"
+		""
+		"table {"
+		"	margin: 5px;"
+		"	border: 2px solid #fcfcfc;"
+		"	border-spacing: 0;"
+   		"    border-collapse: collapse;"
+		"}"
+		""
+		"a { "
+		"	color: #fff;"
+		"	text-decoration: none;"
+		"	font-weight: bold;"
+		"}"
+		""
+		"img {"
+		"	height: 120px;"
+		"}"
 
-		body {
-			margin: 0px;
-			color : #fcfcfc;
-			background: #111;
-			font-size: 14px;
-			font-family: sans-serif;
-		}
-
-		table {
-			margin: 5px;
-			border: 2px solid #fcfcfc;
-			border-spacing: 0;
-   		    border-collapse: collapse;
-		}
-
-		a { 
-			color: #fff;
-			text-decoration: none;
-			font-weight: bold;
-		}
-
-		img {
-			height: 120px;
-		}
-
-		)";
+		;
 	return stylesheet_str;
 }
 
 std::string MatchesPage::header() const {
-	std::string header_str = R"( 
-			<html>
-				<head>
-					<link rel='stylesheet' type='text/css' href=')" + s_stylesheet_name + R"(' />
-				</head>
-				<body>
-		)";
+	std::string header_str = ""
+			"<html>"
+			"	<head>"
+			"		<link rel='stylesheet' type='text/css' href='" + s_stylesheet_name + "' />"
+			"	</head>"
+			"	<body>"
+			"";
 	return header_str;
 }
 
 std::string MatchesPage::footer() const {
-	std::string footer_str = R"( 
-				</body>
-			</html>
-		)";
+	std::string footer_str = ""
+				"</body>"
+			"</html>"
+		"";
 	return footer_str;
 }
 

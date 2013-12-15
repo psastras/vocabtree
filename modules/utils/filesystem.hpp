@@ -1,5 +1,7 @@
 #pragma once
 
+#include "config.hpp"
+
 #include <stdint.h>
 #include <opencv2/opencv.hpp>
 

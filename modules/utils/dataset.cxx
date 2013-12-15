@@ -23,18 +23,18 @@ std::string Dataset::location(const std::string &relative_path) const {
 }
 
 
-std::vector< std::shared_ptr<const Image> > Dataset::all_images() const {
-	std::vector< std::shared_ptr< const Image> > images(this->num_images());
+std::vector< PTR_LIB::shared_ptr<const Image> > Dataset::all_images() const {
+	std::vector< PTR_LIB::shared_ptr< const Image> > images(this->num_images());
 	for (uint64_t i = 0; i < this->num_images(); i++) {
 		images[i] = this->image(i);
 	}
 	return images;
 }
 
-std::vector< std::shared_ptr<const Image> > Dataset::random_images(size_t count) const {
-	std::vector< std::shared_ptr< const Image> > all = this->all_images();
+std::vector< PTR_LIB::shared_ptr<const Image> > Dataset::random_images(size_t count) const {
+	std::vector< PTR_LIB::shared_ptr< const Image> > all = this->all_images();
 	std::random_shuffle(all.begin(), all.end());
-	std::vector< std::shared_ptr< const Image> > images(all.begin(), all.begin() + count);
+	std::vector< PTR_LIB::shared_ptr< const Image> > images(all.begin(), all.begin() + count);
 	return images;
 }
 
@@ -45,14 +45,11 @@ std::ostream& operator<< (std::ostream &out, const Dataset &dataset) {
 
 SimpleDataset::SimpleDataset(const std::string &base_location, size_t cache_size) : Dataset(base_location) { 
 	this->construct_dataset();
-#if !(_MSC_VER && !__INTEL_COMPILER)
-	bow_feature_cache = nullptr;
 	if(cache_size > 0) {
-		bow_feature_cache = std::make_shared<bow_feature_cache_t>(
-			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
+		bow_feature_cache = PTR_LIB::make_shared<bow_feature_cache_t>(
+			boost::function<numerics::sparse_vector_t(uint64_t)>(boost::bind(&SimpleDataset::load_bow_feature_cache, this, _1)),
 			 cache_size);
 	}
-#endif
 }
 
 SimpleDataset::SimpleDataset(const std::string &base_location, const std::string &db_data_location, size_t cache_size) 
@@ -64,22 +61,19 @@ SimpleDataset::SimpleDataset(const std::string &base_location, const std::string
 		this->construct_dataset();
 		this->write(db_data_location);
 	}
-#if !(_MSC_VER && !__INTEL_COMPILER)
-	bow_feature_cache = nullptr;
 	if(cache_size > 0) {
-		bow_feature_cache = std::make_shared<bow_feature_cache_t>(
-			std::function<numerics::sparse_vector_t(uint64_t)>(std::bind(&SimpleDataset::load_bow_feature_cache, this, std::placeholders::_1)),
+		bow_feature_cache = PTR_LIB::make_shared<bow_feature_cache_t>(
+			boost::function<numerics::sparse_vector_t(uint64_t)>(boost::bind(&SimpleDataset::load_bow_feature_cache, this, _1)),
 			 cache_size);
 	}
-#endif
 }
 
 SimpleDataset::~SimpleDataset() { }
 
-std::shared_ptr<Image> SimpleDataset::image(uint64_t id) const {
+PTR_LIB::shared_ptr<Image> SimpleDataset::image(uint64_t id) const {
 	const std::string &image_path = id_image_map.right.at(id);
 
-	std::shared_ptr<Image> current_image = std::make_shared<SimpleImage>(image_path, id);
+	PTR_LIB::shared_ptr<Image> current_image = PTR_LIB::make_shared<SimpleImage>(image_path, id);
 	return current_image;
 }
 
@@ -108,7 +102,7 @@ bool SimpleDataset::read(const std::string &db_data_location) {
 		image_location.resize(length);
 		
 		ifs.read((char *)&image_location[0], sizeof(char)* length);
-		std::shared_ptr<const SimpleImage> simage = std::make_shared<const SimpleImage>(image_location, image_id);
+		PTR_LIB::shared_ptr<const SimpleImage> simage = PTR_LIB::make_shared<const SimpleImage>(image_location, image_id);
 		this->add_image(simage);
 
 	}
@@ -123,7 +117,7 @@ bool SimpleDataset::write(const std::string &db_data_location) {
 	ofs.write((const char *)&num_images, sizeof(uint64_t));
 
 	for (uint64_t i = 0; i < this->num_images(); i++) {
-		std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(this->image(i));
+		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(this->image(i));
 		const std::string &image_location = image->location();
 		uint64_t image_id = image->id;
 		uint16_t length = image_location.size();
@@ -161,27 +155,19 @@ std::string SimpleDataset::SimpleImage::location() const {
 }
 
 numerics::sparse_vector_t SimpleDataset::load_bow_feature(uint64_t id) const {
-#if !(_MSC_VER && !__INTEL_COMPILER)
 	if(bow_feature_cache) {
 		return (*bow_feature_cache)(id);
 	} else {
-#endif
 		return load_bow_feature_cache(id);
-#if !(_MSC_VER && !__INTEL_COMPILER)
 	}
-#endif
 }
 
 std::vector<float> SimpleDataset::load_vec_feature(uint64_t id) const {
-#if !(_MSC_VER && !__INTEL_COMPILER)
 	if(vec_feature_cache) {
 		return (*vec_feature_cache)(id);
 	} else {
-#endif
 		return load_vec_feature_cache(id);
-#if !(_MSC_VER && !__INTEL_COMPILER)
 	}
-#endif
 }
 
 numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) const {
@@ -214,18 +200,16 @@ std::vector<float> SimpleDataset::load_vec_feature_cache(uint64_t id) const {
 	return vec_feature;
 }
 
-bool SimpleDataset::add_image(const std::shared_ptr<const Image> &image) {
+bool SimpleDataset::add_image(const PTR_LIB::shared_ptr<const Image> &image) {
 	if (id_image_map.right.find(image->id) != id_image_map.right.end()) return false;
-	const std::shared_ptr<const SimpleDataset::SimpleImage> simage = std::static_pointer_cast<const SimpleDataset::SimpleImage>(image);
+	const PTR_LIB::shared_ptr<const SimpleDataset::SimpleImage> simage = std::static_pointer_cast<const SimpleDataset::SimpleImage>(image);
 	id_image_map.insert(boost::bimap<std::string, uint64_t>::value_type(simage->location(), simage->id));
 	return true;
 }
 
-#if !(_MSC_VER && !__INTEL_COMPILER)
-std::shared_ptr<bow_feature_cache_t> SimpleDataset::cache() {
+PTR_LIB::shared_ptr<bow_feature_cache_t> SimpleDataset::cache() {
 	return bow_feature_cache;
 }
-#endif
 
 // std::vector<char> Dataset::load_data(const std::string &filename) {
 // 	std::ifstream input(filename, std::ios::binary);

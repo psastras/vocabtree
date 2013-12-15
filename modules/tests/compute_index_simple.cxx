@@ -33,10 +33,10 @@ int main(int argc, char *argv[]) {
 	std::stringstream vocab_output_file;
 	vocab_output_file << simple_dataset.location() << "/vocabulary/" << num_clusters << ".vocab";
 
-	std::shared_ptr<BagOfWords> bow = std::make_shared<BagOfWords>(vocab_output_file.str());
+	PTR_LIB::shared_ptr<BagOfWords> bow = PTR_LIB::make_shared<BagOfWords>(vocab_output_file.str());
 
 	InvertedIndex ii;
-	std::shared_ptr<InvertedIndex::TrainParams> train_params = std::make_shared<InvertedIndex::TrainParams>();
+	PTR_LIB::shared_ptr<InvertedIndex::TrainParams> train_params = PTR_LIB::make_shared<InvertedIndex::TrainParams>();
 	train_params->bag_of_words = bow;
 	ii.train(simple_dataset, train_params, simple_dataset.all_images());
 

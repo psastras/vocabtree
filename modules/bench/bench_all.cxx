@@ -31,8 +31,8 @@ void compute_features(Dataset &dataset) {
 #endif
 	for (int64_t i = 0; i < dataset.num_images(); i++) {
 
-		std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
-		if (image == nullptr) continue;
+		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
+		if (image == 0) continue;
 
 		const std::string &keypoints_location = dataset.location(image->feature_path("keypoints"));
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
@@ -45,7 +45,7 @@ void compute_features(Dataset &dataset) {
 		cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);
 
 		cv::Mat keypoints, descriptors;
-		if (!vision::compute_sparse_sift_feature(im, nullptr, keypoints, descriptors)) continue;
+		if (!vision::compute_sparse_sift_feature(im, 0, keypoints, descriptors)) continue;
 
 		filesystem::create_file_directory(keypoints_location);
 		filesystem::create_file_directory(descriptors_location);
@@ -55,8 +55,8 @@ void compute_features(Dataset &dataset) {
 	}
 }
 
-void compute_bow_features(Dataset &dataset, std::shared_ptr<BagOfWords> bow, uint32_t num_clusters) {
-	const std::vector<  std::shared_ptr<const Image> > &all_images = dataset.all_images();
+void compute_bow_features(Dataset &dataset, PTR_LIB::shared_ptr<BagOfWords> bow, uint32_t num_clusters) {
+	const std::vector<  PTR_LIB::shared_ptr<const Image> > &all_images = dataset.all_images();
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	uint32_t num_threads = omp_get_max_threads();
 	std::vector< cv::Ptr<cv::DescriptorMatcher> > matchers;
@@ -80,7 +80,7 @@ void compute_bow_features(Dataset &dataset, std::shared_ptr<BagOfWords> bow, uin
 		descriptors.convertTo(descriptorsf, CV_32FC1);
 		filesystem::create_file_directory(bow_descriptor_location);
 
-		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, nullptr)) continue;
+		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, 0)) continue;
 		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
 		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
 
@@ -88,9 +88,9 @@ void compute_bow_features(Dataset &dataset, std::shared_ptr<BagOfWords> bow, uin
 	}
 }
 
-std::shared_ptr<VocabTree> train_tree(Dataset &dataset, uint32_t num_images, uint32_t split, uint32_t depth) {
+PTR_LIB::shared_ptr<VocabTree> train_tree(Dataset &dataset, uint32_t num_images, uint32_t split, uint32_t depth) {
 	VocabTree vt;
-	std::shared_ptr<VocabTree::TrainParams> train_params = std::make_shared<VocabTree::TrainParams>();
+	PTR_LIB::shared_ptr<VocabTree::TrainParams> train_params = PTR_LIB::make_shared<VocabTree::TrainParams>();
 	train_params->depth = depth;
 	train_params->split = split;
 	vt.train(dataset, train_params, dataset.random_images(num_images));
@@ -98,28 +98,28 @@ std::shared_ptr<VocabTree> train_tree(Dataset &dataset, uint32_t num_images, uin
 	std::stringstream vocab_output_file;
 	vocab_output_file << dataset.location() << "/tree/" << split << "." << depth << ".vocab";
 	vt.save(vocab_output_file.str());
-	return std::make_shared<VocabTree>(vt);
+	return PTR_LIB::make_shared<VocabTree>(vt);
 }
 
-std::shared_ptr<BagOfWords> train_bow(Dataset &dataset, uint32_t num_images, uint32_t num_clusters) {
+PTR_LIB::shared_ptr<BagOfWords> train_bow(Dataset &dataset, uint32_t num_images, uint32_t num_clusters) {
 	BagOfWords bow;
-	std::shared_ptr<BagOfWords::TrainParams> train_params = std::make_shared<BagOfWords::TrainParams>();
+	PTR_LIB::shared_ptr<BagOfWords::TrainParams> train_params = PTR_LIB::make_shared<BagOfWords::TrainParams>();
 	train_params->numClusters = num_clusters;
-	const std::vector<  std::shared_ptr<const Image> > &random_images = dataset.random_images(num_images);
+	const std::vector<  PTR_LIB::shared_ptr<const Image> > &random_images = dataset.random_images(num_images);
 	bow.train(dataset, train_params, random_images);
 	std::stringstream vocab_output_file;
 	vocab_output_file << dataset.location() << "/vocabulary/" << train_params->numClusters << ".vocab";
 	bow.save(vocab_output_file.str());
-	return  std::make_shared<BagOfWords>(bow);
+	return  PTR_LIB::make_shared<BagOfWords>(bow);
 }
 
-std::shared_ptr<InvertedIndex> train_index(Dataset &dataset, std::shared_ptr<BagOfWords> bow) {
+PTR_LIB::shared_ptr<InvertedIndex> train_index(Dataset &dataset, PTR_LIB::shared_ptr<BagOfWords> bow) {
 	InvertedIndex ii;
-	std::shared_ptr<InvertedIndex::TrainParams> train_params = std::make_shared<InvertedIndex::TrainParams>();
+	PTR_LIB::shared_ptr<InvertedIndex::TrainParams> train_params = PTR_LIB::make_shared<InvertedIndex::TrainParams>();
 	train_params->bag_of_words = bow;
 	ii.train(dataset, train_params, dataset.all_images());
 
-	return std::make_shared<InvertedIndex>(ii);
+	return PTR_LIB::make_shared<InvertedIndex>(ii);
 }
 
 void benchmark_dataset(Dataset &dataset) {
@@ -142,7 +142,7 @@ void benchmark_dataset(Dataset &dataset) {
 	for(size_t i=0; i<3; i++) {
 		LINFO << "Training bag of words";
 		double start_time_bow = CycleTimer::currentSeconds();
-		std::shared_ptr<BagOfWords> bow = train_bow(dataset, num_images, bow_clusters[i]);
+		PTR_LIB::shared_ptr<BagOfWords> bow = train_bow(dataset, num_images, bow_clusters[i]);
 		double end_time_bow = CycleTimer::currentSeconds();
 		{
 			std::stringstream timing;
@@ -182,7 +182,7 @@ void benchmark_dataset(Dataset &dataset) {
 
 		LINFO << "Computing index";
 		double start_time_index = CycleTimer::currentSeconds();
-		std::shared_ptr<InvertedIndex> ii = train_index(dataset, bow);
+		PTR_LIB::shared_ptr<InvertedIndex> ii = train_index(dataset, bow);
 		double end_time_index = CycleTimer::currentSeconds();
 		{
 			std::stringstream timing;
@@ -202,7 +202,7 @@ void benchmark_dataset(Dataset &dataset) {
 
 		LINFO << "Training tree";
 		double start_time_tree = CycleTimer::currentSeconds();
-		std::shared_ptr<VocabTree> vt = train_tree(dataset, num_images, tree_branches[i].first, tree_branches[i].second);
+		PTR_LIB::shared_ptr<VocabTree> vt = train_tree(dataset, num_images, tree_branches[i].first, tree_branches[i].second);
 		double end_time_tree = CycleTimer::currentSeconds();
 		{
 			std::stringstream timing;
@@ -233,10 +233,10 @@ void benchmark_dataset(Dataset &dataset) {
 			for (uint32_t i = 0; i < total_iterations; i++) {
 				double start_time = CycleTimer::currentSeconds();
 
-				std::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
-				std::shared_ptr<InvertedIndex::MatchResults> matches_index =
-					std::static_pointer_cast<InvertedIndex::MatchResults>(ii->search(dataset, nullptr, query_image));
-				if (matches_index == nullptr) {
+				PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
+				PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches_index =
+					std::static_pointer_cast<InvertedIndex::MatchResults>(ii->search(dataset, 0, query_image));
+				if (matches_index == 0) {
 					LERROR << "Error while running search.";
 					continue;
 				}
@@ -257,7 +257,7 @@ void benchmark_dataset(Dataset &dataset) {
 #endif
 				for (int32_t j = 0; j < validated.size(); j++) {
 					cv::Mat keypoints_1, descriptors_1;
-					std::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(matches_index->matches[j]));
+					PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(matches_index->matches[j]));
 					const std::string &match_keypoints_location = dataset.location(match_image->feature_path("keypoints"));
 					const std::string &match_descriptors_location = dataset.location(match_image->feature_path("descriptors"));
 					filesystem::load_cvmat(match_keypoints_location, keypoints_1);
@@ -270,7 +270,7 @@ void benchmark_dataset(Dataset &dataset) {
 					if (validated[j] > 0) total_correct_tmp++;
 				}
 				total_correct += total_correct_tmp;
-				html_output_index.add_match(i, matches_index->matches, dataset, std::make_shared< std::vector<int> >(validated));
+				html_output_index.add_match(i, matches_index->matches, dataset, PTR_LIB::make_shared< std::vector<int> >(validated));
 
 				std::stringstream outfilestr;
 				outfilestr << dataset.location() << "/results/matches/index." << bow->num_clusters();
@@ -305,10 +305,10 @@ void benchmark_dataset(Dataset &dataset) {
 			for (uint32_t i = 0; i < total_iterations; i++) {
 				double start_time = CycleTimer::currentSeconds();
 
-				std::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
-				std::shared_ptr<InvertedIndex::MatchResults> matches_index =
-					std::static_pointer_cast<InvertedIndex::MatchResults>(vt->search(dataset, nullptr, query_image));
-				if (matches_index == nullptr) {
+				PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
+				PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches_index =
+					std::static_pointer_cast<InvertedIndex::MatchResults>(vt->search(dataset, 0, query_image));
+				if (matches_index == 0) {
 					LERROR << "Error while running search.";
 					continue;
 				}
@@ -329,7 +329,7 @@ void benchmark_dataset(Dataset &dataset) {
 #endif
 				for (int32_t j = 0; j < validated.size(); j++) {
 					cv::Mat keypoints_1, descriptors_1;
-					std::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(matches_index->matches[j]));
+					PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> match_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(matches_index->matches[j]));
 					const std::string &match_keypoints_location = dataset.location(match_image->feature_path("keypoints"));
 					const std::string &match_descriptors_location = dataset.location(match_image->feature_path("descriptors"));
 					filesystem::load_cvmat(match_keypoints_location, keypoints_1);
@@ -342,7 +342,7 @@ void benchmark_dataset(Dataset &dataset) {
 					if (validated[j] > 0) total_correct_tmp++;
 				}
 				total_correct += total_correct_tmp;
-				html_output_tree.add_match(i, matches_index->matches, dataset, std::make_shared< std::vector<int> >(validated));
+				html_output_tree.add_match(i, matches_index->matches, dataset, PTR_LIB::make_shared< std::vector<int> >(validated));
 				
 				std::stringstream outfilestr;
 				outfilestr << dataset.location() << "/results/matches/tree." << vt->tree_depth() << "." << vt->tree_splits();

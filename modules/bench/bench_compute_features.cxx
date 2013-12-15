@@ -25,8 +25,8 @@ void compute_features(const SimpleDataset &dataset) {
 #pragma omp parallel for schedule(dynamic)
 #endif
 	for (int64_t i = 0; i < (int64_t)dataset.num_images(); i++) {
-		std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
-		if (image == nullptr) continue;
+		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
+		if (image == 0) continue;
 
 		const std::string &keypoints_location = dataset.location(image->feature_path("keypoints"));
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
@@ -38,7 +38,7 @@ void compute_features(const SimpleDataset &dataset) {
 		cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);
 
 		cv::Mat keypoints, descriptors;
-		if (!vision::compute_sparse_sift_feature(im, nullptr, keypoints, descriptors)) continue;
+		if (!vision::compute_sparse_sift_feature(im, 0, keypoints, descriptors)) continue;
 
 		filesystem::create_file_directory(keypoints_location);
 		filesystem::create_file_directory(descriptors_location);

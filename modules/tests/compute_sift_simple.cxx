@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
 #endif
 	for (int64_t i = 0; i < simple_dataset.num_images(); i++) {
 
-		std::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(simple_dataset.image(i));
-		if (image == nullptr) continue;
+		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(simple_dataset.image(i));
+		if (image == 0) continue;
 
 		const std::string &keypoints_location = simple_dataset.location(image->feature_path("keypoints"));
 		const std::string &descriptors_location = simple_dataset.location(image->feature_path("descriptors"));
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 		cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);
 
 		cv::Mat keypoints, descriptors;
-		if (!vision::compute_sparse_sift_feature(im, nullptr, keypoints, descriptors)) continue;
+		if (!vision::compute_sparse_sift_feature(im, 0, keypoints, descriptors)) continue;
 
 		filesystem::create_file_directory(keypoints_location);
 		filesystem::create_file_directory(descriptors_location);
