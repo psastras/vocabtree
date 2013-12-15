@@ -1,10 +1,9 @@
 #pragma once
-
-#include <string>
+#include <config.hpp>
 #include "logger.hpp"
 #include "cycletimer.hpp"
+#include <string>
 #include <boost/current_function.hpp> 
-#include <config.hpp>
 #include <stdint.h>
 
 #define SCOPED_TIMER \

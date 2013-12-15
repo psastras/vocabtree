@@ -1,8 +1,8 @@
 #pragma once
+#include "config.hpp"
 
 #include "image.hpp"
 #include "cache.hpp"
-#include "config.hpp"
 
 #include <memory>
 #include <boost/bimap.hpp>

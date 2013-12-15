@@ -1,10 +1,9 @@
 #pragma once
-
+#include <config.hpp>
 #include <string>
 #include <stdint.h>
 #include <opencv2/opencv.hpp>
 
-#include "config.hpp"
 #include "numerics.hpp"
 
 /// Abstract class representing an image.  Implementing classes must provide a way to 

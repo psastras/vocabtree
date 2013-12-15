@@ -1,10 +1,10 @@
 #pragma once
+#include "config.hpp"
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/stitching.hpp>
 #include <memory>
 
-#include "config.hpp"
 
 /// Provides useful wrappers around many OpenCV functions as well
 /// as some simple vision - based routines.

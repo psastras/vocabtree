@@ -8,12 +8,13 @@
 #define ENABLE_FASTCLUSTER @ENABLE_FASTCLUSTER@
 #define ENABLE_MULTITHREADING @ENABLE_MULTITHREAD@
 
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
-#include <omp.h>
-#endif
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 #include <mpi.h>
 #endif
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#include <omp.h>
+#endif
+
 
 // needed for sublime clang to work
 #if ENABLE_MULTITHREADING

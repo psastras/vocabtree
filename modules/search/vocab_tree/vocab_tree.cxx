@@ -968,7 +968,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
 
     //for (matchPair p : values)
     for (int i = 0; i < values.size(); i++)
-      MPI_Send(&(values[i].second), 1, MPI_FLOAT, 0, p.first+1, MPI_COMM_WORLD);
+      MPI_Send(&(values[i].second), 1, MPI_FLOAT, 0, values[i].first+1, MPI_COMM_WORLD);
 
     values.clear();
   }

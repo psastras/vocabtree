@@ -31,6 +31,9 @@ void validate_results(Dataset &dataset, PTR_LIB::shared_ptr<const SimpleDataset:
 PTR_LIB::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output, std::ofstream &valid_out) {
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
+    int rank, procs;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &procs);
     if (rank != 0)
       return;
 #endif

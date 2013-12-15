@@ -1,11 +1,9 @@
 #pragma once
+#include "config.hpp"
 
 #include <stdint.h>
 #include <vector>
 #include <opencv2/opencv.hpp>
-
-
-#include "config.hpp"
 
 /// Provides useful wrappers around many numerical functionality, such as dealing with sparse
 /// and dense matrix / vector data.
