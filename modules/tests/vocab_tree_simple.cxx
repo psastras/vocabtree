@@ -90,6 +90,7 @@ int main(int argc, char *argv[]) {
   std::vector<PTR_LIB::shared_ptr<const Image> > images = simple_dataset.random_images(200);
 #endif
   vt.train(simple_dataset, train_params, images);
+
   //printf("\n%d Finished Building Tree\n\n", rank);
 
   PTR_LIB::shared_ptr<VocabTree::SearchParams> searchParams = PTR_LIB::make_shared<VocabTree::SearchParams>();
@@ -112,8 +113,12 @@ int main(int argc, char *argv[]) {
     }*/
   std::vector< PTR_LIB::shared_ptr<const Image> > imToTest(images.begin(), images.begin() + 20);
   std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > matches = vt.search(simple_dataset, searchParams, imToTest);
-  for (uint32_t i = 0; i < imToTest.size(); i++)
+
+  for (uint32_t i = 0; i < imToTest.size(); i++) {
+    if(!matches[i]) continue;
+    std::cout << "SEARCH " << i << std::endl;
     html_output.add_match(images[i]->id, matches[i]->matches, simple_dataset);
+  }
 
   html_output.write(simple_dataset.location() + "/results/matches/");
 

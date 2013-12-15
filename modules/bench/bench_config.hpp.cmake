@@ -19,5 +19,9 @@ const static std::string s_oxfordmini_data_dir 				= "@CMAKE_SOURCE_DIR@/data/ox
 const static std::string s_oxfordmini_database_location 	= "@CMAKE_SOURCE_DIR@/data/oxfordmini/db_oxfordmini.bin";
 const static int s_oxfordmini_num_clusters					= 46656;
 
+const static std::string s_paul_data_dir 				= "@CMAKE_SOURCE_DIR@/data/paul/";
+const static std::string s_paul_database_location	 	= "@CMAKE_SOURCE_DIR@/data/paul/db_paul.bin";
+const static int s_paul_num_clusters					= 46656;
+
 const static std::string s_holidays_data_dir 				= "@CMAKE_SOURCE_DIR@/data/holidays/";
 const static std::string s_holidays_database_location	 	= "@CMAKE_SOURCE_DIR@/data/holidays/db_holidays.bin";

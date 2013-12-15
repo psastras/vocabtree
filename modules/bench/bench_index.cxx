@@ -23,9 +23,8 @@ int main(int argc, char *argv[]) {
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	MPI::Init(argc, argv);
 #endif
-	const uint32_t num_clusters = s_oxfordmini_num_clusters;
-
-	SimpleDataset oxford_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
+	const uint32_t num_clusters = s_paul_num_clusters;
+	SimpleDataset oxford_dataset(s_paul_data_dir, s_paul_database_location);
 	LINFO << oxford_dataset;
 
 	std::stringstream vocab_output_file;

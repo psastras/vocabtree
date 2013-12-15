@@ -22,5 +22,4 @@
 	#define ENABLE_OPENMP 0
 #endif
 
-
 #define PTR_LIB std

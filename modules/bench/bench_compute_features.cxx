@@ -58,8 +58,8 @@ int main(int argc, char *argv[]) {
 	// }
 
 	{
-		SimpleDataset oxford100k_dataset(s_oxford100k_data_dir, s_oxford100k_database_location);
-		compute_features(oxford100k_dataset);
+		SimpleDataset paul_dataset(s_paul_data_dir, s_paul_database_location);
+		compute_features(paul_dataset);
 	}
 #if ENABLE_MULTITHREADING && ENABLE_MPI
 	MPI::Finalize();

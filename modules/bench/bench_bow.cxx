@@ -105,8 +105,8 @@ int main(int argc, char *argv[]) {
 	// }
 
 	{
-		SimpleDataset oxford100k_dataset(s_oxford100k_data_dir, s_oxford100k_database_location);
-		compute_bow(oxford100k_dataset, s_oxford100k_num_clusters, 2048, 0);
+		SimpleDataset paul_dataset(s_paul_data_dir, s_paul_database_location);
+		compute_bow(paul_dataset, s_paul_num_clusters, 2048, 0);
 	}
 	
 #if ENABLE_MULTITHREADING && ENABLE_MPI

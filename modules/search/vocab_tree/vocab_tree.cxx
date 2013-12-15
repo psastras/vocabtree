@@ -123,7 +123,7 @@ bool VocabTree::save (const std::string &file_path) const {
     uint32_t size = invFile.size();
     ofs.write((const char *)&size, sizeof(uint32_t));
     //for (std::pair<uint64_t, uint32_t> pair : invFile) {
-    for (std::unordered_map<uint64_t, uint32_t>::iterator it = invFile.begin; it != invFile.end(); it++) {
+    for (std::unordered_map<uint64_t, uint32_t>::iterator it = invFile.begin(); it != invFile.end(); it++) {
       ofs.write((const char *)&it->first, sizeof(uint64_t));
       ofs.write((const char *)&it->second, sizeof(uint32_t));
     }
@@ -199,6 +199,9 @@ bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPar
 
   std::vector<cv::Mat> all_descriptors;
   uint64_t num_features = 0;
+
+  std::vector<uint64_t> new_ids;
+
   for (size_t i = 0; i < all_ids.size(); i++) {
     PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
     if (image == 0) continue;
@@ -210,12 +213,14 @@ bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPar
     if (filesystem::load_cvmat(descriptors_location, descriptors)) {
       descriptors.convertTo(descriptorsf, CV_32FC1);
       num_features += descriptors.rows;
-
+      
+      new_ids.push_back(all_ids[i]);
       all_descriptors.push_back(descriptorsf);
     }
   }
+  all_ids = new_ids;
 
-  const cv::Mat merged_descriptor = vision::merge_descriptors(all_descriptors, true);
+  const cv::Mat merged_descriptor = vision::merge_descriptors(all_descriptors, false);
   cv::Mat labels;
   uint32_t attempts = 1;
   cv::TermCriteria tc(cv::TermCriteria::COUNT | cv::TermCriteria::EPS, 18, 0.000001);
@@ -359,22 +364,22 @@ bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPar
 #endif
 
   // have to reload all descriptors, do once here instead of twice in the next 2 loops
-  all_descriptors.clear();
-  for (int i = 0; i < all_ids.size(); i++) {
-    PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
-    if (image == 0) continue;
+  // all_descriptors.clear();
+  // for (int i = 0; i < all_ids.size(); i++) {
+  //   PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
+  //   if (image == 0) continue;
 
-    const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
-    if (!filesystem::file_exists(descriptors_location)) continue;
+  //   const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
+  //   if (!filesystem::file_exists(descriptors_location)) continue;
 
-    cv::Mat descriptors, descriptorsf;
-    if (filesystem::load_cvmat(descriptors_location, descriptors)) {
-      descriptors.convertTo(descriptorsf, CV_32FC1);
-      num_features += descriptors.rows;
+  //   cv::Mat descriptors, descriptorsf;
+  //   if (filesystem::load_cvmat(descriptors_location, descriptors)) {
+  //     descriptors.convertTo(descriptorsf, CV_32FC1);
+  //     num_features += descriptors.rows;
 
-      all_descriptors.push_back(descriptorsf);
-    }
-  }
+  //     all_descriptors.push_back(descriptorsf);
+  //   }
+  // }
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 #pragma omp parallel for schedule(dynamic)
