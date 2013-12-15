@@ -45,7 +45,7 @@ void compute_features(Dataset &dataset) {
 		cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);
 
 		cv::Mat keypoints, descriptors;
-		if (!vision::compute_sparse_sift_feature(im, 0, keypoints, descriptors)) continue;
+		if (!vision::compute_sparse_sift_feature(im, PTR_LIB::shared_ptr<const vision::SIFTParams>(), keypoints, descriptors)) continue;
 
 		filesystem::create_file_directory(keypoints_location);
 		filesystem::create_file_directory(descriptors_location);
@@ -80,7 +80,7 @@ void compute_bow_features(Dataset &dataset, PTR_LIB::shared_ptr<BagOfWords> bow,
 		descriptors.convertTo(descriptorsf, CV_32FC1);
 		filesystem::create_file_directory(bow_descriptor_location);
 
-		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, 0)) continue;
+		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, PTR_LIB::shared_ptr< std::vector<std::vector<uint32_t> > >())) continue;
 		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
 		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
 
@@ -235,7 +235,7 @@ void benchmark_dataset(Dataset &dataset) {
 
 				PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
 				PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches_index =
-					std::static_pointer_cast<InvertedIndex::MatchResults>(ii->search(dataset, 0, query_image));
+					std::static_pointer_cast<InvertedIndex::MatchResults>(ii->search(dataset, PTR_LIB::shared_ptr<InvertedIndex::SearchParams>(), query_image));
 				if (matches_index == 0) {
 					LERROR << "Error while running search.";
 					continue;
@@ -307,7 +307,7 @@ void benchmark_dataset(Dataset &dataset) {
 
 				PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
 				PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches_index =
-					std::static_pointer_cast<InvertedIndex::MatchResults>(vt->search(dataset, 0, query_image));
+					std::static_pointer_cast<InvertedIndex::MatchResults>(vt->search(dataset, PTR_LIB::shared_ptr<InvertedIndex::SearchParams>(), query_image));
 				if (matches_index == 0) {
 					LERROR << "Error while running search.";
 					continue;

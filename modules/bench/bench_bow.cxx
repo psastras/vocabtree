@@ -83,7 +83,7 @@ void compute_bow(SimpleDataset &dataset, int num_clusters, int num_images, int n
 		descriptors.convertTo(descriptorsf, CV_32FC1);
 		filesystem::create_file_directory(bow_descriptor_location);
 
-		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, 0)) continue;
+		if (!vision::compute_bow_feature(descriptorsf, matcher, bow_descriptors, PTR_LIB::shared_ptr< std::vector<std::vector<uint32_t> > >())) continue;
 		const std::vector< std::pair<uint32_t, float> > &bow_descriptors_sparse = numerics::sparsify(bow_descriptors);
 		filesystem::write_sparse_vector(bow_descriptor_location, bow_descriptors_sparse);
 		LINFO << "Wrote " << bow_descriptor_location;

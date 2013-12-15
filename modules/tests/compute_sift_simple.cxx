@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 		cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);
 
 		cv::Mat keypoints, descriptors;
-		if (!vision::compute_sparse_sift_feature(im, 0, keypoints, descriptors)) continue;
+		if (!vision::compute_sparse_sift_feature(im,  std::shared_ptr<const vision::SIFTParams>(), keypoints, descriptors)) continue;
 
 		filesystem::create_file_directory(keypoints_location);
 		filesystem::create_file_directory(descriptors_location);

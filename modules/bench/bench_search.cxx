@@ -50,7 +50,7 @@ void bench_oxford() {
 	for(uint32_t i=0; i<total_iterations; i++) {
 		std::cout << PerfTracker::instance() << std::endl;
 		PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches = 
-			std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(oxford_dataset, 0, oxford_dataset.image(i)));
+			std::static_pointer_cast<InvertedIndex::MatchResults>(ii.search(oxford_dataset, PTR_LIB::shared_ptr<const SearchParamsBase>(), oxford_dataset.image(i)));
 
 		if(!matches) {
 			LERROR << "Error while running search.";

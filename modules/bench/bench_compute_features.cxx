@@ -38,7 +38,7 @@ void compute_features(const SimpleDataset &dataset) {
 		cv::Mat im = cv::imread(image_location, cv::IMREAD_GRAYSCALE);
 
 		cv::Mat keypoints, descriptors;
-		if (!vision::compute_sparse_sift_feature(im, 0, keypoints, descriptors)) continue;
+		if (!vision::compute_sparse_sift_feature(im, PTR_LIB::shared_ptr<const vision::SIFTParams>(), keypoints, descriptors)) continue;
 
 		filesystem::create_file_directory(keypoints_location);
 		filesystem::create_file_directory(descriptors_location);
