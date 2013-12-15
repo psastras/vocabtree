@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
   filesystem::create_file_directory(output_loc + "foo.txt");
 
   SimpleDataset train_dataset(data_dir, database_location, 0);
-  size_t cache_sizes[] = { 128, 256 };
+  size_t cache_sizes[] = { 256, 512 };
   int numSizes = 2;
 
   if (vTree) {
