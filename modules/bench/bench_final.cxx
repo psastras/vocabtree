@@ -28,7 +28,7 @@ _INITIALIZE_EASYLOGGINGPP
 
 
 void validate_results(Dataset &dataset, PTR_LIB::shared_ptr<const SimpleDataset::SimpleImage> &query_image, 
-    PTR_LIB::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output) {
+PTR_LIB::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output, std::ofstream &valid_out) {
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
     if (rank != 0)
@@ -40,7 +40,8 @@ void validate_results(Dataset &dataset, PTR_LIB::shared_ptr<const SimpleDataset:
 	filesystem::load_cvmat(query_keypoints_location, keypoints_0);
 	filesystem::load_cvmat(query_descriptors_location, descriptors_0);*/
 	uint32_t num_validate = 16;
-  std::vector<int> validated(num_validate, 0); /*
+  std::vector<int> validated(num_validate, 0); 
+  uint32_t number_valid = 0;/*
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
 	#pragma omp parallel for schedule(dynamic)
 #endif
@@ -56,13 +57,17 @@ void validate_results(Dataset &dataset, PTR_LIB::shared_ptr<const SimpleDataset:
 		vision::geo_verify_f(descriptors_0, keypoints_0, descriptors_1, keypoints_1, match_info);
 
 		validated[j] = vision::is_good_match(match_info) ? 1 : -1;
+    if(validated[j] == 1)
+      number_valid++;
 	}*/
+  valid_out << number_valid << " / " << num_validate << std::endl;
+  
 
 	html_output.add_match(query_image->id, matches->matches, dataset, PTR_LIB::make_shared< std::vector<int> >(validated));
 	html_output.write(dataset.location() + "/results/matches/");
 }
 
-void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shared_ptr<SearchParamsBase> &params) {
+void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shared_ptr<SearchParamsBase> &params, std::ofstream &valid_out) {
 	uint32_t num_searches = 256;
 
 
@@ -86,7 +91,7 @@ void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shar
 			continue;
    		 }
 		// validate matches
-   		 validate_results(dataset, query_image, matches, html_output);
+    validate_results(dataset, query_image, matches, html_output, valid_out);
 	}
 
 }
@@ -106,9 +111,12 @@ int main(int argc, char *argv[]) {
   const std::string data_dir = argv[2 + vTree];
   const std::string database_location = argv[3 + vTree];
   const std::string output_loc = argv[4 + vTree];
-  const std::string machine_out_loc = output_loc +"/info.machine";
+  const std::string machine_out_loc = output_loc + "/info.machine";
 
-  filesystem::create_file_directory(output_loc + "foo.txt");
+  const std::string valid_out_loc = output_loc + "/validated.txt";
+  std::ofstream valid_out(valid_out_loc.c_str(), std::ios::trunc);
+
+  filesystem::create_file_directory(output_loc + "/foo.txt");
 
   SimpleDataset train_dataset(data_dir, database_location, 0);
   size_t cache_sizes[] = { 256, 512 };
@@ -135,7 +143,7 @@ int main(int argc, char *argv[]) {
       SimpleDataset dataset(data_dir, database_location, cache_size);
       LINFO << dataset;
 
-      bench_dataset(vt, dataset, searchParams);
+      bench_dataset(vt, dataset, searchParams, valid_out);
 
       std::stringstream perfloc;
       perfloc << output_loc << "/perf." << cache_size;
@@ -156,7 +164,7 @@ int main(int argc, char *argv[]) {
       SimpleDataset dataset(data_dir, database_location, cache_size);
       LINFO << dataset;
 
-      bench_dataset(ii, dataset, std::shared_ptr<SearchParamsBase>());
+      bench_dataset(ii, dataset, std::shared_ptr<SearchParamsBase>(), valid_out);
 
 
       std::stringstream perfloc;
@@ -185,7 +193,11 @@ int main(int argc, char *argv[]) {
   MPI_Comm_size(MPI_COMM_WORLD, &nodes);
 #endif
   machine_out << "Nodes " << nodes << std::endl;
-  if((machine_out.rdstate() & std::ofstream::failbit) != 0)
+  if ((machine_out.rdstate() & std::ofstream::failbit) != 0)
+    std::cout << "Failed to write " << machine_out_loc << std::endl;
+
+  if ((valid_out.rdstate() & std::ofstream::failbit) != 0)
+    std::cout << "Failed to write " << valid_out_loc << std::endl;
 
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
