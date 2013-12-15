@@ -116,12 +116,16 @@ bool VocabTree::save (const std::string &file_path) const {
   // write out inverted files
   uint32_t numInvertedFiles = invertedFiles.size();
   ofs.write((const char *)&numInvertedFiles, sizeof(uint32_t));
-  for (std::unordered_map<uint64_t, uint32_t> invFile : invertedFiles) {
+  //for (std::unordered_map<uint64_t, uint32_t> invFile : invertedFiles) {
+  //for (std::unordered_map<uint64_t, uint32_t>::iterator it = invertedFiles.begin; it != invertedFiles.end(); it++) {
+  for (int i = 0; i < invertedFiles.size(); i++) {
+    std::unordered_map<uint64_t, uint32_t> invFile = invertedFiles[i];
     uint32_t size = invFile.size();
     ofs.write((const char *)&size, sizeof(uint32_t));
-    for (std::pair<uint64_t, uint32_t> pair : invFile) {
-      ofs.write((const char *)&pair.first, sizeof(uint64_t));
-      ofs.write((const char *)&pair.second, sizeof(uint32_t));
+    //for (std::pair<uint64_t, uint32_t> pair : invFile) {
+    for (std::unordered_map<uint64_t, uint32_t>::iterator it = invFile.begin; it != invFile.end(); it++) {
+      ofs.write((const char *)&it->first, sizeof(uint64_t));
+      ofs.write((const char *)&it->second, sizeof(uint32_t));
     }
   }
 
@@ -872,8 +876,9 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
   } comparer;
 
   std::unordered_set<uint64_t> possibleImages;
-  for (uint32_t elem : possibleMatches) {
-    std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[elem];
+  //for (uint32_t elem : possibleMatches) {
+  for (std::unordered_set<uint32_t>::iterator it = possibleMatches.begin(); it != possibleMatches.end(); it++) {
+    std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[*it];
 
     typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
     for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
@@ -883,13 +888,15 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
 
   //std::set<matchPair, myComparer> values;
   std::vector<matchPair> values;
-  for (uint64_t elem : possibleImages) {
+  //for (uint64_t elem : possibleImages) {
+  for (std::unordered_set<uint64_t>::iterator it = possibleImages.begin(); it != possibleImages.end(); it++) {
+    uint64_t imID = *it;
     // compute L1 norm (based on paper eq 5)
     //float l1norm = 0;
     float score = 0;
 
     // load datavec from disk
-    PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(elem));
+    PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(imID));
     // const std::string &datavec_location = dataset.location(image->feature_path("datavec"));
 
     // if (!filesystem::file_exists(datavec_location)) continue;
@@ -898,7 +905,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     // ifs.read((char *)&dbVec[0], numberOfNodes*sizeof(float));
     // if ((ifs.rdstate() & std::ifstream::failbit) != 0) continue;
 
-    std::vector<float> dbVec = dataset.load_vec_feature(elem);
+    std::vector<float> dbVec = dataset.load_vec_feature(imID);
 
     for (uint32_t i = 0; i < numberOfNodes; i++) {
       float t = vec[i] - dbVec[i];
@@ -909,7 +916,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     //values[elem] = l1norm;
     //values.insert(elem, l1norm));
 
-    values.push_back(matchPair(elem, sqrt(score)));
+    values.push_back(matchPair(imID, sqrt(score)));
   }
 
   std::sort(values.begin(), values.end(), comparer);
@@ -954,8 +961,9 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     int tmpCount = values.size();
     MPI_Send(&tmpCount, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 
-    for (matchPair p : values)
-      MPI_Send(&p.second, 1, MPI_FLOAT, 0, p.first+1, MPI_COMM_WORLD);
+    //for (matchPair p : values)
+    for (int i = 0; i < values.size(); i++)
+      MPI_Send(&(values[i].second), 1, MPI_FLOAT, 0, p.first+1, MPI_COMM_WORLD);
 
     values.clear();
   }
@@ -963,10 +971,10 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
 
   // printf("%d matches\n", values.size());
   // add all images in order or match
-  for (matchPair m : values){
-    match_result->matches.push_back(m.first);
-    match_result->tfidf_scores.push_back(m.second);
-    // std::cout << m.second << std::endl;
+  //for (matchPair m : values){
+  for (int i = 0; i < values.size(); i++) {
+    match_result->matches.push_back(values[i].first);
+    match_result->tfidf_scores.push_back(values[i].second);
   }
 
   return (PTR_LIB::shared_ptr<MatchResultsBase>)match_result;
@@ -984,7 +992,7 @@ std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > VocabTree::search(Dataset &
 #endif
   */
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
-  //#pragma omp parallel for
+  #pragma omp parallel for
 #endif
   for (int i = 0; i < examples.size(); i++) {
     PTR_LIB::shared_ptr<MatchResultsBase> imResults = search(dataset, params, examples[i]);
