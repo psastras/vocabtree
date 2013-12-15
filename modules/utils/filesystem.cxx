@@ -1,5 +1,5 @@
 #include "filesystem.hpp"
-
+#include "misc.hpp"
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <fstream>
@@ -40,6 +40,9 @@ namespace filesystem {
 	}
 
 	bool load_cvmat(const std::string &fname, cv::Mat &data) {
+
+		SCOPED_TIMER
+
 		if(!file_exists(fname)) return false;
 		std::ifstream ifs(fname.c_str(), std::ios::binary);
 		cvmat_header h;
@@ -60,6 +63,7 @@ namespace filesystem {
 
 	bool load_sparse_vector(const std::string &fname, std::vector<std::pair<uint32_t, float > > &data) {
 		if(!file_exists(fname)) return false;
+		SCOPED_TIMER
 		std::ifstream ifs(fname.c_str(), std::ios::binary);
 		uint32_t dim0;
 		ifs.read((char *)&dim0, sizeof(uint32_t));
@@ -121,6 +125,8 @@ namespace filesystem {
 
   bool load_vector(const std::string &fname, std::vector<float> &data) {
 	if (!file_exists(fname)) return false;
+	
+	SCOPED_TIMER
 
 	std::ifstream ifs(fname.c_str(), std::ios::binary);
 	uint32_t dim0;

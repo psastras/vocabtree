@@ -47,7 +47,7 @@ public:
 	/// and use it with one of the other search mechanisms, such as the inverted index.
 	PTR_LIB::shared_ptr<MatchResultsBase> search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params, const PTR_LIB::shared_ptr<const Image > &example);
 
-  std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > BagOfWords::search(Dataset &dataset, const PTR_LIB::shared_ptr<SearchParamsBase> &params,
+  	std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > search(Dataset &dataset, const PTR_LIB::shared_ptr<SearchParamsBase> &params,
     const std::vector< PTR_LIB::shared_ptr<const Image > > &examples);
 
 	/// Returns the vocabulary matrix.

@@ -1,4 +1,5 @@
 #include "vision.hpp"
+#include "misc.hpp"
 
 #include <opencv2/nonfree/nonfree.hpp>
 
@@ -7,6 +8,8 @@ namespace vision {
 	void geo_verify_f(const cv::Mat &descriptors0, const cv::Mat &points0,
 		const cv::Mat &descriptors1, const cv::Mat &points1, cv::detail::MatchesInfo &matches_info,
 		std::vector<uint32_t> *inliers0, std::vector<uint32_t> *inliers1) {
+
+		SCOPED_TIMER
 
 		cv::Ptr<cv::flann::IndexParams> indexParams = cv::makePtr<cv::flann::KDTreeIndexParams>();
 	    cv::Ptr<cv::flann::SearchParams> searchParams = cv::makePtr<cv::flann::SearchParams>();
@@ -99,6 +102,8 @@ namespace vision {
 		const cv::Mat &descriptors1, const cv::Mat &points1, cv::detail::MatchesInfo &matches_info,
 		std::vector<uint32_t> *inliers0, std::vector<uint32_t> *inliers1) {
 
+		SCOPED_TIMER
+
 	    cv::Ptr<cv::flann::IndexParams> indexParams = cv::makePtr<cv::flann::KDTreeIndexParams>();
 	    cv::Ptr<cv::flann::SearchParams> searchParams = cv::makePtr<cv::flann::SearchParams>();
 	    matches_info.confidence = 0;
@@ -187,6 +192,8 @@ namespace vision {
 	bool compute_sparse_sift_feature(const cv::Mat &img, const PTR_LIB::shared_ptr<const SIFTParams> &params ,
 		cv::Mat &keypoints, cv::Mat &descriptors) {
 		PTR_LIB::shared_ptr<const SIFTParams> sift_parameters;
+		
+		SCOPED_TIMER
 		
 		if(!params) {
 			sift_parameters = PTR_LIB::make_shared<const SIFTParams>();

@@ -62,7 +62,7 @@ void validate_results(Dataset &dataset, PTR_LIB::shared_ptr<const SimpleDataset:
 	html_output.write(dataset.location() + "/results/matches/");
 }
 
-void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shared_ptr<SearchParamsBase> &params, std::ofstream &cache_out) {
+void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shared_ptr<SearchParamsBase> &params) {
 	uint32_t num_searches = 256;
 
 
@@ -87,7 +87,6 @@ void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shar
    		 }
 		// validate matches
    		 validate_results(dataset, query_image, matches, html_output);
-       cache_out << "Hits " << dataset.cache()->hits() << " Misses " << dataset.cache()->misses() << std::endl;
 	}
 
 }
@@ -107,7 +106,9 @@ int main(int argc, char *argv[]) {
   const std::string data_dir = argv[2 + vTree];
   const std::string database_location = argv[3 + vTree];
   const std::string output_loc = argv[4 + vTree];
-  const std::string machine_out_loc = output_loc + ".machine";
+  const std::string machine_out_loc = output_loc +"/info.machine";
+
+  filesystem::create_file_directory(output_loc + "foo.txt");
 
   SimpleDataset train_dataset(data_dir, database_location, 0);
   size_t cache_sizes[] = { 128, 256 };
@@ -125,24 +126,22 @@ int main(int argc, char *argv[]) {
     searchParams->amountToReturn = 10;
 
     vt.train(train_dataset, train_params, train_dataset.random_images(numImages));
+    PerfTracker::instance().save(output_loc + "/perf.train");
+    PerfTracker::instance().clear();
 
     for (int i = 0; i < numSizes; i++) {
       size_t cache_size = cache_sizes[i];
 
-      // write to cache file
-      std::stringstream ss;
-      ss << output_loc << "." << cache_size << ".cache";
-      const std::string cache_out_loc = ss.str();
-      std::ofstream cache_out(cache_out_loc.c_str(), std::ios::trunc);
-      cache_out << "Size " << cache_size << std::endl;
-
       SimpleDataset dataset(data_dir, database_location, cache_size);
       LINFO << dataset;
 
-      bench_dataset(vt, dataset, searchParams, cache_out);
+      bench_dataset(vt, dataset, searchParams);
 
-      if ((cache_out.rdstate() & std::ofstream::failbit) != 0)
-        std::cout << "Failed to write cache to " << cache_out_loc << std::endl;
+      std::stringstream perfloc;
+      perfloc << output_loc << "/perf." << cache_size;
+
+      PerfTracker::instance().save(perfloc.str());
+      PerfTracker::instance().clear();
     }
   }
   else {
@@ -154,26 +153,28 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < numSizes; i++) {
       size_t cache_size = cache_sizes[i];
 
-      // write to cache file
-      std::stringstream ss;
-      ss << output_loc << "." << cache_size << ".cache";
-      const std::string cache_out_loc = ss.str();
-      std::ofstream cache_out(cache_out_loc.c_str(), std::ios::trunc);
-      cache_out << "Size " << cache_size << std::endl;
-
       SimpleDataset dataset(data_dir, database_location, cache_size);
       LINFO << dataset;
 
-      bench_dataset(ii, dataset, std::shared_ptr<SearchParamsBase>(), cache_out);
+      bench_dataset(ii, dataset, std::shared_ptr<SearchParamsBase>());
 
-      if ((cache_out.rdstate() & std::ofstream::failbit) != 0)
-        std::cout << "Failed to write cache to " << cache_out_loc << std::endl;
+
+      std::stringstream perfloc;
+      perfloc << output_loc << "/perf." << cache_size;
+
+      PerfTracker::instance().save(perfloc.str());
+      PerfTracker::instance().clear();
     }
   }
 
-  PerfTracker::instance().save(output_loc);
-
+  
+  // std::cout << "Writing " << machine_out_loc.c_str();
   std::ofstream machine_out(machine_out_loc.c_str(), std::ios::trunc);
+
+  for(int i=0; i<argc; i++) {
+    machine_out << argv[i] << "\t";
+  }
+  machine_out << std::endl;
 
   machine_out << "Machine " << misc::get_machine_name() << std::endl;
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP

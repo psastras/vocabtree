@@ -46,26 +46,23 @@ class SingleCache {
   // Constuctor specifies the cached function and 
   // the maximum number of records to be stored. 
   SingleCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
-    cache_hits = 0; 
-    cache_misses = 0;
+
   } 
  
   // Non locking version
   template<typename U = V> typename std::enable_if<!B, U>::type operator()(const K& k) { 
     SCOPED_TIMER
-    double startlookup = CycleTimer::currentSeconds();
+
     const typename container_type::left_iterator it = _container.left.find(k); 
     if (it == _container.left.end()) {      
       V v = _fn(k);
-      cache_misses++;
       insert(k,v); 
       return v;
     } else {
-      cache_hits++;
       _container.right.relocate(_container.right.end(), _container.project_right(it)); 
       return it->second;
     }
-    _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
+
   } 
 
   template<typename U = std::vector<V> > typename std::enable_if<!B, U>::type operator()(const std::vector<K> &k) { 
@@ -85,10 +82,8 @@ class SingleCache {
       const typename container_type::left_iterator it = _container.left.find(k); 
       if (it == _container.left.end()) {      
         v = _fn(k);
-        cache_misses++;
         insert(k,v); 
       } else {
-        cache_hits++;
         _container.right.relocate(_container.right.end(), _container.project_right(it)); 
         v = it->second;
       }
@@ -104,11 +99,7 @@ class SingleCache {
     return u;
   } 
 
-  uint64_t hits()             const { return cache_hits; }
-  uint64_t misses()           const { return cache_misses; }
   uint64_t capacity()         const { return _capacity; }
-  uint64_t num_lookups()      const { return cache_misses + cache_hits; }
-  double total_lookup_time()  const { return _lookup_time_total; }
   
  private: 
   void insert(const K& k, const V& v) { 
@@ -121,10 +112,6 @@ class SingleCache {
   const boost::function<V(const K&)> _fn; 
   const size_t _capacity; 
   container_type _container; 
-
-  uint64_t cache_hits, cache_misses;
-
-  double _lookup_time_total;
 }; 
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
@@ -144,17 +131,6 @@ class MultiCache {
     SCOPED_TIMER
     return (*_caches[omp_get_thread_num()])(k);
   } 
-
-  uint64_t hits() const { 
-    int total_hits = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i]->hits();
-    return total_hits;
-  }
-  uint64_t misses() const { 
-    int total_misses = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i]->misses();
-    return total_misses;
-  }
 
   uint64_t capacity() const { return _capacity; }
   
@@ -183,29 +159,6 @@ class MultiRingCache {
     SCOPED_TIMER
     return (*_caches[(size_t)(k / _single_capacity) % omp_get_max_threads()])(k);
   } 
-
-  uint64_t hits() const { 
-    int total_hits = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i]->hits();
-    return total_hits;
-  }
-  uint64_t misses() const { 
-    int total_misses = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i]->misses();
-    return total_misses;
-  }
-
-  uint64_t num_lookups() const { 
-    int total_lookups = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i]->num_lookups();
-    return total_lookups;
-  }
-
-  double total_lookup_time()const { 
-    double lookup_time = 0;
-    for(size_t i=0; i<_caches.size(); i++) lookup_time += _caches[i]->total_lookup_time();
-    return lookup_time;
-  }
 
   uint64_t capacity() const { return _capacity; }
   
@@ -252,32 +205,8 @@ class MultiRingPriorityCache {
     V v = (*_caches[cache_idx])(k);
     omp_unset_lock(&_locks[cache_idx]);
 
-    // #pragma omp critical
-    // _lookup_time_total += CycleTimer::currentSeconds() - startlookup;
     return v;
   } 
-
-  uint64_t hits() const { 
-    int total_hits = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i]->hits();
-    return total_hits;
-  }
-  
-  uint64_t misses() const { 
-    int total_misses = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i]->misses();
-    return total_misses;
-  }
-
-  uint64_t num_lookups() const { 
-    int total_lookups = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i]->num_lookups();
-    return total_lookups;
-  }
-
-  double total_lookup_time()const { 
-    return _lookup_time_total;
-  }
 
   uint64_t capacity() const { return _capacity; }
   
@@ -291,30 +220,6 @@ class MultiRingPriorityCache {
   double _lookup_time_total;
 }; 
 
-template < typename K, typename V> 
-std::ostream& operator<< (std::ostream &out, const MultiCache<K, V> &c) {
-  out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
-    << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
-    << " ]";
-  return out;
-}
-
-template < typename K, typename V> 
-std::ostream& operator<< (std::ostream &out, const MultiRingCache<K, V> &c) {
-  out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
-    << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
-    << " ]";
-  return out;
-}
-
-template < typename K, typename V> 
-std::ostream& operator<< (std::ostream &out, const MultiRingPriorityCache<K, V> &c) {
-  out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
-    << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
-    << " ]";
-  return out;
-}
-
 typedef MultiRingPriorityCache<uint64_t, numerics::sparse_vector_t> bow_ring_priority_cache_t;
 typedef MultiRingCache<uint64_t, numerics::sparse_vector_t> bow_ring_cache_t;
 typedef MultiCache<uint64_t, numerics::sparse_vector_t> bow_multi_cache_t;
@@ -324,15 +229,6 @@ typedef MultiRingCache<uint64_t,  std::vector<float>> vec_ring_cache_t;
 typedef MultiCache<uint64_t, std::vector<float>> vec_multi_cache_t;
 
 #endif
-
-
-template < bool B, typename K, typename V> 
-std::ostream& operator<< (std::ostream &out, const SingleCache<B, K, V> &c) {
-  out << "Cache [ capacity: " << c.capacity() << ", hits: " << c.hits()
-    << ", misses: " << c.misses() << ", hit rate: " << c.hits() / (float)(c.hits() + c.misses()) 
-    << " ]";
-  return out;
-}
 
 typedef SingleCache<true, uint64_t, numerics::sparse_vector_t> bow_single_cache_t;
 typedef SingleCache<true, uint64_t, std::vector<float>> vec_single_cache_t;

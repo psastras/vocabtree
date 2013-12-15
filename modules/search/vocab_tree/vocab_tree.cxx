@@ -155,7 +155,8 @@ bool VocabTree::save (const std::string &file_path) const {
 
 bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainParamsBase> &params,
   const std::vector< PTR_LIB::shared_ptr<const Image > > &examples) {
-  //printf("Starting to build tree...\n");
+  
+  SCOPED_TIMER
 
   int rank = 0;
 #if ENABLE_MULTITHREADING && ENABLE_MPI
@@ -915,7 +916,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     // load datavec from disk
     PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(imID));
 
-    std::vector<float> dbVec = dataset.load_vec_feature(imID);
+    const std::vector<float> &dbVec = dataset.load_vec_feature(imID);
 
     for (uint32_t i = 0; i < numberOfNodes; i++) {
       float t = vec[i] - dbVec[i];
