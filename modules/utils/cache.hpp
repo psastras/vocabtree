@@ -137,24 +137,24 @@ class MultiCache {
 
   MultiCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
     for(int i=0; i < omp_get_max_threads(); i++){
-      _caches.push_back(SingleCache<false, K, V>(f, c / omp_get_max_threads()));
+      _caches.push_back(PTR_LIB::make_shared<SingleCache<false, K, V>>(f, c / omp_get_max_threads()));
     }   
   } 
  
   // Obtain value of the cached function for k 
   V operator()(const K& k) { 
     SCOPED_TIMER
-    return _caches[omp_get_thread_num()](k);
+    return (*_caches[omp_get_thread_num()])(k);
   } 
 
   uint64_t hits() const { 
     int total_hits = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i].hits();
+    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i]->hits();
     return total_hits;
   }
   uint64_t misses() const { 
     int total_misses = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i].misses();
+    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i]->misses();
     return total_misses;
   }
 
@@ -162,7 +162,7 @@ class MultiCache {
   
  private: 
 
-  std::vector<SingleCache<false, K, V>> _caches;
+  std::vector< PTR_LIB::shared_ptr<SingleCache<false, K, V> > > _caches;
   const boost::function<V(const K&)> _fn; 
   const size_t _capacity; 
 }; 
@@ -176,43 +176,43 @@ class MultiRingCache {
 
   MultiRingCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c), _single_capacity(c / omp_get_max_threads()) { 
     for(int i=0; i < omp_get_max_threads(); i++){
-      _caches.push_back(SingleCache<true, K, V>(f, _single_capacity));
+      _caches.push_back(PTR_LIB::make_shared<SingleCache<false, K, V>>(f, _single_capacity));
     }   
   } 
  
   // Obtain value of the cached function for k 
   V operator()(const K& k) { 
     SCOPED_TIMER
-    return _caches[(size_t)(k / _single_capacity) % omp_get_max_threads()](k);
+    return (*_caches[(size_t)(k / _single_capacity) % omp_get_max_threads()])(k);
   } 
 
   uint64_t hits() const { 
     int total_hits = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i].hits();
+    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i]->hits();
     return total_hits;
   }
   uint64_t misses() const { 
     int total_misses = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i].misses();
+    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i]->misses();
     return total_misses;
   }
 
   uint64_t num_lookups() const { 
     int total_lookups = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i].num_lookups();
+    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i]->num_lookups();
     return total_lookups;
   }
 
   double total_lookup_time()const { 
     double lookup_time = 0;
-    for(size_t i=0; i<_caches.size(); i++) lookup_time += _caches[i].total_lookup_time();
+    for(size_t i=0; i<_caches.size(); i++) lookup_time += _caches[i]->total_lookup_time();
     return lookup_time;
   }
 
   uint64_t capacity() const { return _capacity; }
   
  private: 
-  std::vector<SingleCache<true, K, V>> _caches;
+  std::vector< PTR_LIB::shared_ptr<SingleCache<false, K, V> > > _caches;
   const boost::function<V(const K&)> _fn; 
   const size_t _capacity, _single_capacity; 
 }; 
@@ -230,7 +230,7 @@ class MultiRingPriorityCache {
     
     _locks.resize(omp_get_max_threads());
     for(int i=0; i < omp_get_max_threads(); i++){
-      _caches.push_back(SingleCache<false, K, V>(f, _single_capacity));
+      _caches.push_back(PTR_LIB::make_shared<SingleCache<false, K, V>>(f, _single_capacity));
       omp_init_lock(&_locks[i]);
     }   
   } 
@@ -243,7 +243,7 @@ class MultiRingPriorityCache {
       size_t cache_idx = ((size_t)(k / _single_capacity)+i) % omp_get_max_threads();
       int lock_acquired = omp_test_lock(&_locks[cache_idx]);
       if(lock_acquired) {
-        V v = _caches[cache_idx](k);
+        V v = (*_caches[cache_idx])(k);
         omp_unset_lock(&_locks[cache_idx]);
         return v;
       }
@@ -251,7 +251,7 @@ class MultiRingPriorityCache {
 
     size_t cache_idx = ((size_t)(k / _single_capacity)) % omp_get_max_threads();
     omp_set_lock(&_locks[cache_idx]);
-    V v = _caches[cache_idx](k);
+    V v = (*_caches[cache_idx])(k);
     omp_unset_lock(&_locks[cache_idx]);
 
     // #pragma omp critical
@@ -261,19 +261,19 @@ class MultiRingPriorityCache {
 
   uint64_t hits() const { 
     int total_hits = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i].hits();
+    for(size_t i=0; i<_caches.size(); i++) total_hits += _caches[i]->hits();
     return total_hits;
   }
   
   uint64_t misses() const { 
     int total_misses = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i].misses();
+    for(size_t i=0; i<_caches.size(); i++) total_misses += _caches[i]->misses();
     return total_misses;
   }
 
   uint64_t num_lookups() const { 
     int total_lookups = 0;
-    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i].num_lookups();
+    for(size_t i=0; i<_caches.size(); i++) total_lookups += _caches[i]->num_lookups();
     return total_lookups;
   }
 
@@ -285,7 +285,7 @@ class MultiRingPriorityCache {
   
  private: 
 
-  std::vector<SingleCache<false, K, V> > _caches;
+  std::vector< PTR_LIB::shared_ptr<SingleCache<false, K, V> > > _caches;
   std::vector<omp_lock_t> _locks;
   
   const boost::function<V(const K&)> _fn; 
