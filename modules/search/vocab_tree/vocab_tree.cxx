@@ -861,12 +861,12 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
   PTR_LIB::shared_ptr<MatchResults> match_result = PTR_LIB::make_shared<MatchResults>();
 
   // get descriptors for example
-  if (example == 0) return nullptr;
+  if (!example) return PTR_LIB::shared_ptr<MatchResultsBase>();
   const std::string &descriptors_location = dataset.location(example->feature_path("descriptors"));
-  if (!filesystem::file_exists(descriptors_location)) return 0;
+  if (!filesystem::file_exists(descriptors_location)) return PTR_LIB::shared_ptr<MatchResultsBase>();
 
   cv::Mat descriptors, descriptorsf;
-  if (!filesystem::load_cvmat(descriptors_location, descriptors)) return 0;
+  if (!filesystem::load_cvmat(descriptors_location, descriptors)) return PTR_LIB::shared_ptr<MatchResultsBase>();
 
   std::unordered_set<uint32_t> possibleMatches;
   descriptors.convertTo(descriptorsf, CV_32FC1);
@@ -876,9 +876,9 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
   // printf("--Generated vector\n");
 
   typedef std::pair<uint64_t, float> matchPair;
-  struct myComparer {
-    bool operator() (matchPair a, matchPair b) { return a.second < b.second; };
-  } comparer;
+  // struct myComparer {
+  //   bool operator() (matchPair a, matchPair b) { return a.second < b.second; };
+  // } comparer;
 
   std::unordered_set<uint64_t> possibleImages;
   //for (uint32_t elem : possibleMatches) {
@@ -924,7 +924,10 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     values.push_back(matchPair(imID, sqrt(score)));
   }
 
-  std::sort(values.begin(), values.end(), comparer);
+  std::sort(values.begin(), values.end(), 
+          boost::bind(&std::pair<uint64_t, float>::second, _1) <
+          boost::bind(&std::pair<uint64_t, float>::second, _2));
+  
   if (values.size() > ii_params->amountToReturn) {
     std::vector<matchPair>::iterator it = values.begin();
     values.erase(it + ii_params->amountToReturn, values.end());
@@ -959,7 +962,11 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
 
     // this may result in duplicate entries
     // will have to decide if that's a problem and if its worth fixing
-    std::sort(values.begin(), values.end(), comparer);
+    // std::sort(values.begin(), values.end(), comparer);
+    std::sort(values.begin(), values.end(), 
+          boost::bind(&std::pair<uint64_t, float>::second, _1) <
+          boost::bind(&std::pair<uint64_t, float>::second, _2));
+
     values.erase(values.begin() + ii_params->amountToReturn, values.end());
   }
   else {

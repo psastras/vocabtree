@@ -9,6 +9,7 @@ find_path( BOOST_INCLUDE_PATH boost/config.hpp
 	/opt/local/include
 	3rdparty/install/${CMAKE_SYSTEM_NAME}/include
 	/usr/local/Cellar/boost/1.53.0/include
+	NO_DEFAULT_PATH
 	DOC "The directory where boost/config.hpp resides")
 set(BOOST_SEARCH_PATHS /code/local/lib
 	/home/psastras/share/lib
@@ -20,7 +21,9 @@ set(BOOST_SEARCH_PATHS /code/local/lib
 	/afs/cs.cmu.edu/user/psastras/ladoga/install_warp/lib 
 	3rdparty/install/${CMAKE_SYSTEM_NAME}/lib
 	/usr/local/Cellar/boost/1.53.0/lib
-	/opt/local/lib)
+	/opt/local/lib
+	NO_DEFAULT_PATH
+)
 find_library(BOOST_FILESYSTEM NAMES boost_filesystem-mt boost_filesystem libboost_filesystem-vc120-mt-1_55 PATHS ${BOOST_SEARCH_PATHS} DOC "The boost 
 filesystem library")
 find_library(BOOST_FILESYSTEM_DEBUG NAMES libboost_filesystem-vc120-mt-gd-1_55  boost_filesystem boost_filesystem-mt PATHS ${BOOST_SEARCH_PATHS} DOC "The boost filesystem library")

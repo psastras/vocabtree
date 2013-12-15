@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
       SimpleDataset dataset(data_dir, database_location, cache_size);
       LINFO << dataset;
 
-      bench_dataset(ii, dataset, nullptr, cache_out);
+      bench_dataset(ii, dataset, std::shared_ptr<SearchParamsBase>(), cache_out);
 
       if ((cache_out.rdstate() & std::ofstream::failbit) != 0)
         std::cout << "Failed to write cache to " << cache_out_loc << std::endl;

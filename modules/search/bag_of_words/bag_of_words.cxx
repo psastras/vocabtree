@@ -146,7 +146,7 @@ bool BagOfWords::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPa
 
 PTR_LIB::shared_ptr<MatchResultsBase> BagOfWords::search(Dataset &dataset, const PTR_LIB::shared_ptr<const SearchParamsBase> &params, const PTR_LIB::shared_ptr<const Image > &example) {
 	assert(0);
-	return 0;
+	return PTR_LIB::shared_ptr<MatchResultsBase>();
 }
 
 std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > BagOfWords::search(Dataset &dataset, const PTR_LIB::shared_ptr<SearchParamsBase> &params,
