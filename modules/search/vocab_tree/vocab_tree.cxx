@@ -904,10 +904,20 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
   }
 
 
-  std::vector<matchPair> values;
+  std::vector<matchPair> values(possibleImages.size());;
 
+  std::vector<uint64_t> possImagesVec(possibleImages.size());
+
+  int asdf = 0;
   for (std::unordered_set<uint64_t>::iterator it = possibleImages.begin(); it != possibleImages.end(); it++) {
-    uint64_t imID = *it;
+    possImagesVec[asdf++] = *it;
+  }
+
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#pragma omp parallel for schedule(dynamic)
+#endif
+  for (int i = 0; i < possImagesVec.size(); i++) {
+    uint64_t imID = possImagesVec[i];
     float score = 0;
 
     // load datavec from disk
@@ -920,7 +930,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
       score += t*t;
     }
 
-    values.push_back(matchPair(imID, sqrt(score)));
+    values[i] = matchPair(imID, sqrt(score));
   }
 
   std::sort(values.begin(), values.end(), 
@@ -996,7 +1006,7 @@ std::vector< PTR_LIB::shared_ptr<MatchResultsBase> > VocabTree::search(Dataset &
   numThreads = omp_get_max_threads();
 #endif
   */
-#if ENABLE_MULTITHREADING && ENABLE_OPENMP
+#if ENABLE_MULTITHREADING && ENABLE_OPENMP && !ENABLE_MPI
   #pragma omp parallel for
 #endif
   for (int i = 0; i < examples.size(); i++) {
