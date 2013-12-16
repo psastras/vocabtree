@@ -85,7 +85,7 @@ bool BagOfWords::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPa
 	uint64_t num_features = 0;
 	for (size_t i = 0; i < all_ids.size(); i++) {
 		PTR_LIB::shared_ptr<Image> image = std::static_pointer_cast<Image>(dataset.image(all_ids[i]));
-		if (image == 0) continue;
+		if (image == PTR_LIB::shared_ptr<Image>()) continue;
 
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
 		if (!filesystem::file_exists(descriptors_location)) continue;

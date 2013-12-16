@@ -25,7 +25,7 @@ void MatchesPage::add_match(uint32_t query_id, std::vector<uint64_t> &match_ids,
 	for(size_t i=0; i< MIN(match_ids.size(), max_images_per_match_); i++) {
 		PTR_LIB::shared_ptr<Image> image =	dataset.image(match_ids[i]);
 		const std::string &impath = dataset.location(image->location());
-		if(validated == 0 || i >= validated->size()) {
+		if(validated == PTR_LIB::shared_ptr < std::vector<int> >() || i >= validated->size()) {
 			html_string << "<td><img src='" << impath << "' /></td>";
 		} else {
 			std::stringstream borderstr;

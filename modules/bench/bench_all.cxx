@@ -26,7 +26,7 @@ void compute_features(Dataset &dataset) {
 	for (int64_t i = 0; i < dataset.num_images(); i++) {
 
 		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
-		if (image == 0) continue;
+		if (image ==  PTR_LIB::shared_ptr<SimpleDataset::SimpleImage>()) continue;
 
 		const std::string &keypoints_location = dataset.location(image->feature_path("keypoints"));
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
@@ -230,7 +230,7 @@ void benchmark_dataset(Dataset &dataset) {
 				PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
 				PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches_index =
 					std::static_pointer_cast<InvertedIndex::MatchResults>(ii->search(dataset, PTR_LIB::shared_ptr<InvertedIndex::SearchParams>(), query_image));
-				if (matches_index == 0) {
+				if (matches_index ==  PTR_LIB::shared_ptr<InvertedIndex::MatchResults>()) {
 					LERROR << "Error while running search.";
 					continue;
 				}
@@ -302,7 +302,7 @@ void benchmark_dataset(Dataset &dataset) {
 				PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> query_image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
 				PTR_LIB::shared_ptr<InvertedIndex::MatchResults> matches_index =
 					std::static_pointer_cast<InvertedIndex::MatchResults>(vt->search(dataset, PTR_LIB::shared_ptr<InvertedIndex::SearchParams>(), query_image));
-				if (matches_index == 0) {
+				if (matches_index ==  PTR_LIB::shared_ptr<InvertedIndex::MatchResults>()) {
 					LERROR << "Error while running search.";
 					continue;
 				}

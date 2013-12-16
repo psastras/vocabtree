@@ -6,6 +6,7 @@ find_path( OPENCV_INCLUDE_PATH opencv2/opencv.hpp
 	/sw/include
 	/opt/local/lib/cmake
 	/opt/local/include
+	/afs/cs.cmu.edu/user/psastras/ladoga/share/include
 	/afs/cs.cmu.edu/user/psastras/ladoga/install_warp/include
 	/home/psastras/ladoga/install_warp/include
 	3rdparty/install/${CMAKE_SYSTEM_NAME}/include
@@ -21,6 +22,8 @@ find_library(OPENCV_LIB_PATH opencv_core
 	/sw/lib
 	/opt/local/lib/cmake
 	/opt/local/lib
+	/home/psastras/ladoga/share/lib
+	/afs/cs.cmu.edu/user/psastras/ladoga/share/lib
 	/afs/cs.cmu.edu/user/psastras/ladoga/install_warp/lib
 	/home/psastras/ladoga/install_warp/lib
 	3rdparty/install/${CMAKE_SYSTEM_NAME}/lib

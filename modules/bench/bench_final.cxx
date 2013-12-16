@@ -89,7 +89,7 @@ void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shar
 
     PTR_LIB::shared_ptr<MatchResultsBase> matches = searcher.search(dataset, params, query_image);
 
-		if(matches == 0) {
+		if(matches == PTR_LIB::shared_ptr<MatchResultsBase>()) {
 			LERROR << "Error while running search.";
 			continue;
    		 }

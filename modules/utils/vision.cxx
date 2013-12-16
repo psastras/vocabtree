@@ -233,7 +233,7 @@ namespace vision {
 	    std::vector<cv::DMatch> matches;
 	    matcher->match(descriptors, matches);
 
-	    if(cluster_indices != 0) {
+	    if(cluster_indices != PTR_LIB::shared_ptr< std::vector<std::vector<uint32_t> >  >()){
 			cluster_indices->clear();
 			cluster_indices->resize(clusterCount);
 	    }
@@ -246,7 +246,7 @@ namespace vision {
 	        int trainIdx = matches[i].trainIdx; 
 
 	        dptr[trainIdx] = dptr[trainIdx] + 1.f;
-	        if(cluster_indices != 0) {
+	        if(cluster_indices != PTR_LIB::shared_ptr< std::vector<std::vector<uint32_t> >  >()){
 	            (*cluster_indices)[trainIdx].push_back( queryIdx );
 	        }
 	    }

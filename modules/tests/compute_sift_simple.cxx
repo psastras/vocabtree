@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 	for (int64_t i = 0; i < simple_dataset.num_images(); i++) {
 
 		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(simple_dataset.image(i));
-		if (image == 0) continue;
+		if (image == PTR_LIB::shared_ptr<SimpleDataset::SimpleImage>()) continue;
 
 		const std::string &keypoints_location = simple_dataset.location(image->feature_path("keypoints"));
 		const std::string &descriptors_location = simple_dataset.location(image->feature_path("descriptors"));

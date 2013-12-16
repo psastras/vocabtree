@@ -39,7 +39,7 @@ void compute_features(const SimpleDataset &dataset, BagOfWords &bow) {
 #endif
 	for (int64_t i = begin; i < end; i++) {
 		PTR_LIB::shared_ptr<SimpleDataset::SimpleImage> image = std::static_pointer_cast<SimpleDataset::SimpleImage>(dataset.image(i));
-		if (image == 0) continue;
+		if (image == PTR_LIB::shared_ptr<SimpleDataset::SimpleImage>()) continue;
 
 		const std::string &keypoints_location = dataset.location(image->feature_path("keypoints"));
 		const std::string &descriptors_location = dataset.location(image->feature_path("descriptors"));
