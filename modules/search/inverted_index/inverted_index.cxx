@@ -174,7 +174,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> InvertedIndex::search(Dataset &dataset, co
 
 		const numerics::sparse_vector_t &bow_descriptors = dataset.load_bow_feature(candidates[i].second);
 
-		float sim = numerics::cos_sim(example_bow_descriptors, bow_descriptors, idf_weights);
+		float sim = numerics::min_hist(example_bow_descriptors, bow_descriptors, idf_weights);
 		candidate_scores[i] = std::pair<float, uint64_t>(sim, candidates[i].second);
 	}
 
