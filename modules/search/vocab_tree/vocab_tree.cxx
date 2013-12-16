@@ -155,7 +155,13 @@ bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPar
   
   SCOPED_TIMER
 
+  const PTR_LIB::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
+  split = vt_params->split;
+  //uint32_t depth = vt_params->depth;
+  maxLevel = vt_params->depth;
+
   int rank = 0;
+
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   int procs;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -176,11 +182,6 @@ bool VocabTree::train(Dataset &dataset, const PTR_LIB::shared_ptr<const TrainPar
   }
 #endif
 
-
-  const PTR_LIB::shared_ptr<const TrainParams> &vt_params = std::static_pointer_cast<const TrainParams>(params);
-  split = vt_params->split;
-  //uint32_t depth = vt_params->depth;
-  maxLevel = vt_params->depth;
   numberOfNodes = (uint32_t)(pow(split, maxLevel) - 1) / (split - 1);
   weights.resize(numberOfNodes);
   tree.resize(numberOfNodes);
@@ -869,9 +870,13 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
   std::unordered_set<uint32_t> possibleMatches;
   descriptors.convertTo(descriptorsf, CV_32FC1);
 
-  // printf("--Generating vector...\n");
+  //printf("--Generating vector...\n");
   std::vector<float> vec = generateVector(descriptorsf, true, false, true, possibleMatches);
-  // printf("--Generated vector\n");
+  //printf("--Generated vector\n");
+  //std::cout<<std::endl;
+  //for(int i=0; i<vec.size(); i++)
+  //std::cout << vec[i] << " ";
+  //std::cout << std::endl;
 
   typedef std::pair<uint64_t, float> matchPair;
   // struct myComparer {
@@ -888,6 +893,8 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     float value = vec[numberOfNodes - invertedFiles.size() + index];
     scored_leaves[value] = index;
   }
+
+  //std::cout << "Number of leaves: "<<scored_leaves.size() << std::endl;
 
   int c = 0;
   for (std::map<float, uint32_t>::reverse_iterator it = scored_leaves.rbegin(); it != scored_leaves.rend(); it++) {

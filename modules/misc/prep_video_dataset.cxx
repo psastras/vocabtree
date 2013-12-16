@@ -1,3 +1,4 @@
+#include <config.hpp>
 #include <utils/filesystem.hpp>
 #include <sstream>
 #include <iomanip>

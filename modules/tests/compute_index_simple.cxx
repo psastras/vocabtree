@@ -19,9 +19,9 @@ int main(int argc, char *argv[]) {
 	int rank = MPI::COMM_WORLD.Get_rank();
 	if(rank == 0) {
 #endif
-	const uint32_t num_clusters = 512;
+	const uint32_t num_clusters = s_oxford100k_num_clusters;
 
-	SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
+	SimpleDataset simple_dataset(s_oxford100k_data_dir, s_oxford100k_database_location);
 	LINFO << simple_dataset;
 
 	std::stringstream vocab_output_file;

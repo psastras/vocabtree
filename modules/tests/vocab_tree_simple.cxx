@@ -24,9 +24,9 @@ int main(int argc, char *argv[]) {
 #endif
 
   //SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
-  SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
+  SimpleDataset simple_dataset("/afs/cs.cmu.edu/user/psastras/ladoga/data/oxford", "/afs/cs.cmu.edu/user/psastras/ladoga/data/oxford/db_oxford.bin");
 
-  //LINFO << simple_dataset;
+  LINFO << simple_dataset;
 
   //std::stringstream vocab_output_file;
   //vocab_output_file << simple_dataset.location() << "/vocab/" << train_params->split << "-" 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
   VocabTree vt;
   PTR_LIB::shared_ptr<VocabTree::TrainParams> train_params = PTR_LIB::make_shared<VocabTree::TrainParams>();
   train_params->depth = 3;
-  train_params->split = 8;
+  train_params->split = 6;
 #if ENABLE_MULTITHREADING && ENABLE_MPI
   // have to synchronize what images the nodes build with
   int numImages = 50;
@@ -111,6 +111,10 @@ int main(int argc, char *argv[]) {
   for (uint32_t i = 0; i < imToTest.size(); i++) {
     if(!matches[i]) continue;
     std::cout << "SEARCH " << i << std::endl;
+    std::cout << "Matches for image " << imToTest[i]->id << ":";
+    for(int j=0; j<matches[i]->matches.size(); j++)
+      std::cout << matches[i]->matches[j] << " ";
+    std::cout << std::endl;
     html_output.add_match(images[i]->id, matches[i]->matches, simple_dataset);
   }
 

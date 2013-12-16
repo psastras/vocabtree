@@ -15,7 +15,7 @@ public:
 
 	/// Subclass of train params base which specifies Vocab Tree training parameters.
 	struct SearchParams : public SearchParamsBase {
-    SearchParams(uint64_t cutoff = 256) : cutoff(cutoff) { }
+    SearchParams(uint64_t cutoff = 4096) : cutoff(cutoff) { }
     
     uint32_t amountToReturn;
     uint32_t cutoff;
