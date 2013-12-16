@@ -894,20 +894,16 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
     scored_leaves[value] = index;
   }
 
-  //std::cout << "Number of leaves: "<<scored_leaves.size() << std::endl;
-
-  int c = 0;
-  for (std::map<float, uint32_t>::reverse_iterator it = scored_leaves.rbegin(); it != scored_leaves.rend(); it++) {
+  int imAdded = 0;
+  for (std::map<float, uint32_t>::reverse_iterator it = scored_leaves.rbegin(); 
+    it != scored_leaves.rend() && imAdded < ii_params->cutoff; it++) {
+    
     std::unordered_map<uint64_t, uint32_t> & invFile = invertedFiles[it->second];
 
     typedef std::unordered_map<uint64_t, uint32_t>::iterator it_type;
-    for (it_type iterator = invFile.begin(); iterator != invFile.end(); iterator++)
+    for (it_type iterator = invFile.begin(); iterator != invFile.end() && (imAdded++) < ii_params->cutoff; iterator++)
     if (possibleImages.count(iterator->first) == 0)
       possibleImages.insert(iterator->first);
-
-    c++;
-    if (c >= ii_params->cutoff)
-      break;
   }
 
 
@@ -915,6 +911,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> VocabTree::search(Dataset &dataset, const 
 
   std::vector<uint64_t> possImagesVec(possibleImages.size());
 
+  // push id's into vector
   int asdf = 0;
   for (std::unordered_set<uint64_t>::iterator it = possibleImages.begin(); it != possibleImages.end(); it++) {
     possImagesVec[asdf++] = *it;

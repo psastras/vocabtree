@@ -23,8 +23,8 @@ int main(int argc, char *argv[]) {
 
 #endif
 
-  //SimpleDataset simple_dataset(s_simple_data_dir, s_simple_database_location);
-  SimpleDataset simple_dataset("/afs/cs.cmu.edu/user/psastras/ladoga/data/oxford", "/afs/cs.cmu.edu/user/psastras/ladoga/data/oxford/db_oxford.bin");
+  SimpleDataset simple_dataset(s_oxfordmini_data_dir, s_oxfordmini_database_location);
+  //SimpleDataset simple_dataset("/afs/cs.cmu.edu/user/psastras/ladoga/data/oxford", "/afs/cs.cmu.edu/user/psastras/ladoga/data/oxford/db_oxford.bin");
 
   LINFO << simple_dataset;
 
@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
   PTR_LIB::shared_ptr<VocabTree::SearchParams> searchParams = PTR_LIB::make_shared<VocabTree::SearchParams>();
 
   searchParams->amountToReturn = 10;
-  searchParams->cutoff = 10;
+  //searchParams->cutoff = 10;
 
   MatchesPage html_output;
   //if (rank==0)
