@@ -17,7 +17,7 @@ public:
 
 	/// Subclass of train params base which specifies inverted index training parameters.
 	struct SearchParams : public SearchParamsBase {
-		SearchParams(uint64_t cutoff_idx = 256) : cutoff_idx(cutoff_idx) { }
+		SearchParams(uint64_t cutoff_idx = 4096) : cutoff_idx(cutoff_idx) { }
 
 		uint64_t cutoff_idx; /// number of top matches to consider
 	};

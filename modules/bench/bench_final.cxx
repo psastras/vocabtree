@@ -42,7 +42,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output, std::o
 	const std::string &query_descriptors_location = dataset.location(query_image->feature_path("descriptors"));
 	filesystem::load_cvmat(query_keypoints_location, keypoints_0);
 	filesystem::load_cvmat(query_descriptors_location, descriptors_0);
-	uint32_t num_validate = 16;
+	uint32_t num_validate = std::min(16, (int)(matches->matches.size()));
   std::vector<int> validated(num_validate, 0); 
   uint32_t number_valid = 0;
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
@@ -71,7 +71,7 @@ PTR_LIB::shared_ptr<MatchResultsBase> &matches, MatchesPage &html_output, std::o
 }
 
 void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shared_ptr<SearchParamsBase> &params, std::ofstream &valid_out) {
-	uint32_t num_searches = 256;
+	uint32_t num_searches = 128;
 
 
 #if ENABLE_MULTITHREADING && ENABLE_MPI
@@ -80,22 +80,24 @@ void bench_dataset(SearchBase &searcher, SimpleDataset &dataset, const std::shar
 #endif
 
 	MatchesPage html_output;
-	
+	std::cout<< "Current list: " << std::endl;	
 
 	const std::vector<PTR_LIB::shared_ptr<const Image> > &rand_images = dataset.random_images(num_searches);
 	for(uint32_t i=0; i<num_searches; i++) {
-		
+	  std::cout<< i << " ";
 		PTR_LIB::shared_ptr<const SimpleDataset::SimpleImage> query_image =  std::static_pointer_cast<const SimpleDataset::SimpleImage>(rand_images[i]);
 
     PTR_LIB::shared_ptr<MatchResultsBase> matches = searcher.search(dataset, params, query_image);
 
 		if(matches == PTR_LIB::shared_ptr<MatchResultsBase>()) {
-			LERROR << "Error while running search.";
+		  //LERROR << "Error while running search.";
+		  std::cout << " ERROR ";
 			continue;
    		 }
 		// validate matches
-    validate_results(dataset, query_image, matches, html_output, valid_out);
+		//validate_results(dataset, query_image, matches, html_output, valid_out);
 	}
+	std::cout << std::endl;
 
 }
 
@@ -133,8 +135,8 @@ int main(int argc, char *argv[]) {
   filesystem::create_file_directory(output_loc + "/foo.txt");
 
   SimpleDataset train_dataset(data_dir, database_location, 0);
-  size_t cache_sizes[] = {0};///{ 256, 512 };
-  int numSizes = 1;
+  size_t cache_sizes[] = { 0, 1024, 2048, 4096 };
+  int numSizes = 4;
 
   if (vTree) {
     VocabTree vt;
@@ -146,6 +148,7 @@ int main(int argc, char *argv[]) {
     std::shared_ptr<VocabTree::SearchParams> searchParams = std::make_shared<VocabTree::SearchParams>();
 
     searchParams->amountToReturn = 10;
+    //searchParams->cutoff = 10;
 
     vt.train(train_dataset, train_params, train_dataset.random_images(numImages));
     PerfTracker::instance().save(output_loc + "/perf" + nodeID + ".train");
@@ -153,6 +156,7 @@ int main(int argc, char *argv[]) {
 
     for (int i = 0; i < numSizes; i++) {
       size_t cache_size = cache_sizes[i];
+      std::cout<< "Testing for cache size "<<cache_size<< std::endl;
 
       SimpleDataset dataset(data_dir, database_location, cache_size);
       LINFO << dataset;
