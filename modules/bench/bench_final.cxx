@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
 
   SimpleDataset train_dataset(data_dir, database_location, 0);
   size_t cache_sizes[] = { 0, 1024, 2048, 4096 };
-  int numSizes = 4;
+  int numSizes = 1;
 
   if (vTree) {
     VocabTree vt;
@@ -150,7 +150,20 @@ int main(int argc, char *argv[]) {
     searchParams->amountToReturn = 10;
     //searchParams->cutoff = 10;
 
-    vt.train(train_dataset, train_params, train_dataset.random_images(numImages));
+    const std::string &tree_root_location = train_dataset.location("tree/");
+    filesystem::create_file_directory(tree_root_location);
+    std::stringstream ss;
+    ss << tree_root_location << "tree." << train_params->split << "." << train_params->depth << ".bin";
+    const std::string &tree_location = ss.str();
+
+    if (filesystem::file_exists(tree_location)) {
+      vt.load(tree_location);
+    }
+    else {
+      std::cout << "No tree found at " << tree_location << ", building..." << std::endl;
+      vt.train(train_dataset, train_params, train_dataset.random_images(numImages));
+      vt.save(tree_location);
+    }
     PerfTracker::instance().save(output_loc + "/perf" + nodeID + ".train");
     PerfTracker::instance().clear();
 
