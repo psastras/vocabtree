@@ -1,0 +1,4 @@
+var NAVTREEINDEX =
+[
+"annotated.html",
+];

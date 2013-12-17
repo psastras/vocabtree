@@ -1,0 +1,10 @@
+<map id="/home/psastras/vocabtree/modules/config.hpp" name="/home/psastras/vocabtree/modules/config.hpp">
+<area shape="rect" id="node2" href="$bench__all_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_all.cxx" alt="" coords="5,103,203,145"/>
+<area shape="rect" id="node3" href="$bench__bow_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_bow.cxx" alt="" coords="227,103,436,145"/>
+<area shape="rect" id="node4" href="$bench__compute__features_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_compute\l_features.cxx" alt="" coords="461,96,672,152"/>
+<area shape="rect" id="node5" href="$bench__search_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_search.cxx" alt="" coords="696,103,920,145"/>
+<area shape="rect" id="node6" href="$bag__of__words_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/bag_of\l_words/bag_of_words.cxx" alt="" coords="945,96,1119,152"/>
+<area shape="rect" id="node7" href="$inverted__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="1144,96,1317,152"/>
+<area shape="rect" id="node8" href="$compute__bow__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_bow_simple.cxx" alt="" coords="1341,96,1515,152"/>
+<area shape="rect" id="node9" href="$compute__sift__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_sift_simple.cxx" alt="" coords="1539,96,1712,152"/>
+</map>

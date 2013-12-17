@@ -1,0 +1,12 @@
+<map id="/home/psastras/vocabtree/modules/search/bag_of_words/bag_of_words.hpp" name="/home/psastras/vocabtree/modules/search/bag_of_words/bag_of_words.hpp">
+<area shape="rect" id="node2" href="$bench__all_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_all.cxx" alt="" coords="5,221,203,262"/>
+<area shape="rect" id="node3" href="$bench__bow_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_bow.cxx" alt="" coords="917,117,1125,158"/>
+<area shape="rect" id="node4" href="$bench__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_index.cxx" alt="" coords="228,221,444,262"/>
+<area shape="rect" id="node5" href="$bench__search_8cxx.html" title="/home/psastras/vocabtree\l/modules/bench/bench_search.cxx" alt="" coords="468,221,692,262"/>
+<area shape="rect" id="node6" href="$bag__of__words_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/bag_of\l_words/bag_of_words.cxx" alt="" coords="1150,109,1324,165"/>
+<area shape="rect" id="node7" href="$inverted__index_8hpp.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.hpp" alt="" coords="617,109,791,165"/>
+<area shape="rect" id="node11" href="$compute__bow__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_bow_simple.cxx" alt="" coords="1349,109,1523,165"/>
+<area shape="rect" id="node9" href="$compute__index__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_index_simple.cxx" alt="" coords="913,213,1087,269"/>
+<area shape="rect" id="node10" href="$compute__search__simple_8cxx.html" title="/home/psastras/vocabtree\l/modules/tests/compute\l_search_simple.cxx" alt="" coords="1111,213,1284,269"/>
+<area shape="rect" id="node8" href="$inverted__index_8cxx.html" title="/home/psastras/vocabtree\l/modules/search/inverted\l_index/inverted_index.cxx" alt="" coords="716,213,889,269"/>
+</map>

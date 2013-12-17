@@ -1,0 +1,5 @@
+<map id="MatchResultsBase" name="MatchResultsBase">
+<area shape="rect" id="node2" href="$structBagOfWords_1_1MatchResults.html" title="Subclass of match results base which also returns scores." alt="" coords="5,80,192,107"/>
+<area shape="rect" id="node3" href="$structInvertedIndex_1_1MatchResults.html" title="Subclass of match results base which also returns scores." alt="" coords="217,80,407,107"/>
+<area shape="rect" id="node4" href="$structVocabTree_1_1MatchResults.html" title="Subclass of match results base which also returns scores." alt="" coords="431,80,605,107"/>
+</map>
