@@ -14,7 +14,7 @@ namespace numerics {
 		const std::vector<std::pair<uint32_t, float> > &weights1,
 		const std::vector<float> &idfw) {
 		
-		SCOPED_TIMER
+		
 
 		float ab = 0.f, a2 = 0.f, b2 = 0.f;
 		for(size_t i=0, j=0; i < weights0.size() || j < weights1.size();) {
@@ -52,7 +52,7 @@ namespace numerics {
 		const std::vector<std::pair<uint32_t, float> > &weights1,
 		const std::vector<float> &idfw) {
 		
-		SCOPED_TIMER
+		
 
 		float a = 0.f, b = 0.f, ab = 0.f;
 		for(size_t k=0; k<weights0.size(); k++) {

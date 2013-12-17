@@ -56,6 +56,12 @@ void PerfTracker::add_time(const std::string &func, double time) {
     }
 }
 
+
+void PerfTracker::add_time_nolock(const std::string &func, double time) {
+    _times[func].first += time;
+    _times[func].second++;
+}
+
 void PerfTracker::clear() {
     this->_times.clear();
 }

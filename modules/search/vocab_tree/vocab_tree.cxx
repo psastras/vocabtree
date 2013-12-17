@@ -825,7 +825,9 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
     for (int i = 0; i < tree[maxChild].mean.cols; i++)
       printf("%f ", tree[maxChild].mean.at<float>(i));
     printf("\n\n");*/
-    double max = tree[maxChild].mean.dims == 0 ? 0 : descriptor.dot(tree[maxChild].mean);
+    double max = (tree[maxChild].mean.dims == 0 || descriptor.dims == 0 ||
+     tree[maxChild].mean.type() != descriptor.type() || tree[maxChild].mean.size() !=
+     descriptor.size() ) ? 0 : descriptor.dot(tree[maxChild].mean);
     //double max = descriptor.dot(tree[maxChild].mean);
 
     for (uint32_t i = 1; i < split; i++) {
@@ -836,7 +838,9 @@ void VocabTree::generateVectorHelper(uint32_t nodeIndex, const cv::Mat &descript
     for (int i = 0; i < tree[nodeIndex].mean.cols; i++)
       printf("%f ", tree[nodeIndex].mean.at<float>(i));
     printf("\n\n");*/
-      if (tree[childIndex].mean.dims == 0)
+      if (tree[childIndex].mean.dims == 0 || descriptor.dims == 0 ||
+     tree[childIndex].mean.type() != descriptor.type() || tree[childIndex].mean.size() !=
+     descriptor.size())
         continue;
       double dot = descriptor.dot(tree[childIndex].mean);
 

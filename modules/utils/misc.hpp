@@ -9,10 +9,15 @@
 #define SCOPED_TIMER \
 	ScopedTimer __s(BOOST_CURRENT_FUNCTION);
 
+#define SCOPED_TIMER_NOLOCK \
+	ScopedTimerLockfree __s(BOOST_CURRENT_FUNCTION);
+
+
 class PerfTracker {
 	public:
 		static PerfTracker &instance();
 		void add_time(const std::string &func, double time);
+		void add_time_nolock(const std::string &func, double time);
 		std::map<std::string, std::pair<double, uint64_t> > &times();
     	bool save(const std::string &file_path);
     	void clear();
@@ -30,6 +35,17 @@ public:
   ScopedTimer(const std::string &f) : func(f), st(CycleTimer::currentSeconds()) { }
   ~ScopedTimer() {
   	PerfTracker::instance().add_time(func, CycleTimer::currentSeconds() - st);
+  }
+
+  std::string func;
+  double st;
+};
+
+class ScopedTimerLockfree {
+public:
+  ScopedTimerLockfree(const std::string &f) : func(f), st(CycleTimer::currentSeconds()) { }
+  ~ScopedTimerLockfree() {
+  	PerfTracker::instance().add_time_nolock(func, CycleTimer::currentSeconds() - st);
   }
 
   std::string func;

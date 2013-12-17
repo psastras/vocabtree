@@ -62,8 +62,14 @@ namespace filesystem {
 	}
 
 	bool load_sparse_vector(const std::string &fname, std::vector<std::pair<uint32_t, float > > &data) {
-		if(!file_exists(fname)) return false;
-		SCOPED_TIMER
+		if(!file_exists(fname))
+		{
+			// std::cout << "couldnt find " << fname << std::endl;
+		 return false;
+		}
+
+		SCOPED_TIMER_NOLOCK
+		
 		std::ifstream ifs(fname.c_str(), std::ios::binary);
 		uint32_t dim0;
 		ifs.read((char *)&dim0, sizeof(uint32_t));
@@ -126,7 +132,7 @@ namespace filesystem {
   bool load_vector(const std::string &fname, std::vector<float> &data) {
 	if (!file_exists(fname)) return false;
 	
-	SCOPED_TIMER
+	SCOPED_TIMER_NOLOCK
 
 	std::ifstream ifs(fname.c_str(), std::ios::binary);
 	uint32_t dim0;
@@ -134,5 +140,5 @@ namespace filesystem {
 	data.resize(dim0);
 	ifs.read((char *)&data[0], data.size()*sizeof(float));
 	return (ifs.rdstate() & std::ifstream::failbit) == 0;
-}
+	}
 }

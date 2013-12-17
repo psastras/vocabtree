@@ -178,6 +178,9 @@ std::vector<float> SimpleDataset::load_vec_feature(uint64_t id) const {
 }
 
 numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) const {
+	
+	SCOPED_TIMER_NOLOCK
+
 	numerics::sparse_vector_t bow_descriptors;
 	uint32_t level0 = id >> 20;
 	uint32_t level1 = (id - (level0 << 20)) >> 10;
@@ -187,14 +190,14 @@ numerics::sparse_vector_t SimpleDataset::load_bow_feature_cache(uint64_t id) con
 	std::setw(4) << std::setfill('0') << level1 << "/" <<
 	std::setw(9) << std::setfill('0') << id << "." << "bow_descriptors";
 	std::string location = ss.str();
+	// std::cout << "couldnt find " << location << std::endl;
 	if (!filesystem::file_exists(location)) return bow_descriptors;	
 	filesystem::load_sparse_vector(location, bow_descriptors);
 	return bow_descriptors;
 }
 
 std::vector<float> SimpleDataset::load_vec_feature_cache(uint64_t id) const {
-	
-	SCOPED_TIMER
+	SCOPED_TIMER_NOLOCK
 
 	std::vector<float> vec_feature;
 	uint32_t level0 = id >> 20;
@@ -206,6 +209,7 @@ std::vector<float> SimpleDataset::load_vec_feature_cache(uint64_t id) const {
 	std::setw(9) << std::setfill('0') << id << "." << "datavec";
 	std::string location = ss.str();
 	if (!filesystem::file_exists(location)) return vec_feature;	
+	
 	filesystem::load_vector(location, vec_feature);
 	return vec_feature;
 }

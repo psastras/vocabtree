@@ -9,8 +9,8 @@
 #include <sstream>
 #include <iomanip>
 
-typedef bow_ring_priority_cache_t bow_feature_cache_t;
-typedef vec_ring_priority_cache_t vec_feature_cache_t;
+typedef bow_single_cache_t bow_feature_cache_t;
+typedef vec_single_cache_t vec_feature_cache_t;
 
 /// The Dataset class is an abstract wrapper describing a dataset.  A dataset consiste of the actual
 /// data, plus a way to convert the images, or frames of a video into an integer index.  The dataset

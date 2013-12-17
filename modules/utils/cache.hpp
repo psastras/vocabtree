@@ -46,7 +46,8 @@ class SingleCache {
   // Constuctor specifies the cached function and 
   // the maximum number of records to be stored. 
   SingleCache(const boost::function<V(const K&)>& f, size_t c) : _fn(f), _capacity(c) { 
-
+    _hits = 0;
+    _misses = 0;
   } 
  
   // Non locking version
@@ -57,9 +58,11 @@ class SingleCache {
     if (it == _container.left.end()) {      
       V v = _fn(k);
       insert(k,v); 
+      _misses++;
       return v;
     } else {
       _container.right.relocate(_container.right.end(), _container.project_right(it)); 
+      _hits++;
       return it->second;
     }
 
@@ -76,16 +79,19 @@ class SingleCache {
   // Locking version
   template<typename U = V> typename std::enable_if<B, U>::type operator()(const K& k) { 
     SCOPED_TIMER
+    
     V v;
     #pragma omp critical
     {
       const typename container_type::left_iterator it = _container.left.find(k); 
-      if (it == _container.left.end()) {      
+      if (it == _container.left.end()) {
         v = _fn(k);
         insert(k,v); 
+        // _misses++;
       } else {
         _container.right.relocate(_container.right.end(), _container.project_right(it)); 
         v = it->second;
+        // _hits++;
       }
     }
     return v;
@@ -100,6 +106,8 @@ class SingleCache {
   } 
 
   uint64_t capacity()         const { return _capacity; }
+  // uint64_t hits() const { return _hits; }
+  // uint64_t misses() const { return _misses; }
   
  private: 
   void insert(const K& k, const V& v) { 
@@ -112,6 +120,7 @@ class SingleCache {
   const boost::function<V(const K&)> _fn; 
   const size_t _capacity; 
   container_type _container; 
+  uint64_t _hits, _misses;
 }; 
 
 #if ENABLE_MULTITHREADING && ENABLE_OPENMP
