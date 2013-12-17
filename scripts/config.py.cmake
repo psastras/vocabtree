@@ -1,0 +1,12 @@
+#!/usr/bin/python
+
+SCRIPTS_DIR = "@CMAKE_SOURCE_DIR@/scripts/"
+BENCH_FEATURES_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_compute_features"
+BENCH_BOW_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_bow"
+BENCH_INDEX_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_index"
+BENCH_SEARCH_EXE = "@EXECUTABLE_OUTPUT_PATH@/bench_search"
+
+TESTS_FEATURES_EXE = "@EXECUTABLE_OUTPUT_PATH@/compute_sift_simple"
+TESTS_BOW_EXE = "@EXECUTABLE_OUTPUT_PATH@/compute_bow_simple"
+TESTS_INDEX_EXE = "@EXECUTABLE_OUTPUT_PATH@/compute_index_simple"
+TESTS_SEARCH_EXE = "@EXECUTABLE_OUTPUT_PATH@/compute_search_simple"
